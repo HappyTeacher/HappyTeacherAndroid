@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_board"
+        android:icon="@drawable/ic_book_black_24dp"
+        android:title="@string/title_board" />
+
+    <item
+        android:id="@+id/navigation_topics"
+        android:icon="@drawable/ic_view_list_black_24dp"
+        android:title="@string/title_topics" />
+
+    <item
+        android:id="@+id/navigation_contribute"
+        android:icon="@drawable/ic_pencil_black_24dp"
+        android:title="@string/title_contribute" />
+
+</menu>

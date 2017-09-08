@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Happy Teacher</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+
+
+    <string name="title_board">Board</string>
+    <string name="title_topics">Topics</string>
+    <string name="title_contribute">Contribute</string>
+
 </resources>

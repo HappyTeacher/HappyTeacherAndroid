@@ -2,8 +2,13 @@ package org.jnanaprabodhini.happyteacher
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.v4.content.res.ResourcesCompat
+import android.support.v4.os.ConfigurationCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
+import android.widget.TextView
+import com.firebase.ui.database.FirebaseListAdapter
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_topics_list.*
 import org.jnanaprabodhini.happyteacher.models.Subject
@@ -12,16 +17,16 @@ class TopicsListActivity : AppCompatActivity() {
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
-            R.id.navigation_home -> {
-                message.setText(R.string.title_home)
+            R.id.navigation_board -> {
+                message.setText(R.string.title_board)
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_dashboard -> {
-                message.setText(R.string.title_dashboard)
+            R.id.navigation_topics -> {
+                message.setText(R.string.title_topics)
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_notifications -> {
-                message.setText(R.string.title_notifications)
+            R.id.navigation_contribute -> {
+                message.setText(R.string.title_contribute)
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -32,49 +37,21 @@ class TopicsListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_topics_list)
 
-        val navigation = findViewById(R.id.navigation) as BottomNavigationView
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        // Read from the database
-        val subjectsRef = FirebaseDatabase.getInstance().reference.child("subjects")
+        val databaseInstance = FirebaseDatabase.getInstance()
 
-        subjectsRef.child("environmental_science").addListenerForSingleValueEvent(object: ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot?) {
-                val subject = dataSnapshot?.getValue(Subject::class.java)
-                message.text = subject?.names?.get("en")
+        val subjectQuery = databaseInstance.getReference("subjects").orderByChild("is_active").equalTo(true)
+
+
+        val subjectAdapter = object : FirebaseListAdapter<Subject>(this, Subject::class.java, R.layout.support_simple_spinner_dropdown_item, subjectQuery) {
+            override fun populateView(view: View, subject: Subject, position: Int) {
+                val languageCode = ConfigurationCompat.getLocales(resources.configuration)[0].language
+                (view as TextView).text = "${subject.names[languageCode]} from language $languageCode"
             }
+        }
 
-            override fun onCancelled(p0: DatabaseError?) {
-                message.text = "Meh it didn't work"
-            }
-        })
-
-        subjectsRef.orderByChild("is_active").equalTo(false).addChildEventListener(object: ChildEventListener {
-            override fun onCancelled(p0: DatabaseError?) {
-                message.text = "CANCELLED I GUESS>>"
-            }
-
-            override fun onChildMoved(dataSnapshot: DataSnapshot?, p1: String?) {
-                val subject = dataSnapshot?.getValue(Subject::class.java)
-                message.text = "${subject?.names?.get("en")} onChildMoved"
-            }
-
-            override fun onChildChanged(dataSnapshot: DataSnapshot?, p1: String?) {
-                val subject = dataSnapshot?.getValue(Subject::class.java)
-                message.text = "${subject?.names?.get("en")} onChildChanged"
-            }
-
-            override fun onChildAdded(dataSnapshot: DataSnapshot?, p1: String?) {
-                val subject = dataSnapshot?.getValue(Subject::class.java)
-                message.text = "${subject?.names?.get("en")} onChildAdded"
-            }
-
-            override fun onChildRemoved(dataSnapshot: DataSnapshot?) {
-                val subject = dataSnapshot?.getValue(Subject::class.java)
-                message.text = "${subject?.names?.get("en")} onChildRemoved"
-            }
-
-        })
+        subject_spinner.adapter = subjectAdapter
 
     }
 
