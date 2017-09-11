@@ -40,20 +40,25 @@ class TopicsListActivity : AppCompatActivity(), TopicsListView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_topics_list)
+
         presenter = TopicsListPresenter(this)
 
         topicsRecyclerView.layoutManager = LinearLayoutManager(this)
-
         bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
-        // TODO: Separate
+        this.setupSubjectSpinner()
+    }
+
+    private fun setupSubjectSpinner() {
         val subjectQuery = databaseInstance.getReference("subjects").orderByChild("is_active").equalTo(true)
+
         val subjectAdapter = object : FirebaseListAdapter<Subject>(this, Subject::class.java, R.layout.spinner_item, subjectQuery) {
             override fun populateView(view: View, subject: Subject, position: Int) {
                 val languageCode = ConfigurationCompat.getLocales(resources.configuration)[0].language
                 (view as TextView).text = subject.names[languageCode]
             }
         }
+
         subjectSpinner.adapter = subjectAdapter
 
         subjectSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
@@ -63,9 +68,7 @@ class TopicsListActivity : AppCompatActivity(), TopicsListView {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
-
         }
-
     }
 
     fun updateListOfTopics(subjectKey: String) {
@@ -85,9 +88,7 @@ class TopicsListActivity : AppCompatActivity(), TopicsListView {
                     2 -> viewHolder?.itemView?.setBackgroundResource(R.color.bubbleGumPink)
                     3 -> viewHolder?.itemView?.setBackgroundResource(R.color.dreamsicleOrange)
                 }
-
             }
-
         }
 
         topicsRecyclerView.adapter = topicAdapter
