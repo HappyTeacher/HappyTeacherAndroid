@@ -1,10 +1,8 @@
 package org.jnanaprabodhini.happyteacher
 
-import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.os.ConfigurationCompat
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.text.format.DateFormat
 import android.view.View
@@ -12,14 +10,11 @@ import android.widget.AdapterView
 import android.widget.TextView
 import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseRecyclerAdapter
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_topics_list.*
 import org.jnanaprabodhini.happyteacher.models.LessonHeader
 import org.jnanaprabodhini.happyteacher.models.Subject
 import org.jnanaprabodhini.happyteacher.models.Topic
 import java.util.*
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
-
 
 
 class TopicsListActivity : HappyTeacherActivity(), TopicsListView {
