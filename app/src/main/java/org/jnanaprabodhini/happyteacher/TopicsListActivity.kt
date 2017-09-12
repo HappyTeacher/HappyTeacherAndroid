@@ -5,6 +5,7 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v4.os.ConfigurationCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.text.format.DateFormat
 import android.view.View
 import android.widget.AdapterView
 import android.widget.TextView
@@ -15,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_topics_list.*
 import org.jnanaprabodhini.happyteacher.models.LessonHeader
 import org.jnanaprabodhini.happyteacher.models.Subject
 import org.jnanaprabodhini.happyteacher.models.Topic
+import java.util.*
 
 class TopicsListActivity : AppCompatActivity(), TopicsListView {
 
@@ -96,6 +98,8 @@ class TopicsListActivity : AppCompatActivity(), TopicsListView {
                         .child("mathematics_addition") // hardcoded just for testing!
                         .orderByChild("name")
 
+                val dateFormat = DateFormat.getDateFormat(this@TopicsListActivity)
+
                 // TODO: remove crazy nesting! hehe
                 val lessonHeaderAdapter = object: FirebaseRecyclerAdapter<LessonHeader, LessonHeaderViewHolder>(LessonHeader::class.java, R.layout.list_item_lesson, LessonHeaderViewHolder::class.java, lessonHeaderQuery) {
                     override fun populateViewHolder(lessonHeaderViewHolder: LessonHeaderViewHolder?, header: LessonHeader?, headerPosition: Int) {
@@ -103,7 +107,10 @@ class TopicsListActivity : AppCompatActivity(), TopicsListView {
                         lessonHeaderViewHolder?.authorNameTextView?.text = header?.author_name
                         lessonHeaderViewHolder?.institutionTextView?.text = header?.author_institution
                         lessonHeaderViewHolder?.locationTextView?.text = header?.author_location
-                        lessonHeaderViewHolder?.dateEditedTextView?.text = "${header?.dateEdited}"
+
+                        if (header != null) {
+                            lessonHeaderViewHolder?.dateEditedTextView?.text = dateFormat.format(Date(header.dateEdited))
+                        }
                     }
                 }
 
