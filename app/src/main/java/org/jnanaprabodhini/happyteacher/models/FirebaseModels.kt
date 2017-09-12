@@ -12,9 +12,9 @@ data class Topic(var isActive: Boolean = false,
                  var subject: String = "")
 
 // TODO: Update with actual object structure when complete:
-data class LessonHeader(var author_id: String = "",
-                        var author_institution: String = "",
-                        var author_location: String = "",
-                        var author_name: String = "",
+data class LessonHeader(var authorId: String = "",
+                        var authorInstitution: String = "",
+                        var authorLocation: String = "",
+                        var authorName: String = "",
                         var dateEdited: Long = 0,
                         var name: String = "")

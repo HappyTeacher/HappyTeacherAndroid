@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
         tools:text="Topic Name Here"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:padding="16dp"/>
 
     <android.support.v7.widget.RecyclerView

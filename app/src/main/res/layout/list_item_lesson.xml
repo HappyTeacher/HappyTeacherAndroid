@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="256dp"
-    android:layout_height="224dp"
+    android:layout_width="300dp"
+    android:layout_height="240dp"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     xmlns:tools="http://schemas.android.com/tools">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -24,10 +24,9 @@
         <TextView
             android:id="@+id/authorNameTextView"
             style="@style/HeaderCardSubheaderText"
-            android:drawableLeft="@drawable/ic_person_black_24dp"
+            android:drawableLeft="@drawable/ic_person_accent"
             android:drawablePadding="@dimen/padding_card_icon"
-            android:drawableStart="@drawable/ic_person_black_24dp"
-            android:drawableTint="@color/colorPrimary"
+            android:drawableStart="@drawable/ic_person_accent"
             tools:text="Author Name Here"
             android:paddingBottom="4dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -36,10 +35,9 @@
         <TextView
             android:id="@+id/institutionTextView"
             style="@style/HeaderCardSubheaderText"
-            android:drawableLeft="@drawable/ic_school_black_24dp"
+            android:drawableLeft="@drawable/ic_school_accent"
             android:drawablePadding="@dimen/padding_card_icon"
-            android:drawableStart="@drawable/ic_school_black_24dp"
-            android:drawableTint="@color/colorPrimary"
+            android:drawableStart="@drawable/ic_school_accent"
             tools:text="Institution Name Here"
             android:paddingBottom="4dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -48,27 +46,28 @@
         <TextView
             android:id="@+id/locationTextView"
             style="@style/HeaderCardSubheaderText"
-            android:drawableLeft="@drawable/ic_location_on_black_24dp"
+            android:drawableLeft="@drawable/ic_location_accent"
             android:drawablePadding="@dimen/padding_card_icon"
-            android:drawableStart="@drawable/ic_location_on_black_24dp"
-            android:drawableTint="@color/colorPrimary"
+            android:drawableStart="@drawable/ic_location_accent"
             tools:text="Location Name Here"
             android:paddingBottom="4dp"
+            android:gravity="top"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/institutionTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/institutionTextView"
+            app:layout_constraintBottom_toTopOf="@+id/dateEditedTextView"
+            app:layout_constraintVertical_bias="0.033" />
 
         <TextView
             android:id="@+id/dateEditedTextView"
             style="@style/HeaderCardSubheaderText"
-            android:drawableLeft="@drawable/ic_access_time_black_24dp"
+            android:drawableLeft="@drawable/ic_clock_accent"
             android:drawablePadding="@dimen/padding_card_icon"
-            android:drawableStart="@drawable/ic_access_time_black_24dp"
-            android:drawableTint="@color/colorPrimary"
+            android:drawableStart="@drawable/ic_clock_accent"
             android:maxLines="1"
             android:paddingTop="4dp"
             tools:text="1 December, 2017"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/locationTextView" />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 

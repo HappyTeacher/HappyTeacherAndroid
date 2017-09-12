@@ -1,5 +1,6 @@
 package org.jnanaprabodhini.happyteacher
 
+import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.os.ConfigurationCompat
@@ -17,6 +18,9 @@ import org.jnanaprabodhini.happyteacher.models.LessonHeader
 import org.jnanaprabodhini.happyteacher.models.Subject
 import org.jnanaprabodhini.happyteacher.models.Topic
 import java.util.*
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
+
+
 
 class TopicsListActivity : AppCompatActivity(), TopicsListView {
 
@@ -53,7 +57,7 @@ class TopicsListActivity : AppCompatActivity(), TopicsListView {
     }
 
     private fun setupSubjectSpinner() {
-        val subjectQuery = databaseInstance.getReference("subjects").orderByChild("is_active").equalTo(true)
+        val subjectQuery = databaseInstance.getReference("subjects").orderByChild("isActive").equalTo(true)
 
         val subjectAdapter = object : FirebaseListAdapter<Subject>(this, Subject::class.java, R.layout.spinner_item, subjectQuery) {
             override fun populateView(view: View, subject: Subject, position: Int) {
@@ -77,7 +81,7 @@ class TopicsListActivity : AppCompatActivity(), TopicsListView {
     fun updateListOfTopics(subjectKey: String) {
         val topicQuery = databaseInstance.getReference("topics")
                 .child(subjectKey)
-                .orderByChild("is_active")
+                .orderByChild("isActive")
                 .equalTo(true)
 
         val topicAdapter = object: FirebaseRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, topicQuery) {
@@ -94,7 +98,7 @@ class TopicsListActivity : AppCompatActivity(), TopicsListView {
 
                 val topicKey = this.getRef(position).key
 
-                val lessonHeaderQuery = databaseInstance.getReference("lesson_headers")
+                val lessonHeaderQuery = databaseInstance.getReference("lesson_headers") // todo: camelCase lessonHeaders
                         .child("mathematics_addition") // hardcoded just for testing!
                         .orderByChild("name")
 
@@ -104,9 +108,9 @@ class TopicsListActivity : AppCompatActivity(), TopicsListView {
                 val lessonHeaderAdapter = object: FirebaseRecyclerAdapter<LessonHeader, LessonHeaderViewHolder>(LessonHeader::class.java, R.layout.list_item_lesson, LessonHeaderViewHolder::class.java, lessonHeaderQuery) {
                     override fun populateViewHolder(lessonHeaderViewHolder: LessonHeaderViewHolder?, header: LessonHeader?, headerPosition: Int) {
                         lessonHeaderViewHolder?.lessonTitleTextView?.text = header?.name
-                        lessonHeaderViewHolder?.authorNameTextView?.text = header?.author_name
-                        lessonHeaderViewHolder?.institutionTextView?.text = header?.author_institution
-                        lessonHeaderViewHolder?.locationTextView?.text = header?.author_location
+                        lessonHeaderViewHolder?.authorNameTextView?.text = header?.authorName
+                        lessonHeaderViewHolder?.institutionTextView?.text = header?.authorInstitution
+                        lessonHeaderViewHolder?.locationTextView?.text = header?.authorLocation
 
                         if (header != null) {
                             lessonHeaderViewHolder?.dateEditedTextView?.text = dateFormat.format(Date(header.dateEdited))
@@ -122,6 +126,11 @@ class TopicsListActivity : AppCompatActivity(), TopicsListView {
         }
 
         topicsRecyclerView.adapter = topicAdapter
+    }
+
+    // TODO: Extract to parent level activity class. For all activities.
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))
     }
 
 }
