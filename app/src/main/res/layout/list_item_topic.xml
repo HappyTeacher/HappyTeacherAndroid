@@ -13,32 +13,38 @@
         android:textColor="@android:color/white"
         tools:text="Topic Name Here"
         android:textSize="24sp"
-        android:padding="16dp"/>
+        android:paddingTop="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lessonsRecyclerView"
-        android:paddingBottom="24dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/topicTextView"  />
+        app:layout_constraintTop_toBottomOf="@+id/topicTextView" />
 
     <LinearLayout
         app:layout_constraintTop_toBottomOf="@+id/topicTextView"
         android:visibility="visible"
         android:id="@+id/emptyView"
-        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_width="@dimen/width_lesson_header_card"
         android:layout_height="@dimen/height_lesson_header_card">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
             android:text="There are no lessons for this topic."/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/contributeButton"
+            android:layout_margin="16dp"
             android:text="Contribute"/>
 
     </LinearLayout>

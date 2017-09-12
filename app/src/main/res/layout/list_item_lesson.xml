@@ -5,6 +5,10 @@
     android:layout_height="@dimen/height_lesson_header_card"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginBottom="24dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp"
     xmlns:tools="http://schemas.android.com/tools">
 
     <android.support.constraint.ConstraintLayout
