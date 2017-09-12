@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="256dp" android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_margin="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:paddingBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lessonTitleTextView"
+            android:maxLines="1"
+            tools:text="Lesson Title"
+            android:ellipsize="marquee"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/authorNameTextView"
+            android:maxLines="1"
+            tools:text="Author Name Here"
+            android:ellipsize="marquee"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/institutionTextView"
+            android:maxLines="1"
+            tools:text="Institution Name Here"
+            android:ellipsize="marquee"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/locationTextView"
+            android:maxLines="1"
+            tools:text="Location Name Here"
+            android:ellipsize="marquee"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:id="@+id/dateEditedTextView"
+            android:maxLines="1"
+            android:ellipsize="marquee"
+            tools:text="1 December, 2017"/>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
