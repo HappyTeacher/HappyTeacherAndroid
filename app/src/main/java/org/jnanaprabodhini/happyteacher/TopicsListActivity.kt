@@ -100,7 +100,7 @@ class TopicsListActivity : AppCompatActivity(), TopicsListView {
                 val topicKey = this.getRef(topicPosition).key
 
                 val lessonHeaderQuery = databaseInstance.getReference("lesson_headers") // todo: camelCase lessonHeaders
-                        .child("mathematics_additionok") // hardcoded just for testing!
+                        .child("mathematics_addition") // hardcoded just for testing!
                         .orderByChild("name")
 
                 val dateFormat = DateFormat.getDateFormat(this@TopicsListActivity)
