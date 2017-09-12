@@ -2,7 +2,6 @@ package org.jnanaprabodhini.happyteacher
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
-import android.support.v4.os.ConfigurationCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.text.format.DateFormat
 import android.view.View
@@ -11,9 +10,16 @@ import android.widget.TextView
 import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import kotlinx.android.synthetic.main.activity_topics_list.*
-import org.jnanaprabodhini.happyteacher.models.LessonHeader
-import org.jnanaprabodhini.happyteacher.models.Subject
-import org.jnanaprabodhini.happyteacher.models.Topic
+import org.jnanaprabodhini.happyteacher.activity.HappyTeacherActivity
+import org.jnanaprabodhini.happyteacher.adapter.FirebaseEmptyRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.extension.getPrimaryLocale
+import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
+import org.jnanaprabodhini.happyteacher.extension.setVisible
+import org.jnanaprabodhini.happyteacher.model.LessonHeader
+import org.jnanaprabodhini.happyteacher.model.Subject
+import org.jnanaprabodhini.happyteacher.model.Topic
+import org.jnanaprabodhini.happyteacher.viewholder.LessonHeaderViewHolder
+import org.jnanaprabodhini.happyteacher.viewholder.TopicViewHolder
 import java.util.*
 
 
@@ -53,7 +59,7 @@ class TopicsListActivity : HappyTeacherActivity(), TopicsListView {
 
         val subjectAdapter = object : FirebaseListAdapter<Subject>(this, Subject::class.java, R.layout.spinner_item, subjectQuery) {
             override fun populateView(view: View, subject: Subject, position: Int) {
-                val languageCode = ConfigurationCompat.getLocales(resources.configuration)[0].language
+                val languageCode = getPrimaryLocale().language
                 (view as TextView).text = subject.names[languageCode]
             }
         }

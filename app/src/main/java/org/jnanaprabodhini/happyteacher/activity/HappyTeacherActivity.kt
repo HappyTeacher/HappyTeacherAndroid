@@ -1,4 +1,4 @@
-package org.jnanaprabodhini.happyteacher
+package org.jnanaprabodhini.happyteacher.activity
 
 import android.content.Context
 import android.support.v7.app.AppCompatActivity

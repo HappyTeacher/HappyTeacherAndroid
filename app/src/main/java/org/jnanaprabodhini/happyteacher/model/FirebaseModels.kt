@@ -1,4 +1,4 @@
-package org.jnanaprabodhini.happyteacher.models
+package org.jnanaprabodhini.happyteacher.model
 
 /**
  * Created by grahamearley on 9/7/17.
