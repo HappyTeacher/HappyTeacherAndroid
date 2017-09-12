@@ -22,10 +22,9 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 
 
-class TopicsListActivity : AppCompatActivity(), TopicsListView {
+class TopicsListActivity : HappyTeacherActivity(), TopicsListView {
 
     private lateinit var presenter: TopicsListPresenter
-
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_board -> {
@@ -40,9 +39,6 @@ class TopicsListActivity : AppCompatActivity(), TopicsListView {
         }
         false
     }
-
-    // TODO: bring to parent activity class.
-    private val databaseInstance = FirebaseDatabase.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,6 +93,7 @@ class TopicsListActivity : AppCompatActivity(), TopicsListView {
                     3 -> topicViewHolder?.itemView?.setBackgroundResource(R.color.dreamsicleOrange)
                 }
 
+                // TODO: use this (remove dummy query)
                 val topicKey = this.getRef(topicPosition).key
 
                 val lessonHeaderQuery = databaseInstance.getReference("lesson_headers") // todo: camelCase lessonHeaders
@@ -135,13 +132,6 @@ class TopicsListActivity : AppCompatActivity(), TopicsListView {
                 topicViewHolder?.lessonsRecyclerView?.adapter = lessonHeaderAdapter
             }
         }
-
         topicsRecyclerView.adapter = topicAdapter
     }
-
-    // TODO: Extract to parent level activity class. For all activities.
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))
-    }
-
 }
