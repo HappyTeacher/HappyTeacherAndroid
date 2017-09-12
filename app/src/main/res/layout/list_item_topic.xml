@@ -20,6 +20,27 @@
         android:paddingBottom="24dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/topicTextView"  />
+
+    <LinearLayout
+        app:layout_constraintTop_toBottomOf="@+id/topicTextView"
+        android:visibility="visible"
+        android:id="@+id/emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_lesson_header_card">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="There are no lessons for this topic."/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/contributeButton"
+            android:text="Contribute"/>
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

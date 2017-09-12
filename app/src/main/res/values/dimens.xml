@@ -6,4 +6,7 @@
     <dimen name="spinner_item_height">64dp</dimen>
     <dimen name="spinner_item_padding">16dp</dimen>
     <dimen name="padding_card_icon">8dp</dimen>
+
+    <dimen name="width_lesson_header_card">300dp</dimen>
+    <dimen name="height_lesson_header_card">216dp</dimen>
 </resources>

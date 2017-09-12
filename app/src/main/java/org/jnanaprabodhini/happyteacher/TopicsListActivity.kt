@@ -52,6 +52,7 @@ class TopicsListActivity : AppCompatActivity(), TopicsListView {
 
         topicsRecyclerView.layoutManager = LinearLayoutManager(this)
         bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+        bottomNavigation.selectedItemId = R.id.navigation_topics
 
         this.setupSubjectSpinner()
     }
@@ -85,43 +86,53 @@ class TopicsListActivity : AppCompatActivity(), TopicsListView {
                 .equalTo(true)
 
         val topicAdapter = object: FirebaseRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, topicQuery) {
-            override fun populateViewHolder(viewHolder: TopicViewHolder?, model: Topic?, position: Int) {
-                viewHolder?.topicTextView?.text = model?.names?.get("en")
+            override fun populateViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int) {
+                topicViewHolder?.topicTextView?.text = topicModel?.names?.get("en")
 
                 // Alternate between these four colors:
-                when (position % 4) {
-                    0 -> viewHolder?.itemView?.setBackgroundResource(R.color.seaTeal)
-                    1 -> viewHolder?.itemView?.setBackgroundResource(R.color.grassGreen)
-                    2 -> viewHolder?.itemView?.setBackgroundResource(R.color.bubbleGumPink)
-                    3 -> viewHolder?.itemView?.setBackgroundResource(R.color.dreamsicleOrange)
+                when (topicPosition % 4) {
+                    0 -> topicViewHolder?.itemView?.setBackgroundResource(R.color.seaTeal)
+                    1 -> topicViewHolder?.itemView?.setBackgroundResource(R.color.grassGreen)
+                    2 -> topicViewHolder?.itemView?.setBackgroundResource(R.color.bubbleGumPink)
+                    3 -> topicViewHolder?.itemView?.setBackgroundResource(R.color.dreamsicleOrange)
                 }
 
-                val topicKey = this.getRef(position).key
+                val topicKey = this.getRef(topicPosition).key
 
                 val lessonHeaderQuery = databaseInstance.getReference("lesson_headers") // todo: camelCase lessonHeaders
-                        .child("mathematics_addition") // hardcoded just for testing!
+                        .child("mathematics_additionok") // hardcoded just for testing!
                         .orderByChild("name")
 
                 val dateFormat = DateFormat.getDateFormat(this@TopicsListActivity)
 
                 // TODO: remove crazy nesting! hehe
-                val lessonHeaderAdapter = object: FirebaseRecyclerAdapter<LessonHeader, LessonHeaderViewHolder>(LessonHeader::class.java, R.layout.list_item_lesson, LessonHeaderViewHolder::class.java, lessonHeaderQuery) {
-                    override fun populateViewHolder(lessonHeaderViewHolder: LessonHeaderViewHolder?, header: LessonHeader?, headerPosition: Int) {
-                        lessonHeaderViewHolder?.lessonTitleTextView?.text = header?.name
-                        lessonHeaderViewHolder?.authorNameTextView?.text = header?.authorName
-                        lessonHeaderViewHolder?.institutionTextView?.text = header?.authorInstitution
-                        lessonHeaderViewHolder?.locationTextView?.text = header?.authorLocation
+                val lessonHeaderAdapter = object: FirebaseEmptyRecyclerAdapter<LessonHeader, LessonHeaderViewHolder>(LessonHeader::class.java, R.layout.list_item_lesson, LessonHeaderViewHolder::class.java, lessonHeaderQuery) {
 
-                        if (header != null) {
-                            lessonHeaderViewHolder?.dateEditedTextView?.text = dateFormat.format(Date(header.dateEdited))
+                    override fun populateViewHolder(lessonHeaderViewHolder: LessonHeaderViewHolder?, lessonHeaderModel: LessonHeader?, lessonHeaderPosition: Int) {
+                        lessonHeaderViewHolder?.lessonTitleTextView?.text = lessonHeaderModel?.name
+                        lessonHeaderViewHolder?.authorNameTextView?.text = lessonHeaderModel?.authorName
+                        lessonHeaderViewHolder?.institutionTextView?.text = lessonHeaderModel?.authorInstitution
+                        lessonHeaderViewHolder?.locationTextView?.text = lessonHeaderModel?.authorLocation
+
+                        if (lessonHeaderModel != null) {
+                            lessonHeaderViewHolder?.dateEditedTextView?.text = dateFormat.format(Date(lessonHeaderModel.dateEdited))
                         }
+                    }
+
+                    override fun onEmpty() {
+                        topicViewHolder?.lessonsRecyclerView?.setVisibilityGone()
+                        topicViewHolder?.emptyView?.setVisible()
+                    }
+
+                    override fun onNonEmpty() {
+                        topicViewHolder?.lessonsRecyclerView?.setVisible()
+                        topicViewHolder?.emptyView?.setVisibilityGone()
                     }
                 }
 
                 val horizontalLayoutManager = LinearLayoutManager(this@TopicsListActivity, LinearLayoutManager.HORIZONTAL, false)
-                viewHolder?.lessonsRecyclerView?.layoutManager = horizontalLayoutManager
-                viewHolder?.lessonsRecyclerView?.adapter = lessonHeaderAdapter
-
+                topicViewHolder?.lessonsRecyclerView?.layoutManager = horizontalLayoutManager
+                topicViewHolder?.lessonsRecyclerView?.adapter = lessonHeaderAdapter
             }
         }
 
