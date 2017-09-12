@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="256dp"
-    android:layout_height="wrap_content"
+    android:layout_height="224dp"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     xmlns:tools="http://schemas.android.com/tools">
@@ -13,61 +13,47 @@
         android:orientation="vertical">
 
         <TextView
+            style="@style/HeaderCardTitleText"
             android:paddingBottom="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/lessonTitleTextView"
-            android:maxLines="1"
-            tools:text="Lesson Title"
-            android:ellipsize="marquee"/>
+            tools:text="Lesson Title"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/HeaderCardSubheaderText"
             android:id="@+id/authorNameTextView"
             android:drawableLeft="@drawable/ic_person_black_24dp"
             android:drawableStart="@drawable/ic_person_black_24dp"
             android:drawableTint="@color/colorPrimary"
-            android:drawablePadding="4dp"
-            android:maxLines="1"
-            tools:text="Author Name Here"
-            android:ellipsize="marquee"/>
+            android:drawablePadding="@dimen/padding_card_icon"
+            tools:text="Author Name Here"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/HeaderCardSubheaderText"
             android:id="@+id/institutionTextView"
             android:drawableLeft="@drawable/ic_school_black_24dp"
             android:drawableStart="@drawable/ic_school_black_24dp"
             android:drawableTint="@color/colorPrimary"
-            android:drawablePadding="4dp"
-            android:maxLines="1"
-            tools:text="Institution Name Here"
-            android:ellipsize="marquee"/>
+            android:drawablePadding="@dimen/padding_card_icon"
+            tools:text="Institution Name Here"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/HeaderCardSubheaderText"
             android:id="@+id/locationTextView"
             android:drawableLeft="@drawable/ic_location_on_black_24dp"
             android:drawableStart="@drawable/ic_location_on_black_24dp"
             android:drawableTint="@color/colorPrimary"
-            android:drawablePadding="4dp"
-            android:maxLines="1"
-            tools:text="Location Name Here"
-            android:ellipsize="marquee"/>
+            android:drawablePadding="@dimen/padding_card_icon"
+            tools:text="Location Name Here"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/HeaderCardSubheaderText"
             android:paddingTop="8dp"
             android:id="@+id/dateEditedTextView"
             android:drawableLeft="@drawable/ic_access_time_black_24dp"
             android:drawableStart="@drawable/ic_access_time_black_24dp"
             android:drawableTint="@color/colorPrimary"
-            android:drawablePadding="4dp"
+            android:drawablePadding="@dimen/padding_card_icon"
             android:maxLines="1"
-            android:ellipsize="marquee"
             tools:text="1 December, 2017"/>
 
     </LinearLayout>

@@ -4,5 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="spinner_item_height">64dp</dimen>
-    <dimen name="spinner_item_padding">8dp</dimen>
+    <dimen name="spinner_item_padding">16dp</dimen>
+    <dimen name="padding_card_icon">4dp</dimen>
 </resources>
