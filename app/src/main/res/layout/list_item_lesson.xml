@@ -55,7 +55,6 @@
             android:drawableStart="@drawable/ic_location_accent"
             tools:text="Location Name Here"
             android:paddingBottom="6dp"
-            android:gravity="top"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/institutionTextView"/>
 
