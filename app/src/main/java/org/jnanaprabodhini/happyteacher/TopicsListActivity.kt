@@ -12,6 +12,7 @@ import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_topics_list.*
+import org.jnanaprabodhini.happyteacher.models.LessonHeader
 import org.jnanaprabodhini.happyteacher.models.Subject
 import org.jnanaprabodhini.happyteacher.models.Topic
 
@@ -88,6 +89,28 @@ class TopicsListActivity : AppCompatActivity(), TopicsListView {
                     2 -> viewHolder?.itemView?.setBackgroundResource(R.color.bubbleGumPink)
                     3 -> viewHolder?.itemView?.setBackgroundResource(R.color.dreamsicleOrange)
                 }
+
+                val topicKey = this.getRef(position).key
+
+                val lessonHeaderQuery = databaseInstance.getReference("lesson_headers")
+                        .child("mathematics_addition") // hardcoded just for testing!
+                        .orderByChild("name")
+
+                // TODO: remove crazy nesting! hehe
+                val lessonHeaderAdapter = object: FirebaseRecyclerAdapter<LessonHeader, LessonHeaderViewHolder>(LessonHeader::class.java, R.layout.list_item_lesson, LessonHeaderViewHolder::class.java, lessonHeaderQuery) {
+                    override fun populateViewHolder(lessonHeaderViewHolder: LessonHeaderViewHolder?, header: LessonHeader?, headerPosition: Int) {
+                        lessonHeaderViewHolder?.lessonTitleTextView?.text = header?.name
+                        lessonHeaderViewHolder?.authorNameTextView?.text = header?.author_name
+                        lessonHeaderViewHolder?.institutionTextView?.text = header?.author_institution
+                        lessonHeaderViewHolder?.locationTextView?.text = header?.author_location
+                        lessonHeaderViewHolder?.dateEditedTextView?.text = "${header?.dateEdited}"
+                    }
+                }
+
+                val horizontalLayoutManager = LinearLayoutManager(this@TopicsListActivity, LinearLayoutManager.HORIZONTAL, false)
+                viewHolder?.lessonsRecyclerView?.layoutManager = horizontalLayoutManager
+                viewHolder?.lessonsRecyclerView?.adapter = lessonHeaderAdapter
+
             }
         }
 
@@ -95,4 +118,3 @@ class TopicsListActivity : AppCompatActivity(), TopicsListView {
     }
 
 }
-

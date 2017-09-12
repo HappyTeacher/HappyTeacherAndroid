@@ -2,21 +2,24 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:background="@color/bubbleGumPink"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
         android:id="@+id/topicTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
-        android:text="Topic Name Here"
+        tools:text="Topic Name Here"
         android:textSize="18sp"
-        android:layout_margin="8dp"/>
+        android:padding="16dp"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lessonsRecyclerView"
-        android:layout_width="336dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="32dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/topicTextView"  />
 
