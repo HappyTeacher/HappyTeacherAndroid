@@ -24,7 +24,6 @@
     <style name="HeaderCardText">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:maxLines">2</item>
         <item name="android:ellipsize">end</item>
         <item name="android:lineSpacingMultiplier">1.15</item>
     </style>
@@ -34,12 +33,18 @@
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">18sp</item>
+        <item name="android:maxLines">2</item>
     </style>
 
     <style name="HeaderCardSubheaderText" parent="HeaderCardText">
         <item name="fontPath">fonts/Roboto-Light.ttf</item>
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textSize">14sp</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="HeaderCardSubSubheaderText" parent="HeaderCardText">
+        <item name="android:textColor">@color/lightGray</item>
     </style>
 
 </resources>

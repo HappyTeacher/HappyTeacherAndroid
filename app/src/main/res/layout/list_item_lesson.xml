@@ -2,7 +2,7 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="300dp"
-    android:layout_height="240dp"
+    android:layout_height="216dp"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     xmlns:tools="http://schemas.android.com/tools">
@@ -16,7 +16,7 @@
         <TextView
             android:id="@+id/lessonTitleTextView"
             style="@style/HeaderCardTitleText"
-            android:paddingBottom="8dp"
+            android:paddingBottom="12dp"
             tools:text="Lesson Title"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
@@ -28,7 +28,7 @@
             android:drawablePadding="@dimen/padding_card_icon"
             android:drawableStart="@drawable/ic_person_accent"
             tools:text="Author Name Here"
-            android:paddingBottom="4dp"
+            android:paddingBottom="6dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lessonTitleTextView" />
 
@@ -39,7 +39,7 @@
             android:drawablePadding="@dimen/padding_card_icon"
             android:drawableStart="@drawable/ic_school_accent"
             tools:text="Institution Name Here"
-            android:paddingBottom="4dp"
+            android:paddingBottom="6dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/authorNameTextView" />
 
@@ -50,24 +50,22 @@
             android:drawablePadding="@dimen/padding_card_icon"
             android:drawableStart="@drawable/ic_location_accent"
             tools:text="Location Name Here"
-            android:paddingBottom="4dp"
+            android:paddingBottom="6dp"
             android:gravity="top"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/institutionTextView"
-            app:layout_constraintBottom_toTopOf="@+id/dateEditedTextView"
-            app:layout_constraintVertical_bias="0.033" />
+            app:layout_constraintTop_toBottomOf="@+id/institutionTextView"/>
 
         <TextView
             android:id="@+id/dateEditedTextView"
-            style="@style/HeaderCardSubheaderText"
-            android:drawableLeft="@drawable/ic_clock_accent"
+            style="@style/HeaderCardSubSubheaderText"
+            android:drawableLeft="@drawable/ic_clock_light_gray"
             android:drawablePadding="@dimen/padding_card_icon"
-            android:drawableStart="@drawable/ic_clock_accent"
+            android:drawableStart="@drawable/ic_clock_light_gray"
             android:maxLines="1"
-            android:paddingTop="4dp"
+            android:paddingTop="6dp"
             tools:text="1 December, 2017"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/locationTextView"
+            app:layout_constraintLeft_toLeftOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 
