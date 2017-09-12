@@ -5,5 +5,5 @@
 
     <dimen name="spinner_item_height">64dp</dimen>
     <dimen name="spinner_item_padding">16dp</dimen>
-    <dimen name="padding_card_icon">4dp</dimen>
+    <dimen name="padding_card_icon">8dp</dimen>
 </resources>
