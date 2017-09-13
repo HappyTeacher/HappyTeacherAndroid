@@ -1,4 +1,4 @@
-package org.jnanaprabodhini.happyteacher
+package org.jnanaprabodhini.happyteacher.activity
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
@@ -10,7 +10,7 @@ import android.widget.TextView
 import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import kotlinx.android.synthetic.main.activity_topics_list.*
-import org.jnanaprabodhini.happyteacher.activity.HappyTeacherActivity
+import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseEmptyRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.extension.getPrimaryLocale
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
@@ -23,9 +23,8 @@ import org.jnanaprabodhini.happyteacher.viewholder.TopicViewHolder
 import java.util.*
 
 
-class TopicsListActivity : HappyTeacherActivity(), TopicsListView {
+class TopicsListActivity : HappyTeacherActivity() {
 
-    private lateinit var presenter: TopicsListPresenter
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_board -> {
@@ -44,8 +43,6 @@ class TopicsListActivity : HappyTeacherActivity(), TopicsListView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_topics_list)
-
-        presenter = TopicsListPresenter(this)
 
         topicsRecyclerView.layoutManager = LinearLayoutManager(this)
         bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
