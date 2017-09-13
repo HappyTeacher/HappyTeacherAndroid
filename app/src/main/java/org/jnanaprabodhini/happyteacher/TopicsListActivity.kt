@@ -55,7 +55,9 @@ class TopicsListActivity : HappyTeacherActivity(), TopicsListView {
     }
 
     private fun setupSubjectSpinner() {
-        val subjectQuery = databaseInstance.getReference("subjects").orderByChild("isActive").equalTo(true)
+        val subjectQuery = databaseInstance.getReference(getString(R.string.subjects))
+                .orderByChild(getString(R.string.is_active))
+                .equalTo(true)
 
         val subjectAdapter = object : FirebaseListAdapter<Subject>(this, Subject::class.java, R.layout.spinner_item, subjectQuery) {
             override fun populateView(view: View, subject: Subject, position: Int) {
@@ -77,9 +79,9 @@ class TopicsListActivity : HappyTeacherActivity(), TopicsListView {
     }
 
     fun updateListOfTopics(subjectKey: String) {
-        val topicQuery = databaseInstance.getReference("topics")
+        val topicQuery = databaseInstance.getReference(getString(R.string.topics))
                 .child(subjectKey)
-                .orderByChild("isActive")
+                .orderByChild(getString(R.string.is_active))
                 .equalTo(true)
 
         val topicAdapter = object: FirebaseRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, topicQuery) {
@@ -97,9 +99,9 @@ class TopicsListActivity : HappyTeacherActivity(), TopicsListView {
                 // TODO: use this (remove dummy query)
                 val topicKey = this.getRef(topicPosition).key
 
-                val lessonHeaderQuery = databaseInstance.getReference("lesson_headers") // todo: camelCase lessonHeaders
-                        .child("mathematics_addition") // hardcoded just for testing!
-                        .orderByChild("name")
+                val lessonHeaderQuery = databaseInstance.getReference(getString(R.string.lesson_headers)) // todo: camelCase lessonHeaders
+                        .child(getString(R.string.mathematics_addition)) // hardcoded just for testing!
+                        .orderByChild(getString(R.string.name))
 
                 val dateFormat = DateFormat.getDateFormat(this@TopicsListActivity)
 

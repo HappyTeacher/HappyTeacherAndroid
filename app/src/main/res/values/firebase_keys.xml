@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lesson_headers">lesson_headers</string>
+    <string name="mathematics_addition">mathematics_addition</string>
+    <string name="name">name</string>
+    <string name="is_active">isActive</string>
+    <string name="topics">topics</string>
+    <string name="subjects">subjects</string>
+
+</resources>
