@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="96dp"
     android:padding="16dp"
-    android:background="@drawable/ripple_gray_white"
+    android:background="@drawable/ripple_accent_white"
+    android:clickable="true"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
