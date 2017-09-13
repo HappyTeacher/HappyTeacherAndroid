@@ -1,6 +1,8 @@
 package org.jnanaprabodhini.happyteacher.activity
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.widget.LinearLayoutManager
 import android.text.format.DateFormat
@@ -28,6 +30,13 @@ class TopicsListActivity : HappyTeacherActivity() {
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_board -> {
+
+                // Delay transition to allow BottomNav animation to complete
+                Handler().postDelayed({
+                    val boardActivityIntent = Intent(this, BoardLessonsActivity::class.java)
+                    startActivity(boardActivityIntent)
+                }, 300)
+
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_topics -> {
@@ -133,5 +142,11 @@ class TopicsListActivity : HappyTeacherActivity() {
             }
         }
         topicsRecyclerView.adapter = topicAdapter
+    }
+
+    // Remove transition for this activity to avoid bottom navigation jumpiness.
+    public override fun onPause() {
+        super.onPause()
+        overridePendingTransition(0, 0)
     }
 }
