@@ -24,13 +24,18 @@ class BoardChoiceDialog(context: Context): Dialog(context) {
         val boardChoiceAdapter = object: FirebaseListAdapter<Board>(context, Board::class.java, R.layout.select_dialog_singlechoice_material, boardQuery) {
             override fun populateView(v: View?, model: Board?, position: Int) {
                 (v as CheckedTextView).text = model?.names?.get("en")
+
+                val boardKey = getRef(position).key
+
+                // If this item has the same key as the current/default key, mark it as selected
+                v.isSelected = boardKey == prefs.getBoardKey()
+
                 v.setOnClickListener {
-                    prefs.setBoardKey(getRef(position).key)
+                    prefs.setBoardKey(boardKey)
                     v.isChecked = true
                     dismiss()
                 }
             }
-
         }
 
         boardOptionsListView.adapter = boardChoiceAdapter

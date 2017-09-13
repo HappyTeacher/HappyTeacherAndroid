@@ -59,9 +59,10 @@ class BoardLessonsActivity : HappyTeacherActivity() {
 
         initializeSpinners()
 
-        if (!prefs.hasChosenBoard()) {
+        // TODO: Remove this. For testing, I'm having this dialog always display.
+//        if (!prefs.hasChosenBoard()) {
             showBoardChooser()
-        }
+//        }
     }
 
     private fun showBoardChooser() {
