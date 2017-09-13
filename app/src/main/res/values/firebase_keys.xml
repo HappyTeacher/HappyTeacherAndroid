@@ -10,5 +10,6 @@
     <string name="levels">levels</string>
     <string name="syllabus_lessons">syllabusLessons</string>
     <string name="lesson_number">lessonNumber</string>
+    <string name="boards">boards</string>
 
 </resources>

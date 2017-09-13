@@ -1,5 +1,8 @@
 package org.jnanaprabodhini.happyteacher.activity
 
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
@@ -11,9 +14,11 @@ import android.widget.TextView
 import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import kotlinx.android.synthetic.main.activity_board_lessons.*
+import org.jnanaprabodhini.happyteacher.BoardChoiceDialog
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.getPrimaryLanguageCode
 import org.jnanaprabodhini.happyteacher.extension.getPrimaryLocale
+import org.jnanaprabodhini.happyteacher.model.Board
 import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.SyllabusLesson
 import org.jnanaprabodhini.happyteacher.prefs
@@ -53,6 +58,16 @@ class BoardLessonsActivity : HappyTeacherActivity() {
         syllabusLessonsRecyclerView.addItemDecoration(dividerItemDecoration)
 
         initializeSpinners()
+
+        if (!prefs.hasChosenBoard()) {
+            showBoardChooser()
+        }
+    }
+
+    private fun showBoardChooser() {
+        val dialog = BoardChoiceDialog(this)
+        dialog.setOnDismissListener { initializeSpinners() }
+        dialog.show()
     }
 
     private fun initializeSpinners() {
@@ -73,7 +88,7 @@ class BoardLessonsActivity : HappyTeacherActivity() {
             override fun populateView(view: View, level: Boolean, position: Int) {
                 try {
                     val levelNumber = Integer.parseInt(this.getRef(position).key)
-                    (view as TextView).text = getString(R.string.standard_n, levelNumber) // key = level number
+                    (view as TextView).text = getString(R.string.standard_n, levelNumber)
                 } catch (e: NumberFormatException) {
                     (view as TextView).text = this.getRef(position).key
                 }

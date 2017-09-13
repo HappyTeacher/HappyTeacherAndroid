@@ -25,3 +25,6 @@ data class SyllabusLesson(var board: String = "",
                           var standard: Int = 0,
                           var subject: String = "",
                           var topicCount: Int = 0)
+
+data class Board(var isActive: Boolean = false,
+                 var names: Map<String, String> = emptyMap<String, String>())
