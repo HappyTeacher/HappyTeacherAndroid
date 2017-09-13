@@ -59,10 +59,9 @@ class BoardLessonsActivity : HappyTeacherActivity() {
 
         initializeSpinners()
 
-        // TODO: Remove this. For testing, I'm having this dialog always display.
-//        if (!prefs.hasChosenBoard()) {
+        if (!prefs.hasChosenBoard()) {
             showBoardChooser()
-//        }
+        }
     }
 
     private fun showBoardChooser() {
@@ -83,7 +82,7 @@ class BoardLessonsActivity : HappyTeacherActivity() {
             }
         }
 
-        val levelQuery = databaseInstance.getReference(getString(R.string.levels))
+        val levelQuery = databaseInstance.getReference(getString(R.string.levels)).orderByValue().equalTo(true)
 
         val levelAdapter = object : FirebaseListAdapter<Boolean>(this, Boolean::class.java, R.layout.spinner_item, levelQuery) {
             override fun populateView(view: View, level: Boolean, position: Int) {
