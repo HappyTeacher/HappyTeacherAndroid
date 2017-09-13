@@ -5,5 +5,6 @@
     <string name="title_board">Board</string>
     <string name="title_topics">Topics</string>
     <string name="title_contribute">Contribute</string>
+    <string name="lesson_number">lessonNumber</string>
 
 </resources>

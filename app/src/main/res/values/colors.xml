@@ -9,5 +9,8 @@
     <color name="bubbleGumPink">#FFCDE4</color>
     <color name="dreamsicleOrange">#FFB4A1</color>
 
-    <color name="lightGray">#979797</color>
+    <color name="gray">#979797</color>
+    <color name="lightGray">#F1F1F1</color>
+
+    <color name="deepGreen">#64A97B</color>
 </resources>

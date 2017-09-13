@@ -1,19 +1,31 @@
 package org.jnanaprabodhini.happyteacher.activity
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.BottomNavigationView
+import android.support.v4.content.res.ResourcesCompat
+import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.TextView
 import com.firebase.ui.database.FirebaseListAdapter
+import com.firebase.ui.database.FirebaseRecyclerAdapter
 import kotlinx.android.synthetic.main.activity_board_lessons.*
 
 import org.jnanaprabodhini.happyteacher.R
+import org.jnanaprabodhini.happyteacher.extension.getPrimaryLanguageCode
 import org.jnanaprabodhini.happyteacher.extension.getPrimaryLocale
 import org.jnanaprabodhini.happyteacher.model.Subject
+import org.jnanaprabodhini.happyteacher.model.SyllabusLesson
+import org.jnanaprabodhini.happyteacher.model.Topic
+import org.jnanaprabodhini.happyteacher.prefs
+import org.jnanaprabodhini.happyteacher.viewholder.SyllabusLessonViewHolder
+import org.jnanaprabodhini.happyteacher.viewholder.TopicViewHolder
+import android.support.v7.widget.DividerItemDecoration
+
+
 
 class BoardLessonsActivity : HappyTeacherActivity() {
 
@@ -44,9 +56,17 @@ class BoardLessonsActivity : HappyTeacherActivity() {
 
         bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
         bottomNavigation.selectedItemId = R.id.navigation_board
+
+        val layoutManager = LinearLayoutManager(this)
+        syllabusLessonsRecyclerView.layoutManager = layoutManager
+
+        val dividerItemDecoration = DividerItemDecoration(this, layoutManager.orientation)
+        syllabusLessonsRecyclerView.addItemDecoration(dividerItemDecoration)
+
+        initializeSpinners()
     }
 
-    private fun setupSubjectSpinner() {
+    private fun initializeSpinners() {
         val subjectQuery = databaseInstance.getReference(getString(R.string.subjects))
                 .orderByChild(getString(R.string.is_active))
                 .equalTo(true)
@@ -58,16 +78,53 @@ class BoardLessonsActivity : HappyTeacherActivity() {
             }
         }
 
-        subjectSpinner.adapter = subjectAdapter
+        val levelQuery = databaseInstance.getReference(getString(R.string.levels))
 
-        subjectSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+        val levelAdapter = object : FirebaseListAdapter<Boolean>(this, Boolean::class.java, R.layout.spinner_item, levelQuery) {
+            override fun populateView(view: View, level: Boolean, position: Int) {
+                (view as TextView).text = this.getRef(position).key // key = level number
+            }
+        }
+
+        subjectSpinner.adapter = subjectAdapter
+        levelSpinner.adapter = levelAdapter
+
+        val spinnerSelectionListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedSubjectKey = subjectAdapter.getRef(position).key
-                updateListOfTopics(selectedSubjectKey)
+                val selectedSubjectPosition = subjectSpinner.selectedItemPosition
+                var selectedLevelPosition = levelSpinner.selectedItemPosition
+
+                if (selectedLevelPosition < 0) {selectedLevelPosition = 0} // todo fix this ya know
+
+                val selectedSubjectKey = subjectAdapter.getRef(selectedSubjectPosition).key
+                val selectedLevel = levelAdapter.getRef(selectedLevelPosition).key
+
+                updateSyllabusLessonList(selectedSubjectKey, selectedLevel)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
+
+        subjectSpinner.onItemSelectedListener = spinnerSelectionListener
+        levelSpinner.onItemSelectedListener = spinnerSelectionListener
+    }
+
+    private fun  updateSyllabusLessonList(selectedSubjectKey: String, selectedLevel: String) {
+        val syllabusLessonQuery = databaseInstance.getReference(getString(R.string.syllabus_lessons))
+                .child(prefs.getBoardKey())
+                .child(selectedSubjectKey)
+                .child(selectedLevel)
+                .orderByChild(getString(R.string.lesson_number))
+
+        val syllabusLessonAdapter = object: FirebaseRecyclerAdapter<SyllabusLesson, SyllabusLessonViewHolder>(SyllabusLesson::class.java, R.layout.list_item_syllabus_lesson, SyllabusLessonViewHolder::class.java, syllabusLessonQuery) {
+            override fun populateViewHolder(syllabusLessonViewHolder: SyllabusLessonViewHolder?, syllabusLessonModel: SyllabusLesson?, syllabusLessonPosition: Int) {
+                syllabusLessonViewHolder?.lessonTitleTextView?.text = syllabusLessonModel?.names?.get(getPrimaryLanguageCode())
+                syllabusLessonViewHolder?.lessonNumberTextView?.text = "${syllabusLessonModel?.lessonNumber}"
+                syllabusLessonViewHolder?.topicCountTextView?.text = "${syllabusLessonModel?.topicCount} topics"
+            }
+        }
+
+        syllabusLessonsRecyclerView.adapter = syllabusLessonAdapter
     }
 
     // Remove transition for this activity to avoid bottom navigation jumpiness.
@@ -76,3 +133,4 @@ class BoardLessonsActivity : HappyTeacherActivity() {
         overridePendingTransition(0, 0)
     }
 }
+

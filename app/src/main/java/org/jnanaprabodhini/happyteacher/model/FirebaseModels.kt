@@ -18,3 +18,10 @@ data class LessonHeader(var authorId: String = "",
                         var authorName: String = "",
                         var dateEdited: Long = 0,
                         var name: String = "")
+
+data class SyllabusLesson(var board: String = "",
+                          var lessonNumber: Int = 0,
+                          var names: Map<String, String> = emptyMap<String, String>(),
+                          var standard: Int = 0,
+                          var subject: String = "",
+                          var topicCount: Int = 0)

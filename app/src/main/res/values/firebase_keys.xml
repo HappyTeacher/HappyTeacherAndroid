@@ -7,5 +7,7 @@
     <string name="topics">topics</string>
     <string name="subjects">subjects</string>
     <string name="maharashtra_state_board">maharashtra_state_board</string>
+    <string name="levels">levels</string>
+    <string name="syllabus_lessons">syllabusLessons</string>
 
 </resources>

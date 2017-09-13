@@ -14,6 +14,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter
 import kotlinx.android.synthetic.main.activity_topics_list.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseEmptyRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.extension.getPrimaryLanguageCode
 import org.jnanaprabodhini.happyteacher.extension.getPrimaryLocale
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
@@ -67,8 +68,7 @@ class TopicsListActivity : HappyTeacherActivity() {
 
         val subjectAdapter = object : FirebaseListAdapter<Subject>(this, Subject::class.java, R.layout.spinner_item, subjectQuery) {
             override fun populateView(view: View, subject: Subject, position: Int) {
-                val languageCode = getPrimaryLocale().language
-                (view as TextView).text = subject.names[languageCode]
+                (view as TextView).text = subject.names[getPrimaryLanguageCode()]
             }
         }
 
