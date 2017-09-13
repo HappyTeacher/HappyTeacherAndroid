@@ -2,6 +2,7 @@ package org.jnanaprabodhini.happyteacher
 
 import android.app.Dialog
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.widget.CheckedTextView
 import android.widget.TextView
@@ -25,13 +26,8 @@ class BoardChoiceDialog(context: Context): Dialog(context) {
             override fun populateView(v: View?, model: Board?, position: Int) {
                 (v as CheckedTextView).text = model?.names?.get("en")
 
-                val boardKey = getRef(position).key
-
-                // If this item has the same key as the current/default key, mark it as selected
-                v.isSelected = boardKey == prefs.getBoardKey()
-
                 v.setOnClickListener {
-                    prefs.setBoardKey(boardKey)
+                    prefs.setBoardKey(getRef(position).key)
                     v.isChecked = true
                     dismiss()
                 }
