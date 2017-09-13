@@ -2,29 +2,22 @@ package org.jnanaprabodhini.happyteacher.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.support.design.widget.BottomNavigationView
-import android.support.v4.content.res.ResourcesCompat
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.TextView
 import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import kotlinx.android.synthetic.main.activity_board_lessons.*
-
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.getPrimaryLanguageCode
 import org.jnanaprabodhini.happyteacher.extension.getPrimaryLocale
 import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.SyllabusLesson
-import org.jnanaprabodhini.happyteacher.model.Topic
 import org.jnanaprabodhini.happyteacher.prefs
 import org.jnanaprabodhini.happyteacher.viewholder.SyllabusLessonViewHolder
-import org.jnanaprabodhini.happyteacher.viewholder.TopicViewHolder
-import android.support.v7.widget.DividerItemDecoration
-
 
 
 class BoardLessonsActivity : HappyTeacherActivity() {
@@ -78,7 +71,12 @@ class BoardLessonsActivity : HappyTeacherActivity() {
 
         val levelAdapter = object : FirebaseListAdapter<Boolean>(this, Boolean::class.java, R.layout.spinner_item, levelQuery) {
             override fun populateView(view: View, level: Boolean, position: Int) {
-                (view as TextView).text = this.getRef(position).key // key = level number
+                try {
+                    val levelNumber = Integer.parseInt(this.getRef(position).key)
+                    (view as TextView).text = getString(R.string.standard_n, levelNumber) // key = level number
+                } catch (e: NumberFormatException) {
+                    (view as TextView).text = this.getRef(position).key
+                }
             }
         }
 

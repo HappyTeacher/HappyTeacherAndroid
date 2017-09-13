@@ -6,6 +6,8 @@
     <string name="title_topics">Topics</string>
     <string name="title_contribute">Contribute</string>
 
+    <string name="standard_n">Standard %d</string>
+
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>
         <item quantity="other">%d topics</item>
