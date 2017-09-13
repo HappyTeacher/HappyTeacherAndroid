@@ -9,19 +9,19 @@
     android:background="@color/colorAccent">
 
     <Spinner
-        android:id="@+id/subjectSpinner"
+        android:id="@+id/levelSpinner"
         style="@style/PurpleSpinner"
         android:layout_width="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/levelSpinner"
+        app:layout_constraintRight_toLeftOf="@+id/subjectSpinner"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <Spinner
-        android:id="@+id/levelSpinner"
+        android:id="@+id/subjectSpinner"
         style="@style/PurpleSpinner"
         android:layout_width="0dp"
-        app:layout_constraintLeft_toRightOf="@+id/subjectSpinner"
+        app:layout_constraintLeft_toRightOf="@id/levelSpinner"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

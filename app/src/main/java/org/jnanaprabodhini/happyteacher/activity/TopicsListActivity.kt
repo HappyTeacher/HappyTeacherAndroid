@@ -33,7 +33,6 @@ class TopicsListActivity : HappyTeacherActivity() {
             R.id.navigation_board -> {
                 val boardActivityIntent = Intent(this, BoardLessonsActivity::class.java)
                 startActivity(boardActivityIntent)
-
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_topics -> {
