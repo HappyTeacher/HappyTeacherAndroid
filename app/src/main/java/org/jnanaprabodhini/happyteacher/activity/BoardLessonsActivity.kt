@@ -35,12 +35,8 @@ class BoardLessonsActivity : HappyTeacherActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_topics -> {
-                // Delay transition to allow BottomNav animation to complete
-                Handler().postDelayed({
-                    val topicsActivityIntent = Intent(this, TopicsListActivity::class.java)
-                    startActivity(topicsActivityIntent)
-                }, 300)
-
+                val topicsActivityIntent = Intent(this, TopicsListActivity::class.java)
+                startActivity(topicsActivityIntent)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_contribute -> {
@@ -119,8 +115,8 @@ class BoardLessonsActivity : HappyTeacherActivity() {
         val syllabusLessonAdapter = object: FirebaseRecyclerAdapter<SyllabusLesson, SyllabusLessonViewHolder>(SyllabusLesson::class.java, R.layout.list_item_syllabus_lesson, SyllabusLessonViewHolder::class.java, syllabusLessonQuery) {
             override fun populateViewHolder(syllabusLessonViewHolder: SyllabusLessonViewHolder?, syllabusLessonModel: SyllabusLesson?, syllabusLessonPosition: Int) {
                 syllabusLessonViewHolder?.lessonTitleTextView?.text = syllabusLessonModel?.names?.get(getPrimaryLanguageCode())
-                syllabusLessonViewHolder?.lessonNumberTextView?.text = "${syllabusLessonModel?.lessonNumber}"
-                syllabusLessonViewHolder?.topicCountTextView?.text = "${syllabusLessonModel?.topicCount} topics"
+                syllabusLessonViewHolder?.lessonNumberTextView?.text = syllabusLessonModel?.lessonNumber.toString()
+                syllabusLessonViewHolder?.topicCountTextView?.text = resources.getQuantityString(R.plurals.topics_count, syllabusLessonModel?.topicCount ?: 0, syllabusLessonModel?.topicCount ?: 0)
             }
         }
 

@@ -31,12 +31,8 @@ class TopicsListActivity : HappyTeacherActivity() {
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_board -> {
-
-                // Delay transition to allow BottomNav animation to complete
-                Handler().postDelayed({
-                    val boardActivityIntent = Intent(this, BoardLessonsActivity::class.java)
-                    startActivity(boardActivityIntent)
-                }, 300)
+                val boardActivityIntent = Intent(this, BoardLessonsActivity::class.java)
+                startActivity(boardActivityIntent)
 
                 return@OnNavigationItemSelectedListener true
             }

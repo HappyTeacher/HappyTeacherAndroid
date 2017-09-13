@@ -9,5 +9,6 @@
     <string name="maharashtra_state_board">maharashtra_state_board</string>
     <string name="levels">levels</string>
     <string name="syllabus_lessons">syllabusLessons</string>
+    <string name="lesson_number">lessonNumber</string>
 
 </resources>
