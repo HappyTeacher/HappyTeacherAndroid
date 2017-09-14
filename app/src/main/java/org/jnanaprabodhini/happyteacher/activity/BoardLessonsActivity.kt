@@ -1,5 +1,6 @@
 package org.jnanaprabodhini.happyteacher.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.IntegerRes
 import android.support.v4.content.res.ResourcesCompat
@@ -114,6 +115,16 @@ class BoardLessonsActivity : BottomNavigationActivity() {
                 syllabusLessonViewHolder?.lessonTitleTextView?.text = syllabusLessonModel?.names?.get(getPrimaryLanguageCode())
                 syllabusLessonViewHolder?.lessonNumberTextView?.text = syllabusLessonModel?.lessonNumber.toString()
                 syllabusLessonViewHolder?.topicCountTextView?.text = resources.getQuantityString(R.plurals.topics_count, syllabusLessonModel?.topicCount ?: 0, syllabusLessonModel?.topicCount ?: 0)
+
+                syllabusLessonViewHolder?.itemView?.setOnClickListener {
+                    val topicsListIntent = Intent(this@BoardLessonsActivity, TopicsListActivity::class.java)
+                    val keyUrl = getRef(syllabusLessonPosition).child(getString(R.string.topics)).toString()
+                    val subject = syllabusLessonModel?.subject
+                    topicsListIntent.putExtra(TopicsListActivity.EXTRA_TOPICS_KEY_URL, keyUrl)
+                    topicsListIntent.putExtra(TopicsListActivity.EXTRA_SUBJECT, subject)
+
+                    startActivity(topicsListIntent)
+                }
             }
         }
 
