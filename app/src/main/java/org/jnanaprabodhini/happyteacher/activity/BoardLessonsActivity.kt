@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.support.annotation.IntegerRes
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -25,31 +26,14 @@ import org.jnanaprabodhini.happyteacher.prefs
 import org.jnanaprabodhini.happyteacher.viewholder.SyllabusLessonViewHolder
 
 
-class BoardLessonsActivity : HappyTeacherActivity() {
+class BoardLessonsActivity : BottomNavigationActivity() {
 
-    private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.navigation_board -> {
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_topics -> {
-                val topicsActivityIntent = Intent(this, TopicsListActivity::class.java)
-                startActivity(topicsActivityIntent)
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_contribute -> {
-                return@OnNavigationItemSelectedListener true
-            }
-        }
-        false
-    }
+    @IntegerRes override val bottomNavigationMenuItemId: Int = R.id.navigation_board
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_board_lessons)
-
         bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
-        bottomNavigation.selectedItemId = R.id.navigation_board
 
         val layoutManager = LinearLayoutManager(this)
         syllabusLessonsRecyclerView.layoutManager = layoutManager

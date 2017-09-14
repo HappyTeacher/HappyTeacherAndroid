@@ -1,14 +1,17 @@
 package org.jnanaprabodhini.happyteacher.activity
 
 import android.content.Context
+import android.support.annotation.IntegerRes
 import android.support.v7.app.AppCompatActivity
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.activity_board_lessons.*
+import org.jnanaprabodhini.happyteacher.R
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 /**
  * Created by grahamearley on 9/12/17.
  */
-open class HappyTeacherActivity: AppCompatActivity() {
+abstract class HappyTeacherActivity: AppCompatActivity() {
     val databaseInstance: FirebaseDatabase by lazy {
         FirebaseDatabase.getInstance()
     }

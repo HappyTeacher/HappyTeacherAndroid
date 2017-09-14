@@ -3,6 +3,7 @@ package org.jnanaprabodhini.happyteacher.activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.support.annotation.IntegerRes
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.widget.LinearLayoutManager
 import android.text.format.DateFormat
@@ -26,24 +27,9 @@ import org.jnanaprabodhini.happyteacher.viewholder.TopicViewHolder
 import java.util.*
 
 
-class TopicsListActivity : HappyTeacherActivity() {
+class TopicsListActivity : BottomNavigationActivity() {
 
-    private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.navigation_board -> {
-                val boardActivityIntent = Intent(this, BoardLessonsActivity::class.java)
-                startActivity(boardActivityIntent)
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_topics -> {
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_contribute -> {
-                return@OnNavigationItemSelectedListener true
-            }
-        }
-        false
-    }
+    @IntegerRes override val bottomNavigationMenuItemId: Int = R.id.navigation_topics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
