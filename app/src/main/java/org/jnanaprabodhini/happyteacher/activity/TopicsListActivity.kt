@@ -58,6 +58,8 @@ class TopicsListActivity : BottomNavigationActivity() {
         setContentView(R.layout.activity_topics_list)
 
         if (intent.hasAllExtras()) {
+            // Show topics related to the given syllabus lesson plan
+
             val topicsKeyUrl = intent.getTopicsKeyUrl()
             val subject = intent.getSubject()
             val level = intent.getLevel()
@@ -66,6 +68,7 @@ class TopicsListActivity : BottomNavigationActivity() {
             showSyllabusLessonTopicHeader(title, subject, level)
             updateListOfTopicsFromIndices(topicsKeyUrl, subject)
         } else {
+            // Show all topics for a subject, selected by spinner
             hideSyllabusLessonTopicHeader()
             setupSubjectSpinner()
         }
@@ -167,24 +170,15 @@ class TopicsListActivity : BottomNavigationActivity() {
             3 -> topicViewHolder?.itemView?.setBackgroundResource(R.color.dreamsicleOrange)
         }
 
-        val lessonHeaderQuery = databaseInstance.getReference(getString(R.string.lesson_headers)) // todo: camelCase lessonHeaders
+        val lessonHeaderQuery = databaseInstance.getReference(getString(R.string.lesson_headers))
                 .child(topicKey) // hardcoded just for testing!
                 .orderByChild(getString(R.string.name))
 
         val dateFormat = DateFormat.getDateFormat(this@TopicsListActivity)
 
-        // TODO: remove crazy nesting! hehe
         val lessonHeaderAdapter = object: FirebaseEmptyRecyclerAdapter<LessonHeader, LessonHeaderViewHolder>(LessonHeader::class.java, R.layout.list_item_lesson, LessonHeaderViewHolder::class.java, lessonHeaderQuery) {
-
             override fun populateViewHolder(lessonHeaderViewHolder: LessonHeaderViewHolder?, lessonHeaderModel: LessonHeader?, lessonHeaderPosition: Int) {
-                lessonHeaderViewHolder?.lessonTitleTextView?.text = lessonHeaderModel?.name
-                lessonHeaderViewHolder?.authorNameTextView?.text = lessonHeaderModel?.authorName
-                lessonHeaderViewHolder?.institutionTextView?.text = lessonHeaderModel?.authorInstitution
-                lessonHeaderViewHolder?.locationTextView?.text = lessonHeaderModel?.authorLocation
-
-                if (lessonHeaderModel != null) {
-                    lessonHeaderViewHolder?.dateEditedTextView?.text = dateFormat.format(Date(lessonHeaderModel.dateEdited))
-                }
+                populateLessonHeaderViewHolder(lessonHeaderViewHolder, lessonHeaderModel, dateFormat)
             }
 
             override fun onEmpty() {
@@ -201,6 +195,17 @@ class TopicsListActivity : BottomNavigationActivity() {
         val horizontalLayoutManager = LinearLayoutManager(this@TopicsListActivity, LinearLayoutManager.HORIZONTAL, false)
         topicViewHolder?.lessonsRecyclerView?.layoutManager = horizontalLayoutManager
         topicViewHolder?.lessonsRecyclerView?.adapter = lessonHeaderAdapter
+    }
+
+    private fun populateLessonHeaderViewHolder(lessonHeaderViewHolder: LessonHeaderViewHolder?, lessonHeaderModel: LessonHeader?, dateFormat: java.text.DateFormat) {
+        lessonHeaderViewHolder?.lessonTitleTextView?.text = lessonHeaderModel?.name
+        lessonHeaderViewHolder?.authorNameTextView?.text = lessonHeaderModel?.authorName
+        lessonHeaderViewHolder?.institutionTextView?.text = lessonHeaderModel?.authorInstitution
+        lessonHeaderViewHolder?.locationTextView?.text = lessonHeaderModel?.authorLocation
+
+        if (lessonHeaderModel != null) {
+            lessonHeaderViewHolder?.dateEditedTextView?.text = dateFormat.format(Date(lessonHeaderModel.dateEdited))
+        }
     }
 
     // Remove transition for this activity to avoid bottom navigation jumpiness.
