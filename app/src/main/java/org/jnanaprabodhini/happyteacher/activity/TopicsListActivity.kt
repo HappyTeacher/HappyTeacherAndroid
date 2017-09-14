@@ -82,7 +82,6 @@ class TopicsListActivity : BottomNavigationActivity() {
         subjectSpinner.setVisibilityGone()
 
         syllabusLessonPlanNameTextView.setVisible()
-
         syllabusLessonPlanNameTextView.text = syllabusLessonPlanTitle
 
         // Get the actual subject model so we can access its name:
