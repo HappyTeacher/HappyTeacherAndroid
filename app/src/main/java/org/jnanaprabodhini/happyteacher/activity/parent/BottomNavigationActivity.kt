@@ -1,11 +1,11 @@
-package org.jnanaprabodhini.happyteacher.activity
+package org.jnanaprabodhini.happyteacher.activity.parent
 
 import android.content.Intent
-import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.design.widget.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_board_lessons.*
 import org.jnanaprabodhini.happyteacher.R
+import org.jnanaprabodhini.happyteacher.activity.BoardLessonsActivity
+import org.jnanaprabodhini.happyteacher.activity.TopicsListActivity
 
 /**
  * Created by grahamearley on 9/14/17.

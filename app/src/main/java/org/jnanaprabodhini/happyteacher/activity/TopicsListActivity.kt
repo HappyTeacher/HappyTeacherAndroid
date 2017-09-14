@@ -1,10 +1,7 @@
 package org.jnanaprabodhini.happyteacher.activity
 
-import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.support.annotation.IntegerRes
-import android.support.design.widget.BottomNavigationView
 import android.support.v7.widget.LinearLayoutManager
 import android.text.format.DateFormat
 import android.view.View
@@ -14,9 +11,9 @@ import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import kotlinx.android.synthetic.main.activity_topics_list.*
 import org.jnanaprabodhini.happyteacher.R
+import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseEmptyRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.extension.getPrimaryLanguageCode
-import org.jnanaprabodhini.happyteacher.extension.getPrimaryLocale
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.LessonHeader

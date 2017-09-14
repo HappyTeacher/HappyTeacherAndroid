@@ -1,4 +1,4 @@
-package org.jnanaprabodhini.happyteacher.activity
+package org.jnanaprabodhini.happyteacher.activity.parent
 
 import android.content.Context
 import android.support.annotation.IntegerRes

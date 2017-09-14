@@ -1,12 +1,7 @@
 package org.jnanaprabodhini.happyteacher.activity
 
-import android.app.AlertDialog
-import android.app.Dialog
-import android.content.DialogInterface
-import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.IntegerRes
-import android.support.design.widget.BottomNavigationView
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -18,9 +13,9 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter
 import kotlinx.android.synthetic.main.activity_board_lessons.*
 import org.jnanaprabodhini.happyteacher.BoardChoiceDialog
 import org.jnanaprabodhini.happyteacher.R
+import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacher.extension.getPrimaryLanguageCode
 import org.jnanaprabodhini.happyteacher.extension.getPrimaryLocale
-import org.jnanaprabodhini.happyteacher.model.Board
 import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.SyllabusLesson
 import org.jnanaprabodhini.happyteacher.prefs
