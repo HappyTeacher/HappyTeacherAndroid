@@ -5,13 +5,15 @@ import android.os.Bundle
 import android.support.annotation.IntegerRes
 import android.support.v7.widget.LinearLayoutManager
 import android.text.format.DateFormat
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.TextView
 import com.firebase.ui.database.FirebaseIndexRecyclerAdapter
 import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseRecyclerAdapter
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_topics_list.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
@@ -34,9 +36,19 @@ class TopicsListActivity : BottomNavigationActivity() {
         fun Intent.hasTopicsKeyUrl(): Boolean = hasExtra(EXTRA_TOPICS_KEY_URL)
         fun Intent.getTopicsKeyUrl(): String = getStringExtra(EXTRA_TOPICS_KEY_URL)
 
-        val EXTRA_SUBJECT: String = "EXTRA_SUBJECT"
-        fun Intent.hasSubject(): Boolean = hasExtra(EXTRA_SUBJECT)
-        fun Intent.getSubject(): String = getStringExtra(EXTRA_SUBJECT)
+        val EXTRA_SUBJECT_NAME: String = "EXTRA_SUBJECT_NAME"
+        fun Intent.hasSubject(): Boolean = hasExtra(EXTRA_SUBJECT_NAME)
+        fun Intent.getSubject(): String = getStringExtra(EXTRA_SUBJECT_NAME)
+
+        val EXTRA_LEVEL: String = "EXTRA_LEVEL"
+        fun Intent.hasLevel(): Boolean = hasExtra(EXTRA_LEVEL)
+        fun Intent.getLevel(): Int = getIntExtra(EXTRA_LEVEL, 0)
+
+        val EXTRA_LESSON_TITLE: String = "EXTRA_LESSON_TITLE"
+        fun Intent.hasLessonTitle(): Boolean = hasExtra(EXTRA_LESSON_TITLE)
+        fun Intent.getLessonTitle(): String = getStringExtra(EXTRA_LESSON_TITLE)
+
+        fun Intent.hasAllExtras(): Boolean = hasTopicsKeyUrl() && hasSubject() && hasLevel() && hasLessonTitle()
     }
 
     @IntegerRes override val bottomNavigationMenuItemId: Int = R.id.navigation_topics
@@ -45,11 +57,17 @@ class TopicsListActivity : BottomNavigationActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_topics_list)
 
-        if (intent.hasTopicsKeyUrl() && intent.hasSubject()) {
-            Log.d("GRAHAM", "Topic key url: ${intent.getTopicsKeyUrl()}")
-            updateListOfTopicsFromIndices(intent.getTopicsKeyUrl(), intent.getSubject())
+        if (intent.hasAllExtras()) {
+            val topicsKeyUrl = intent.getTopicsKeyUrl()
+            val subject = intent.getSubject()
+            val level = intent.getLevel()
+            val title = intent.getLessonTitle()
+
+            showSyllabusLessonTopicHeader(title, subject, level)
+            updateListOfTopicsFromIndices(topicsKeyUrl, subject)
         } else {
-            this.setupSubjectSpinner()
+            hideSyllabusLessonTopicHeader()
+            setupSubjectSpinner()
         }
 
         topicsRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -57,7 +75,35 @@ class TopicsListActivity : BottomNavigationActivity() {
         bottomNavigation.selectedItemId = R.id.navigation_topics
     }
 
+    private fun showSyllabusLessonTopicHeader(syllabusLessonPlanTitle: String, subject: String, standard: Int) {
+        subjectSpinner.setVisibilityGone()
+
+        syllabusLessonPlanNameTextView.setVisible()
+
+        syllabusLessonPlanNameTextView.text = syllabusLessonPlanTitle
+
+        // Get the actual subject model so we can access its name:
+        databaseInstance.getReference(getString(R.string.subjects)).child(subject).ref.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError?) {}
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val subjectModel = dataSnapshot.getValue(Subject::class.java)
+                val subjectName = subjectModel?.names?.get(getPrimaryLanguageCode())
+                syllabusLessonSubjectStandardTextView.setVisible()
+
+                val standardString = getString(R.string.standard_n, standard)
+                syllabusLessonSubjectStandardTextView.text = "$subjectName, $standardString"
+            }
+        })
+    }
+
+    private fun hideSyllabusLessonTopicHeader() {
+        syllabusLessonPlanNameTextView.setVisibilityGone()
+        syllabusLessonSubjectStandardTextView.setVisibilityGone()
+    }
+
     private fun setupSubjectSpinner() {
+        subjectSpinner.setVisible()
+
         val subjectQuery = databaseInstance.getReference(getString(R.string.subjects))
                 .orderByChild(getString(R.string.is_active))
                 .equalTo(true)
@@ -99,9 +145,6 @@ class TopicsListActivity : BottomNavigationActivity() {
     fun updateListOfTopicsFromIndices(keyLocationUrl: String, subjectKey: String) {
         val keyReference = databaseInstance.getReferenceFromUrl(keyLocationUrl)
         val topicsReference = databaseInstance.getReference(getString(R.string.topics)).child(subjectKey)
-
-        Log.d("GRAHAM", "keyRef: $keyReference")
-        Log.d("GRAHAM", "keyRef: $topicsReference")
 
         val topicAdapter = object: FirebaseIndexRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, keyReference, topicsReference) {
             override fun populateViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int) {

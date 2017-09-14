@@ -120,8 +120,13 @@ class BoardLessonsActivity : BottomNavigationActivity() {
                     val topicsListIntent = Intent(this@BoardLessonsActivity, TopicsListActivity::class.java)
                     val keyUrl = getRef(syllabusLessonPosition).child(getString(R.string.topics)).toString()
                     val subject = syllabusLessonModel?.subject
+                    val level = syllabusLessonModel?.level
+                    val title = syllabusLessonModel?.names?.get(getPrimaryLanguageCode())
+
                     topicsListIntent.putExtra(TopicsListActivity.EXTRA_TOPICS_KEY_URL, keyUrl)
-                    topicsListIntent.putExtra(TopicsListActivity.EXTRA_SUBJECT, subject)
+                    topicsListIntent.putExtra(TopicsListActivity.EXTRA_SUBJECT_NAME, subject)
+                    topicsListIntent.putExtra(TopicsListActivity.EXTRA_LESSON_TITLE, title)
+                    topicsListIntent.putExtra(TopicsListActivity.EXTRA_LEVEL, level)
 
                     startActivity(topicsListIntent)
                 }
