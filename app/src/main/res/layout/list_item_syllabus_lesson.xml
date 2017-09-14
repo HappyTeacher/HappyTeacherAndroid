@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="96dp"
-    android:padding="16dp"
+    android:layout_height="84dp"
     android:background="@drawable/ripple_accent_white"
     android:clickable="true"
     xmlns:tools="http://schemas.android.com/tools"
@@ -15,6 +14,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="56dp"
         android:layout_height="56dp"
+        android:layout_marginLeft="16dp"
         android:background="@drawable/circle"/>
 
     <TextView
@@ -23,10 +23,10 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
         android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="@id/lessonNumberCircle"
-        app:layout_constraintRight_toRightOf="@id/lessonNumberCircle"
-        app:layout_constraintTop_toTopOf="@id/lessonNumberCircle"
-        app:layout_constraintBottom_toBottomOf="@id/lessonNumberCircle"
+        app:layout_constraintLeft_toLeftOf="@+id/lessonNumberCircle"
+        app:layout_constraintRight_toRightOf="@+id/lessonNumberCircle"
+        app:layout_constraintTop_toTopOf="@+id/lessonNumberCircle"
+        app:layout_constraintBottom_toBottomOf="@+id/lessonNumberCircle"
         android:gravity="center"
         tools:text="4"/>
 
@@ -34,7 +34,7 @@
         android:id="@+id/lessonTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/lessonNumberCircle"
+        app:layout_constraintLeft_toRightOf="@+id/lessonNumberCircle"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/topicCountTextView"
         android:textSize="16sp"
@@ -42,6 +42,7 @@
         android:layout_marginStart="16dp"
         tools:text="The Title of the Lesson Goes Here"
         app:layout_constraintVertical_chainStyle="packed"
+        android:layout_marginRight="16dp"
         android:maxLines="2"
         android:ellipsize="end"/>
 
@@ -49,17 +50,24 @@
         android:id="@+id/topicCountTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/lessonTitleTextView"
-        app:layout_constraintLeft_toRightOf="@id/lessonNumberCircle"
+        app:layout_constraintTop_toBottomOf="@+id/lessonTitleTextView"
+        app:layout_constraintLeft_toRightOf="@+id/lessonNumberCircle"
         app:layout_constraintBottom_toBottomOf="parent"
         android:textSize="14sp"
         fontPath="fonts/Roboto-LightItalic.ttf"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="2dp"
         android:textColor="@color/gray"
+        android:layout_marginRight="16dp"
         tools:text="10 topics"
         android:maxLines="1"
         android:ellipsize="end"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/lightGrayShadow"/>
 
 </android.support.constraint.ConstraintLayout>

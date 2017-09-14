@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.IntegerRes
 import android.support.design.widget.BottomNavigationView
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
@@ -39,6 +40,7 @@ class BoardLessonsActivity : BottomNavigationActivity() {
         syllabusLessonsRecyclerView.layoutManager = layoutManager
 
         val dividerItemDecoration = DividerItemDecoration(this, layoutManager.orientation)
+        dividerItemDecoration.setDrawable(ResourcesCompat.getDrawable(resources, R.drawable.divider_vertical, null)!!)
         syllabusLessonsRecyclerView.addItemDecoration(dividerItemDecoration)
 
         initializeSpinners()
@@ -50,7 +52,10 @@ class BoardLessonsActivity : BottomNavigationActivity() {
 
     private fun showBoardChooser() {
         val dialog = BoardChoiceDialog(this)
-        dialog.setOnDismissListener { initializeSpinners() }
+        dialog.setOnDismissListener {
+            // Re-initialize spinners after board is chosen.
+            initializeSpinners()
+        }
         dialog.show()
     }
 
