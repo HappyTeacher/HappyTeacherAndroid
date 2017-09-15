@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.support.annotation.IntegerRes
 import android.support.v7.widget.LinearLayoutManager
 import android.text.format.DateFormat
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.TextView
 import com.firebase.ui.database.FirebaseIndexRecyclerAdapter
 import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseRecyclerAdapter
+import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -34,7 +36,8 @@ class TopicsListActivity : BottomNavigationActivity() {
     companion object {
         val EXTRA_TOPICS_KEY_URL: String = "EXTRA_TOPICS_KEY_URL"
         fun Intent.hasTopicsKeyUrl(): Boolean = hasExtra(EXTRA_TOPICS_KEY_URL)
-        fun Intent.getTopicsKeyUrl(): String = getStringExtra(EXTRA_TOPICS_KEY_URL)
+        // Note: since we the url may have ~ or " " chars, we need to decode it in order to read that db location!
+        fun Intent.getTopicsKeyUrl(): String = java.net.URLDecoder.decode(getStringExtra(EXTRA_TOPICS_KEY_URL), "UTF-8")
 
         val EXTRA_SUBJECT_NAME: String = "EXTRA_SUBJECT_NAME"
         fun Intent.hasSubject(): Boolean = hasExtra(EXTRA_SUBJECT_NAME)
@@ -137,7 +140,7 @@ class TopicsListActivity : BottomNavigationActivity() {
         val topicAdapter = object: FirebaseRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, topicQuery) {
             override fun populateViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int) {
 //                val topicKey = this.getRef(topicPosition).key // todo : use this line, not dummy query
-                val topicKey = getString(R.string.mathematics_addition) // todo: remove dummy!
+                val topicKey = getString(R.string.DUMMY_KEY_FOR_TESTING) // todo: remove dummy!
                 populateTopicViewHolder(topicViewHolder, topicModel, topicPosition, topicKey)
             }
         }
@@ -151,7 +154,7 @@ class TopicsListActivity : BottomNavigationActivity() {
         val topicAdapter = object: FirebaseIndexRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, keyReference, topicsReference) {
             override fun populateViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int) {
 //                val topicKey = this.getRef(topicPosition).key // todo : use this line, not dummy query
-                val topicKey = getString(R.string.mathematics_addition) // todo: remove dummy!
+                val topicKey = getString(R.string.DUMMY_KEY_FOR_TESTING) // todo: remove dummy!
                 populateTopicViewHolder(topicViewHolder, topicModel, topicPosition, topicKey)
             }
         }
