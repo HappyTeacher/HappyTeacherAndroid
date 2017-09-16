@@ -43,4 +43,10 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
         bottomNavigation.selectedItemId = this.bottomNavigationMenuItemId
     }
 
+    // Remove transition for this activity to avoid bottom navigation jumpiness.
+    public override fun onPause() {
+        super.onPause()
+        overridePendingTransition(0, 0)
+    }
+
 }

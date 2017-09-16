@@ -4,7 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 
 /**
- * Created by grahamearley on 9/13/17.
+ * PreferencesManager is a wrapper for the SharedPreferences API.
+ *  It is used for storing preferences data around the app.
  */
 class PreferencesManager(val context: Context) {
     private val PREFS_NAME = "DEFAULT_PREFS"

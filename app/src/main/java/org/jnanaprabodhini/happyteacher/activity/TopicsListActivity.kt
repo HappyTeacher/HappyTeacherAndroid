@@ -33,7 +33,7 @@ import java.util.*
 
 class TopicsListActivity : BottomNavigationActivity() {
 
-    companion object {
+    companion object IntentExtraHelper {
         val EXTRA_TOPICS_KEY_URL: String = "EXTRA_TOPICS_KEY_URL"
         fun Intent.hasTopicsKeyUrl(): Boolean = hasExtra(EXTRA_TOPICS_KEY_URL)
         // Note: since we the url may have ~ or " " chars, we need to decode it in order to read that db location!
@@ -78,34 +78,12 @@ class TopicsListActivity : BottomNavigationActivity() {
 
         topicsRecyclerView.layoutManager = LinearLayoutManager(this)
         bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
-        bottomNavigation.selectedItemId = R.id.navigation_topics
     }
 
-    private fun showSyllabusLessonTopicHeader(syllabusLessonPlanTitle: String, subject: String, standard: Int) {
-        subjectSpinner.setVisibilityGone()
-
-        syllabusLessonPlanNameTextView.setVisible()
-        syllabusLessonPlanNameTextView.text = syllabusLessonPlanTitle
-
-        // Get the actual subject model so we can access its name:
-        databaseInstance.getReference(getString(R.string.subjects)).child(subject).ref.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(error: DatabaseError?) {}
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val subjectModel = dataSnapshot.getValue(Subject::class.java)
-                val subjectName = subjectModel?.names?.get(getPrimaryLanguageCode())
-                syllabusLessonSubjectStandardTextView.setVisible()
-
-                val standardString = getString(R.string.standard_n, standard)
-                syllabusLessonSubjectStandardTextView.text = "$subjectName, $standardString"
-            }
-        })
-    }
-
-    private fun hideSyllabusLessonTopicHeader() {
-        syllabusLessonPlanNameTextView.setVisibilityGone()
-        syllabusLessonSubjectStandardTextView.setVisibilityGone()
-    }
-
+    /**
+     *  The subject spinner is shown when this activity is not being used
+     *   to display topics relevant to a specific syllabus lesson plan.
+     */
     private fun setupSubjectSpinner() {
         subjectSpinner.setVisible()
 
@@ -131,6 +109,9 @@ class TopicsListActivity : BottomNavigationActivity() {
         }
     }
 
+    /**
+     *  Display list of topics for the selected subject.
+     */
     fun updateListOfTopics(subjectKey: String) {
         val topicQuery = databaseInstance.getReference(getString(R.string.topics))
                 .child(subjectKey)
@@ -147,6 +128,43 @@ class TopicsListActivity : BottomNavigationActivity() {
         topicsRecyclerView.adapter = topicAdapter
     }
 
+    /**
+     *  Show the Topic Header for a syllabus lesson.
+     *
+     *   This is shown if we are coming into the Topics List from clicking on
+     *   a Syllabus Lesson. This header will show the name, subject, and level
+     *   of that less.
+     */
+    private fun showSyllabusLessonTopicHeader(syllabusLessonPlanTitle: String, subject: String, standard: Int) {
+        subjectSpinner.setVisibilityGone()
+        syllabusLessonPlanNameTextView.setVisible()
+
+        syllabusLessonPlanNameTextView.text = syllabusLessonPlanTitle
+
+        // Get the actual subject model so we can access its name:
+        databaseInstance.getReference(getString(R.string.subjects)).child(subject).ref.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError?) {}
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val subjectModel = dataSnapshot.getValue(Subject::class.java)
+                val subjectName = subjectModel?.names?.get(getPrimaryLanguageCode())
+                syllabusLessonSubjectStandardTextView.setVisible()
+
+                val standardString = getString(R.string.standard_n, standard)
+                syllabusLessonSubjectStandardTextView.text = "$subjectName, $standardString"
+            }
+        })
+    }
+
+    private fun hideSyllabusLessonTopicHeader() {
+        syllabusLessonPlanNameTextView.setVisibilityGone()
+        syllabusLessonSubjectStandardTextView.setVisibilityGone()
+    }
+
+    /**
+     *  Show the list of topics relevant to the given syllabus lesson plan.
+     *   The adapter looks for topics with specific keys (these keys come
+     *   from the syllabus lesson's list of relevant topics).
+     */
     fun updateListOfTopicsFromIndices(keyLocationUrl: String, subjectKey: String) {
         val keyReference = databaseInstance.getReferenceFromUrl(keyLocationUrl)
         val topicsReference = databaseInstance.getReference(getString(R.string.topics)).child(subjectKey)
@@ -208,11 +226,5 @@ class TopicsListActivity : BottomNavigationActivity() {
         if (lessonHeaderModel != null) {
             lessonHeaderViewHolder?.dateEditedTextView?.text = dateFormat.format(Date(lessonHeaderModel.dateEdited))
         }
-    }
-
-    // Remove transition for this activity to avoid bottom navigation jumpiness.
-    public override fun onPause() {
-        super.onPause()
-        overridePendingTransition(0, 0)
     }
 }

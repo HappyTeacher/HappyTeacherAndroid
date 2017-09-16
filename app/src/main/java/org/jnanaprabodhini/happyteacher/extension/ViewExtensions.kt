@@ -3,7 +3,7 @@ package org.jnanaprabodhini.happyteacher.extension
 import android.view.View
 
 /**
- * Created by grahamearley on 9/12/17.
+ * Extension functions for Views.
  */
 
 fun View.setVisibilityGone() {

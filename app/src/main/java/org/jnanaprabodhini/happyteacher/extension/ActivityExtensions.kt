@@ -5,7 +5,7 @@ import android.support.v4.os.ConfigurationCompat
 import java.util.*
 
 /**
- * Created by grahamearley on 9/12/17.
+ * Extension functions for Activities.
  */
 
 fun Activity.getPrimaryLocale(): Locale = ConfigurationCompat.getLocales(resources.configuration)[0]
