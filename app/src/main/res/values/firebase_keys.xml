@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="lesson_headers">lesson_headers</string>
-    <string name="mathematics_addition">mathematics_addition</string>
+    <string name="DUMMY_KEY_FOR_TESTING">mathematics_addition</string>
     <string name="name">name</string>
     <string name="is_active">isActive</string>
     <string name="topics">topics</string>
     <string name="subjects">subjects</string>
+    <string name="maharashtra_state_board_key">maharashtra state board</string>
+    <string name="levels">levels</string>
+    <string name="syllabus_lessons">syllabusLessons</string>
+    <string name="lesson_number">lessonNumber</string>
+    <string name="boards">boards</string>
+    <string name="names">names</string>
 
 </resources>

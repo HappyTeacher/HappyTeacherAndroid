@@ -9,3 +9,5 @@ import java.util.*
  */
 
 fun Activity.getPrimaryLocale(): Locale = ConfigurationCompat.getLocales(resources.configuration)[0]
+
+fun Activity.getPrimaryLanguageCode(): String = getPrimaryLocale().language

@@ -6,4 +6,13 @@
     <string name="title_topics">Topics</string>
     <string name="title_contribute">Contribute</string>
 
+    <string name="standard_n">Standard %d</string>
+    <string name="choose_your_syllabus">Choose your syllabus.</string>
+    <string name="you_can_change_this_in_your_settings_later">You can change this in your settings later.</string>
+
+    <plurals name="topics_count">
+        <item quantity="one">%d topic</item>
+        <item quantity="other">%d topics</item>
+    </plurals>
+
 </resources>
