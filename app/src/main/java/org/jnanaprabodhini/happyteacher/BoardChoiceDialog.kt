@@ -9,6 +9,7 @@ import android.widget.TextView
 import com.firebase.ui.database.FirebaseListAdapter
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.dialog_board_choice.*
+import org.jnanaprabodhini.happyteacher.extension.getBaseReferenceForCurrentLanguage
 import org.jnanaprabodhini.happyteacher.model.Board
 
 /**
@@ -20,12 +21,12 @@ class BoardChoiceDialog(context: Context): Dialog(context) {
     init {
         setContentView(R.layout.dialog_board_choice)
 
-        val databaseInstance = FirebaseDatabase.getInstance()
-        val boardQuery = databaseInstance.getReference(context.getString(R.string.boards))
+        val databaseReference = FirebaseDatabase.getInstance().getBaseReferenceForCurrentLanguage()
+        val boardQuery = databaseReference.child(context.getString(R.string.boards))
 
         val boardChoiceAdapter = object: FirebaseListAdapter<Board>(context, Board::class.java, R.layout.select_dialog_singlechoice_material, boardQuery) {
             override fun populateView(v: View?, model: Board?, position: Int) {
-                (v as CheckedTextView).text = model?.names?.get("en") // todo: remove hardcoded language string
+                (v as CheckedTextView).text = model?.name
 
                 v.setOnClickListener {
                     prefs.setBoardKey(getRef(position).key)
