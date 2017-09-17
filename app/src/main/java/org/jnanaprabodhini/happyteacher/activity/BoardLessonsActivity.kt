@@ -15,8 +15,6 @@ import kotlinx.android.synthetic.main.activity_board_lessons.*
 import org.jnanaprabodhini.happyteacher.BoardChoiceDialog
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
-import org.jnanaprabodhini.happyteacher.extension.getPrimaryLanguageCode
-import org.jnanaprabodhini.happyteacher.extension.getPrimaryLocale
 import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.SyllabusLesson
 import org.jnanaprabodhini.happyteacher.prefs
@@ -59,18 +57,17 @@ class BoardLessonsActivity : BottomNavigationActivity() {
     }
 
     private fun initializeSpinners() {
-        val subjectQuery = databaseInstance.getReference(getString(R.string.subjects))
+        val subjectQuery = databaseReference.child(getString(R.string.subjects))
                 .orderByChild(getString(R.string.is_active))
                 .equalTo(true)
 
         val subjectSpinnerAdapter = object : FirebaseListAdapter<Subject>(this, Subject::class.java, R.layout.spinner_item, subjectQuery) {
             override fun populateView(view: View, subject: Subject, position: Int) {
-                val languageCode = getPrimaryLocale().language
-                (view as TextView).text = subject.names[languageCode]
+                (view as TextView).text = subject.name
             }
         }
 
-        val levelQuery = databaseInstance.getReference(getString(R.string.levels)).orderByValue().equalTo(true)
+        val levelQuery = databaseReference.child(getString(R.string.levels)).orderByValue().equalTo(true)
 
         val levelSpinnerAdapter = object : FirebaseListAdapter<Boolean>(this, Boolean::class.java, R.layout.spinner_item, levelQuery) {
             override fun populateView(view: View, level: Boolean, position: Int) {
@@ -105,7 +102,7 @@ class BoardLessonsActivity : BottomNavigationActivity() {
     }
 
     private fun  updateSyllabusLessonList(selectedSubjectKey: String, selectedLevel: String) {
-        val syllabusLessonQuery = databaseInstance.getReference(getString(R.string.syllabus_lessons))
+        val syllabusLessonQuery = databaseReference.child(getString(R.string.syllabus_lessons))
                 .child(prefs.getBoardKey())
                 .child(selectedSubjectKey)
                 .child(selectedLevel)
@@ -113,7 +110,7 @@ class BoardLessonsActivity : BottomNavigationActivity() {
 
         val syllabusLessonAdapter = object: FirebaseRecyclerAdapter<SyllabusLesson, SyllabusLessonViewHolder>(SyllabusLesson::class.java, R.layout.list_item_syllabus_lesson, SyllabusLessonViewHolder::class.java, syllabusLessonQuery) {
             override fun populateViewHolder(syllabusLessonViewHolder: SyllabusLessonViewHolder?, syllabusLessonModel: SyllabusLesson?, syllabusLessonPosition: Int) {
-                syllabusLessonViewHolder?.lessonTitleTextView?.text = syllabusLessonModel?.names?.get(getPrimaryLanguageCode())
+                syllabusLessonViewHolder?.lessonTitleTextView?.text = syllabusLessonModel?.name
                 syllabusLessonViewHolder?.lessonNumberTextView?.text = syllabusLessonModel?.lessonNumber.toString()
                 syllabusLessonViewHolder?.topicCountTextView?.text = resources.getQuantityString(R.plurals.topics_count, syllabusLessonModel?.topicCount ?: 0, syllabusLessonModel?.topicCount ?: 0)
 
@@ -126,7 +123,7 @@ class BoardLessonsActivity : BottomNavigationActivity() {
                     val keyUrl = getRef(syllabusLessonPosition).child(getString(R.string.topics)).toString()
                     val subject = syllabusLessonModel?.subject
                     val level = syllabusLessonModel?.level
-                    val title = syllabusLessonModel?.names?.get(getPrimaryLanguageCode())
+                    val title = syllabusLessonModel?.name
 
                     topicsListIntent.putExtra(TopicsListActivity.EXTRA_TOPICS_KEY_URL, keyUrl)
                     topicsListIntent.putExtra(TopicsListActivity.EXTRA_SUBJECT_NAME, subject)

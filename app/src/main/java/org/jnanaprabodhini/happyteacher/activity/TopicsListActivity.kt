@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.support.annotation.IntegerRes
 import android.support.v7.widget.LinearLayoutManager
 import android.text.format.DateFormat
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.TextView
 import com.firebase.ui.database.FirebaseIndexRecyclerAdapter
 import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseRecyclerAdapter
-import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -20,7 +18,6 @@ import kotlinx.android.synthetic.main.activity_topics_list.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseEmptyRecyclerAdapter
-import org.jnanaprabodhini.happyteacher.extension.getPrimaryLanguageCode
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.LessonHeader
@@ -87,13 +84,13 @@ class TopicsListActivity : BottomNavigationActivity() {
     private fun setupSubjectSpinner() {
         subjectSpinner.setVisible()
 
-        val subjectQuery = databaseInstance.getReference(getString(R.string.subjects))
+        val subjectQuery = databaseReference.child(getString(R.string.subjects))
                 .orderByChild(getString(R.string.is_active))
                 .equalTo(true)
 
         val subjectAdapter = object : FirebaseListAdapter<Subject>(this, Subject::class.java, R.layout.spinner_item, subjectQuery) {
             override fun populateView(view: View, subject: Subject, position: Int) {
-                (view as TextView).text = subject.names[getPrimaryLanguageCode()]
+                (view as TextView).text = subject.name
             }
         }
 
@@ -113,7 +110,7 @@ class TopicsListActivity : BottomNavigationActivity() {
      *  Display list of topics for the selected subject.
      */
     fun updateListOfTopics(subjectKey: String) {
-        val topicQuery = databaseInstance.getReference(getString(R.string.topics))
+        val topicQuery = databaseReference.child(getString(R.string.topics))
                 .child(subjectKey)
                 .orderByChild(getString(R.string.is_active))
                 .equalTo(true)
@@ -142,11 +139,11 @@ class TopicsListActivity : BottomNavigationActivity() {
         syllabusLessonPlanNameTextView.text = syllabusLessonPlanTitle
 
         // Get the actual subject model so we can access its name:
-        databaseInstance.getReference(getString(R.string.subjects)).child(subject).ref.addListenerForSingleValueEvent(object : ValueEventListener {
+        databaseReference.child(getString(R.string.subjects)).child(subject).ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError?) {}
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val subjectModel = dataSnapshot.getValue(Subject::class.java)
-                val subjectName = subjectModel?.names?.get(getPrimaryLanguageCode())
+                val subjectName = subjectModel?.name
                 syllabusLessonSubjectStandardTextView.setVisible()
 
                 val standardString = getString(R.string.standard_n, standard)
@@ -166,8 +163,8 @@ class TopicsListActivity : BottomNavigationActivity() {
      *   from the syllabus lesson's list of relevant topics).
      */
     fun updateListOfTopicsFromIndices(keyLocationUrl: String, subjectKey: String) {
-        val keyReference = databaseInstance.getReferenceFromUrl(keyLocationUrl)
-        val topicsReference = databaseInstance.getReference(getString(R.string.topics)).child(subjectKey)
+        val keyReference = databaseRoot.getReferenceFromUrl(keyLocationUrl)
+        val topicsReference = databaseReference.child(getString(R.string.topics)).child(subjectKey)
 
         val topicAdapter = object: FirebaseIndexRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, keyReference, topicsReference) {
             override fun populateViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int) {
@@ -180,7 +177,7 @@ class TopicsListActivity : BottomNavigationActivity() {
     }
 
     fun populateTopicViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int, topicKey: String) {
-        topicViewHolder?.topicTextView?.text = topicModel?.names?.get("en")
+        topicViewHolder?.topicTextView?.text = topicModel?.name
 
         // Alternate between these four colors:
         when (topicPosition % 4) {
@@ -190,7 +187,7 @@ class TopicsListActivity : BottomNavigationActivity() {
             3 -> topicViewHolder?.itemView?.setBackgroundResource(R.color.dreamsicleOrange)
         }
 
-        val lessonHeaderQuery = databaseInstance.getReference(getString(R.string.lesson_headers))
+        val lessonHeaderQuery = databaseReference.child(getString(R.string.lesson_headers))
                 .child(topicKey) // hardcoded just for testing!
                 .orderByChild(getString(R.string.name))
 

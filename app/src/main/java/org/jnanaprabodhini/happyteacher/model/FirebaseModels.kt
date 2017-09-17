@@ -5,10 +5,10 @@ package org.jnanaprabodhini.happyteacher.model
  */
 
 data class Subject(var isActive: Boolean = false,
-                   var names: Map<String, String> = emptyMap())
+                   var name: String = "")
 
 data class Topic(var isActive: Boolean = false,
-                 var names: Map<String, String> = emptyMap(),
+                 var name: String = "",
                  var subject: String = "")
 
 // TODO: Update with actual object structure when complete:
@@ -21,10 +21,10 @@ data class LessonHeader(var authorId: String = "",
 
 data class SyllabusLesson(var board: String = "",
                           var lessonNumber: Int = 0,
-                          var names: Map<String, String> = emptyMap(),
+                          var name: String = "",
                           var level: Int = 0,
                           var subject: String = "",
                           var topicCount: Int = 0)
 
 data class Board(var isActive: Boolean = false,
-                 var names: Map<String, String> = emptyMap<String, String>())
+                 var name: String = "")
