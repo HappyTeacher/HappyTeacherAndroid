@@ -1,28 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="32dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        fontPath="fonts/Roboto-Bold"
-        android:textColor="@color/colorPrimary"
-        android:textSize="18sp"
-        android:paddingBottom="4dp"
+        style="@style/DialogHeaderText.Title"
         android:text="@string/choose_your_syllabus"/>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        fontPath="fonts/Roboto-Light"
-        android:textColor="@color/colorAccent"
-        android:textSize="14sp"
-        android:text="@string/you_can_change_this_in_your_settings_later"
-        android:paddingBottom="8dp"/>
+        style="@style/DialogHeaderText.Subtitle"
+        android:text="@string/you_can_change_this_in_your_settings_later"/>
 
     <ListView
         android:id="@+id/boardOptionsListView"
