@@ -29,6 +29,7 @@
         android:visibility="visible"
         android:id="@+id/emptyView"
         android:orientation="vertical"
+        android:gravity="center_vertical"
         android:layout_width="@dimen/width_lesson_header_card"
         android:layout_height="@dimen/height_lesson_header_card">
 
@@ -38,14 +39,15 @@
             android:layout_margin="16dp"
             android:textColor="@android:color/white"
             android:textSize="18sp"
-            android:text="There are no lessons for this topic."/>
+            android:text="@string/there_are_no_lessons_for_this_topic_yet"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/contributeButton"
             android:layout_margin="16dp"
-            android:text="Contribute"/>
+            style="@style/Button"
+            android:text="@string/contribute"/>
 
     </LinearLayout>
 

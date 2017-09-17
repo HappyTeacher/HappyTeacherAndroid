@@ -17,7 +17,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/spinner_item_height</item>
         <item name="android:padding">@dimen/spinner_item_padding</item>
-        <item name="android:background">@drawable/ripple_accent_purple</item>
+        <item name="android:background">@drawable/ripple_accent_gray</item>
         <item name="android:gravity">center_vertical</item>
     </style>
 
@@ -108,6 +108,13 @@
         <item name="android:maxLines">1</item>
         <item name="fontPath">fonts/Roboto-LightItalic.ttf</item>
         <item name="android:textColor">@color/gray</item>
+    </style>
+
+    <style name="Button">
+        <item name="android:padding">16dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:background">@drawable/ripple_primary_gray</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
 </resources>

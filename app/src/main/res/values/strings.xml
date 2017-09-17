@@ -9,6 +9,8 @@
     <string name="standard_n">Standard %d</string>
     <string name="choose_your_syllabus">Choose your syllabus.</string>
     <string name="you_can_change_this_in_your_settings_later">You can change this in your settings later.</string>
+    <string name="there_are_no_lessons_for_this_topic_yet">There are no lessons for this topic yet.</string>
+    <string name="contribute">Contribute</string>
 
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>
