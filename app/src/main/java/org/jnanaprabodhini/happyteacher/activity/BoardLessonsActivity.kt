@@ -35,6 +35,7 @@ class BoardLessonsActivity : BottomNavigationActivity() {
         val layoutManager = LinearLayoutManager(this)
         syllabusLessonsRecyclerView.layoutManager = layoutManager
 
+        // Leave space between each item in the list:
         val dividerItemDecoration = DividerItemDecoration(this, layoutManager.orientation)
         dividerItemDecoration.setDrawable(ResourcesCompat.getDrawable(resources, R.drawable.divider_vertical, null)!!)
         syllabusLessonsRecyclerView.addItemDecoration(dividerItemDecoration)
@@ -42,6 +43,8 @@ class BoardLessonsActivity : BottomNavigationActivity() {
         initializeSpinners()
 
         if (!prefs.hasChosenBoard()) {
+            // Prompt the user to select which board they would like
+            //  to see syllabus lesson plans from.
             showBoardChooser()
         }
     }
@@ -60,7 +63,7 @@ class BoardLessonsActivity : BottomNavigationActivity() {
                 .orderByChild(getString(R.string.is_active))
                 .equalTo(true)
 
-        val subjectAdapter = object : FirebaseListAdapter<Subject>(this, Subject::class.java, R.layout.spinner_item, subjectQuery) {
+        val subjectSpinnerAdapter = object : FirebaseListAdapter<Subject>(this, Subject::class.java, R.layout.spinner_item, subjectQuery) {
             override fun populateView(view: View, subject: Subject, position: Int) {
                 val languageCode = getPrimaryLocale().language
                 (view as TextView).text = subject.names[languageCode]
@@ -69,7 +72,7 @@ class BoardLessonsActivity : BottomNavigationActivity() {
 
         val levelQuery = databaseInstance.getReference(getString(R.string.levels)).orderByValue().equalTo(true)
 
-        val levelAdapter = object : FirebaseListAdapter<Boolean>(this, Boolean::class.java, R.layout.spinner_item, levelQuery) {
+        val levelSpinnerAdapter = object : FirebaseListAdapter<Boolean>(this, Boolean::class.java, R.layout.spinner_item, levelQuery) {
             override fun populateView(view: View, level: Boolean, position: Int) {
                 try {
                     val levelNumber = Integer.parseInt(this.getRef(position).key)
@@ -80,18 +83,16 @@ class BoardLessonsActivity : BottomNavigationActivity() {
             }
         }
 
-        subjectSpinner.adapter = subjectAdapter
-        levelSpinner.adapter = levelAdapter
+        subjectSpinner.adapter = subjectSpinnerAdapter
+        levelSpinner.adapter = levelSpinnerAdapter
 
         val spinnerSelectionListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedSubjectPosition = subjectSpinner.selectedItemPosition
-                var selectedLevelPosition = levelSpinner.selectedItemPosition
+                val selectedLevelPosition = levelSpinner.selectedItemPosition
 
-                if (selectedLevelPosition < 0) {selectedLevelPosition = 0} // todo fix this ya know
-
-                val selectedSubjectKey = subjectAdapter.getRef(selectedSubjectPosition).key
-                val selectedLevel = levelAdapter.getRef(selectedLevelPosition).key
+                val selectedSubjectKey = subjectSpinnerAdapter.getRef(selectedSubjectPosition).key
+                val selectedLevel = levelSpinnerAdapter.getRef(selectedLevelPosition).key
 
                 updateSyllabusLessonList(selectedSubjectKey, selectedLevel)
             }
@@ -117,6 +118,10 @@ class BoardLessonsActivity : BottomNavigationActivity() {
                 syllabusLessonViewHolder?.topicCountTextView?.text = resources.getQuantityString(R.plurals.topics_count, syllabusLessonModel?.topicCount ?: 0, syllabusLessonModel?.topicCount ?: 0)
 
                 syllabusLessonViewHolder?.itemView?.setOnClickListener {
+                    // Pass syllabus lesson data to the TopicsListActivity
+                    //  so that it can display the relevant topics (instead
+                    //  of all topics for that subject).
+
                     val topicsListIntent = Intent(this@BoardLessonsActivity, TopicsListActivity::class.java)
                     val keyUrl = getRef(syllabusLessonPosition).child(getString(R.string.topics)).toString()
                     val subject = syllabusLessonModel?.subject
@@ -134,12 +139,6 @@ class BoardLessonsActivity : BottomNavigationActivity() {
         }
 
         syllabusLessonsRecyclerView.adapter = syllabusLessonAdapter
-    }
-
-    // Remove transition for this activity to avoid bottom navigation jumpiness.
-    public override fun onPause() {
-        super.onPause()
-        overridePendingTransition(0, 0)
     }
 }
 

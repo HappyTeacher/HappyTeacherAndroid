@@ -12,7 +12,8 @@ import kotlinx.android.synthetic.main.dialog_board_choice.*
 import org.jnanaprabodhini.happyteacher.model.Board
 
 /**
- * Created by grahamearley on 9/13/17.
+ * A dialog for asking the user what Board/Syllabus they
+ *  want to set as default.
  */
 class BoardChoiceDialog(context: Context): Dialog(context) {
 
@@ -24,11 +25,10 @@ class BoardChoiceDialog(context: Context): Dialog(context) {
 
         val boardChoiceAdapter = object: FirebaseListAdapter<Board>(context, Board::class.java, R.layout.select_dialog_singlechoice_material, boardQuery) {
             override fun populateView(v: View?, model: Board?, position: Int) {
-                (v as CheckedTextView).text = model?.names?.get("en")
+                (v as CheckedTextView).text = model?.names?.get("en") // todo: remove hardcoded language string
 
                 v.setOnClickListener {
                     prefs.setBoardKey(getRef(position).key)
-                    v.isChecked = true
                     dismiss()
                 }
             }

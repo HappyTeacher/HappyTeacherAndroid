@@ -9,6 +9,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig
  */
 
 val prefs: PreferencesManager by lazy {
+    // Package-wide access to PreferencesManager.
     HappyTeacherApplication.preferences!!
 }
 
@@ -21,7 +22,7 @@ class HappyTeacherApplication: Application() {
     override fun onCreate() {
         super.onCreate()
 
-        // Initialize preferences
+        // Initialize preferences (package-wide)
         preferences = PreferencesManager(this)
 
         // Set Firebase offline persistence to true

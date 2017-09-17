@@ -1,7 +1,7 @@
 package org.jnanaprabodhini.happyteacher.model
 
 /**
- * Created by grahamearley on 9/7/17.
+ * Data models for Firebase objects.
  */
 
 data class Subject(var isActive: Boolean = false,
