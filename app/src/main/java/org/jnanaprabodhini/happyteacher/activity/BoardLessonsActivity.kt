@@ -3,10 +3,12 @@ package org.jnanaprabodhini.happyteacher.activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.IntegerRes
+import android.support.design.widget.Snackbar
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.TextView
 import com.firebase.ui.database.FirebaseListAdapter
@@ -15,6 +17,8 @@ import kotlinx.android.synthetic.main.activity_board_lessons.*
 import org.jnanaprabodhini.happyteacher.BoardChoiceDialog
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
+import org.jnanaprabodhini.happyteacher.extension.jiggle
+import org.jnanaprabodhini.happyteacher.extension.showSnackbar
 import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.SyllabusLesson
 import org.jnanaprabodhini.happyteacher.prefs
@@ -115,22 +119,30 @@ class BoardLessonsActivity : BottomNavigationActivity() {
                 syllabusLessonViewHolder?.topicCountTextView?.text = resources.getQuantityString(R.plurals.topics_count, syllabusLessonModel?.topicCount ?: 0, syllabusLessonModel?.topicCount ?: 0)
 
                 syllabusLessonViewHolder?.itemView?.setOnClickListener {
-                    // Pass syllabus lesson data to the TopicsListActivity
-                    //  so that it can display the relevant topics (instead
-                    //  of all topics for that subject).
 
-                    val topicsListIntent = Intent(this@BoardLessonsActivity, TopicsListActivity::class.java)
-                    val keyUrl = getRef(syllabusLessonPosition).child(getString(R.string.topics)).toString()
-                    val subject = syllabusLessonModel?.subject
-                    val level = syllabusLessonModel?.level
-                    val title = syllabusLessonModel?.name
+                    val topicCount = syllabusLessonModel?.topicCount ?: 0
+                    if (topicCount == 0) {
+                        // If there are no topics to display, jiggle the count and tell the user.
+                        syllabusLessonViewHolder.topicCountTextView.jiggle()
+                        rootLayout.showSnackbar(R.string.this_lesson_has_no_relevant_topics)
+                    } else {
+                        // Pass syllabus lesson data to the TopicsListActivity
+                        //  so that it can display the relevant topics (instead
+                        //  of all topics for that subject).
 
-                    topicsListIntent.putExtra(TopicsListActivity.EXTRA_TOPICS_KEY_URL, keyUrl)
-                    topicsListIntent.putExtra(TopicsListActivity.EXTRA_SUBJECT_NAME, subject)
-                    topicsListIntent.putExtra(TopicsListActivity.EXTRA_LESSON_TITLE, title)
-                    topicsListIntent.putExtra(TopicsListActivity.EXTRA_LEVEL, level)
+                        val topicsListIntent = Intent(this@BoardLessonsActivity, TopicsListActivity::class.java)
+                        val keyUrl = getRef(syllabusLessonPosition).child(getString(R.string.topics)).toString()
+                        val subject = syllabusLessonModel?.subject
+                        val level = syllabusLessonModel?.level
+                        val title = syllabusLessonModel?.name
 
-                    startActivity(topicsListIntent)
+                        topicsListIntent.putExtra(TopicsListActivity.EXTRA_TOPICS_KEY_URL, keyUrl)
+                        topicsListIntent.putExtra(TopicsListActivity.EXTRA_SUBJECT_NAME, subject)
+                        topicsListIntent.putExtra(TopicsListActivity.EXTRA_LESSON_TITLE, title)
+                        topicsListIntent.putExtra(TopicsListActivity.EXTRA_LEVEL, level)
+
+                        startActivity(topicsListIntent)
+                    }
                 }
             }
         }
