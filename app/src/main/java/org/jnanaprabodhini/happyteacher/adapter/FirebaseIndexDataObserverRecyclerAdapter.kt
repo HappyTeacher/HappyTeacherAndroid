@@ -6,6 +6,7 @@ import com.firebase.ui.database.FirebaseIndexRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.Query
+import org.jnanaprabodhini.happyteacher.DataObserver
 
 /**
  * An extension of the FirebaseIndexRecyclerAdapter that provides callbacks
@@ -15,23 +16,18 @@ abstract class FirebaseIndexDataObserverRecyclerAdapter<T, VH: RecyclerView.View
                                                                                         @LayoutRes modelLayout: Int,
                                                                                         viewHolderClass: Class<VH>,
                                                                                         keyQuery: Query,
-                                                                                        dataRef: DatabaseReference): FirebaseIndexRecyclerAdapter<T, VH>(modelClass, modelLayout, viewHolderClass, keyQuery, dataRef) {
+                                                                                        dataRef: DatabaseReference,
+                                                                                        val dataObserver: DataObserver): FirebaseIndexRecyclerAdapter<T, VH>(modelClass, modelLayout, viewHolderClass, keyQuery, dataRef) {
 
     override fun onDataChanged() {
         super.onDataChanged()
 
-        onFinishedLoading()
+        dataObserver.onDataLoaded()
 
         when (itemCount) {
-            0 -> onEmpty()
-            else -> onNonEmpty()
+            0 -> dataObserver.onDataEmpty()
+            else -> dataObserver.onDataNonEmpty()
         }
     }
-
-    abstract fun onFinishedLoading()
-
-    abstract fun onEmpty()
-
-    abstract fun onNonEmpty()
 
 }

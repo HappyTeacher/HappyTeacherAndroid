@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_topics_list.*
 import kotlinx.android.synthetic.main.header_syllabus_lesson_topic.*
+import org.jnanaprabodhini.happyteacher.DataObserver
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseDataObserverRecyclerAdapter
@@ -29,7 +30,7 @@ import java.util.*
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseIndexDataObserverRecyclerAdapter
 
 
-class TopicsListActivity : BottomNavigationActivity() {
+class TopicsListActivity : BottomNavigationActivity(), DataObserver {
 
     companion object IntentExtraHelper {
         val EXTRA_TOPICS_KEY_URL: String = "EXTRA_TOPICS_KEY_URL"
@@ -127,27 +128,14 @@ class TopicsListActivity : BottomNavigationActivity() {
      *  Display list of topics for the selected subject.
      */
     fun updateListOfTopics(subjectKey: String) {
-        topicsProgressBar.setVisible()
-        emptyTopicsTextView.setVisibilityGone()
+        onRequestNewData()
 
         val topicQuery = databaseReference.child(getString(R.string.topics))
                 .child(subjectKey)
                 .orderByChild(getString(R.string.is_active))
                 .equalTo(true)
 
-        val topicAdapter = object: FirebaseDataObserverRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, topicQuery) {
-            override fun onFinishedLoading() {
-                topicsProgressBar.setVisibilityGone()
-            }
-
-            override fun onEmpty() {
-                onTopicsListEmpty()
-            }
-
-            override fun onNonEmpty() {
-                onTopicsListNonEmpty()
-            }
-
+        val topicAdapter = object: FirebaseDataObserverRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, topicQuery, this) {
             override fun populateViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int) {
 //                val topicKey = this.getRef(topicPosition).key // todo : use this line, not dummy query
                 val topicKey = getString(R.string.DUMMY_KEY_FOR_TESTING) // todo: remove dummy!
@@ -196,32 +184,40 @@ class TopicsListActivity : BottomNavigationActivity() {
      *   from the syllabus lesson's list of relevant topics).
      */
     fun updateListOfTopicsFromIndices(keyLocationUrl: String, subjectKey: String) {
-        topicsProgressBar.setVisible()
-        emptyTopicsTextView.setVisibilityGone()
+        onRequestNewData()
 
         val keyReference = databaseRoot.getReferenceFromUrl(keyLocationUrl)
         val topicsReference = databaseReference.child(getString(R.string.topics)).child(subjectKey)
 
-        val topicAdapter = object: FirebaseIndexDataObserverRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, keyReference, topicsReference) {
-            override fun onFinishedLoading() {
-                topicsProgressBar.setVisibilityGone()
-            }
-
-            override fun onEmpty() {
-                onTopicsListEmpty()
-            }
-
-            override fun onNonEmpty() {
-                onTopicsListNonEmpty()
-            }
-
+        val topicIndexAdapter = object: FirebaseIndexDataObserverRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, keyReference, topicsReference, this) {
             override fun populateViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int) {
 //                val topicKey = this.getRef(topicPosition).key // todo : use this line, not dummy query
                 val topicKey = getString(R.string.DUMMY_KEY_FOR_TESTING) // todo: remove dummy!
                 populateTopicViewHolder(topicViewHolder, topicModel, topicPosition, topicKey)
             }
         }
-        topicsRecyclerView.adapter = topicAdapter
+        topicsRecyclerView.adapter = topicIndexAdapter
+    }
+
+    override fun onRequestNewData() {
+        topicsProgressBar.setVisible()
+        emptyTopicsTextView.setVisibilityGone()
+    }
+
+    override fun onDataLoaded() {
+        topicsProgressBar.setVisibilityGone()
+    }
+
+    override fun onDataEmpty() {
+        emptyTopicsTextView.setVisible()
+    }
+
+    override fun onDataNonEmpty() {
+        emptyTopicsTextView.setVisibilityGone()
+
+        // Animate layout changes
+        topicsRecyclerView.scheduleLayoutAnimation()
+        topicsRecyclerView.invalidate()
     }
 
     fun populateTopicViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int, topicKey: String) {
@@ -241,41 +237,35 @@ class TopicsListActivity : BottomNavigationActivity() {
 
         val dateFormat = DateFormat.getDateFormat(this@TopicsListActivity)
 
-        val lessonHeaderAdapter = object: FirebaseDataObserverRecyclerAdapter<LessonHeader, LessonHeaderViewHolder>(LessonHeader::class.java, R.layout.list_item_lesson, LessonHeaderViewHolder::class.java, lessonHeaderQuery) {
-            override fun onFinishedLoading() {
-                // TODO: PROGRESS BAR HERE!
+        val lessonHeaderDataObserver = object: DataObserver {
+            override fun onRequestNewData() {
+                // TODO: Show progress bar here!
             }
 
-            override fun populateViewHolder(lessonHeaderViewHolder: LessonHeaderViewHolder?, lessonHeaderModel: LessonHeader?, lessonHeaderPosition: Int) {
-                populateLessonHeaderViewHolder(lessonHeaderViewHolder, lessonHeaderModel, dateFormat)
+            override fun onDataLoaded() {
+                // TODO: Hide progress bar here!
             }
 
-            override fun onEmpty() {
+            override fun onDataEmpty() {
                 topicViewHolder?.lessonsRecyclerView?.setVisibilityGone()
                 topicViewHolder?.emptyView?.setVisible()
             }
 
-            override fun onNonEmpty() {
+            override fun onDataNonEmpty() {
                 topicViewHolder?.lessonsRecyclerView?.setVisible()
                 topicViewHolder?.emptyView?.setVisibilityGone()
+            }
+        }
+
+        val lessonHeaderAdapter = object: FirebaseDataObserverRecyclerAdapter<LessonHeader, LessonHeaderViewHolder>(LessonHeader::class.java, R.layout.list_item_lesson, LessonHeaderViewHolder::class.java, lessonHeaderQuery, lessonHeaderDataObserver) {
+            override fun populateViewHolder(lessonHeaderViewHolder: LessonHeaderViewHolder?, lessonHeaderModel: LessonHeader?, lessonHeaderPosition: Int) {
+                populateLessonHeaderViewHolder(lessonHeaderViewHolder, lessonHeaderModel, dateFormat)
             }
         }
 
         val horizontalLayoutManager = LinearLayoutManager(this@TopicsListActivity, LinearLayoutManager.HORIZONTAL, false)
         topicViewHolder?.lessonsRecyclerView?.layoutManager = horizontalLayoutManager
         topicViewHolder?.lessonsRecyclerView?.adapter = lessonHeaderAdapter
-    }
-
-    private fun onTopicsListEmpty() {
-        emptyTopicsTextView.setVisible()
-    }
-
-    private fun onTopicsListNonEmpty() {
-        emptyTopicsTextView.setVisibilityGone()
-
-        // Animate layout changes
-        topicsRecyclerView.scheduleLayoutAnimation()
-        topicsRecyclerView.invalidate()
     }
 
     private fun populateLessonHeaderViewHolder(lessonHeaderViewHolder: LessonHeaderViewHolder?, lessonHeaderModel: LessonHeader?, dateFormat: java.text.DateFormat) {

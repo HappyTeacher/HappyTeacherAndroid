@@ -12,6 +12,7 @@ import android.widget.TextView
 import com.firebase.ui.database.FirebaseListAdapter
 import kotlinx.android.synthetic.main.activity_board_lessons.*
 import org.jnanaprabodhini.happyteacher.BoardChoiceDialog
+import org.jnanaprabodhini.happyteacher.DataObserver
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseDataObserverRecyclerAdapter
@@ -25,7 +26,7 @@ import org.jnanaprabodhini.happyteacher.prefs
 import org.jnanaprabodhini.happyteacher.viewholder.SyllabusLessonViewHolder
 
 
-class BoardLessonsActivity : BottomNavigationActivity() {
+class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
 
     @IntegerRes override val bottomNavigationMenuItemId: Int = R.id.navigation_board
 
@@ -116,8 +117,7 @@ class BoardLessonsActivity : BottomNavigationActivity() {
     }
 
     private fun  updateSyllabusLessonList(selectedSubjectKey: String, selectedLevel: String) {
-        emptySyllabusLessonsTextView.setVisibilityGone()
-        boardLessonsProgressBar.setVisible()
+        onRequestNewData()
 
         val syllabusLessonQuery = databaseReference.child(getString(R.string.syllabus_lessons))
                 .child(prefs.getBoardKey())
@@ -125,24 +125,7 @@ class BoardLessonsActivity : BottomNavigationActivity() {
                 .child(selectedLevel)
                 .orderByChild(getString(R.string.lesson_number))
 
-        val syllabusLessonAdapter = object: FirebaseDataObserverRecyclerAdapter<SyllabusLesson, SyllabusLessonViewHolder>(SyllabusLesson::class.java, R.layout.list_item_syllabus_lesson, SyllabusLessonViewHolder::class.java, syllabusLessonQuery) {
-            override fun onFinishedLoading() {
-                boardLessonsProgressBar.setVisibilityGone()
-            }
-
-            override fun onEmpty() {
-                // Show empty view
-                emptySyllabusLessonsTextView.setVisible()
-            }
-
-            override fun onNonEmpty() {
-                // Hide empty view
-                emptySyllabusLessonsTextView.setVisibilityGone()
-
-                // Animate layout changes
-                syllabusLessonsRecyclerView.scheduleLayoutAnimation()
-                syllabusLessonsRecyclerView.invalidate()
-            }
+        val syllabusLessonAdapter = object: FirebaseDataObserverRecyclerAdapter<SyllabusLesson, SyllabusLessonViewHolder>(SyllabusLesson::class.java, R.layout.list_item_syllabus_lesson, SyllabusLessonViewHolder::class.java, syllabusLessonQuery, this) {
 
             override fun populateViewHolder(syllabusLessonViewHolder: SyllabusLessonViewHolder?, syllabusLessonModel: SyllabusLesson?, syllabusLessonPosition: Int) {
                 syllabusLessonViewHolder?.lessonTitleTextView?.text = syllabusLessonModel?.name
@@ -179,6 +162,29 @@ class BoardLessonsActivity : BottomNavigationActivity() {
         }
 
         syllabusLessonsRecyclerView.adapter = syllabusLessonAdapter
+    }
+
+    override fun onRequestNewData() {
+        emptySyllabusLessonsTextView.setVisibilityGone()
+        boardLessonsProgressBar.setVisible()
+    }
+
+    override fun onDataLoaded() {
+        boardLessonsProgressBar.setVisibilityGone()
+    }
+
+    override fun onDataEmpty() {
+        // Show empty view
+        emptySyllabusLessonsTextView.setVisible()
+    }
+
+    override fun onDataNonEmpty() {
+        // Hide empty view
+        emptySyllabusLessonsTextView.setVisibilityGone()
+
+        // Animate layout changes
+        syllabusLessonsRecyclerView.scheduleLayoutAnimation()
+        syllabusLessonsRecyclerView.invalidate()
     }
 }
 
