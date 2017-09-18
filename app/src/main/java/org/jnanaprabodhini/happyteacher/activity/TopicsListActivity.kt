@@ -67,6 +67,10 @@ class TopicsListActivity : BottomNavigationActivity() {
 
             showSyllabusLessonTopicHeader(title, subject, level)
             updateListOfTopicsFromIndices(topicsKeyUrl, subject)
+
+            // If there are no topics, we will not come to this activity,
+            //  so the topics list isn't empty and this view can be hidden:
+            emptyTopicsTextView.setVisibilityGone()
         } else {
             // Show all topics for a subject, selected by spinner
             hideSyllabusLessonTopicHeader()
@@ -115,7 +119,15 @@ class TopicsListActivity : BottomNavigationActivity() {
                 .orderByChild(getString(R.string.is_active))
                 .equalTo(true)
 
-        val topicAdapter = object: FirebaseRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, topicQuery) {
+        val topicAdapter = object: FirebaseEmptyRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, topicQuery) {
+            override fun onEmpty() {
+                emptyTopicsTextView.setVisible()
+            }
+
+            override fun onNonEmpty() {
+                emptyTopicsTextView.setVisibilityGone()
+            }
+
             override fun populateViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int) {
 //                val topicKey = this.getRef(topicPosition).key // todo : use this line, not dummy query
                 val topicKey = getString(R.string.DUMMY_KEY_FOR_TESTING) // todo: remove dummy!
