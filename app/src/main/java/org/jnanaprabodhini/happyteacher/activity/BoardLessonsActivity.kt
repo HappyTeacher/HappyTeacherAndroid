@@ -6,19 +6,15 @@ import android.support.annotation.IntegerRes
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
-import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.TextView
 import com.firebase.ui.database.FirebaseListAdapter
-import com.firebase.ui.database.FirebaseRecyclerAdapter
 import kotlinx.android.synthetic.main.activity_board_lessons.*
 import org.jnanaprabodhini.happyteacher.BoardChoiceDialog
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
-import org.jnanaprabodhini.happyteacher.adapter.FirebaseEmptyRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.FirebaseDataObserverRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.extension.jiggle
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
@@ -99,13 +95,17 @@ class BoardLessonsActivity : BottomNavigationActivity() {
 
         val spinnerSelectionListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedSubjectPosition = subjectSpinner.selectedItemPosition
-                val selectedLevelPosition = levelSpinner.selectedItemPosition
+                if (!subjectSpinnerAdapter.isEmpty && !levelSpinnerAdapter.isEmpty) {
+                    val selectedSubjectPosition = subjectSpinner.selectedItemPosition
+                    val selectedLevelPosition = levelSpinner.selectedItemPosition
 
-                val selectedSubjectKey = subjectSpinnerAdapter.getRef(selectedSubjectPosition).key
-                val selectedLevel = levelSpinnerAdapter.getRef(selectedLevelPosition).key
+                    if (selectedSubjectPosition != AdapterView.INVALID_POSITION && selectedLevelPosition != AdapterView.INVALID_POSITION) {
+                        val selectedSubjectKey = subjectSpinnerAdapter.getRef(selectedSubjectPosition).key
+                        val selectedLevel = levelSpinnerAdapter.getRef(selectedLevelPosition).key
 
-                updateSyllabusLessonList(selectedSubjectKey, selectedLevel)
+                        updateSyllabusLessonList(selectedSubjectKey, selectedLevel)
+                    }
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -116,13 +116,20 @@ class BoardLessonsActivity : BottomNavigationActivity() {
     }
 
     private fun  updateSyllabusLessonList(selectedSubjectKey: String, selectedLevel: String) {
+        emptySyllabusLessonsTextView.setVisibilityGone()
+        boardLessonsProgressBar.setVisible()
+
         val syllabusLessonQuery = databaseReference.child(getString(R.string.syllabus_lessons))
                 .child(prefs.getBoardKey())
                 .child(selectedSubjectKey)
                 .child(selectedLevel)
                 .orderByChild(getString(R.string.lesson_number))
 
-        val syllabusLessonAdapter = object: FirebaseEmptyRecyclerAdapter<SyllabusLesson, SyllabusLessonViewHolder>(SyllabusLesson::class.java, R.layout.list_item_syllabus_lesson, SyllabusLessonViewHolder::class.java, syllabusLessonQuery) {
+        val syllabusLessonAdapter = object: FirebaseDataObserverRecyclerAdapter<SyllabusLesson, SyllabusLessonViewHolder>(SyllabusLesson::class.java, R.layout.list_item_syllabus_lesson, SyllabusLessonViewHolder::class.java, syllabusLessonQuery) {
+            override fun onFinishedLoading() {
+                boardLessonsProgressBar.setVisibilityGone()
+            }
+
             override fun onEmpty() {
                 // Show empty view
                 emptySyllabusLessonsTextView.setVisible()
