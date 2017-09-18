@@ -19,6 +19,9 @@ fun View.setVisible() {
     this.visibility = View.VISIBLE
 }
 
+fun View.isGone(): Boolean = this.visibility == View.GONE
+fun View.isVisible(): Boolean = this.visibility == View.VISIBLE
+
 fun View.jiggle() {
     val jiggleAnimation = AnimationUtils.loadAnimation(this.context, R.anim.jiggle)
     this.startAnimation(jiggleAnimation)

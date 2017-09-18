@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.header_syllabus_lesson_topic.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseEmptyRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.extension.isGone
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.LessonHeader
@@ -89,7 +90,13 @@ class TopicsListActivity : BottomNavigationActivity() {
     }
 
     override fun onBottomNavigationItemReselected() {
-        initializeTopicListForSubject()
+        if (subjectSpinner.isGone()) {
+            // Reset to subject spinner view:
+            initializeTopicListForSubject()
+        } else {
+            // Scroll to top:
+            topicsRecyclerView.smoothScrollToPosition(0)
+        }
     }
 
     /**

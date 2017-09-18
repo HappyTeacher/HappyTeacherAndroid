@@ -55,7 +55,7 @@ class BoardLessonsActivity : BottomNavigationActivity() {
     }
 
     override fun onBottomNavigationItemReselected() {
-        syllabusLessonsRecyclerView.scrollToPosition(0)
+        syllabusLessonsRecyclerView.smoothScrollToPosition(0)
     }
 
     private fun showBoardChooser() {
