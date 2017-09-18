@@ -15,6 +15,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_topics_list.*
+import kotlinx.android.synthetic.main.header_syllabus_lesson_topic.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseEmptyRecyclerAdapter
@@ -146,7 +147,9 @@ class TopicsListActivity : BottomNavigationActivity() {
      */
     private fun showSyllabusLessonTopicHeader(syllabusLessonPlanTitle: String, subject: String, standard: Int) {
         subjectSpinner.setVisibilityGone()
-        syllabusLessonPlanNameTextView.setVisible()
+        syllabusLessonTopicsHeaderView.setVisible()
+
+        headerBackArrow.setOnClickListener { onBackPressed() }
 
         syllabusLessonPlanNameTextView.text = syllabusLessonPlanTitle
 
@@ -156,7 +159,6 @@ class TopicsListActivity : BottomNavigationActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val subjectModel = dataSnapshot.getValue(Subject::class.java)
                 val subjectName = subjectModel?.name
-                syllabusLessonSubjectStandardTextView.setVisible()
 
                 val standardString = getString(R.string.standard_n, standard)
                 syllabusLessonSubjectStandardTextView.text = "$subjectName, $standardString"
@@ -165,8 +167,7 @@ class TopicsListActivity : BottomNavigationActivity() {
     }
 
     private fun hideSyllabusLessonTopicHeader() {
-        syllabusLessonPlanNameTextView.setVisibilityGone()
-        syllabusLessonSubjectStandardTextView.setVisibilityGone()
+        syllabusLessonTopicsHeaderView.setVisibilityGone()
     }
 
     /**

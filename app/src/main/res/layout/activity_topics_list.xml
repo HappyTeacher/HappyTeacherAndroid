@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorAccent">
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/topicsHeaderView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,20 +19,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="spread_inside"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/syllabusLessonPlanNameTextView"
-            style="@style/SyllabusLessonTopicHeaderText.Title"
-            android:visibility="gone" />
-        <TextView
-            android:id="@+id/syllabusLessonSubjectStandardTextView"
-            style="@style/SyllabusLessonTopicHeaderText.Subtitle"
-            android:visibility="gone" />
+
+        <include layout="@layout/header_syllabus_lesson_topic"/>
+
         <Spinner
             android:id="@+id/subjectSpinner"
             style="@style/PurpleSpinner"
             android:visibility="gone" />
-    </LinearLayout>
-
+    </FrameLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/topicsRecyclerView"

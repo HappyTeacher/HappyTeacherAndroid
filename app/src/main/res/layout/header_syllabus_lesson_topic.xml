@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorAccent"
+    android:id="@+id/syllabusLessonTopicsHeaderView"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/headerBackArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="16dp"
+        android:paddingEnd="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="@drawable/ic_arrow_back_white_24dp"/>
+
+    <TextView
+        android:id="@+id/syllabusLessonPlanNameTextView"
+        tools:text="Title of Lesson"
+        app:layout_constraintLeft_toRightOf="@id/headerBackArrow"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/syllabusLessonSubjectStandardTextView"
+        style="@style/SyllabusLessonTopicHeaderText.Title" />
+    <TextView
+        android:id="@+id/syllabusLessonSubjectStandardTextView"
+        tools:text="Mx. Author"
+        app:layout_constraintLeft_toRightOf="@id/headerBackArrow"
+        app:layout_constraintTop_toBottomOf="@id/syllabusLessonPlanNameTextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        style="@style/SyllabusLessonTopicHeaderText.Subtitle" />
+
+
+</android.support.constraint.ConstraintLayout>
