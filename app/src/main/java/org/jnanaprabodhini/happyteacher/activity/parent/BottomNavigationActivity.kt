@@ -2,7 +2,6 @@ package org.jnanaprabodhini.happyteacher.activity.parent
 
 import android.content.Intent
 import android.support.design.widget.BottomNavigationView
-import android.util.Log
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.BoardLessonsActivity
 import org.jnanaprabodhini.happyteacher.activity.TopicsListActivity

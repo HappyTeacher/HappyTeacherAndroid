@@ -10,7 +10,6 @@ import android.widget.AdapterView
 import android.widget.TextView
 import com.firebase.ui.database.FirebaseIndexRecyclerAdapter
 import com.firebase.ui.database.FirebaseListAdapter
-import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener

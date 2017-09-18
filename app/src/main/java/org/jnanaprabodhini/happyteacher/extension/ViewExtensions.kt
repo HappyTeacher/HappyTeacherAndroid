@@ -2,7 +2,6 @@ package org.jnanaprabodhini.happyteacher.extension
 
 import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
-import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import org.jnanaprabodhini.happyteacher.R
