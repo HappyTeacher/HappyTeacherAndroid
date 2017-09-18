@@ -31,10 +31,23 @@
         android:background="@color/lightGray"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layoutAnimation="@anim/layout_fall_down"
         app:layout_constraintTop_toBottomOf="@+id/subjectSpinner"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigation" />
+
+    <TextView
+        android:id="@+id/emptySyllabusLessonsTextView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        style="@style/EmptyListFeedbackText"
+        android:visibility="gone"
+        android:text="@string/there_are_currently_no_lesson_plans_for_this_subject_and_level"
+        app:layout_constraintTop_toBottomOf="@+id/subjectSpinner"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottomNavigation"

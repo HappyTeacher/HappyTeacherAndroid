@@ -6,7 +6,10 @@ import android.support.annotation.IntegerRes
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.TextView
 import com.firebase.ui.database.FirebaseListAdapter
@@ -15,7 +18,10 @@ import kotlinx.android.synthetic.main.activity_board_lessons.*
 import org.jnanaprabodhini.happyteacher.BoardChoiceDialog
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
+import org.jnanaprabodhini.happyteacher.adapter.FirebaseEmptyRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.extension.jiggle
+import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
+import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.extension.showSnackbar
 import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.SyllabusLesson
@@ -116,7 +122,21 @@ class BoardLessonsActivity : BottomNavigationActivity() {
                 .child(selectedLevel)
                 .orderByChild(getString(R.string.lesson_number))
 
-        val syllabusLessonAdapter = object: FirebaseRecyclerAdapter<SyllabusLesson, SyllabusLessonViewHolder>(SyllabusLesson::class.java, R.layout.list_item_syllabus_lesson, SyllabusLessonViewHolder::class.java, syllabusLessonQuery) {
+        val syllabusLessonAdapter = object: FirebaseEmptyRecyclerAdapter<SyllabusLesson, SyllabusLessonViewHolder>(SyllabusLesson::class.java, R.layout.list_item_syllabus_lesson, SyllabusLessonViewHolder::class.java, syllabusLessonQuery) {
+            override fun onEmpty() {
+                // Show empty view
+                emptySyllabusLessonsTextView.setVisible()
+            }
+
+            override fun onNonEmpty() {
+                // Hide empty view
+                emptySyllabusLessonsTextView.setVisibilityGone()
+
+                // Animate layout changes
+                syllabusLessonsRecyclerView.scheduleLayoutAnimation()
+                syllabusLessonsRecyclerView.invalidate()
+            }
+
             override fun populateViewHolder(syllabusLessonViewHolder: SyllabusLessonViewHolder?, syllabusLessonModel: SyllabusLesson?, syllabusLessonPosition: Int) {
                 syllabusLessonViewHolder?.lessonTitleTextView?.text = syllabusLessonModel?.name
                 syllabusLessonViewHolder?.lessonNumberTextView?.text = syllabusLessonModel?.lessonNumber.toString()

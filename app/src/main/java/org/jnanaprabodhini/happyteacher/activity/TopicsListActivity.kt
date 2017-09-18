@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.annotation.IntegerRes
 import android.support.v7.widget.LinearLayoutManager
 import android.text.format.DateFormat
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.TextView
@@ -27,6 +28,9 @@ import org.jnanaprabodhini.happyteacher.model.Topic
 import org.jnanaprabodhini.happyteacher.viewholder.LessonHeaderViewHolder
 import org.jnanaprabodhini.happyteacher.viewholder.TopicViewHolder
 import java.util.*
+import android.view.animation.AnimationUtils
+import android.view.animation.LayoutAnimationController
+import org.jnanaprabodhini.happyteacher.adapter.FirebaseEmptyIndexRecyclerAdapter
 
 
 class TopicsListActivity : BottomNavigationActivity() {
@@ -68,10 +72,6 @@ class TopicsListActivity : BottomNavigationActivity() {
 
             showSyllabusLessonTopicHeader(title, subject, level)
             updateListOfTopicsFromIndices(topicsKeyUrl, subject)
-
-            // If there are no topics, we will not come to this activity,
-            //  so the topics list isn't empty and this view can be hidden:
-            emptyTopicsTextView.setVisibilityGone()
         } else {
             initializeTopicListForSubject()
         }
@@ -138,11 +138,11 @@ class TopicsListActivity : BottomNavigationActivity() {
 
         val topicAdapter = object: FirebaseEmptyRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, topicQuery) {
             override fun onEmpty() {
-                emptyTopicsTextView.setVisible()
+                onTopicsListEmpty()
             }
 
             override fun onNonEmpty() {
-                emptyTopicsTextView.setVisibilityGone()
+                onTopicsListNonEmpty()
             }
 
             override fun populateViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int) {
@@ -151,6 +151,7 @@ class TopicsListActivity : BottomNavigationActivity() {
                 populateTopicViewHolder(topicViewHolder, topicModel, topicPosition, topicKey)
             }
         }
+
         topicsRecyclerView.adapter = topicAdapter
     }
 
@@ -195,7 +196,15 @@ class TopicsListActivity : BottomNavigationActivity() {
         val keyReference = databaseRoot.getReferenceFromUrl(keyLocationUrl)
         val topicsReference = databaseReference.child(getString(R.string.topics)).child(subjectKey)
 
-        val topicAdapter = object: FirebaseIndexRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, keyReference, topicsReference) {
+        val topicAdapter = object: FirebaseEmptyIndexRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, keyReference, topicsReference) {
+            override fun onEmpty() {
+                onTopicsListEmpty()
+            }
+
+            override fun onNonEmpty() {
+                onTopicsListNonEmpty()
+            }
+
             override fun populateViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int) {
 //                val topicKey = this.getRef(topicPosition).key // todo : use this line, not dummy query
                 val topicKey = getString(R.string.DUMMY_KEY_FOR_TESTING) // todo: remove dummy!
@@ -241,6 +250,18 @@ class TopicsListActivity : BottomNavigationActivity() {
         val horizontalLayoutManager = LinearLayoutManager(this@TopicsListActivity, LinearLayoutManager.HORIZONTAL, false)
         topicViewHolder?.lessonsRecyclerView?.layoutManager = horizontalLayoutManager
         topicViewHolder?.lessonsRecyclerView?.adapter = lessonHeaderAdapter
+    }
+
+    private fun onTopicsListEmpty() {
+        emptyTopicsTextView.setVisible()
+    }
+
+    private fun onTopicsListNonEmpty() {
+        emptyTopicsTextView.setVisibilityGone()
+
+        // Animate layout changes
+        topicsRecyclerView.scheduleLayoutAnimation()
+        topicsRecyclerView.invalidate()
     }
 
     private fun populateLessonHeaderViewHolder(lessonHeaderViewHolder: LessonHeaderViewHolder?, lessonHeaderModel: LessonHeader?, dateFormat: java.text.DateFormat) {

@@ -13,6 +13,7 @@
     <string name="contribute">Contribute</string>
     <string name="this_lesson_has_no_relevant_topics">This lesson has no relevant topics.</string>
     <string name="there_are_no_topics_for_this_subject_yet">There are no topics for this subject yet.</string>
+    <string name="there_are_currently_no_lesson_plans_for_this_subject_and_level">There are currently no lesson plans for this subject and level.</string>
 
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>
