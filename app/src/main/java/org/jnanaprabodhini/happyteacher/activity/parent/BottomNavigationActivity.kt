@@ -2,7 +2,7 @@ package org.jnanaprabodhini.happyteacher.activity.parent
 
 import android.content.Intent
 import android.support.design.widget.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_board_lessons.*
+import android.util.Log
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.BoardLessonsActivity
 import org.jnanaprabodhini.happyteacher.activity.TopicsListActivity
@@ -16,9 +16,11 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
 
     protected val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
-        if (item.itemId == bottomNavigationMenuItemId) return@OnNavigationItemSelectedListener true
-
         when (item.itemId) {
+            bottomNavigationMenuItemId -> {
+                this.onBottomNavigationItemReselected()
+            }
+
             R.id.navigation_board -> {
                 val boardActivityIntent = Intent(this, BoardLessonsActivity::class.java)
                 startActivity(boardActivityIntent)
@@ -36,17 +38,22 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
         false
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        // Ensure that the correct bottom nav item is selected:
-        bottomNavigation.selectedItemId = this.bottomNavigationMenuItemId
-    }
-
-    // Remove transition for this activity to avoid bottom navigation jumpiness.
     public override fun onPause() {
         super.onPause()
-        overridePendingTransition(0, 0)
+        overridePendingTransition(R.anim.fade_in_quick, R.anim.fade_out_quick)
+    }
+
+    abstract fun onBottomNavigationItemReselected()
+
+    /**
+     * According to Material Design Guidelines, top-level activities
+     *  should close on back pressed. These bottom nav activities are
+     *  top-level.
+     *
+     *  https://material.io/guidelines/components/bottom-navigation.html#bottom-navigation-behavior
+     */
+    override fun onBackPressed() {
+        finishAffinity()
     }
 
 }

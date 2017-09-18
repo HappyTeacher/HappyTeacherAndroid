@@ -73,13 +73,23 @@ class TopicsListActivity : BottomNavigationActivity() {
             //  so the topics list isn't empty and this view can be hidden:
             emptyTopicsTextView.setVisibilityGone()
         } else {
-            // Show all topics for a subject, selected by spinner
-            hideSyllabusLessonTopicHeader()
-            setupSubjectSpinner()
+            initializeTopicListForSubject()
         }
 
         topicsRecyclerView.layoutManager = LinearLayoutManager(this)
+
+        bottomNavigation.selectedItemId = bottomNavigationMenuItemId
         bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+    }
+
+    fun initializeTopicListForSubject() {
+        // Show all topics for a subject, selected by spinner
+        setupSubjectSpinner()
+        hideSyllabusLessonTopicHeader()
+    }
+
+    override fun onBottomNavigationItemReselected() {
+        initializeTopicListForSubject()
     }
 
     /**
@@ -87,8 +97,6 @@ class TopicsListActivity : BottomNavigationActivity() {
      *   to display topics relevant to a specific syllabus lesson plan.
      */
     private fun setupSubjectSpinner() {
-        subjectSpinner.setVisible()
-
         val subjectQuery = databaseReference.child(getString(R.string.subjects))
                 .orderByChild(getString(R.string.is_active))
                 .equalTo(true)
@@ -109,6 +117,8 @@ class TopicsListActivity : BottomNavigationActivity() {
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
+
+        subjectSpinner.setVisible()
     }
 
     /**
@@ -149,7 +159,7 @@ class TopicsListActivity : BottomNavigationActivity() {
         subjectSpinner.setVisibilityGone()
         syllabusLessonTopicsHeaderView.setVisible()
 
-        headerBackArrow.setOnClickListener { onBackPressed() }
+        headerBackArrow.setOnClickListener { finish() }
 
         syllabusLessonPlanNameTextView.text = syllabusLessonPlanTitle
 

@@ -14,6 +14,7 @@ import android.widget.TextView
 import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import kotlinx.android.synthetic.main.activity_board_lessons.*
+import kotlinx.android.synthetic.main.list_item_topic.*
 import org.jnanaprabodhini.happyteacher.BoardChoiceDialog
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
@@ -32,6 +33,8 @@ class BoardLessonsActivity : BottomNavigationActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_board_lessons)
+
+        bottomNavigation.selectedItemId = bottomNavigationMenuItemId
         bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
         val layoutManager = LinearLayoutManager(this)
@@ -49,6 +52,10 @@ class BoardLessonsActivity : BottomNavigationActivity() {
             //  to see syllabus lesson plans from.
             showBoardChooser()
         }
+    }
+
+    override fun onBottomNavigationItemReselected() {
+        syllabusLessonsRecyclerView.scrollToPosition(0)
     }
 
     private fun showBoardChooser() {
