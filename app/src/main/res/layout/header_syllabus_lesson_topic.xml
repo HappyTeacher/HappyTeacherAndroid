@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorAccent"
     android:id="@+id/syllabusLessonTopicsHeaderView"
-    android:padding="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="@dimen/spinner_item_height">
 
     <ImageView
         android:id="@+id/headerBackArrow"
@@ -25,7 +26,8 @@
         app:layout_constraintLeft_toRightOf="@id/headerBackArrow"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/syllabusLessonSubjectStandardTextView"
-        style="@style/SyllabusLessonTopicHeaderText.Title" />
+        style="@style/SyllabusLessonTopicHeaderText.Title"
+        app:layout_constraintVertical_chainStyle="packed"/>
     <TextView
         android:id="@+id/syllabusLessonSubjectStandardTextView"
         tools:text="Mx. Author"

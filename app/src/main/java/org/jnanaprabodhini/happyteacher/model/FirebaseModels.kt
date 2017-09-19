@@ -4,7 +4,9 @@ package org.jnanaprabodhini.happyteacher.model
  * Data models for Firebase objects.
  */
 
-data class Subject(var name: String = "")
+data class Subject(var name: String = "",
+                   var parentSubject: String = "",
+                   var hasChildren: Boolean = false)
 
 data class Topic(var name: String = "",
                  var subject: String = "")
