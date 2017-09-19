@@ -4,11 +4,9 @@ package org.jnanaprabodhini.happyteacher.model
  * Data models for Firebase objects.
  */
 
-data class Subject(var isActive: Boolean = false,
-                   var name: String = "")
+data class Subject(var name: String = "")
 
-data class Topic(var isActive: Boolean = false,
-                 var name: String = "",
+data class Topic(var name: String = "",
                  var subject: String = "")
 
 // TODO: Update with actual object structure when complete:
@@ -26,5 +24,4 @@ data class SyllabusLesson(var board: String = "",
                           var subject: String = "",
                           var topicCount: Int = 0)
 
-data class Board(var isActive: Boolean = false,
-                 var name: String = "")
+data class Board(var name: String = "")

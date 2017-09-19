@@ -80,14 +80,9 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
 
         val levelQuery = databaseReference.child(getString(R.string.levels)).orderByValue().equalTo(true)
 
-        val levelSpinnerAdapter = object : FirebaseListAdapter<Boolean>(this, Boolean::class.java, R.layout.spinner_item, levelQuery) {
-            override fun populateView(view: View, level: Boolean, position: Int) {
-                try {
-                    val levelNumber = Integer.parseInt(this.getRef(position).key)
-                    (view as TextView).text = getString(R.string.standard_n, levelNumber)
-                } catch (e: NumberFormatException) {
-                    (view as TextView).text = this.getRef(position).key
-                }
+        val levelSpinnerAdapter = object : FirebaseListAdapter<Int>(this, Int::class.java, R.layout.spinner_item, levelQuery) {
+            override fun populateView(view: View, level: Int, position: Int) {
+                (view as TextView).text = getString(R.string.standard_n, level)
             }
         }
 
