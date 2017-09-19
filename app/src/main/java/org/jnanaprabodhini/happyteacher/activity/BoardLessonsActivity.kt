@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.widget.AdapterView
 import android.widget.TextView
+import com.firebase.ui.database.FirebaseIndexListAdapter
 import com.firebase.ui.database.FirebaseListAdapter
 import kotlinx.android.synthetic.main.activity_board_lessons.*
 import org.jnanaprabodhini.happyteacher.BoardChoiceDialog
@@ -68,34 +69,42 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
     }
 
     private fun initializeSpinners() {
-        val subjectQuery = databaseReference.child(getString(R.string.subjects))
+        val boardSubjectKeyQuery = databaseReference.child(getString(R.string.boards))
+                                                    .child(prefs.getBoardKey())
+                                                    .child(getString(R.string.subjects))
 
-        val subjectSpinnerAdapter = object : FirebaseListAdapter<Subject>(this, Subject::class.java, R.layout.spinner_item, subjectQuery) {
+        val subjectRef = databaseReference.child(getString(R.string.subjects))
+
+        val boardSubjectSpinnerAdapter = object : FirebaseIndexListAdapter<Subject>(this, Subject::class.java, R.layout.spinner_item, boardSubjectKeyQuery, subjectRef) {
             override fun populateView(view: View, subject: Subject, position: Int) {
                 (view as TextView).text = subject.name
             }
         }
 
-        val levelQuery = databaseReference.child(getString(R.string.levels)).orderByValue()
+        val boardLevelKeyQuery = databaseReference.child(getString(R.string.boards))
+                .child(prefs.getBoardKey())
+                .child(getString(R.string.levels))
 
-        val levelSpinnerAdapter = object : FirebaseListAdapter<Int>(this, Int::class.java, R.layout.spinner_item, levelQuery) {
+        val levelRef = databaseReference.child(getString(R.string.levels))
+
+        val boardLevelSpinnerAdapter = object : FirebaseIndexListAdapter<Int>(this, Int::class.java, R.layout.spinner_item, boardLevelKeyQuery, levelRef) {
             override fun populateView(view: View, level: Int, position: Int) {
                 (view as TextView).text = getString(R.string.standard_n, level)
             }
         }
 
-        subjectSpinner.adapter = subjectSpinnerAdapter
-        levelSpinner.adapter = levelSpinnerAdapter
+        subjectSpinner.adapter = boardSubjectSpinnerAdapter
+        levelSpinner.adapter = boardLevelSpinnerAdapter
 
         val spinnerSelectionListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (!subjectSpinnerAdapter.isEmpty && !levelSpinnerAdapter.isEmpty) {
+                if (!boardSubjectSpinnerAdapter.isEmpty && !boardLevelSpinnerAdapter.isEmpty) {
                     val selectedSubjectPosition = subjectSpinner.selectedItemPosition
                     val selectedLevelPosition = levelSpinner.selectedItemPosition
 
                     if (selectedSubjectPosition != AdapterView.INVALID_POSITION && selectedLevelPosition != AdapterView.INVALID_POSITION) {
-                        val selectedSubjectKey = subjectSpinnerAdapter.getRef(selectedSubjectPosition).key
-                        val selectedLevel = levelSpinnerAdapter.getRef(selectedLevelPosition).key
+                        val selectedSubjectKey = boardSubjectSpinnerAdapter.getRef(selectedSubjectPosition).key
+                        val selectedLevel = boardLevelSpinnerAdapter.getRef(selectedLevelPosition).key
 
                         updateSyllabusLessonList(selectedSubjectKey, selectedLevel)
                     }
