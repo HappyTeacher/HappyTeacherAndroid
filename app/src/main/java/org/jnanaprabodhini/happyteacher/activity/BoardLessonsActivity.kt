@@ -6,21 +6,19 @@ import android.support.annotation.IntegerRes
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.View
-import android.widget.AdapterView
+import android.widget.Spinner
 import android.widget.TextView
 import com.firebase.ui.database.FirebaseIndexListAdapter
-import com.firebase.ui.database.FirebaseListAdapter
 import kotlinx.android.synthetic.main.activity_board_lessons.*
 import org.jnanaprabodhini.happyteacher.BoardChoiceDialog
 import org.jnanaprabodhini.happyteacher.DataObserver
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseDataObserverRecyclerAdapter
-import org.jnanaprabodhini.happyteacher.extension.jiggle
-import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
-import org.jnanaprabodhini.happyteacher.extension.setVisible
-import org.jnanaprabodhini.happyteacher.extension.showSnackbar
+import org.jnanaprabodhini.happyteacher.adapter.FirebaseIndexDataObserverListAdapter
+import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.SyllabusLesson
 import org.jnanaprabodhini.happyteacher.prefs
@@ -38,6 +36,17 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
         bottomNavigation.selectedItemId = bottomNavigationMenuItemId
         bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
+        setupRecyclerView()
+        setupSubjectSpinner()
+
+        if (!prefs.hasChosenBoard()) {
+            // Prompt the user to select which board they would like
+            //  to see syllabus lesson plans from.
+            showBoardChooser()
+        }
+    }
+
+    private fun setupRecyclerView() {
         val layoutManager = LinearLayoutManager(this)
         syllabusLessonsRecyclerView.layoutManager = layoutManager
 
@@ -45,14 +54,6 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
         val dividerItemDecoration = DividerItemDecoration(this, layoutManager.orientation)
         dividerItemDecoration.setDrawable(ResourcesCompat.getDrawable(resources, R.drawable.divider_vertical, null)!!)
         syllabusLessonsRecyclerView.addItemDecoration(dividerItemDecoration)
-
-        initializeSpinners()
-
-        if (!prefs.hasChosenBoard()) {
-            // Prompt the user to select which board they would like
-            //  to see syllabus lesson plans from.
-            showBoardChooser()
-        }
     }
 
     override fun onBottomNavigationItemReselected() {
@@ -63,15 +64,15 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
         val dialog = BoardChoiceDialog(this)
         dialog.setOnDismissListener {
             // Re-initialize spinners after board is chosen.
-            initializeSpinners()
+            setupSubjectSpinner()
         }
         dialog.show()
     }
 
-    private fun initializeSpinners() {
+    private fun setupSubjectSpinner() {
         val boardSubjectKeyQuery = databaseReference.child(getString(R.string.boards))
-                                                    .child(prefs.getBoardKey())
-                                                    .child(getString(R.string.subjects))
+                .child(prefs.getBoardKey())
+                .child(getString(R.string.subjects))
 
         val subjectRef = databaseReference.child(getString(R.string.subjects))
 
@@ -81,44 +82,48 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
             }
         }
 
-        val boardLevelKeyQuery = databaseReference.child(getString(R.string.boards))
-                .child(prefs.getBoardKey())
-                .child(getString(R.string.levels))
+        // The level spinner depends on what subject is selected:
+        subjectSpinner.onItemSelected { pos -> setupLevelSpinnerForSubject(boardSubjectSpinnerAdapter.getRef(pos).key) }
+
+        subjectSpinner.adapter = boardSubjectSpinnerAdapter
+    }
+
+    private fun setupLevelSpinnerForSubject(subjectKey: String) {
+        val previousSelection = levelSpinner.selectedItem
 
         val levelRef = databaseReference.child(getString(R.string.levels))
+        val boardLevelKeyQuery = databaseReference.child(getString(R.string.boards))
+                                                    .child(prefs.getBoardKey())
+                                                    .child(getString(R.string.subjects))
+                                                    .child(subjectKey)
 
-        val boardLevelSpinnerAdapter = object : FirebaseIndexListAdapter<Int>(this, Int::class.java, R.layout.spinner_item, boardLevelKeyQuery, levelRef) {
+
+        val levelDataObserver = object: DataObserver {
+            override fun onDataNonEmpty() {
+                // If the previous level selection is still present in the updated list,
+                //  then select it!
+                if (previousSelection != null && previousSelection is Int) {
+                    val indexOfPreviousSelection = levelSpinner.items().indexOf(previousSelection)
+                    if (indexOfPreviousSelection != -1) {
+                        levelSpinner.setSelection(indexOfPreviousSelection)
+                    }
+                }
+            }
+        }
+
+        val boardLevelSpinnerAdapter = object : FirebaseIndexDataObserverListAdapter<Int>(this, Int::class.java, R.layout.spinner_item, boardLevelKeyQuery, levelRef, levelDataObserver) {
             override fun populateView(view: View, level: Int, position: Int) {
                 (view as TextView).text = getString(R.string.standard_n, level)
             }
         }
 
-        subjectSpinner.adapter = boardSubjectSpinnerAdapter
+        // Once a level is selected, we can update the list of lessons
+        levelSpinner.onItemSelected { pos -> updateSyllabusLessonList(subjectKey, boardLevelSpinnerAdapter.getRef(pos).key) }
+
         levelSpinner.adapter = boardLevelSpinnerAdapter
-
-        val spinnerSelectionListener = object: AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (!boardSubjectSpinnerAdapter.isEmpty && !boardLevelSpinnerAdapter.isEmpty) {
-                    val selectedSubjectPosition = subjectSpinner.selectedItemPosition
-                    val selectedLevelPosition = levelSpinner.selectedItemPosition
-
-                    if (selectedSubjectPosition != AdapterView.INVALID_POSITION && selectedLevelPosition != AdapterView.INVALID_POSITION) {
-                        val selectedSubjectKey = boardSubjectSpinnerAdapter.getRef(selectedSubjectPosition).key
-                        val selectedLevel = boardLevelSpinnerAdapter.getRef(selectedLevelPosition).key
-
-                        updateSyllabusLessonList(selectedSubjectKey, selectedLevel)
-                    }
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-
-        subjectSpinner.onItemSelectedListener = spinnerSelectionListener
-        levelSpinner.onItemSelectedListener = spinnerSelectionListener
     }
 
-    private fun  updateSyllabusLessonList(selectedSubjectKey: String, selectedLevel: String) {
+    private fun updateSyllabusLessonList(selectedSubjectKey: String, selectedLevel: String) {
         onRequestNewData()
 
         val syllabusLessonQuery = databaseReference.child(getString(R.string.syllabus_lessons))
