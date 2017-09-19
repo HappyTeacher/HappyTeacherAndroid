@@ -97,7 +97,6 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
                                                     .child(getString(R.string.subjects))
                                                     .child(subjectKey)
 
-
         val levelDataObserver = object: DataObserver {
             override fun onDataNonEmpty() {
                 // If the previous level selection is still present in the updated list,
@@ -105,7 +104,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
                 if (previousSelection != null && previousSelection is Int) {
                     val indexOfPreviousSelection = levelSpinner.items().indexOf(previousSelection)
                     if (indexOfPreviousSelection != -1) {
-                        levelSpinner.setSelection(indexOfPreviousSelection)
+                        levelSpinner.setSelection(indexOfPreviousSelection, true)
                     }
                 }
             }
