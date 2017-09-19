@@ -21,9 +21,6 @@ import org.jnanaprabodhini.happyteacher.DataObserver
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseDataObserverRecyclerAdapter
-import org.jnanaprabodhini.happyteacher.extension.isGone
-import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
-import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.LessonHeader
 import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.Topic
@@ -31,7 +28,7 @@ import org.jnanaprabodhini.happyteacher.viewholder.LessonHeaderViewHolder
 import org.jnanaprabodhini.happyteacher.viewholder.TopicViewHolder
 import java.util.*
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseIndexDataObserverRecyclerAdapter
-import org.jnanaprabodhini.happyteacher.extension.onSingleValueEvent
+import org.jnanaprabodhini.happyteacher.extension.*
 
 
 class TopicsListActivity : BottomNavigationActivity(), DataObserver {
@@ -116,23 +113,18 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
 
         spinner.adapter = subjectAdapter
 
-        spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val subject = subjectAdapter.getItem(position)
-                val selectedSubjectKey = subjectAdapter.getRef(position).key
+        spinner.onItemSelected { position ->
+            val subject = subjectAdapter.getItem(position)
+            val selectedSubjectKey = subjectAdapter.getRef(position).key
 
-                if (subject.hasChildren) {
-                    setupSpinner(childSubjectSpinner, R.layout.spinner_item_child, selectedSubjectKey)
-                } else if (!subject.hasChildren && spinner == childSubjectSpinner) {
-                    updateListOfTopics(selectedSubjectKey)
-                } else {
-                    updateListOfTopics(selectedSubjectKey)
-                    childSubjectSpinner.setVisibilityGone()
-                }
-
+            if (subject.hasChildren) {
+                setupSpinner(childSubjectSpinner, R.layout.spinner_item_child, selectedSubjectKey)
+            } else if (!subject.hasChildren && spinner == childSubjectSpinner) {
+                updateListOfTopics(selectedSubjectKey)
+            } else {
+                updateListOfTopics(selectedSubjectKey)
+                childSubjectSpinner.setVisibilityGone()
             }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
         spinner.setVisible()
