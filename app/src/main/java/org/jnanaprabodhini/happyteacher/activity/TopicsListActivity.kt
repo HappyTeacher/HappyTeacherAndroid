@@ -149,7 +149,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         onRequestNewData()
 
         val topicQuery = databaseReference.child(getString(R.string.topics))
-                .child(subjectKey)
+                .orderByChild(getString(R.string.subject)).equalTo(subjectKey)
 
         val topicAdapter = object: FirebaseDataObserverRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, topicQuery, this) {
             override fun populateViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int) {
@@ -203,7 +203,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         onRequestNewData()
 
         val keyReference = databaseRoot.getReferenceFromUrl(keyLocationUrl)
-        val topicsReference = databaseReference.child(getString(R.string.topics)).child(subjectKey)
+        val topicsReference = databaseReference.child(getString(R.string.topics))
 
         val topicIndexAdapter = object: FirebaseIndexDataObserverRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, keyReference, topicsReference, this) {
             override fun populateViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int) {
