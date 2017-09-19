@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.annotation.IntegerRes
 import android.support.v7.widget.LinearLayoutManager
 import android.text.format.DateFormat
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.TextView
@@ -88,7 +89,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
     }
 
     override fun onBottomNavigationItemReselected() {
-        if (subjectSpinner.isGone()) {
+        if (parentSubjectSpinner.isGone()) {
             // Reset to subject spinner view:
             initializeTopicListForSubject()
         } else {
@@ -102,17 +103,50 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
      *   to display topics relevant to a specific syllabus lesson plan.
      */
     private fun setupSubjectSpinner() {
-        val subjectQuery = databaseReference.child(getString(R.string.subjects))
+        val parentSubjectQuery = databaseReference.child(getString(R.string.subjects)).orderByChild(getString(R.string.parent_subject)).equalTo(null)
 
-        val subjectAdapter = object : FirebaseListAdapter<Subject>(this, Subject::class.java, R.layout.spinner_item, subjectQuery) {
+        val subjectAdapter = object : FirebaseListAdapter<Subject>(this, Subject::class.java, R.layout.spinner_item, parentSubjectQuery) {
             override fun populateView(view: View, subject: Subject, position: Int) {
                 (view as TextView).text = subject.name
             }
         }
 
-        subjectSpinner.adapter = subjectAdapter
+        parentSubjectSpinner.adapter = subjectAdapter
 
-        subjectSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+        parentSubjectSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val subject = subjectAdapter.getItem(position)
+                val selectedSubjectKey = subjectAdapter.getRef(position).key
+
+                childSubjectSpinner.setVisibilityGone()
+
+                Log.d("GRAHAM", "hasChildren ${subject.hasChildren}")
+                if (subject.hasChildren) {
+                    setupChildSubjectSpinner(selectedSubjectKey)
+                } else {
+                    updateListOfTopics(selectedSubjectKey)
+                }
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        parentSubjectSpinner.setVisible()
+    }
+
+    private fun setupChildSubjectSpinner(subjectKey: String) {
+        val childSubjectQuery = databaseReference.child(getString(R.string.subjects)).orderByChild(getString(R.string.parent_subject)).equalTo(subjectKey)
+
+        val subjectAdapter = object : FirebaseListAdapter<Subject>(this, Subject::class.java, R.layout.spinner_item, childSubjectQuery) {
+            override fun populateView(view: View, subject: Subject, position: Int) {
+                (view as TextView).text = subject.name
+            }
+        }
+
+        childSubjectSpinner.adapter = subjectAdapter
+
+        childSubjectSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedSubjectKey = subjectAdapter.getRef(position).key
                 updateListOfTopics(selectedSubjectKey)
@@ -121,7 +155,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        subjectSpinner.setVisible()
+        childSubjectSpinner.setVisible()
     }
 
     /**
@@ -152,7 +186,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
      *   of that less.
      */
     private fun showSyllabusLessonTopicHeader(syllabusLessonPlanTitle: String, subject: String, standard: Int) {
-        subjectSpinner.setVisibilityGone()
+        hideSpinners()
         syllabusLessonTopicsHeaderView.setVisible()
 
         headerBackArrow.setOnClickListener { finish() }
@@ -195,6 +229,11 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
             }
         }
         topicsRecyclerView.adapter = topicIndexAdapter
+    }
+
+    private fun hideSpinners() {
+        parentSubjectSpinner.setVisibilityGone()
+        childSubjectSpinner.setVisibilityGone()
     }
 
     override fun onRequestNewData() {

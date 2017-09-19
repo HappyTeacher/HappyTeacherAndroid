@@ -11,5 +11,6 @@
     <string name="lesson_number">lessonNumber</string>
     <string name="boards">boards</string>
     <string name="names">names</string>
+    <string name="parent_subject">parentSubject</string>
 
 </resources>

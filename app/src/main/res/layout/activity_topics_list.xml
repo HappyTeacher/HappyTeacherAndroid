@@ -8,10 +8,10 @@
     android:layout_height="match_parent"
     android:background="@color/colorAccent">
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/topicsHeaderView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/spinner_item_height"
+        android:layout_height="wrap_content"
         android:background="@color/colorAccent"
         android:animateLayoutChanges="true"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -23,10 +23,15 @@
         <include layout="@layout/header_syllabus_lesson_topic"/>
 
         <Spinner
-            android:id="@+id/subjectSpinner"
+            android:id="@+id/parentSubjectSpinner"
             style="@style/PurpleSpinner"
             android:visibility="gone" />
-    </FrameLayout>
+
+        <Spinner
+            android:id="@+id/childSubjectSpinner"
+            style="@style/PurpleSpinner"
+            android:visibility="gone" />
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/topicsRecyclerView"
