@@ -3,8 +3,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="spinner_item_height">72dp</dimen>
     <dimen name="spinner_item_padding">16dp</dimen>
+    <dimen name="spinner_item_height">60dp</dimen>
     <dimen name="padding_card_icon">8dp</dimen>
 
     <dimen name="width_lesson_header_card">300dp</dimen>

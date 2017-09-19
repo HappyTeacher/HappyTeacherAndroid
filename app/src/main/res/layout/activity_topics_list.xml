@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
-        android:animateLayoutChanges="true"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -27,10 +26,15 @@
             style="@style/PurpleSpinner"
             android:visibility="gone" />
 
-        <Spinner
-            android:id="@+id/childSubjectSpinner"
-            style="@style/PurpleSpinner"
-            android:visibility="gone" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/lightGrayShadow">
+            <Spinner
+                android:id="@+id/childSubjectSpinner"
+                style="@style/ChildSpinner"
+                android:visibility="gone" />
+        </FrameLayout>
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
