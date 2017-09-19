@@ -31,6 +31,7 @@ import org.jnanaprabodhini.happyteacher.viewholder.LessonHeaderViewHolder
 import org.jnanaprabodhini.happyteacher.viewholder.TopicViewHolder
 import java.util.*
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseIndexDataObserverRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.extension.onSingleValueEvent
 
 
 class TopicsListActivity : BottomNavigationActivity(), DataObserver {
@@ -178,16 +179,13 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         syllabusLessonPlanNameTextView.text = syllabusLessonPlanTitle
 
         // Get the actual subject model so we can access its name:
-        databaseReference.child(getString(R.string.subjects)).child(subject).ref.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(error: DatabaseError?) {}
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val subjectModel = dataSnapshot.getValue(Subject::class.java)
-                val subjectName = subjectModel?.name
+        databaseReference.child(getString(R.string.subjects)).child(subject).ref.onSingleValueEvent { dataSnapshot ->
+            val subjectModel = dataSnapshot?.getValue(Subject::class.java)
+            val subjectName = subjectModel?.name
 
-                val standardString = getString(R.string.standard_n, standard)
-                syllabusLessonSubjectStandardTextView.text = "$subjectName, $standardString"
-            }
-        })
+            val standardString = getString(R.string.standard_n, standard)
+            syllabusLessonSubjectStandardTextView.text = "$subjectName, $standardString"
+        }
     }
 
     private fun hideSyllabusLessonTopicHeader() {
