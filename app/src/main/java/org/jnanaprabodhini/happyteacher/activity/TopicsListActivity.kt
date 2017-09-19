@@ -59,9 +59,16 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_topics_list)
 
+        topicsRecyclerView.layoutManager = LinearLayoutManager(this)
+        bottomNavigation.selectedItemId = bottomNavigationMenuItemId
+        bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+
+        initializeUiFromIntent()
+    }
+
+    fun initializeUiFromIntent() {
         if (intent.hasAllExtras()) {
             // Show topics related to the given syllabus lesson plan
-
             val topicsKeyUrl = intent.getTopicsKeyUrl()
             val subject = intent.getSubject()
             val level = intent.getLevel()
@@ -72,11 +79,6 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         } else {
             initializeTopicListForSubject()
         }
-
-        topicsRecyclerView.layoutManager = LinearLayoutManager(this)
-
-        bottomNavigation.selectedItemId = bottomNavigationMenuItemId
-        bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
     }
 
     fun initializeTopicListForSubject() {
@@ -90,7 +92,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
             // Reset to subject spinner view:
             initializeTopicListForSubject()
         } else {
-            // Scroll to top:
+            // Scroll to top of topic list:
             topicsRecyclerView.smoothScrollToPosition(0)
         }
     }
@@ -231,11 +233,11 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
             3 -> topicViewHolder?.itemView?.setBackgroundResource(R.color.dreamsicleOrange)
         }
 
+        val dateFormat = DateFormat.getDateFormat(this@TopicsListActivity)
+
         val lessonHeaderQuery = databaseReference.child(getString(R.string.lesson_headers))
                 .child(topicKey) // hardcoded just for testing!
                 .orderByChild(getString(R.string.name))
-
-        val dateFormat = DateFormat.getDateFormat(this@TopicsListActivity)
 
         val lessonHeaderDataObserver = object: DataObserver {
             override fun onRequestNewData() {
