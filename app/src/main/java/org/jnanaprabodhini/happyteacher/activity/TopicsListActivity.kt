@@ -299,4 +299,15 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
             lessonHeaderViewHolder?.dateEditedTextView?.text = dateFormat.format(Date(lessonHeaderModel.dateEdited))
         }
     }
+
+    override fun onBackPressed() {
+        if (intent.hasAllExtras()) {
+            // If the topics list is displayed from a
+            //  syllabus lesson plan, then pressing back
+            //  should take us back to that activity.
+            finish()
+        } else {
+            super.onBackPressed()
+        }
+    }
 }
