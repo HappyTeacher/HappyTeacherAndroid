@@ -69,8 +69,6 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
 
     private fun initializeSpinners() {
         val subjectQuery = databaseReference.child(getString(R.string.subjects))
-                .orderByChild(getString(R.string.is_active))
-                .equalTo(true)
 
         val subjectSpinnerAdapter = object : FirebaseListAdapter<Subject>(this, Subject::class.java, R.layout.spinner_item, subjectQuery) {
             override fun populateView(view: View, subject: Subject, position: Int) {
@@ -78,7 +76,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
             }
         }
 
-        val levelQuery = databaseReference.child(getString(R.string.levels)).orderByValue().equalTo(true)
+        val levelQuery = databaseReference.child(getString(R.string.levels)).orderByValue()
 
         val levelSpinnerAdapter = object : FirebaseListAdapter<Int>(this, Int::class.java, R.layout.spinner_item, levelQuery) {
             override fun populateView(view: View, level: Int, position: Int) {

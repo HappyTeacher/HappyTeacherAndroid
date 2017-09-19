@@ -103,8 +103,6 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
      */
     private fun setupSubjectSpinner() {
         val subjectQuery = databaseReference.child(getString(R.string.subjects))
-                .orderByChild(getString(R.string.is_active))
-                .equalTo(true)
 
         val subjectAdapter = object : FirebaseListAdapter<Subject>(this, Subject::class.java, R.layout.spinner_item, subjectQuery) {
             override fun populateView(view: View, subject: Subject, position: Int) {
@@ -134,8 +132,6 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
 
         val topicQuery = databaseReference.child(getString(R.string.topics))
                 .child(subjectKey)
-                .orderByChild(getString(R.string.is_active))
-                .equalTo(true)
 
         val topicAdapter = object: FirebaseDataObserverRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, topicQuery, this) {
             override fun populateViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int) {
