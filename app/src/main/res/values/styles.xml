@@ -50,6 +50,7 @@
     </style>
 
     <style name="HeaderCardTitleText" parent="HeaderCardText">
+        <item name="android:layout_height">60dp</item>
         <item name="fontPath">fonts/Roboto-Medium.ttf</item>
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textStyle">bold</item>
