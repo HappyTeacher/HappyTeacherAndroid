@@ -14,5 +14,6 @@
     <string name="names">names</string>
     <string name="parent_subject">parentSubject</string>
     <string name="subtopics">subtopics</string>
+    <string name="subtopic_lesson_headers">subtopic_lesson_headers</string>
 
 </resources>
