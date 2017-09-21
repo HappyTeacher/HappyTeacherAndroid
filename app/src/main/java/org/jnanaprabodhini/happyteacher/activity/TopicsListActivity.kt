@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.IntegerRes
 import android.support.annotation.LayoutRes
+import android.support.v4.content.res.ResourcesCompat
+import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.LinearLayoutManager
 import android.text.format.DateFormat
 import android.view.View
@@ -278,8 +280,13 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         subtopicViewHolder?.institutionTextView?.text = subtopicModel?.authorInstitution
         subtopicViewHolder?.locationTextView?.text = subtopicModel?.authorLocation
 
+        subtopicViewHolder?.authorNameTextView?.setDrawableLeft(R.drawable.ic_person_accent)
+        subtopicViewHolder?.institutionTextView?.setDrawableLeft(R.drawable.ic_school_accent)
+        subtopicViewHolder?.locationTextView?.setDrawableLeft(R.drawable.ic_location_accent)
+
         if (subtopicModel != null) {
             subtopicViewHolder?.dateEditedTextView?.text = dateFormat.format(Date(subtopicModel.dateEdited))
+            subtopicViewHolder?.dateEditedTextView?.setDrawableLeft(R.drawable.ic_clock_light_gray)
         }
     }
 

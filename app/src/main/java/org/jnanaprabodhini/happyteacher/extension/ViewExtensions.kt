@@ -1,11 +1,15 @@
 package org.jnanaprabodhini.happyteacher.extension
 
+import android.graphics.drawable.Drawable
+import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
+import android.support.v7.content.res.AppCompatResources
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.Spinner
+import android.widget.TextView
 import org.jnanaprabodhini.happyteacher.R
 
 /**
@@ -48,3 +52,8 @@ fun Spinner.onItemSelected(onItemSelected: (Int) -> Unit) {
 }
 
 fun Spinner.items(): List<Any> = (0..count - 1).map { adapter.getItem(it) }
+
+fun TextView.setDrawableLeft(@DrawableRes drawableId: Int) {
+    val drawable = AppCompatResources.getDrawable(context, drawableId)
+    this.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
+}
