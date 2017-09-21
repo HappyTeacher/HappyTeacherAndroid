@@ -6,29 +6,24 @@ import android.support.annotation.IntegerRes
 import android.support.annotation.LayoutRes
 import android.support.v7.widget.LinearLayoutManager
 import android.text.format.DateFormat
-import android.util.Log
 import android.view.View
-import android.widget.AdapterView
 import android.widget.Spinner
 import android.widget.TextView
 import com.firebase.ui.database.FirebaseListAdapter
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_topics_list.*
 import kotlinx.android.synthetic.main.header_syllabus_lesson_topic.*
 import org.jnanaprabodhini.happyteacher.DataObserver
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseDataObserverRecyclerAdapter
-import org.jnanaprabodhini.happyteacher.model.LessonHeader
 import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.Topic
-import org.jnanaprabodhini.happyteacher.viewholder.LessonHeaderViewHolder
+import org.jnanaprabodhini.happyteacher.viewholder.SubtopicViewHolder
 import org.jnanaprabodhini.happyteacher.viewholder.TopicViewHolder
 import java.util.*
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseIndexDataObserverRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.extension.*
+import org.jnanaprabodhini.happyteacher.model.Subtopic
 
 
 class TopicsListActivity : BottomNavigationActivity(), DataObserver {
@@ -76,7 +71,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
             val title = intent.getLessonTitle()
 
             showSyllabusLessonTopicHeader(title, subject, level)
-            updateListOfTopicsFromIndices(topicsKeyUrl, subject)
+            updateListOfTopicsFromIndices(topicsKeyUrl)
         } else {
             initializeTopicListForSubject()
         }
@@ -146,8 +141,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
 
         val topicAdapter = object: FirebaseDataObserverRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, topicQuery, this) {
             override fun populateViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int) {
-//                val topicKey = this.getRef(topicPosition).key // todo : use this line, not dummy query
-                val topicKey = getString(R.string.DUMMY_KEY_FOR_TESTING) // todo: remove dummy!
+                val topicKey = this.getRef(topicPosition).key
                 populateTopicViewHolder(topicViewHolder, topicModel, topicPosition, topicKey)
             }
         }
@@ -189,7 +183,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
      *   The adapter looks for topics with specific keys (these keys come
      *   from the syllabus lesson's list of relevant topics).
      */
-    fun updateListOfTopicsFromIndices(keyLocationUrl: String, subjectKey: String) {
+    fun updateListOfTopicsFromIndices(keyLocationUrl: String) {
         onRequestNewData()
 
         val keyReference = databaseRoot.getReferenceFromUrl(keyLocationUrl)
@@ -197,8 +191,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
 
         val topicIndexAdapter = object: FirebaseIndexDataObserverRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, keyReference, topicsReference, this) {
             override fun populateViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int) {
-//                val topicKey = this.getRef(topicPosition).key // todo : use this line, not dummy query
-                val topicKey = getString(R.string.DUMMY_KEY_FOR_TESTING) // todo: remove dummy!
+                val topicKey = this.getRef(topicPosition).key
                 populateTopicViewHolder(topicViewHolder, topicModel, topicPosition, topicKey)
             }
         }
@@ -244,11 +237,11 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
 
         val dateFormat = DateFormat.getDateFormat(this@TopicsListActivity)
 
-        val lessonHeaderQuery = databaseReference.child(getString(R.string.lesson_headers))
+        val subtopicQuery = databaseReference.child(getString(R.string.subtopics))
                 .child(topicKey) // hardcoded just for testing!
                 .orderByChild(getString(R.string.name))
 
-        val lessonHeaderDataObserver = object: DataObserver {
+        val subtopicDataObserver = object: DataObserver {
             override fun onRequestNewData() {
                 // TODO: Show progress bar here!
             }
@@ -268,25 +261,25 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
             }
         }
 
-        val lessonHeaderAdapter = object: FirebaseDataObserverRecyclerAdapter<LessonHeader, LessonHeaderViewHolder>(LessonHeader::class.java, R.layout.list_item_lesson, LessonHeaderViewHolder::class.java, lessonHeaderQuery, lessonHeaderDataObserver) {
-            override fun populateViewHolder(lessonHeaderViewHolder: LessonHeaderViewHolder?, lessonHeaderModel: LessonHeader?, lessonHeaderPosition: Int) {
-                populateLessonHeaderViewHolder(lessonHeaderViewHolder, lessonHeaderModel, dateFormat)
+        val subtopicAdapter = object: FirebaseDataObserverRecyclerAdapter<Subtopic, SubtopicViewHolder>(Subtopic::class.java, R.layout.list_item_lesson, SubtopicViewHolder::class.java, subtopicQuery, subtopicDataObserver) {
+            override fun populateViewHolder(subtopicViewHolder: SubtopicViewHolder?, subtopicModel: Subtopic?, lessonHeaderPosition: Int) {
+                populateLessonHeaderViewHolder(subtopicViewHolder, subtopicModel, dateFormat)
             }
         }
 
         val horizontalLayoutManager = LinearLayoutManager(this@TopicsListActivity, LinearLayoutManager.HORIZONTAL, false)
         topicViewHolder?.lessonsRecyclerView?.layoutManager = horizontalLayoutManager
-        topicViewHolder?.lessonsRecyclerView?.adapter = lessonHeaderAdapter
+        topicViewHolder?.lessonsRecyclerView?.adapter = subtopicAdapter
     }
 
-    private fun populateLessonHeaderViewHolder(lessonHeaderViewHolder: LessonHeaderViewHolder?, lessonHeaderModel: LessonHeader?, dateFormat: java.text.DateFormat) {
-        lessonHeaderViewHolder?.lessonTitleTextView?.text = lessonHeaderModel?.name
-        lessonHeaderViewHolder?.authorNameTextView?.text = lessonHeaderModel?.authorName
-        lessonHeaderViewHolder?.institutionTextView?.text = lessonHeaderModel?.authorInstitution
-        lessonHeaderViewHolder?.locationTextView?.text = lessonHeaderModel?.authorLocation
+    private fun populateLessonHeaderViewHolder(subtopicViewHolder: SubtopicViewHolder?, subtopicModel: Subtopic?, dateFormat: java.text.DateFormat) {
+        subtopicViewHolder?.lessonTitleTextView?.text = subtopicModel?.name
+        subtopicViewHolder?.authorNameTextView?.text = subtopicModel?.authorName
+        subtopicViewHolder?.institutionTextView?.text = subtopicModel?.authorInstitution
+        subtopicViewHolder?.locationTextView?.text = subtopicModel?.authorLocation
 
-        if (lessonHeaderModel != null) {
-            lessonHeaderViewHolder?.dateEditedTextView?.text = dateFormat.format(Date(lessonHeaderModel.dateEdited))
+        if (subtopicModel != null) {
+            subtopicViewHolder?.dateEditedTextView?.text = dateFormat.format(Date(subtopicModel.dateEdited))
         }
     }
 

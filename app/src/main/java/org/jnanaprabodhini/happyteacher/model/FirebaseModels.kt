@@ -12,7 +12,7 @@ data class Topic(var name: String = "",
                  var subject: String = "")
 
 // TODO: Update with actual object structure when complete:
-data class LessonHeader(var authorId: String = "",
+data class Subtopic(var authorId: String = "",
                         var authorInstitution: String = "",
                         var authorLocation: String = "",
                         var authorName: String = "",

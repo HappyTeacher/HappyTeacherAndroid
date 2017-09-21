@@ -13,5 +13,6 @@
     <string name="boards">boards</string>
     <string name="names">names</string>
     <string name="parent_subject">parentSubject</string>
+    <string name="subtopics">subtopics</string>
 
 </resources>
