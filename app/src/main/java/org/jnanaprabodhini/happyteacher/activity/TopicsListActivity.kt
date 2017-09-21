@@ -240,7 +240,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         val dateFormat = DateFormat.getDateFormat(this@TopicsListActivity)
 
         val subtopicQuery = databaseReference.child(getString(R.string.subtopics))
-                .child(topicKey) // hardcoded just for testing!
+                .child(topicKey)
                 .orderByChild(getString(R.string.name))
 
         val subtopicDataObserver = object: DataObserver {
