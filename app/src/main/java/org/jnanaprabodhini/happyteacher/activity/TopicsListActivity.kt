@@ -56,8 +56,8 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         val CHILD_SUBJECT_SPINNER_SELECTION = "CHILD_SUBJECT_SPINNER_SELECTION"
     }
 
-    var parentSubjectSelectionIndex = 0
-    var childSubjectSelectionIndex = 0
+    private var parentSubjectSelectionIndex = 0
+    private var childSubjectSelectionIndex = 0
 
     @IntegerRes override val bottomNavigationMenuItemId: Int = R.id.navigation_topics
 
@@ -132,11 +132,8 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
             }
         }
 
-        subjectAdapter.onDataChanged {
-            if (spinner.count >= selectionIndex) spinner.setSelection(selectionIndex)
-        }
-
         spinner.adapter = subjectAdapter
+        spinner.selectIndexWhenPopulated(selectionIndex)
 
         spinner.onItemSelected { position ->
             val subject = subjectAdapter.getItem(position)

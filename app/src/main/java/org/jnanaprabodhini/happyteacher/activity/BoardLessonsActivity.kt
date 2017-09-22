@@ -29,6 +29,14 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
 
     @IntegerRes override val bottomNavigationMenuItemId: Int = R.id.navigation_board
 
+    object SavedInstanceStateConstants {
+        val LEVEL_SPINNER_SELECTION = "LEVEL_SPINNER_SELECTION"
+        val SUBJECT_SPINNER_SELECTION = "SUBJECT_SPINNER_SELECTION"
+    }
+
+    private var levelSpinnerSelectionIndex = 0
+    private var subjectSpinnerSelectionIndex = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_board_lessons)
@@ -36,6 +44,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
         bottomNavigation.selectedItemId = bottomNavigationMenuItemId
         bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
+        setSpinnerSelectionIndicesFromSavedInstanceState(savedInstanceState)
         setupRecyclerView()
         setupSubjectSpinner()
 
@@ -44,6 +53,16 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
             //  to see syllabus lesson plans from.
             showBoardChooser()
         }
+    }
+
+    private fun setSpinnerSelectionIndicesFromSavedInstanceState(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) return
+
+        val levelSpinnerStoredSelection = savedInstanceState.getInt(SavedInstanceStateConstants.LEVEL_SPINNER_SELECTION, 0)
+        val subjectSpinnerStoredSelection = savedInstanceState.getInt(SavedInstanceStateConstants.SUBJECT_SPINNER_SELECTION, 0)
+
+        this.levelSpinnerSelectionIndex = levelSpinnerStoredSelection
+        this.subjectSpinnerSelectionIndex = subjectSpinnerStoredSelection
     }
 
     private fun setupRecyclerView() {
@@ -86,6 +105,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
         subjectSpinner.onItemSelected { pos -> setupLevelSpinnerForSubject(boardSubjectSpinnerAdapter.getRef(pos).key) }
 
         subjectSpinner.adapter = boardSubjectSpinnerAdapter
+        subjectSpinner.selectIndexWhenPopulated(subjectSpinnerSelectionIndex)
     }
 
     private fun setupLevelSpinnerForSubject(subjectKey: String) {
@@ -120,6 +140,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
         levelSpinner.onItemSelected { pos -> updateSyllabusLessonList(subjectKey, boardLevelSpinnerAdapter.getRef(pos).key) }
 
         levelSpinner.adapter = boardLevelSpinnerAdapter
+        levelSpinner.selectIndexWhenPopulated(levelSpinnerSelectionIndex)
     }
 
     private fun updateSyllabusLessonList(selectedSubjectKey: String, selectedLevel: String) {
@@ -132,7 +153,6 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
                 .orderByChild(getString(R.string.lesson_number))
 
         val syllabusLessonAdapter = object: FirebaseDataObserverRecyclerAdapter<SyllabusLesson, SyllabusLessonViewHolder>(SyllabusLesson::class.java, R.layout.list_item_syllabus_lesson, SyllabusLessonViewHolder::class.java, syllabusLessonQuery, this) {
-
             override fun populateViewHolder(syllabusLessonViewHolder: SyllabusLessonViewHolder?, syllabusLessonModel: SyllabusLesson?, syllabusLessonPosition: Int) {
                 syllabusLessonViewHolder?.lessonTitleTextView?.text = syllabusLessonModel?.name
                 syllabusLessonViewHolder?.lessonNumberTextView?.text = syllabusLessonModel?.lessonNumber.toString()
@@ -191,6 +211,16 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
         // Animate layout changes
         syllabusLessonsRecyclerView.scheduleLayoutAnimation()
         syllabusLessonsRecyclerView.invalidate()
+    }
+
+    override fun onSaveInstanceState(savedInstanceState: Bundle) {
+        val levelSpinnerSelectionIndex = levelSpinner.selectedItemPosition
+        val subjectSpinnerSelectionIndex = subjectSpinner.selectedItemPosition
+
+        savedInstanceState.putInt(SavedInstanceStateConstants.LEVEL_SPINNER_SELECTION, levelSpinnerSelectionIndex)
+        savedInstanceState.putInt(SavedInstanceStateConstants.SUBJECT_SPINNER_SELECTION, subjectSpinnerSelectionIndex)
+
+        super.onSaveInstanceState(savedInstanceState)
     }
 }
 

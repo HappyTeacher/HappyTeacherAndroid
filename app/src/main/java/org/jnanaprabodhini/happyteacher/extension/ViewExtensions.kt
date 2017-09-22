@@ -1,5 +1,6 @@
 package org.jnanaprabodhini.happyteacher.extension
 
+import android.database.DataSetObserver
 import android.graphics.drawable.Drawable
 import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
@@ -52,6 +53,19 @@ fun Spinner.onItemSelected(onItemSelected: (Int) -> Unit) {
 }
 
 fun Spinner.items(): List<Any> = (0..count - 1).map { adapter.getItem(it) }
+
+fun Spinner.selectIndexWhenPopulated(index: Int) {
+    if (adapter == null) return
+
+    adapter.registerDataSetObserver(object: DataSetObserver() {
+        override fun onChanged() {
+            if (count >= index) {
+                setSelection(index)
+                adapter.unregisterDataSetObserver(this)
+            }
+        }
+    })
+}
 
 fun TextView.setDrawableLeft(@DrawableRes drawableId: Int) {
     val drawable = AppCompatResources.getDrawable(context, drawableId)
