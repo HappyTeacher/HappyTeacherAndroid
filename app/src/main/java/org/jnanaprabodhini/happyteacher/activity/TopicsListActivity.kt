@@ -19,12 +19,13 @@ import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseDataObserverRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.Topic
-import org.jnanaprabodhini.happyteacher.viewholder.SubtopicViewHolder
+import org.jnanaprabodhini.happyteacher.viewholder.SubtopicHeaderViewHolder
 import org.jnanaprabodhini.happyteacher.viewholder.TopicViewHolder
 import java.util.*
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseIndexDataObserverRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.Subtopic
+import org.jnanaprabodhini.happyteacher.model.SubtopicLessonHeader
 import org.jnanaprabodhini.happyteacher.prefs
 
 
@@ -274,9 +275,8 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
     private fun populateUnfilteredTopicViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int, topicKey: String) {
         populateTopicViewHolder(topicViewHolder, topicModel, topicPosition)
 
-        val subtopicQuery = databaseReference.child(getString(R.string.subtopic_lesson_headers))
+        val subtopicQuery = databaseReference.child(getString(R.string.featured_subtopic_lesson_headers))
                 .child(topicKey)
-                .orderByChild(getString(R.string.name))
 
         setSubtopicRecyclerAdapterUnfiltered(topicViewHolder, subtopicQuery, DateFormat.getDateFormat(this@TopicsListActivity))
     }
@@ -302,43 +302,43 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
     }
 
     private fun setSubtopicRecyclerAdapterUnfiltered(topicViewHolder: TopicViewHolder?, subtopicQuery: Query, dateFormat: java.text.DateFormat) {
-        topicViewHolder?.lessonsRecyclerView?.adapter = object: FirebaseDataObserverRecyclerAdapter<Subtopic, SubtopicViewHolder>(Subtopic::class.java, R.layout.list_item_lesson, SubtopicViewHolder::class.java, subtopicQuery, getSubtopicDataObserverForViewHolder(topicViewHolder)) {
-            override fun populateViewHolder(subtopicViewHolder: SubtopicViewHolder?, subtopicModel: Subtopic?, lessonHeaderPosition: Int) {
-                populateLessonHeaderViewHolder(subtopicViewHolder, subtopicModel, dateFormat)
+        topicViewHolder?.lessonsRecyclerView?.adapter = object: FirebaseDataObserverRecyclerAdapter<SubtopicLessonHeader, SubtopicHeaderViewHolder>(SubtopicLessonHeader::class.java, R.layout.list_item_lesson, SubtopicHeaderViewHolder::class.java, subtopicQuery, getSubtopicDataObserverForViewHolder(topicViewHolder)) {
+            override fun populateViewHolder(subtopicHeaderViewHolder: SubtopicHeaderViewHolder?, subtopicHeaderModel: SubtopicLessonHeader?, lessonHeaderPosition: Int) {
+                populateLessonHeaderViewHolder(subtopicHeaderViewHolder, subtopicHeaderModel, dateFormat)
             }
         }
     }
 
     private fun setSubtopicViewHolderRecyclerFilteredByLevel(topicViewHolder: TopicViewHolder?, level: Int, topicKey: String, dateFormat: java.text.DateFormat) {
-        val boardLevelSubtopicsQuery = databaseReference.child("boards")
+        val boardLevelSubtopicsQuery = databaseReference.child(getString(R.string.boards))
                 .child(prefs.getBoardKey())
-                .child("level_topics")
+                .child(getString(R.string.level_topics))
                 .child(level.toString())
 
-        // TODO (BACKEND): add a subject parent above topic
-        val subtopicLessonHeaderReference = databaseReference.child(getString(R.string.subtopic_lesson_headers)).child(topicKey)
+        val featuredSubtopicLessonHeaderReference = databaseReference.child(getString(R.string.featured_subtopic_lesson_headers)).child(topicKey)
 
-        topicViewHolder?.lessonsRecyclerView?.adapter = object: FirebaseIndexDataObserverRecyclerAdapter<Subtopic, SubtopicViewHolder>(Subtopic::class.java, R.layout.list_item_lesson, SubtopicViewHolder::class.java, boardLevelSubtopicsQuery, subtopicLessonHeaderReference, getSubtopicDataObserverForViewHolder(topicViewHolder)) {
-            override fun populateViewHolder(subtopicViewHolder: SubtopicViewHolder?, subtopicModel: Subtopic?, lessonHeaderPosition: Int) {
-                populateLessonHeaderViewHolder(subtopicViewHolder, subtopicModel, dateFormat)
+        topicViewHolder?.lessonsRecyclerView?.adapter = object: FirebaseIndexDataObserverRecyclerAdapter<SubtopicLessonHeader, SubtopicHeaderViewHolder>(SubtopicLessonHeader::class.java, R.layout.list_item_lesson, SubtopicHeaderViewHolder::class.java, boardLevelSubtopicsQuery, featuredSubtopicLessonHeaderReference, getSubtopicDataObserverForViewHolder(topicViewHolder)) {
+            override fun populateViewHolder(subtopicHeaderViewHolder: SubtopicHeaderViewHolder?, subtopicHeaderModel: SubtopicLessonHeader?, lessonHeaderPosition: Int) {
+                populateLessonHeaderViewHolder(subtopicHeaderViewHolder, subtopicHeaderModel, dateFormat)
             }
         }
     }
 
-    private fun populateLessonHeaderViewHolder(subtopicViewHolder: SubtopicViewHolder?, subtopicModel: Subtopic?, dateFormat: java.text.DateFormat) {
-        subtopicViewHolder?.lessonTitleTextView?.text = subtopicModel?.name
-        subtopicViewHolder?.authorNameTextView?.text = subtopicModel?.authorName
-        subtopicViewHolder?.institutionTextView?.text = subtopicModel?.authorInstitution
-        subtopicViewHolder?.locationTextView?.text = subtopicModel?.authorLocation
+    private fun populateLessonHeaderViewHolder(subtopicHeaderViewHolder: SubtopicHeaderViewHolder?, subtopicHeaderModel: SubtopicLessonHeader?, dateFormat: java.text.DateFormat) {
+        subtopicHeaderViewHolder?.lessonTitleTextView?.text = subtopicHeaderModel?.name
+        subtopicHeaderViewHolder?.authorNameTextView?.text = subtopicHeaderModel?.authorName
+        subtopicHeaderViewHolder?.institutionTextView?.text = subtopicHeaderModel?.authorInstitution
+        subtopicHeaderViewHolder?.locationTextView?.text = subtopicHeaderModel?.authorLocation
 
-        subtopicViewHolder?.authorNameTextView?.setDrawableLeft(R.drawable.ic_person_accent)
-        subtopicViewHolder?.institutionTextView?.setDrawableLeft(R.drawable.ic_school_accent)
-        subtopicViewHolder?.locationTextView?.setDrawableLeft(R.drawable.ic_location_accent)
+        subtopicHeaderViewHolder?.authorNameTextView?.setDrawableLeft(R.drawable.ic_person_accent)
+        subtopicHeaderViewHolder?.institutionTextView?.setDrawableLeft(R.drawable.ic_school_accent)
+        subtopicHeaderViewHolder?.locationTextView?.setDrawableLeft(R.drawable.ic_location_accent)
 
-        if (subtopicModel != null) {
-            subtopicViewHolder?.dateEditedTextView?.text = dateFormat.format(Date(subtopicModel.dateEdited))
-            subtopicViewHolder?.dateEditedTextView?.setDrawableLeft(R.drawable.ic_clock_light_gray)
+        if (subtopicHeaderModel != null) {
+            subtopicHeaderViewHolder?.dateEditedTextView?.text = dateFormat.format(Date(subtopicHeaderModel.dateEdited))
+            subtopicHeaderViewHolder?.dateEditedTextView?.setDrawableLeft(R.drawable.ic_clock_light_gray)
         }
+
     }
 
     override fun onBackPressed() {
