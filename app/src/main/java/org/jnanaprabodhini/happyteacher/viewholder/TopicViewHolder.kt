@@ -11,5 +11,6 @@ class TopicViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)  {
     val topicTextView: TextView = itemView.topicTextView
     val lessonsRecyclerView: RecyclerView = itemView.lessonsRecyclerView
     val emptyView: LinearLayout = itemView.emptyView
+    val emptyTextView: TextView = itemView.emptyTextView
     val contributeButton: Button = itemView.contributeButton
 }

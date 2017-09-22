@@ -252,7 +252,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         topicsRecyclerView.invalidate()
     }
 
-    private fun getSubtopicDataObserverForViewHolder(topicViewHolder: TopicViewHolder?) = object: DataObserver {
+    private fun getSubtopicDataObserverForViewHolder(topicViewHolder: TopicViewHolder?, level: Int? = null) = object: DataObserver {
         override fun onRequestNewData() {
             // TODO: Show progress bar here!
         }
@@ -264,6 +264,10 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         override fun onDataEmpty() {
             topicViewHolder?.lessonsRecyclerView?.setVisibilityGone()
             topicViewHolder?.emptyView?.setVisible()
+
+            if (level != null) {
+                topicViewHolder?.emptyTextView?.text = getString(R.string.no_lessons_at_level_yet, level)
+            }
         }
 
         override fun onDataNonEmpty() {
@@ -317,7 +321,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
 
         val featuredSubtopicLessonHeaderReference = databaseReference.child(getString(R.string.featured_subtopic_lesson_headers)).child(topicKey)
 
-        topicViewHolder?.lessonsRecyclerView?.adapter = object: FirebaseIndexDataObserverRecyclerAdapter<SubtopicLessonHeader, SubtopicHeaderViewHolder>(SubtopicLessonHeader::class.java, R.layout.list_item_lesson, SubtopicHeaderViewHolder::class.java, boardLevelSubtopicsQuery, featuredSubtopicLessonHeaderReference, getSubtopicDataObserverForViewHolder(topicViewHolder)) {
+        topicViewHolder?.lessonsRecyclerView?.adapter = object: FirebaseIndexDataObserverRecyclerAdapter<SubtopicLessonHeader, SubtopicHeaderViewHolder>(SubtopicLessonHeader::class.java, R.layout.list_item_lesson, SubtopicHeaderViewHolder::class.java, boardLevelSubtopicsQuery, featuredSubtopicLessonHeaderReference, getSubtopicDataObserverForViewHolder(topicViewHolder, level)) {
             override fun populateViewHolder(subtopicHeaderViewHolder: SubtopicHeaderViewHolder?, subtopicHeaderModel: SubtopicLessonHeader?, lessonHeaderPosition: Int) {
                 populateLessonHeaderViewHolder(subtopicHeaderViewHolder, subtopicHeaderModel, dateFormat)
             }

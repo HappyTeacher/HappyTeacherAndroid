@@ -39,6 +39,7 @@
             android:layout_margin="16dp"
             android:textColor="@android:color/white"
             android:textSize="18sp"
+            android:id="@+id/emptyTextView"
             android:text="@string/there_are_no_lessons_for_this_topic_yet"/>
 
         <Button
