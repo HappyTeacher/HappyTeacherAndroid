@@ -6,7 +6,6 @@ import android.support.annotation.IntegerRes
 import android.support.annotation.LayoutRes
 import android.support.v7.widget.LinearLayoutManager
 import android.text.format.DateFormat
-import android.util.Log
 import android.view.View
 import android.widget.Spinner
 import android.widget.TextView
@@ -52,6 +51,14 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         fun Intent.hasAllExtras(): Boolean = hasTopicsKeyUrl() && hasSubject() && hasLevel() && hasLessonTitle()
     }
 
+    object SavedInstanceStateConstants {
+        val PARENT_SUBJECT_SPINNER_SELECTION = "PARENT_SUBJECT_SPINNER_SELECTION"
+        val CHILD_SUBJECT_SPINNER_SELECTION = "CHILD_SUBJECT_SPINNER_SELECTION"
+    }
+
+    var parentSubjectSelectionIndex = 0
+    var childSubjectSelectionIndex = 0
+
     @IntegerRes override val bottomNavigationMenuItemId: Int = R.id.navigation_topics
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +69,23 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         bottomNavigation.selectedItemId = bottomNavigationMenuItemId
         bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
+        setSpinnerSelectionIndicesFromSavedInstanceState(savedInstanceState)
+
         initializeUiFromIntent()
+    }
+
+    /**
+     *  If there are stored index positions for the spinners, set their properties accordingly.
+     *   These properties will be used to select the stored selection when the spinners are populated.
+     */
+    private fun setSpinnerSelectionIndicesFromSavedInstanceState(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) return
+
+        val parentSubjectStoredSelection = savedInstanceState.getInt(SavedInstanceStateConstants.PARENT_SUBJECT_SPINNER_SELECTION, 0)
+        val childSubjectStoredSelection = savedInstanceState.getInt(SavedInstanceStateConstants.CHILD_SUBJECT_SPINNER_SELECTION, 0)
+
+        this.parentSubjectSelectionIndex = parentSubjectStoredSelection
+        this.childSubjectSelectionIndex = childSubjectStoredSelection
     }
 
     fun initializeUiFromIntent() {
@@ -100,13 +123,17 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
      *  The subject spinner is shown when this activity is not being used
      *   to display topics relevant to a specific syllabus lesson plan.
      */
-    private fun setupSpinner(spinner: Spinner, @LayoutRes spinnerLayout: Int, parentSubjectId: String?) {
+    private fun setupSpinner(spinner: Spinner, @LayoutRes spinnerLayout: Int, parentSubjectId: String?, selectionIndex: Int) {
         val subjectQuery = databaseReference.child(getString(R.string.subjects)).orderByChild(getString(R.string.parent_subject)).equalTo(parentSubjectId)
 
         val subjectAdapter = object : FirebaseListAdapter<Subject>(this, Subject::class.java, spinnerLayout, subjectQuery) {
             override fun populateView(view: View, subject: Subject, position: Int) {
                 (view as TextView).text = subject.name
             }
+        }
+
+        subjectAdapter.onDataChanged {
+            if (spinner.count >= selectionIndex) spinner.setSelection(selectionIndex)
         }
 
         spinner.adapter = subjectAdapter
@@ -116,7 +143,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
             val selectedSubjectKey = subjectAdapter.getRef(position).key
 
             if (subject.hasChildren) {
-                setupSpinner(childSubjectSpinner, R.layout.spinner_item_child, selectedSubjectKey)
+                setupSpinner(childSubjectSpinner, R.layout.spinner_item_child, selectedSubjectKey, childSubjectSelectionIndex)
             } else if (!subject.hasChildren && spinner == childSubjectSpinner) {
                 updateListOfTopics(selectedSubjectKey)
             } else {
@@ -130,7 +157,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
 
     private fun setupParentSubjectSpinner() {
         // Parents have no parents, so pass null as value for parentSubject:
-        setupSpinner(parentSubjectSpinner, R.layout.spinner_item, null)
+        setupSpinner(parentSubjectSpinner, R.layout.spinner_item, null, parentSubjectSelectionIndex)
     }
 
     /**
@@ -254,8 +281,6 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
                 .child(topicKey)
                 .orderByChild(getString(R.string.name))
 
-        Log.d("GRAHAM", "populating unfiltered. Query: ${subtopicQuery.ref}")
-
         setSubtopicRecyclerAdapterUnfiltered(topicViewHolder, subtopicQuery, DateFormat.getDateFormat(this@TopicsListActivity))
     }
 
@@ -328,5 +353,15 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         } else {
             super.onBackPressed()
         }
+    }
+
+    override fun onSaveInstanceState(savedInstanceState: Bundle) {
+        val parentSubjectSpinnerSelectionIndex = parentSubjectSpinner.selectedItemPosition
+        val childSubjectSpinnerSelectionIndex = childSubjectSpinner.selectedItemPosition
+
+        savedInstanceState.putInt(SavedInstanceStateConstants.PARENT_SUBJECT_SPINNER_SELECTION, parentSubjectSpinnerSelectionIndex)
+        savedInstanceState.putInt(SavedInstanceStateConstants.CHILD_SUBJECT_SPINNER_SELECTION, childSubjectSpinnerSelectionIndex)
+
+        super.onSaveInstanceState(savedInstanceState)
     }
 }
