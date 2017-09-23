@@ -19,6 +19,10 @@ abstract class FirebaseIndexDataObserverRecyclerAdapter<T, VH: RecyclerView.View
                                                                                         dataRef: DatabaseReference,
                                                                                         val dataObserver: DataObserver): FirebaseIndexRecyclerAdapter<T, VH>(modelClass, modelLayout, viewHolderClass, keyQuery, dataRef) {
 
+    init {
+        dataObserver.onRequestNewData()
+    }
+
     override fun onDataChanged() {
         super.onDataChanged()
 

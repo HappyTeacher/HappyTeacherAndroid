@@ -18,6 +18,10 @@ abstract class FirebaseIndexDataObserverListAdapter<T>(context: Context,
                                               dataRef: DatabaseReference,
                                               val dataObserver: DataObserver): FirebaseIndexListAdapter<T>(context, modelClass, modelLayout, keyQuery, dataRef) {
 
+    init {
+        dataObserver.onRequestNewData()
+    }
+
     override fun onDataChanged() {
         super.onDataChanged()
 

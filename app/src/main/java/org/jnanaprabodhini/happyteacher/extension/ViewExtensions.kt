@@ -54,6 +54,13 @@ fun Spinner.onItemSelected(onItemSelected: (Int) -> Unit) {
 
 fun Spinner.items(): List<Any> = (0..count - 1).map { adapter.getItem(it) }
 
+/**
+ * Select the given index in the spinner when the spinner's
+ *  item count reaches that level.
+ *
+ *  Used for re-selecting a previous selection when a spinner
+ *   is reset (across configuration changes).
+ */
 fun Spinner.selectIndexWhenPopulated(index: Int) {
     if (adapter == null) return
 

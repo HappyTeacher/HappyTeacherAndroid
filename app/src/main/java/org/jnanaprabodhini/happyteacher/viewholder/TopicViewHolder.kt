@@ -13,4 +13,5 @@ class TopicViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)  {
     val emptyView: LinearLayout = itemView.emptyView
     val emptyTextView: TextView = itemView.emptyTextView
     val contributeButton: Button = itemView.contributeButton
+    val progressBar: View = itemView.progressBarFrame
 }

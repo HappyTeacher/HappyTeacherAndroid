@@ -26,10 +26,11 @@ class HappyTeacherApplication: Application() {
         preferences = PreferencesManager(this)
 
         // Set Firebase offline persistence to true
-        val databaseInstance = FirebaseDatabase.getInstance()
-        databaseInstance.setPersistenceEnabled(true)
+//        val databaseInstance = FirebaseDatabase.getInstance()
+//        databaseInstance.setPersistenceEnabled(true)
 
-        databaseInstance.reference.keepSynced(true)
+//        // TODO: Don't keep entire db synced. Only sync essential items.
+//        databaseInstance.reference.keepSynced(true)
 
         // Set Roboto as default font
         CalligraphyConfig.initDefault(CalligraphyConfig.Builder()

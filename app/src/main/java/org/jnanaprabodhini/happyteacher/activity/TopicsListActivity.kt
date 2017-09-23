@@ -17,39 +17,38 @@ import org.jnanaprabodhini.happyteacher.DataObserver
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseDataObserverRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.FirebaseIndexDataObserverRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.Subject
+import org.jnanaprabodhini.happyteacher.model.SubtopicLessonHeader
 import org.jnanaprabodhini.happyteacher.model.Topic
+import org.jnanaprabodhini.happyteacher.prefs
 import org.jnanaprabodhini.happyteacher.viewholder.SubtopicHeaderViewHolder
 import org.jnanaprabodhini.happyteacher.viewholder.TopicViewHolder
 import java.util.*
-import org.jnanaprabodhini.happyteacher.adapter.FirebaseIndexDataObserverRecyclerAdapter
-import org.jnanaprabodhini.happyteacher.extension.*
-import org.jnanaprabodhini.happyteacher.model.Subtopic
-import org.jnanaprabodhini.happyteacher.model.SubtopicLessonHeader
-import org.jnanaprabodhini.happyteacher.prefs
 
 
 class TopicsListActivity : BottomNavigationActivity(), DataObserver {
 
     companion object IntentExtraHelper {
-        val EXTRA_TOPICS_KEY_URL: String = "EXTRA_TOPICS_KEY_URL"
-        fun Intent.hasTopicsKeyUrl(): Boolean = hasExtra(EXTRA_TOPICS_KEY_URL)
+        val TOPICS_INDEX_LIST_URL: String = "TOPICS_INDEX_LIST_URL"
+        fun Intent.hasTopicsIndexListUrl(): Boolean = hasExtra(TOPICS_INDEX_LIST_URL)
         // Note: since we the url may have ~ or " " chars, we need to decode it in order to read that db location!
-        fun Intent.getTopicsKeyUrl(): String = java.net.URLDecoder.decode(getStringExtra(EXTRA_TOPICS_KEY_URL), "UTF-8")
+        fun Intent.getTopicsIndexListUrl(): String = java.net.URLDecoder.decode(getStringExtra(TOPICS_INDEX_LIST_URL), "UTF-8")
 
-        val EXTRA_SUBJECT_NAME: String = "EXTRA_SUBJECT_NAME"
-        fun Intent.hasSubject(): Boolean = hasExtra(EXTRA_SUBJECT_NAME)
-        fun Intent.getSubject(): String = getStringExtra(EXTRA_SUBJECT_NAME)
+        val SUBJECT_NAME: String = "SUBJECT_NAME"
+        fun Intent.hasSubject(): Boolean = hasExtra(SUBJECT_NAME)
+        fun Intent.getSubject(): String = getStringExtra(SUBJECT_NAME)
 
-        val EXTRA_LEVEL: String = "EXTRA_LEVEL"
-        fun Intent.hasLevel(): Boolean = hasExtra(EXTRA_LEVEL)
-        fun Intent.getLevel(): Int = getIntExtra(EXTRA_LEVEL, 0)
+        val LEVEL: String = "LEVEL"
+        fun Intent.hasLevel(): Boolean = hasExtra(LEVEL)
+        fun Intent.getLevel(): Int = getIntExtra(LEVEL, 0)
 
-        val EXTRA_LESSON_TITLE: String = "EXTRA_LESSON_TITLE"
-        fun Intent.hasLessonTitle(): Boolean = hasExtra(EXTRA_LESSON_TITLE)
-        fun Intent.getLessonTitle(): String = getStringExtra(EXTRA_LESSON_TITLE)
+        val LESSON_TITLE: String = "LESSON_TITLE"
+        fun Intent.hasLessonTitle(): Boolean = hasExtra(LESSON_TITLE)
+        fun Intent.getLessonTitle(): String = getStringExtra(LESSON_TITLE)
 
-        fun Intent.hasAllExtras(): Boolean = hasTopicsKeyUrl() && hasSubject() && hasLevel() && hasLessonTitle()
+        fun Intent.hasAllExtras(): Boolean = hasTopicsIndexListUrl() && hasSubject() && hasLevel() && hasLessonTitle()
     }
 
     object SavedInstanceStateConstants {
@@ -92,13 +91,13 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
     fun initializeUiFromIntent() {
         if (intent.hasAllExtras()) {
             // Show topics related to the given syllabus lesson plan
-            val topicsKeyUrl = intent.getTopicsKeyUrl()
+            val topicsIndexListUrl = intent.getTopicsIndexListUrl()
             val subject = intent.getSubject()
             val level = intent.getLevel()
             val title = intent.getLessonTitle()
 
             showSyllabusLessonTopicHeader(title, subject, level)
-            updateListOfTopicsFromIndices(topicsKeyUrl, level)
+            updateListOfTopicsFromIndexList(topicsIndexListUrl, level)
         } else {
             initializeTopicListForSubject()
         }
@@ -121,6 +120,8 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
     }
 
     /**
+     *  Set up one of the two spinners (the subject spinner or the sub-subject spinner).
+     *
      *  The subject spinner is shown when this activity is not being used
      *   to display topics relevant to a specific syllabus lesson plan.
      */
@@ -154,7 +155,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
     }
 
     private fun setupParentSubjectSpinner() {
-        // Parents have no parents, so pass null as value for parentSubject:
+        // Parent subjects have no parents, so pass null as value for parentSubject:
         setupSpinner(parentSubjectSpinner, R.layout.spinner_item, null, parentSubjectSelectionIndex)
     }
 
@@ -162,8 +163,6 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
      *  Display list of topics for the selected subject.
      */
     fun updateListOfTopics(subjectKey: String) {
-        onRequestNewData()
-
         val topicQuery = databaseReference.child(getString(R.string.topics))
                 .orderByChild(getString(R.string.subject)).equalTo(subjectKey)
 
@@ -182,7 +181,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
      *
      *   This is shown if we are coming into the Topics List from clicking on
      *   a Syllabus Lesson. This header will show the name, subject, and level
-     *   of that less.
+     *   of that lesson.
      */
     private fun showSyllabusLessonTopicHeader(syllabusLessonPlanTitle: String, subject: String, standard: Int) {
         hideSpinners()
@@ -209,15 +208,13 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
     /**
      *  Show the list of topics relevant to the given syllabus lesson plan.
      *   The adapter looks for topics with specific keys (these keys come
-     *   from the syllabus lesson's list of relevant topics).
+     *   from the syllabus lesson's index list of relevant topics).
      */
-    private fun updateListOfTopicsFromIndices(keyLocationUrl: String, level: Int) {
-        onRequestNewData()
-
-        val keyReference = databaseRoot.getReferenceFromUrl(keyLocationUrl)
+    private fun updateListOfTopicsFromIndexList(indexListLocationUrl: String, level: Int) {
+        val topicsIndexListReference = databaseRoot.getReferenceFromUrl(indexListLocationUrl)
         val topicsReference = databaseReference.child(getString(R.string.topics))
 
-        val topicIndexAdapter = object: FirebaseIndexDataObserverRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, keyReference, topicsReference, this) {
+        val topicIndexAdapter = object: FirebaseIndexDataObserverRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, topicsIndexListReference, topicsReference, this) {
             override fun populateViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int) {
                 val topicKey = this.getRef(topicPosition).key
                 populateLevelFilteredTopicViewHolder(topicViewHolder, topicModel, topicPosition, topicKey, level)
@@ -252,13 +249,17 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         topicsRecyclerView.invalidate()
     }
 
+    /**
+     * This data observer will respond to subtopic load events and
+     *  update the UI accordingly. It is used by subtopic adapters.
+     */
     private fun getSubtopicDataObserverForViewHolder(topicViewHolder: TopicViewHolder?, level: Int? = null) = object: DataObserver {
         override fun onRequestNewData() {
-            // TODO: Show progress bar here!
+            topicViewHolder?.progressBar?.setVisible()
         }
 
         override fun onDataLoaded() {
-            // TODO: Hide progress bar here!
+            topicViewHolder?.progressBar?.setVisibilityGone()
         }
 
         override fun onDataEmpty() {
@@ -279,10 +280,10 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
     private fun populateUnfilteredTopicViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int, topicKey: String) {
         populateTopicViewHolder(topicViewHolder, topicModel, topicPosition)
 
-        val subtopicQuery = databaseReference.child(getString(R.string.featured_subtopic_lesson_headers))
+        val featuredSubtopicQuery = databaseReference.child(getString(R.string.featured_subtopic_lesson_headers))
                 .child(topicKey)
 
-        setSubtopicRecyclerAdapterUnfiltered(topicViewHolder, subtopicQuery, DateFormat.getDateFormat(this@TopicsListActivity))
+        setSubtopicRecyclerAdapterUnfiltered(topicViewHolder, featuredSubtopicQuery, DateFormat.getDateFormat(this@TopicsListActivity))
     }
 
     private fun populateLevelFilteredTopicViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int, topicKey: String, level: Int) {

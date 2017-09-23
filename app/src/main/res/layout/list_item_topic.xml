@@ -24,9 +24,21 @@
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/topicTextView" />
 
+    <FrameLayout
+        app:layout_constraintTop_toBottomOf="@+id/topicTextView"
+        android:id="@+id/progressBarFrame"
+        android:visibility="visible"
+        android:layout_width="@dimen/width_lesson_header_card"
+        android:layout_height="@dimen/height_lesson_header_card" >
+        <ProgressBar
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+
     <LinearLayout
         app:layout_constraintTop_toBottomOf="@+id/topicTextView"
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/emptyView"
         android:orientation="vertical"
         android:gravity="center_vertical"
