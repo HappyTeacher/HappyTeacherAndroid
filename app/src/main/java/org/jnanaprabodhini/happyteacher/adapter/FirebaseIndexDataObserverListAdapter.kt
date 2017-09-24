@@ -3,10 +3,8 @@ package org.jnanaprabodhini.happyteacher.adapter
 import android.content.Context
 import android.support.annotation.LayoutRes
 import com.firebase.ui.database.FirebaseIndexListAdapter
-import com.firebase.ui.database.FirebaseListAdapter
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.Query
-import org.jnanaprabodhini.happyteacher.DataObserver
 
 /**
  * Created by grahamearley on 9/19/17.

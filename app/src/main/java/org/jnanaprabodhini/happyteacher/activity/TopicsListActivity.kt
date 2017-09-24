@@ -13,7 +13,7 @@ import com.firebase.ui.database.FirebaseListAdapter
 import com.google.firebase.database.Query
 import kotlinx.android.synthetic.main.activity_topics_list.*
 import kotlinx.android.synthetic.main.header_syllabus_lesson_topic.*
-import org.jnanaprabodhini.happyteacher.DataObserver
+import org.jnanaprabodhini.happyteacher.adapter.DataObserver
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseDataObserverRecyclerAdapter
@@ -26,7 +26,6 @@ import org.jnanaprabodhini.happyteacher.prefs
 import org.jnanaprabodhini.happyteacher.viewholder.SubtopicHeaderViewHolder
 import org.jnanaprabodhini.happyteacher.viewholder.TopicViewHolder
 import java.util.*
-
 
 class TopicsListActivity : BottomNavigationActivity(), DataObserver {
 

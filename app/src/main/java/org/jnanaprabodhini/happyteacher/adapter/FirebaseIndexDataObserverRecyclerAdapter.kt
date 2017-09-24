@@ -3,10 +3,8 @@ package org.jnanaprabodhini.happyteacher.adapter
 import android.support.annotation.LayoutRes
 import android.support.v7.widget.RecyclerView
 import com.firebase.ui.database.FirebaseIndexRecyclerAdapter
-import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.Query
-import org.jnanaprabodhini.happyteacher.DataObserver
 
 /**
  * An extension of the FirebaseIndexRecyclerAdapter that provides callbacks
