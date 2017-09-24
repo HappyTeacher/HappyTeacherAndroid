@@ -1,6 +1,7 @@
-<img src="https://i.imgur.com/hSpwTGA.png" alt="Happy Teacher">
+[![Happy Teacher](https://i.imgur.com/hSpwTGA.png)](https://play.google.com/store/apps/details?id=org.jnanaprabodhini.happyteacherapp)
 
-# Happy Teacher
+# Happy Teacher [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="Get it on Google Play" width=100px>](https://play.google.com/store/apps/details?id=org.jnanaprabodhini.happyteacherapp)
+
 ### A lesson plan platform for teachers in India.
 
 There are many syllabuses in the Indian education system, distributed by state or national governments. While the content of these syllabuses may differ, the underlying content is the same. One syllabus may suggest teaching a certain topic at the 9th Standard level, whereas a different syllabus may suggest teaching it at the 8th Standard level.
