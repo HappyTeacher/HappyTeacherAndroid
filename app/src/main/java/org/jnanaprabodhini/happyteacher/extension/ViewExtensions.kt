@@ -2,10 +2,12 @@ package org.jnanaprabodhini.happyteacher.extension
 
 import android.database.DataSetObserver
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
 import android.support.v7.content.res.AppCompatResources
+import android.text.Html
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
@@ -77,4 +79,12 @@ fun Spinner.selectIndexWhenPopulated(index: Int) {
 fun TextView.setDrawableLeft(@DrawableRes drawableId: Int) {
     val drawable = AppCompatResources.getDrawable(context, drawableId)
     this.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
+}
+
+fun TextView.setHtmlText(htmlString: String) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        this.text = Html.fromHtml(htmlString, Html.FROM_HTML_MODE_COMPACT)
+    } else {
+        this.text = Html.fromHtml(htmlString)
+    }
 }

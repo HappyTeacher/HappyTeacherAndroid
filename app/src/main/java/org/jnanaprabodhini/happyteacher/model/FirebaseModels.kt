@@ -39,7 +39,9 @@ data class SubtopicLesson(var name: String = "",
                           var authorLocation: String = "",
                           var authorName: String = "",
                           var dateEdited: Long = 0,
-                          var cards: List<LessonCard> = emptyList())
+                          var cards: Map<String, LessonCard> = emptyMap()) {
+    fun getLessonCards(): List<LessonCard> = cards.toSortedMap().values.toList()
+}
 
 data class LessonCard(var header: String = "",
                       var body: String = "",

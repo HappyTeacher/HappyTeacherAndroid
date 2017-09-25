@@ -15,7 +15,16 @@
         android:layout_height="match_parent"
         android:layoutAnimation="@anim/layout_fall_down" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/headerView"
+        android:visibility="gone"
         android:background="@color/deepLightBlue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -23,7 +32,8 @@
         <android.support.constraint.ConstraintLayout
             android:padding="16dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll">
 
             <TextView
                 android:id="@+id/authorNameTextView"
@@ -32,11 +42,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/bookIcon"
                 app:layout_constraintVertical_chainStyle="packed"
-                style="@style/LessonViewerHeaderText.Author"/>
+                style="@style/LessonViewerHeaderText.Author" />
 
             <TextView
                 android:id="@+id/subjectTextView"
-                app:layout_constraintTop_toBottomOf="@id/authorNameTextView"
+                app:layout_constraintTop_toBottomOf="@+id/authorNameTextView"
                 app:layout_constraintBottom_toTopOf="@+id/institutionTextView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/bookIcon"
@@ -44,7 +54,7 @@
 
             <TextView
                 android:id="@+id/institutionTextView"
-                app:layout_constraintTop_toBottomOf="@id/subjectTextView"
+                app:layout_constraintTop_toBottomOf="@+id/subjectTextView"
                 app:layout_constraintBottom_toTopOf="@+id/locationTextView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/bookIcon"
@@ -52,7 +62,7 @@
 
             <TextView
                 android:id="@+id/locationTextView"
-                app:layout_constraintTop_toBottomOf="@id/institutionTextView"
+                app:layout_constraintTop_toBottomOf="@+id/institutionTextView"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/bookIcon"

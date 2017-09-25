@@ -9,12 +9,11 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_lesson_viewer.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.HappyTeacherActivity
-import org.jnanaprabodhini.happyteacher.adapter.FirebaseDataObserverRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.LessonPlanRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.extension.onSingleValueEvent
+import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
+import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.SubtopicLesson
-import org.jnanaprabodhini.happyteacher.model.SubtopicLessonHeader
-import org.jnanaprabodhini.happyteacher.viewholder.SubtopicHeaderViewHolder
 
 class LessonViewerActivity : HappyTeacherActivity() {
 
@@ -41,13 +40,13 @@ class LessonViewerActivity : HappyTeacherActivity() {
         if (intent.hasLessonId() && intent.hasSubtopicId()) {
             getLessonFromDatabase()
         } else {
-            // TODO: Show error -- lesson extras weren't passed properly
+            showErrorToastAndFinish()
         }
 
     }
 
     private fun getLessonFromDatabase() {
-        // TODO: Progress bar until the lesson is received.
+        progressBar.setVisible()
 
         val lessonId = intent.getLessonId()
         val subtopicId = intent.getSubtopicId()
@@ -64,11 +63,13 @@ class LessonViewerActivity : HappyTeacherActivity() {
     }
 
     private fun initializeUiForLesson(lesson: SubtopicLesson?, subject: String) {
+        progressBar.setVisibilityGone()
         setHeaderViewForLesson(lesson, subject)
         initializeRecyclerView(lesson)
     }
 
     private fun setHeaderViewForLesson(lesson: SubtopicLesson?, subject: String) {
+        headerView.setVisible()
         supportActionBar?.title = lesson?.name
 
         val authorName = lesson?.authorName
@@ -85,12 +86,10 @@ class LessonViewerActivity : HappyTeacherActivity() {
         lessonPlanRecyclerView.layoutManager = LinearLayoutManager(this)
 
         if (lesson == null) {
-            Toast.makeText(this, R.string.there_was_an_error_loading_the_lesson, Toast.LENGTH_LONG).show()
-            finish()
-            return
+            showErrorToastAndFinish()
+        } else {
+            lessonPlanRecyclerView?.adapter = LessonPlanRecyclerAdapter(lesson.getLessonCards())
         }
-
-        lessonPlanRecyclerView?.adapter = LessonPlanRecyclerAdapter(lesson.cards)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -102,5 +101,11 @@ class LessonViewerActivity : HappyTeacherActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showErrorToastAndFinish() {
+        // TODO: Log error to analytics.
+        Toast.makeText(this, R.string.there_was_an_error_loading_the_lesson, Toast.LENGTH_LONG).show()
+        finish()
     }
 }

@@ -1,9 +1,11 @@
 package org.jnanaprabodhini.happyteacher.adapter
 
 import android.support.v7.widget.RecyclerView
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import org.jnanaprabodhini.happyteacher.R
+import org.jnanaprabodhini.happyteacher.extension.setHtmlText
 import org.jnanaprabodhini.happyteacher.model.LessonCard
 import org.jnanaprabodhini.happyteacher.viewholder.LessonCardViewHolder
 
@@ -27,7 +29,7 @@ class LessonPlanRecyclerAdapter(var lessonCards: List<LessonCard>): RecyclerView
     override fun onBindViewHolder(holder: LessonCardViewHolder?, position: Int) {
         val card = lessonCards[position]
         holder?.headerTextView?.text = card.header
-        holder?.bodyTextView?.text =  card.body
+        holder?.bodyTextView?.setHtmlText(card.body)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): LessonCardViewHolder {
