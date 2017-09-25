@@ -2,6 +2,7 @@ package org.jnanaprabodhini.happyteacher.activity
 
 import android.content.Intent
 import android.os.Bundle
+import kotlinx.android.synthetic.main.activity_lesson_viewer.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.extension.onSingleValueEvent
@@ -34,6 +35,8 @@ class LessonViewerActivity : HappyTeacherActivity() {
     }
 
     private fun getLessonFromDatabase() {
+        // TODO: Progress bar until the lesson is received.
+
         val lessonId = intent.getLessonId()
         val subtopicId = intent.getSubtopicId()
 
@@ -48,6 +51,15 @@ class LessonViewerActivity : HappyTeacherActivity() {
     }
 
     private fun initializeUiForLesson(lesson: SubtopicLesson?) {
-        //
+        setHeaderViewForLesson(lesson)
+        initializeRecyclerView(lesson)
+    }
+
+    private fun setHeaderViewForLesson(lesson: SubtopicLesson?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun initializeRecyclerView(lesson: SubtopicLesson?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
