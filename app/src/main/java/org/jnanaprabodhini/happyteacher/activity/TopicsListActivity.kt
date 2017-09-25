@@ -13,6 +13,8 @@ import com.firebase.ui.database.FirebaseListAdapter
 import com.google.firebase.database.Query
 import kotlinx.android.synthetic.main.activity_topics_list.*
 import kotlinx.android.synthetic.main.header_syllabus_lesson_topic.*
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.startActivity
 import org.jnanaprabodhini.happyteacher.adapter.DataObserver
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
@@ -341,6 +343,17 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         if (subtopicHeaderModel != null) {
             subtopicHeaderViewHolder?.dateEditedTextView?.text = dateFormat.format(Date(subtopicHeaderModel.dateEdited))
             subtopicHeaderViewHolder?.dateEditedTextView?.setDrawableLeft(R.drawable.ic_clock_light_gray)
+        }
+
+        subtopicHeaderViewHolder?.itemView?.setOnClickListener {
+            val lessonId = subtopicHeaderModel?.lesson
+            val subtopicId = subtopicHeaderModel?.subtopic
+
+            val lessonViewerIntent = Intent(this, LessonViewerActivity::class.java)
+            lessonViewerIntent.putExtra(LessonViewerActivity.LESSON_ID, lessonId)
+            lessonViewerIntent.putExtra(LessonViewerActivity.SUBTOPIC_ID, subtopicId)
+
+            startActivity(lessonViewerIntent)
         }
 
     }
