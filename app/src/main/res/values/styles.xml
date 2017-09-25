@@ -175,20 +175,23 @@
     <style name="LessonCardText">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_marginLeft">16dp</item>
-        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginLeft">24dp</item>
+        <item name="android:layout_marginRight">24dp</item>
     </style>
 
     <style name="LessonCardText.Header" parent="LessonCardText">
-        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginTop">24dp</item>
         <item name="android:layout_marginBottom">8dp</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
     <style name="LessonCardText.Body" parent="LessonCardText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
         <item name="android:layout_marginTop">8dp</item>
-        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:layout_marginBottom">24dp</item>
+        <item name="android:clickable">true</item>
     </style>
 
 </resources>
