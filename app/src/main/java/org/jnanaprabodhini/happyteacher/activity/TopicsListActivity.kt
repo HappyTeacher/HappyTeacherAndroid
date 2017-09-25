@@ -346,14 +346,24 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         subtopicHeaderViewHolder?.itemView?.setOnClickListener {
             val lessonId = subtopicHeaderModel?.lesson
             val subtopicId = subtopicHeaderModel?.subtopic
+            val subject = getSelectedSubject()
 
             val lessonViewerIntent = Intent(this, LessonViewerActivity::class.java)
             lessonViewerIntent.putExtra(LessonViewerActivity.LESSON_ID, lessonId)
             lessonViewerIntent.putExtra(LessonViewerActivity.SUBTOPIC_ID, subtopicId)
+            lessonViewerIntent.putExtra(LessonViewerActivity.SUBJECT, subject)
 
             startActivity(lessonViewerIntent)
         }
 
+    }
+
+    private fun getSelectedSubject(): String {
+        if (childSubjectSpinner.isVisible()) {
+            return (childSubjectSpinner.selectedItem as Subject).name
+        } else {
+            return (parentSubjectSpinner.selectedItem as Subject).name
+        }
     }
 
     override fun onBackPressed() {
