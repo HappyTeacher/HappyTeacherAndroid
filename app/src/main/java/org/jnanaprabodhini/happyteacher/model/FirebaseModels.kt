@@ -39,21 +39,19 @@ data class SubtopicLesson(var name: String = "",
                           var authorLocation: String = "",
                           var authorName: String = "",
                           var dateEdited: Long = 0,
-                          var cards: Map<Int, LessonCard> = emptyMap()) {
-    fun getCards(): Collection<LessonCard> = cards.values
-}
+                          var cards: List<LessonCard> = emptyList())
 
 data class LessonCard(var header: String = "",
                       var body: String = "",
-                      var imageUrls: Map<Int, String> = emptyMap(),
+                      var imageUrls: Map<String, String> = emptyMap(),
                       var videoUrl: String = "",
-                      var linkUrls: Map<Int, String> = emptyMap(),
+                      var linkUrls: Map<String, String> = emptyMap(),
                       var attachmentUrl: String = "",
                       var type: String = "",
                       var number: Int = 0) {
 
-    fun getLinkUrls(): Collection<String> = linkUrls.values
-    fun getImageUrls(): Collection<String> = imageUrls.values
+    fun getCardLinkUrls(): Collection<String> = linkUrls.values
+    fun getCardImageUrls(): Collection<String> = imageUrls.values
     fun getCardType(): CardType = CardType.getTypeFromString(type)
 
     enum class CardType {
