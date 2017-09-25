@@ -5,10 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.jnanaprabodhini.happyteacher.activity.TopicsListActivity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/topicsListWithHeader"
-    android:layout_above="@id/bottomNavigation"
-    android:background="@color/colorAccent">
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lessonPlanRecyclerView"
@@ -27,7 +24,40 @@
             android:padding="16dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            
+
+            <TextView
+                android:id="@+id/authorNameTextView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/subjectTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/bookIcon"
+                app:layout_constraintVertical_chainStyle="packed"
+                style="@style/LessonViewerHeaderText.Author"/>
+
+            <TextView
+                android:id="@+id/subjectTextView"
+                app:layout_constraintTop_toBottomOf="@id/authorNameTextView"
+                app:layout_constraintBottom_toTopOf="@+id/institutionTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/bookIcon"
+                style="@style/LessonViewerHeaderText.Subject"/>
+
+            <TextView
+                android:id="@+id/institutionTextView"
+                app:layout_constraintTop_toBottomOf="@id/subjectTextView"
+                app:layout_constraintBottom_toTopOf="@+id/locationTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/bookIcon"
+                style="@style/LessonViewerHeaderText.Institution"/>
+
+            <TextView
+                android:id="@+id/locationTextView"
+                app:layout_constraintTop_toBottomOf="@id/institutionTextView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/bookIcon"
+                style="@style/LessonViewerHeaderText.Location"/>
+
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
@@ -36,42 +66,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:srcCompat="@drawable/ic_book_white_24dp"/>
-
-            <TextView
-                android:id="@+id/lessonTitleTextView"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/subjectTextView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintVertical_chainStyle="packed"
-                style="@style/LessonViewerHeaderText.Title"/>
-
-            <TextView
-                android:id="@+id/subjectTextView"
-                app:layout_constraintTop_toBottomOf="@id/lessonTitleTextView"
-                app:layout_constraintBottom_toTopOf="@+id/authorNameTextView"
-                app:layout_constraintStart_toStartOf="parent"
-                style="@style/LessonViewerHeaderText.Subject"/>
-
-            <TextView
-                android:id="@+id/authorNameTextView"
-                app:layout_constraintTop_toBottomOf="@id/subjectTextView"
-                app:layout_constraintBottom_toTopOf="@+id/institutionTextView"
-                app:layout_constraintStart_toStartOf="parent"
-                style="@style/LessonViewerHeaderText.Author"/>
-
-            <TextView
-                android:id="@+id/institutionTextView"
-                app:layout_constraintTop_toBottomOf="@id/authorNameTextView"
-                app:layout_constraintBottom_toTopOf="@+id/locationTextView"
-                app:layout_constraintStart_toStartOf="parent"
-                style="@style/LessonViewerHeaderText.Institution"/>
-
-            <TextView
-                android:id="@+id/locationTextView"
-                app:layout_constraintTop_toBottomOf="@id/institutionTextView"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                style="@style/LessonViewerHeaderText.Location"/>
             
         </android.support.constraint.ConstraintLayout>
 

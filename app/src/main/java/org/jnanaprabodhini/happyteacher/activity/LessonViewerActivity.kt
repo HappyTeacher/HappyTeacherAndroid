@@ -2,6 +2,7 @@ package org.jnanaprabodhini.happyteacher.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_lesson_viewer.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.HappyTeacherActivity
@@ -61,12 +62,12 @@ class LessonViewerActivity : HappyTeacherActivity() {
     }
 
     private fun setHeaderViewForLesson(lesson: SubtopicLesson?, subject: String) {
-        val lessonTitle = lesson?.name
+        supportActionBar?.title = lesson?.name
+
         val authorName = lesson?.authorName
         val institutionName = lesson?.authorInstitution
         val location = lesson?.authorLocation
 
-        lessonTitleTextView.text = lessonTitle
         subjectTextView.text = subject
         authorNameTextView.text = authorName
         institutionTextView.text = institutionName
@@ -75,5 +76,16 @@ class LessonViewerActivity : HappyTeacherActivity() {
 
     private fun initializeRecyclerView(lesson: SubtopicLesson?) {
         // todo
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            // Make "Up" button go Back
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

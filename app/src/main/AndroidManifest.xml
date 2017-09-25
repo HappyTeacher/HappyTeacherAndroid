@@ -20,7 +20,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.BoardLessonsActivity" />
-        <activity android:name=".activity.LessonViewerActivity"></activity>
+        <activity android:name=".activity.LessonViewerActivity"
+            android:parentActivityName=".activity.TopicsListActivity"/>
     </application>
 
 </manifest>
