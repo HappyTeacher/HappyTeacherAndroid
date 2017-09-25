@@ -141,4 +141,42 @@
         <item name="android:padding">32dp</item>
     </style>
 
+    <style name="LessonViewerHeaderText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="android:paddingTop">1dp</item>
+        <item name="android:paddingBottom">1dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="LessonViewerHeaderText.Title" parent="LessonViewerHeaderText">
+        <item name="fontPath">fonts/Roboto-Medium.ttf</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:maxLines">3</item>
+    </style>
+
+    <style name="LessonViewerHeaderText.Subject" parent="LessonViewerHeaderText">
+        <item name="fontPath">fonts/Roboto-Medium.ttf</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="LessonViewerHeaderText.Author" parent="LessonViewerHeaderText">
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="LessonViewerHeaderText.Institution" parent="LessonViewerHeaderText">
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="LessonViewerHeaderText.Location" parent="LessonViewerHeaderText">
+        <item name="fontPath">fonts/Roboto-Light.ttf</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

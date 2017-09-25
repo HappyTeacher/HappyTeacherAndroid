@@ -19,33 +19,61 @@
         android:layoutAnimation="@anim/layout_fall_down" />
 
     <android.support.design.widget.AppBarLayout
+        android:background="@color/deepLightBlue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        
+        <android.support.constraint.ConstraintLayout
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:id="@+id/bookIcon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:srcCompat="@drawable/ic_book_white_24dp"/>
 
-        <TextView
-            android:id="@+id/lessonTitleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/lessonTitleTextView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/subjectTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                style="@style/LessonViewerHeaderText.Title"/>
 
-        <TextView
-            android:id="@+id/subjectStandardTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/subjectTextView"
+                app:layout_constraintTop_toBottomOf="@id/lessonTitleTextView"
+                app:layout_constraintBottom_toTopOf="@+id/authorNameTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                style="@style/LessonViewerHeaderText.Subject"/>
 
-        <TextView
-            android:id="@+id/authorNameTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/authorNameTextView"
+                app:layout_constraintTop_toBottomOf="@id/subjectTextView"
+                app:layout_constraintBottom_toTopOf="@+id/institutionTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                style="@style/LessonViewerHeaderText.Author"/>
 
-        <TextView
-            android:id="@+id/institutionTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/institutionTextView"
+                app:layout_constraintTop_toBottomOf="@id/authorNameTextView"
+                app:layout_constraintBottom_toTopOf="@+id/locationTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                style="@style/LessonViewerHeaderText.Institution"/>
 
-        <TextView
-            android:id="@+id/locationTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/locationTextView"
+                app:layout_constraintTop_toBottomOf="@id/institutionTextView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                style="@style/LessonViewerHeaderText.Location"/>
+            
+        </android.support.constraint.ConstraintLayout>
 
     </android.support.design.widget.AppBarLayout>
 </android.support.design.widget.CoordinatorLayout>
