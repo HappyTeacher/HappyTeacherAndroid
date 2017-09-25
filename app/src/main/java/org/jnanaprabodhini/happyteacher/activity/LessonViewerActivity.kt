@@ -2,12 +2,19 @@ package org.jnanaprabodhini.happyteacher.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_lesson_viewer.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.HappyTeacherActivity
+import org.jnanaprabodhini.happyteacher.adapter.FirebaseDataObserverRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.LessonPlanRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.extension.onSingleValueEvent
 import org.jnanaprabodhini.happyteacher.model.SubtopicLesson
+import org.jnanaprabodhini.happyteacher.model.SubtopicLessonHeader
+import org.jnanaprabodhini.happyteacher.viewholder.SubtopicHeaderViewHolder
 
 class LessonViewerActivity : HappyTeacherActivity() {
 
@@ -75,7 +82,15 @@ class LessonViewerActivity : HappyTeacherActivity() {
     }
 
     private fun initializeRecyclerView(lesson: SubtopicLesson?) {
-        // todo
+        lessonPlanRecyclerView.layoutManager = LinearLayoutManager(this)
+
+        if (lesson == null) {
+            Toast.makeText(this, R.string.there_was_an_error_loading_the_lesson, Toast.LENGTH_LONG).show()
+            finish()
+            return
+        }
+
+        lessonPlanRecyclerView?.adapter = LessonPlanRecyclerAdapter(lesson.cards)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
