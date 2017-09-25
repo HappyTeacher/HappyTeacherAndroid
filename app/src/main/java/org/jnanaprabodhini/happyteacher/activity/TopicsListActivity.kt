@@ -13,8 +13,6 @@ import com.firebase.ui.database.FirebaseListAdapter
 import com.google.firebase.database.Query
 import kotlinx.android.synthetic.main.activity_topics_list.*
 import kotlinx.android.synthetic.main.header_syllabus_lesson_topic.*
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.startActivity
 import org.jnanaprabodhini.happyteacher.adapter.DataObserver
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
