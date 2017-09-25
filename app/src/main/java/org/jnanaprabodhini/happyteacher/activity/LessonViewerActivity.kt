@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.HappyTeacherActivity
+import org.jnanaprabodhini.happyteacher.extension.onSingleValueEvent
+import org.jnanaprabodhini.happyteacher.model.SubtopicLesson
 
 class LessonViewerActivity : HappyTeacherActivity() {
 
@@ -22,5 +24,30 @@ class LessonViewerActivity : HappyTeacherActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lesson_viewer)
+
+        if (intent.hasLessonId() && intent.hasSubtopicId()) {
+            getLessonFromDatabase()
+        } else {
+            // TODO: Show error -- lesson extras weren't passed properly
+        }
+
+    }
+
+    private fun getLessonFromDatabase() {
+        val lessonId = intent.getLessonId()
+        val subtopicId = intent.getSubtopicId()
+
+        val lessonQuery = databaseReference.child("subtopic_lessons")
+                                            .child(subtopicId)
+                                            .child(lessonId)
+
+        lessonQuery.onSingleValueEvent { dataSnapshot ->
+            val lesson = dataSnapshot?.getValue(SubtopicLesson::class.java)
+            initializeUiForLesson(lesson)
+        }
+    }
+
+    private fun initializeUiForLesson(lesson: SubtopicLesson?) {
+        //
     }
 }
