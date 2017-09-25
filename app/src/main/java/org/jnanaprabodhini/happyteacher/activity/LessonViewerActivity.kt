@@ -46,7 +46,7 @@ class LessonViewerActivity : HappyTeacherActivity() {
         val subtopicId = intent.getSubtopicId()
         val subject = intent.getSubject()
 
-        val lessonQuery = databaseReference.child("subtopic_lessons")
+        val lessonQuery = databaseReference.child(getString(R.string.subtopic_lessons))
                                             .child(subtopicId)
                                             .child(lessonId)
 
