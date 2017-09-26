@@ -8,12 +8,14 @@ import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
 import android.support.v7.content.res.AppCompatResources
 import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.Spinner
 import android.widget.TextView
 import org.jnanaprabodhini.happyteacher.R
+import org.jnanaprabodhini.happyteacher.extension.taghandler.RootListTagHandler
 
 /**
  * Extension functions for Views.
@@ -82,9 +84,16 @@ fun TextView.setDrawableLeft(@DrawableRes drawableId: Int) {
 }
 
 fun TextView.setHtmlText(htmlString: String) {
+    this.movementMethod = LinkMovementMethod.getInstance()
+
+    val tagHandler = RootListTagHandler()
+
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        this.text = Html.fromHtml(htmlString, Html.FROM_HTML_MODE_COMPACT)
+        this.text = Html.fromHtml(htmlString, Html.FROM_HTML_MODE_COMPACT, null, tagHandler)
     } else {
-        this.text = Html.fromHtml(htmlString)
+        this.text = Html.fromHtml(htmlString, null, tagHandler)
     }
+
+    // Ensure no newline at beginning:
+    this.text = this.text.removePrefix("\n")
 }
