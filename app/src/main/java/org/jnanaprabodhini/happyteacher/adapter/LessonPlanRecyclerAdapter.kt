@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.setHtmlText
+import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.model.LessonCard
 import org.jnanaprabodhini.happyteacher.viewholder.LessonCardViewHolder
 
@@ -20,7 +21,13 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>): RecyclerView
         // todo: reset all views to invisible here before doing anything
 
         val card = lessonCards[position]
-        holder?.headerTextView?.text = card.header
+
+        if (card.header.isNotEmpty()) {
+            holder?.headerTextView?.text = card.header
+        } else {
+            holder?.headerTextView?.setVisibilityGone()
+        }
+
         holder?.bodyTextView?.setHtmlText(card.body)
     }
 
