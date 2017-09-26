@@ -3,7 +3,6 @@ package org.jnanaprabodhini.happyteacher.activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_lesson_viewer.*
@@ -88,7 +87,7 @@ class LessonViewerActivity : HappyTeacherActivity() {
         if (lesson == null) {
             showErrorToastAndFinish()
         } else {
-            lessonPlanRecyclerView?.adapter = LessonPlanRecyclerAdapter(lesson.getLessonCards())
+            lessonPlanRecyclerView?.adapter = LessonPlanRecyclerAdapter(lesson.getLessonCards(), this)
         }
     }
 

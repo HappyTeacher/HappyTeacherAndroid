@@ -9,12 +9,16 @@ import android.support.design.widget.Snackbar
 import android.support.v7.content.res.AppCompatResources
 import android.text.Html
 import android.text.method.LinkMovementMethod
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.webkit.WebView
 import android.widget.AdapterView
 import android.widget.Spinner
 import android.widget.TextView
+import com.google.android.youtube.player.*
 import org.jnanaprabodhini.happyteacher.R
+import org.jnanaprabodhini.happyteacher.YOUTUBE_API_KEY
 import org.jnanaprabodhini.happyteacher.extension.taghandler.RootListTagHandler
 
 /**
@@ -96,4 +100,28 @@ fun TextView.setHtmlText(htmlString: String) {
 
     // Ensure no newline at beginning:
     this.text = this.text.removePrefix("\n")
+}
+
+fun YouTubeThumbnailView.loadVideoOnClick(id: String) {
+    this.initialize(YOUTUBE_API_KEY, object: com.google.android.youtube.player.YouTubeThumbnailView.OnInitializedListener {
+        override fun onInitializationSuccess(view: YouTubeThumbnailView?, loader: YouTubeThumbnailLoader?) {
+            loader?.setVideo(id)
+            loader?.setOnThumbnailLoadedListener(object: YouTubeThumbnailLoader.OnThumbnailLoadedListener {
+                override fun onThumbnailError(p0: YouTubeThumbnailView?, p1: YouTubeThumbnailLoader.ErrorReason?) {
+                    // TODO: handle these errors.
+                    loader.release()
+                }
+
+                override fun onThumbnailLoaded(p0: YouTubeThumbnailView?, p1: String?) {
+                    loader.release()
+                }
+
+            })
+        }
+
+        override fun onInitializationFailure(p0: YouTubeThumbnailView?, p1: YouTubeInitializationResult?) {
+           // TODO: Handle errors (like if user doesn't have YouTube!)
+        }
+
+    })
 }

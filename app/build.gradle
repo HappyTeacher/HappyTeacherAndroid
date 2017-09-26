@@ -39,6 +39,9 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:cardview-v7:26.0.1'
 
+    // Youtube
+    compile files('libs/YouTubeAndroidPlayerApi.jar')
+
     // Firebase Dependencies
     compile 'com.firebaseui:firebase-ui-database:2.3.0'
     compile 'com.google.firebase:firebase-database:11.0.1'
