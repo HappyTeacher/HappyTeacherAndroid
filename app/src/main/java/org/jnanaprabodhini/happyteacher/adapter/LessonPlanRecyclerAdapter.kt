@@ -41,7 +41,9 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
     private fun setupYoutubePlayer(card: LessonCard, viewHolder: LessonCardViewHolder?) {
         if (card.videoUrl.isNotEmpty()) {
             viewHolder?.youtubeThumnbailView?.setVisible()
-            viewHolder?.youtubeThumnbailView?.loadVideoOnClick("jBs2kN78g1g")
+
+            viewHolder?.youtubeProgressBar?.setVisible()
+            viewHolder?.youtubeThumnbailView?.loadVideoOnClick("jBs2kN78g1g", {viewHolder.youtubeProgressBar.setVisibilityGone()})
 
         } else {
             viewHolder?.youtubeThumnbailView?.setVisibilityGone()

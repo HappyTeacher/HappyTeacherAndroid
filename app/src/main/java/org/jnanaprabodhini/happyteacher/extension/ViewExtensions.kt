@@ -14,6 +14,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.webkit.WebView
 import android.widget.AdapterView
+import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
 import com.google.android.youtube.player.*
@@ -102,7 +103,7 @@ fun TextView.setHtmlText(htmlString: String) {
     this.text = this.text.removePrefix("\n")
 }
 
-fun YouTubeThumbnailView.loadVideoOnClick(id: String) {
+fun YouTubeThumbnailView.loadVideoOnClick(id: String, onThumbnailLoaded: () -> Unit) {
     this.initialize(YOUTUBE_API_KEY, object: com.google.android.youtube.player.YouTubeThumbnailView.OnInitializedListener {
         override fun onInitializationSuccess(view: YouTubeThumbnailView?, loader: YouTubeThumbnailLoader?) {
             loader?.setVideo(id)
@@ -113,6 +114,7 @@ fun YouTubeThumbnailView.loadVideoOnClick(id: String) {
                 }
 
                 override fun onThumbnailLoaded(p0: YouTubeThumbnailView?, p1: String?) {
+                    onThumbnailLoaded()
                     loader.release()
                 }
 
