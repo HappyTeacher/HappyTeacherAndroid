@@ -42,6 +42,8 @@ dependencies {
     // Youtube
     compile files('libs/YouTubeAndroidPlayerApi.jar')
 
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
     // Firebase Dependencies
     compile 'com.firebaseui:firebase-ui-database:2.3.0'
     compile 'com.google.firebase:firebase-database:11.0.1'

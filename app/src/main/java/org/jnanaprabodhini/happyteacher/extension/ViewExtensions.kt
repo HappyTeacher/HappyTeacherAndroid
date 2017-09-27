@@ -13,11 +13,9 @@ import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.webkit.WebView
-import android.widget.AdapterView
-import android.widget.ProgressBar
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import com.google.android.youtube.player.*
+import com.squareup.picasso.Picasso
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.YOUTUBE_API_KEY
 import org.jnanaprabodhini.happyteacher.extension.taghandler.RootListTagHandler
@@ -103,27 +101,16 @@ fun TextView.setHtmlText(htmlString: String) {
     this.text = this.text.removePrefix("\n")
 }
 
-fun YouTubeThumbnailView.loadVideoOnClick(id: String, onThumbnailLoaded: () -> Unit) {
-    this.initialize(YOUTUBE_API_KEY, object: com.google.android.youtube.player.YouTubeThumbnailView.OnInitializedListener {
-        override fun onInitializationSuccess(view: YouTubeThumbnailView?, loader: YouTubeThumbnailLoader?) {
-            loader?.setVideo(id)
-            loader?.setOnThumbnailLoadedListener(object: YouTubeThumbnailLoader.OnThumbnailLoadedListener {
-                override fun onThumbnailError(p0: YouTubeThumbnailView?, p1: YouTubeThumbnailLoader.ErrorReason?) {
-                    // TODO: handle these errors.
-                    loader.release()
-                }
+fun ImageView.loadImage(imageUrl: String) {
+    Picasso.with(context)
+            .load(imageUrl)
+            .placeholder(R.drawable.ripple_accent_gray)
+            .error(R.drawable.primary_button_pill)
+            .centerCrop()
+            .into(this)
+}
 
-                override fun onThumbnailLoaded(p0: YouTubeThumbnailView?, p1: String?) {
-                    onThumbnailLoaded()
-                    loader.release()
-                }
-
-            })
-        }
-
-        override fun onInitializationFailure(p0: YouTubeThumbnailView?, p1: YouTubeInitializationResult?) {
-           // TODO: Handle errors (like if user doesn't have YouTube!)
-        }
-
-    })
+fun ImageView.loadYoutubeThumbnail(id: String) {
+    val imageUrl = "https://img.youtube.com/vi/$id/hqdefault.jpg"
+    loadImage(imageUrl)
 }
