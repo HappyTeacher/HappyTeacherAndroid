@@ -4,10 +4,20 @@ import android.app.Activity
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.google.android.youtube.player.YouTubeInitializationResult
+import com.google.android.youtube.player.YouTubePlayer
+import com.google.android.youtube.player.YouTubePlayerFragment
 import org.jnanaprabodhini.happyteacher.R
+import org.jnanaprabodhini.happyteacher.YOUTUBE_API_KEY
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.LessonCard
 import org.jnanaprabodhini.happyteacher.viewholder.LessonCardViewHolder
+import android.widget.LinearLayout
+import android.content.Context.LAYOUT_INFLATER_SERVICE
+import android.util.Log
+import android.webkit.WebSettings
+import android.widget.FrameLayout
+import java.util.*
 
 
 /**
@@ -23,8 +33,6 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
     }
 
     override fun onBindViewHolder(holder: LessonCardViewHolder?, position: Int) {
-        // todo: reset all views to invisible here before doing anything
-
         val card = lessonCards[position]
 
         resetViewVisibility(holder)
@@ -38,8 +46,9 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
     }
 
     private fun resetViewVisibility(holder: LessonCardViewHolder?) {
-        holder?.youtubeFrame?.setVisibilityGone()
-        holder?.youtubePlayButton?.setVisibilityGone()
+        holder?.headerMediaFrame?.setVisibilityGone()
+        holder?.youtubeWebView?.setVisibilityGone()
+        holder?.headerImageView?.setVisibilityGone()
     }
 
     private fun setupText(card: LessonCard, holder: LessonCardViewHolder?) {
@@ -59,13 +68,14 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
     }
 
     private fun setupYoutubePlayer(youtubeId: String, holder: LessonCardViewHolder?) {
-        holder?.youtubeFrame?.setVisible()
-        holder?.youtubePlayButton?.setVisible()
-        holder?.youtubeThumnbailImageView?.loadYoutubeThumbnail(youtubeId)
+        holder?.headerMediaFrame?.setVisible()
+        holder?.youtubeWebView?.setVisible()
+        holder?.youtubeWebView?.loadYoutubeVideo(youtubeId)
     }
 
     private fun setupImages(imageUrls: List<String>, holder: LessonCardViewHolder?) {
-        holder?.youtubeFrame?.setVisible()
-        holder?.youtubeThumnbailImageView?.loadImage(imageUrls.first())
+        holder?.headerMediaFrame?.setVisible()
+        holder?.headerImageView?.setVisible()
+        holder?.headerImageView?.loadImage(imageUrls.first())
     }
 }

@@ -12,6 +12,7 @@ import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.*
 import com.google.android.youtube.player.*
@@ -104,14 +105,18 @@ fun TextView.setHtmlText(htmlString: String) {
 fun ImageView.loadImage(imageUrl: String) {
     Picasso.with(context)
             .load(imageUrl)
-            .placeholder(R.drawable.ripple_accent_gray)
+            .placeholder(R.drawable.ripple_accent_gray) // todo: actual placeholders/error views
             .error(R.drawable.primary_button_pill)
             .fit()
             .centerCrop()
             .into(this)
 }
 
-fun ImageView.loadYoutubeThumbnail(id: String) {
-    val imageUrl = "https://img.youtube.com/vi/$id/hqdefault.jpg"
-    loadImage(imageUrl)
+fun WebView.loadYoutubeVideo(youtubeId: String) {
+    settings.javaScriptEnabled = true
+    settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
+
+    isScrollbarFadingEnabled = false
+
+    loadData("<iframe height=\"100%\" width=\"100%\" src=\"https://www.youtube.com/embed/$youtubeId\" frameborder=\"0\" allowfullscreen></iframe>", "text/html", "UTF-8")
 }

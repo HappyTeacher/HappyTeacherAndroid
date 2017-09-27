@@ -2,9 +2,9 @@ package org.jnanaprabodhini.happyteacher.viewholder
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.webkit.WebView
 import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import kotlinx.android.synthetic.main.list_item_lesson_card.view.*
 
@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.list_item_lesson_card.view.*
 open class LessonCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     val headerTextView: TextView = itemView.headerTextView
     val bodyTextView: TextView = itemView.bodyTextView
-    val youtubeThumnbailImageView: ImageView = itemView.youtubeThumbnailImageView
-    val youtubeFrame: FrameLayout = itemView.youtubeFrame
-    val youtubePlayButton: View = itemView.youtubePlayButton
+    val headerImageView: ImageView = itemView.headerImageView
+    val headerMediaFrame: FrameLayout = itemView.headerMediaFrame
+    val youtubeWebView: WebView = itemView.youtubePlayerWebView
 }
