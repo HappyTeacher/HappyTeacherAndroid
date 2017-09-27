@@ -17,33 +17,55 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
 
     override fun getItemCount(): Int = lessonCards.size
 
-    override fun onBindViewHolder(holder: LessonCardViewHolder?, position: Int) {
-        // todo: reset all views to invisible here before doing anything
-
-        val card = lessonCards[position]
-
-        if (card.header.isNotEmpty()) {
-            holder?.headerTextView?.text = card.header
-        } else {
-            holder?.headerTextView?.setVisibilityGone()
-        }
-
-        setupYoutubePlayer(card, holder)
-
-        holder?.bodyTextView?.setHtmlText(card.body)
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): LessonCardViewHolder {
         val cardView = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_lesson_card, parent, false)
         return LessonCardViewHolder(cardView)
     }
 
-    private fun setupYoutubePlayer(card: LessonCard, viewHolder: LessonCardViewHolder?) {
+    override fun onBindViewHolder(holder: LessonCardViewHolder?, position: Int) {
+        // todo: reset all views to invisible here before doing anything
+
+        val card = lessonCards[position]
+
+        resetViewVisibility(holder)
+        setupText(card, holder)
+
         if (card.youtubeId.isNotEmpty()) {
-            viewHolder?.youtubeThumnbailImageView?.setVisible()
-            viewHolder?.youtubeThumnbailImageView?.loadYoutubeThumbnail(card.youtubeId)
-        } else {
-            viewHolder?.youtubeFrame?.setVisibilityGone()
+            setupYoutubePlayer(card.youtubeId, holder)
+        } else if (card.imageUrls.isNotEmpty()) {
+            setupImages(card.getCardImageUrls(), holder)
         }
+    }
+
+    private fun resetViewVisibility(holder: LessonCardViewHolder?) {
+        holder?.youtubeFrame?.setVisibilityGone()
+        holder?.youtubePlayButton?.setVisibilityGone()
+    }
+
+    private fun setupText(card: LessonCard, holder: LessonCardViewHolder?) {
+        if (card.header.isNotEmpty()) {
+            holder?.headerTextView?.setVisible()
+            holder?.headerTextView?.text = card.header
+        } else {
+            holder?.headerTextView?.setVisibilityGone()
+        }
+
+        if (card.body.isNotEmpty()) {
+            holder?.bodyTextView?.setVisible()
+            holder?.bodyTextView?.setHtmlText(card.body)
+        } else {
+            holder?.bodyTextView?.setVisibilityGone()
+        }
+    }
+
+    private fun setupYoutubePlayer(youtubeId: String, holder: LessonCardViewHolder?) {
+        holder?.youtubeFrame?.setVisible()
+        holder?.youtubePlayButton?.setVisible()
+        holder?.youtubeThumnbailImageView?.loadYoutubeThumbnail(youtubeId)
+    }
+
+    private fun setupImages(imageUrls: List<String>, holder: LessonCardViewHolder?) {
+        holder?.youtubeFrame?.setVisible()
+        holder?.youtubeThumnbailImageView?.loadImage(imageUrls.first())
     }
 }

@@ -106,6 +106,7 @@ fun ImageView.loadImage(imageUrl: String) {
             .load(imageUrl)
             .placeholder(R.drawable.ripple_accent_gray)
             .error(R.drawable.primary_button_pill)
+            .fit()
             .centerCrop()
             .into(this)
 }

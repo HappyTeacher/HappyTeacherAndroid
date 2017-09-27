@@ -18,19 +18,14 @@
         <FrameLayout
             android:id="@+id/youtubeFrame"
             android:layout_width="match_parent"
-            android:layout_height="200dp">
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"/>
+            android:layout_height="@dimen/lesson_card_media_frame_height">
             <ImageView
                 android:id="@+id/youtubeThumbnailImageView"
                 android:layout_width="match_parent"
                 android:scaleType="fitCenter"
-                android:layout_height="200dp"/>
+                android:layout_height="match_parent"/>
             <ImageView
+                android:id="@+id/youtubePlayButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
