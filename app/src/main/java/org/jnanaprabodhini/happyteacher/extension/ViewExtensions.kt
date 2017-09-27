@@ -116,7 +116,8 @@ fun WebView.loadYoutubeVideo(youtubeId: String) {
     settings.javaScriptEnabled = true
     settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
 
-    isScrollbarFadingEnabled = false
+    isVerticalScrollBarEnabled = false
+    isHorizontalScrollBarEnabled = false
 
     loadData("<iframe height=\"100%\" width=\"100%\" src=\"https://www.youtube.com/embed/$youtubeId\" frameborder=\"0\" allowfullscreen></iframe>", "text/html", "UTF-8")
 }
