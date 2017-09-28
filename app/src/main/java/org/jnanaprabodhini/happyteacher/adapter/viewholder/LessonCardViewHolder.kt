@@ -21,4 +21,6 @@ open class LessonCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVie
 
     val imageGalleryRecyclerView: RecyclerView = itemView.imageGalleryRecyclerView
     val imageScrollArrowView: View = itemView.imageScrollArrowView
+
+    val attachmentDownloadButton: TextView = itemView.attachmentDownloadButton
 }

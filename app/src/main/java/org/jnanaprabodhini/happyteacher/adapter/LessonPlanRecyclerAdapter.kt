@@ -36,6 +36,11 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
         } else if (card.imageUrls.isNotEmpty()) {
             setupImages(card.getCardImageUrls(), holder)
         }
+
+        if (card.attachmentUrl.isNotEmpty()) {
+            setupAttachmentView(card.attachmentUrl, holder)
+        }
+
     }
 
     private fun resetViewVisibility(holder: LessonCardViewHolder?) {
@@ -44,6 +49,7 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
         holder?.headerImageView?.setVisibilityGone()
         holder?.imageScrollArrowView?.setVisibilityGone()
         holder?.imageGalleryRecyclerView?.setVisibilityGone()
+        holder?.attachmentDownloadButton?.setVisibilityGone()
     }
 
     private fun setupText(card: LessonCard, holder: LessonCardViewHolder?) {
@@ -99,7 +105,7 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
         // Show an arrow to indicate to the user that this is scrollable
         holder?.imageScrollArrowView?.setVisible()
         holder?.imageScrollArrowView?.setOnClickListener {
-            // Scroll right by half of a single images width:
+            // Scroll right by half of a single image's width:
             val dx = activity.resources.getDimensionPixelOffset(R.dimen.card_image_gallery_width) / 2
             val dy = 0
             recycler?.smoothScrollBy(dx, dy)
@@ -108,6 +114,12 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
             // Once a user scrolls, hide the arrow
             holder.imageScrollArrowView.setVisibilityGone()
         }
+    }
+
+    private fun setupAttachmentView(attachmentUrl: String, holder: LessonCardViewHolder?) {
+        holder?.attachmentDownloadButton?.setVisible()
+        holder?.attachmentDownloadButton?.setDrawableLeft(R.drawable.ic_file_download_white_24dp)
+        holder?.attachmentDownloadButton?.text = "Download attachment"
     }
 }
 
