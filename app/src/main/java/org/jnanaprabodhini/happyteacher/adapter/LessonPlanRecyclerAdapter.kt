@@ -8,7 +8,6 @@ import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerFragment
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.YOUTUBE_API_KEY
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.LessonCard
 import org.jnanaprabodhini.happyteacher.viewholder.LessonCardViewHolder

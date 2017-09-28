@@ -12,13 +12,11 @@ import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.webkit.WebSettings
-import android.webkit.WebView
+import android.webkit.*
 import android.widget.*
 import com.google.android.youtube.player.*
 import com.squareup.picasso.Picasso
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.YOUTUBE_API_KEY
 import org.jnanaprabodhini.happyteacher.extension.taghandler.RootListTagHandler
 
 /**
@@ -118,6 +116,13 @@ fun WebView.loadYoutubeVideo(youtubeId: String) {
 
     isVerticalScrollBarEnabled = false
     isHorizontalScrollBarEnabled = false
+
+    webViewClient = object: WebViewClient() {
+        override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
+            // TODO: Better error, translated:
+            loadData("Error loading the page.", "text/html", "UTF-8")
+        }
+    }
 
     loadData("<iframe height=\"100%\" width=\"100%\" src=\"https://www.youtube.com/embed/$youtubeId\" frameborder=\"0\" allowfullscreen></iframe>", "text/html", "UTF-8")
 }
