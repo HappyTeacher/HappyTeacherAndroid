@@ -1,6 +1,7 @@
 package org.jnanaprabodhini.happyteacher.extension
 
 import android.database.DataSetObserver
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.support.annotation.DrawableRes
@@ -19,6 +20,11 @@ import com.google.android.youtube.player.*
 import com.squareup.picasso.Picasso
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.taghandler.RootListTagHandler
+import android.content.Intent
+import android.net.Uri
+import android.support.v4.content.ContextCompat.startActivity
+
+
 
 /**
  * Extension functions for Views.
@@ -118,14 +124,31 @@ fun WebView.loadYoutubeVideo(youtubeId: String) {
     isVerticalScrollBarEnabled = false
     isHorizontalScrollBarEnabled = false
 
+    val embedCode = "<iframe width='100%' height='100%' src=\"https://www.youtube.com/embed/$youtubeId?&theme=dark&color=white&autohide=1&fs=0&showinfo=0&rel=0\"frameborder=\"0\"></iframe>"
+
     webViewClient = object: WebViewClient() {
         override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
             // TODO: Better error, translated:
             loadData("Error loading the page.", "text/html", "UTF-8")
         }
+
+        /**
+         * If the WebView tries to load a page that is not a "data" url (i.e. the embed data we're loading),
+         *   then load the Youtube video in the Youtube app or browser.
+         *
+         *   This prevents the webview from displaying anything else from the internet.
+         */
+        override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+            if (url?.substring(0, 4) != "data") {
+                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=$youtubeId")))
+                loadData(embedCode, "text/html", "UTF-8")
+            } else {
+                super.onPageStarted(view, url, favicon)
+            }
+        }
     }
 
-    loadData("<iframe height=\"100%\" width=\"100%\" src=\"https://www.youtube.com/embed/$youtubeId\" frameborder=\"0\" allowfullscreen></iframe>", "text/html", "UTF-8")
+    loadData(embedCode, "text/html", "UTF-8")
 }
 
 fun RecyclerView.onHorizontalScroll(onHorizontalScroll: () -> Unit) {
