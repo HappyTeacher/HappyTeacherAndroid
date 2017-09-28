@@ -1,22 +1,14 @@
 package org.jnanaprabodhini.happyteacher.adapter
 
 import android.app.Activity
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.google.android.youtube.player.YouTubeInitializationResult
-import com.google.android.youtube.player.YouTubePlayer
-import com.google.android.youtube.player.YouTubePlayerFragment
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.LessonCard
-import org.jnanaprabodhini.happyteacher.viewholder.LessonCardViewHolder
-import android.widget.LinearLayout
-import android.content.Context.LAYOUT_INFLATER_SERVICE
-import android.util.Log
-import android.webkit.WebSettings
-import android.widget.FrameLayout
-import java.util.*
+import org.jnanaprabodhini.happyteacher.adapter.viewholder.LessonCardViewHolder
 
 
 /**
@@ -73,8 +65,23 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
     }
 
     private fun setupImages(imageUrls: List<String>, holder: LessonCardViewHolder?) {
-        holder?.headerMediaFrame?.setVisible()
-        holder?.headerImageView?.setVisible()
-        holder?.headerImageView?.loadImage(imageUrls.first())
+
+        if (imageUrls.size == 1) {
+            holder?.headerMediaFrame?.setVisible()
+            holder?.headerImageView?.setVisible()
+            holder?.headerImageView?.loadImage(imageUrls.first())
+        } else {
+            holder?.headerMediaFrame?.setVisible()
+            setupImageGalleryRecycler(imageUrls, holder)
+        }
+    }
+
+    private fun setupImageGalleryRecycler(imageUrls: List<String>, holder: LessonCardViewHolder?) {
+        val recycler = holder?.imageGalleryRecyclerView
+        recycler?.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        recycler?.adapter = ImageGalleryRecyclerAdapter(imageUrls)
+
+        recycler?.setVisible()
     }
 }
+

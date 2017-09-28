@@ -23,8 +23,8 @@ import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.SubtopicLessonHeader
 import org.jnanaprabodhini.happyteacher.model.Topic
 import org.jnanaprabodhini.happyteacher.prefs
-import org.jnanaprabodhini.happyteacher.viewholder.SubtopicHeaderViewHolder
-import org.jnanaprabodhini.happyteacher.viewholder.TopicViewHolder
+import org.jnanaprabodhini.happyteacher.adapter.viewholder.SubtopicHeaderViewHolder
+import org.jnanaprabodhini.happyteacher.adapter.viewholder.TopicViewHolder
 import java.util.*
 
 class TopicsListActivity : BottomNavigationActivity(), DataObserver {

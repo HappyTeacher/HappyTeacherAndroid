@@ -1,4 +1,4 @@
-package org.jnanaprabodhini.happyteacher.viewholder
+package org.jnanaprabodhini.happyteacher.adapter.viewholder
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -17,4 +17,5 @@ open class LessonCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVie
     val headerImageView: ImageView = itemView.headerImageView
     val headerMediaFrame: FrameLayout = itemView.headerMediaFrame
     val youtubeWebView: WebView = itemView.youtubePlayerWebView
+    val imageGalleryRecyclerView: RecyclerView = itemView.imageGalleryRecyclerView
 }

@@ -20,7 +20,7 @@ import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.SyllabusLesson
 import org.jnanaprabodhini.happyteacher.prefs
-import org.jnanaprabodhini.happyteacher.viewholder.SyllabusLessonViewHolder
+import org.jnanaprabodhini.happyteacher.adapter.viewholder.SyllabusLessonViewHolder
 
 
 class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {

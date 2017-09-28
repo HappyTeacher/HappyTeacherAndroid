@@ -24,6 +24,10 @@
                 android:layout_width="match_parent"
                 android:scaleType="fitCenter"
                 android:layout_height="match_parent"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/imageGalleryRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
             <WebView
                 android:id="@+id/youtubePlayerWebView"
                 android:layout_width="match_parent"
