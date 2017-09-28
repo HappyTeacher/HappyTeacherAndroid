@@ -82,7 +82,7 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
     private fun setupImageGalleryRecycler(imageUrls: List<String>, holder: LessonCardViewHolder?) {
         val recycler = holder?.imageGalleryRecyclerView
         recycler?.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        recycler?.adapter = ImageGalleryRecyclerAdapter(imageUrls)
+        recycler?.adapter = ImageGalleryRecyclerAdapter(imageUrls, activity)
 
         recycler?.setVisible()
 

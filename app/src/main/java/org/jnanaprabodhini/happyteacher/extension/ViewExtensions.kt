@@ -117,6 +117,14 @@ fun ImageView.loadImage(imageUrl: String) {
             .into(this)
 }
 
+fun ImageView.loadImageWithNoCrop(imageUrl: String) {
+    Picasso.with(context)
+            .load(imageUrl)
+            .placeholder(R.drawable.ripple_accent_gray) // todo: actual placeholders/error views
+            .error(R.drawable.primary_button_pill)
+            .into(this)
+}
+
 fun WebView.loadYoutubeVideo(youtubeId: String) {
     settings.javaScriptEnabled = true
     settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
