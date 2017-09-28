@@ -3,7 +3,6 @@ package org.jnanaprabodhini.happyteacher.adapter
 import android.app.Activity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import org.jnanaprabodhini.happyteacher.R
@@ -72,7 +71,7 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
         if (imageUrls.size == 1) {
             holder?.headerMediaFrame?.setVisible()
             holder?.headerImageView?.setVisible()
-            holder?.headerImageView?.loadImage(imageUrls.first())
+            holder?.headerImageView?.loadImageToFit(imageUrls.first())
         } else {
             holder?.headerMediaFrame?.setVisible()
             setupImageGalleryRecycler(imageUrls, holder)

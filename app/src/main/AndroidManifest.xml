@@ -23,7 +23,8 @@
         <activity
             android:name=".activity.LessonViewerActivity"
             android:parentActivityName=".activity.TopicsListActivity" />
-        <activity android:name=".activity.FullScreenGalleryViewerActivity"/>
+        <activity android:name=".activity.FullScreenGalleryViewerActivity"
+            android:theme="@style/Theme.Transparent"/>
     </application>
 
 </manifest>

@@ -23,7 +23,8 @@ import org.jnanaprabodhini.happyteacher.extension.taghandler.RootListTagHandler
 import android.content.Intent
 import android.net.Uri
 import android.support.v4.content.ContextCompat.startActivity
-
+import android.support.v4.view.ViewPager
+import android.view.MotionEvent
 
 
 /**
@@ -107,7 +108,7 @@ fun TextView.setHtmlText(htmlString: String) {
     this.text = this.text.removePrefix("\n")
 }
 
-fun ImageView.loadImage(imageUrl: String) {
+fun ImageView.loadImageToFit(imageUrl: String) {
     Picasso.with(context)
             .load(imageUrl)
             .placeholder(R.drawable.ripple_accent_gray) // todo: actual placeholders/error views
@@ -117,10 +118,9 @@ fun ImageView.loadImage(imageUrl: String) {
             .into(this)
 }
 
-fun ImageView.loadImageWithNoCrop(imageUrl: String) {
+fun ImageView.loadImage(imageUrl: String) {
     Picasso.with(context)
             .load(imageUrl)
-            .placeholder(R.drawable.ripple_accent_gray) // todo: actual placeholders/error views
             .error(R.drawable.primary_button_pill)
             .into(this)
 }
