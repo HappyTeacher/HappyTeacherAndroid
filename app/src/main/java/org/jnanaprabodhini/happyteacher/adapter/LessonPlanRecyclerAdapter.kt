@@ -1,11 +1,13 @@
 package org.jnanaprabodhini.happyteacher.adapter
 
 import android.app.Activity
+import android.content.Intent
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import org.jnanaprabodhini.happyteacher.R
+import org.jnanaprabodhini.happyteacher.activity.FullScreenGalleryViewerActivity
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.LessonCard
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.LessonCardViewHolder
@@ -72,6 +74,15 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
             holder?.headerMediaFrame?.setVisible()
             holder?.headerImageView?.setVisible()
             holder?.headerImageView?.loadImageToFit(imageUrls.first())
+
+            holder?.headerImageView?.setOnClickListener {
+                val fullscreenImageIntent = Intent(activity, FullScreenGalleryViewerActivity::class.java)
+                fullscreenImageIntent.putExtra(FullScreenGalleryViewerActivity.IMAGE_URLS, imageUrls.toTypedArray())
+                fullscreenImageIntent.putExtra(FullScreenGalleryViewerActivity.SELECTED_IMAGE, 0)
+
+                activity.startActivity(fullscreenImageIntent)
+            }
+
         } else {
             holder?.headerMediaFrame?.setVisible()
             setupImageGalleryRecycler(imageUrls, holder)
