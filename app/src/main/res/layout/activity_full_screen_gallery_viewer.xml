@@ -21,8 +21,8 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:id="@+id/closeButton"
-        android:background="@drawable/primary_button_pill"
-        app:srcCompat="@drawable/ic_arrow_back_white_24dp"
+        android:background="@drawable/dark_ripple_pill"
+        app:srcCompat="@drawable/ic_close_white_24dp"
         android:layout_gravity="start|top"/>
 
 </FrameLayout>

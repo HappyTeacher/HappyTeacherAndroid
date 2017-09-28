@@ -2,7 +2,6 @@ package org.jnanaprabodhini.happyteacher.extension
 
 import android.database.DataSetObserver
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
@@ -11,20 +10,15 @@ import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.text.method.LinkMovementMethod
-import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.webkit.*
 import android.widget.*
-import com.google.android.youtube.player.*
 import com.squareup.picasso.Picasso
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.taghandler.RootListTagHandler
 import android.content.Intent
 import android.net.Uri
-import android.support.v4.content.ContextCompat.startActivity
-import android.support.v4.view.ViewPager
-import android.view.MotionEvent
 
 
 /**
@@ -112,7 +106,7 @@ fun ImageView.loadImageToFit(imageUrl: String) {
     Picasso.with(context)
             .load(imageUrl)
             .placeholder(R.drawable.ripple_accent_gray) // todo: actual placeholders/error views
-            .error(R.drawable.primary_button_pill)
+            .error(R.drawable.white_ripple_pill)
             .fit()
             .centerCrop()
             .into(this)
@@ -121,7 +115,7 @@ fun ImageView.loadImageToFit(imageUrl: String) {
 fun ImageView.loadImage(imageUrl: String) {
     Picasso.with(context)
             .load(imageUrl)
-            .error(R.drawable.primary_button_pill)
+            .error(R.drawable.white_ripple_pill)
             .into(this)
 }
 
