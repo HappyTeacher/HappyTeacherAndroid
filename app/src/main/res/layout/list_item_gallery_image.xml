@@ -3,4 +3,4 @@
     android:id="@+id/galleryImageView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:layout_width="300dp"/>
+    android:layout_width="@dimen/card_image_gallery_width"/>

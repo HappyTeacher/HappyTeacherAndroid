@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#5440a2</color>
     <color name="colorAccent">#B7B9F4</color>
 
+    <color name="colorAccentTransparent">#beb7b9f4</color>
+
     <color name="seaTeal">#5ED3D5</color>
     <color name="grassGreen">#C0E3BF</color>
     <color name="bubbleGumPink">#FFCDE4</color>

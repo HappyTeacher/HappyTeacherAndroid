@@ -3,6 +3,7 @@ package org.jnanaprabodhini.happyteacher.adapter
 import android.app.Activity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import org.jnanaprabodhini.happyteacher.R
@@ -40,6 +41,8 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
         holder?.headerMediaFrame?.setVisibilityGone()
         holder?.youtubeWebView?.setVisibilityGone()
         holder?.headerImageView?.setVisibilityGone()
+        holder?.imageScrollArrowView?.setVisibilityGone()
+        holder?.imageGalleryRecyclerView?.setVisibilityGone()
     }
 
     private fun setupText(card: LessonCard, holder: LessonCardViewHolder?) {
@@ -82,6 +85,19 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
         recycler?.adapter = ImageGalleryRecyclerAdapter(imageUrls)
 
         recycler?.setVisible()
+
+        // Show an arrow to indicate to the user that this is scrollable
+        holder?.imageScrollArrowView?.setVisible()
+        holder?.imageScrollArrowView?.setOnClickListener {
+            // Scroll right by half of a single images width:
+            val dx = activity.resources.getDimensionPixelOffset(R.dimen.card_image_gallery_width) / 2
+            val dy = 0
+            recycler?.smoothScrollBy(dx, dy)
+        }
+        recycler?.onHorizontalScroll {
+            // Once a user scrolls, hide the arrow
+            holder.imageScrollArrowView.setVisibilityGone()
+        }
     }
 }
 

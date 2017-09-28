@@ -7,6 +7,7 @@ import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
 import android.support.v7.content.res.AppCompatResources
+import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.util.Log
@@ -125,4 +126,12 @@ fun WebView.loadYoutubeVideo(youtubeId: String) {
     }
 
     loadData("<iframe height=\"100%\" width=\"100%\" src=\"https://www.youtube.com/embed/$youtubeId\" frameborder=\"0\" allowfullscreen></iframe>", "text/html", "UTF-8")
+}
+
+fun RecyclerView.onHorizontalScroll(onHorizontalScroll: () -> Unit) {
+    addOnScrollListener(object: RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            if (dx > 0) onHorizontalScroll()
+        }
+    })
 }

@@ -14,8 +14,11 @@ import kotlinx.android.synthetic.main.list_item_lesson_card.view.*
 open class LessonCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     val headerTextView: TextView = itemView.headerTextView
     val bodyTextView: TextView = itemView.bodyTextView
-    val headerImageView: ImageView = itemView.headerImageView
+
     val headerMediaFrame: FrameLayout = itemView.headerMediaFrame
+    val headerImageView: ImageView = itemView.headerImageView
     val youtubeWebView: WebView = itemView.youtubePlayerWebView
+
     val imageGalleryRecyclerView: RecyclerView = itemView.imageGalleryRecyclerView
+    val imageScrollArrowView: View = itemView.imageScrollArrowView
 }

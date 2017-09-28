@@ -17,6 +17,7 @@
 
         <FrameLayout
             android:id="@+id/headerMediaFrame"
+            android:animateLayoutChanges="true"
             android:layout_width="match_parent"
             android:layout_height="@dimen/lesson_card_media_frame_height">
             <ImageView
@@ -28,6 +29,18 @@
                 android:id="@+id/imageGalleryRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
+            <FrameLayout
+                android:id="@+id/imageScrollArrowView"
+                android:layout_width="56dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:background="@color/colorAccentTransparent">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/ic_keyboard_arrow_right_white_24dp"/>
+            </FrameLayout>
             <WebView
                 android:id="@+id/youtubePlayerWebView"
                 android:layout_width="match_parent"
