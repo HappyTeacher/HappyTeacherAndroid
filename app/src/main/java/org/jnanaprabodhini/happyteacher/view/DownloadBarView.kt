@@ -5,9 +5,7 @@ import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.FrameLayout
-import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.view_download_bar.view.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
@@ -28,36 +26,38 @@ class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout
     }
 
     fun setLoading() {
-        hideAllIcons()
+        resetView()
         indeterminateProgressBar.setVisible()
     }
 
     fun setDownloadIcon() {
-        hideAllIcons()
+        resetView()
         icon.setVisible()
         icon.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.ic_file_download_white_24dp, null))
     }
 
     fun setCancelIcon() {
-        hideAllIcons()
+        resetView()
         icon.setVisible()
         icon.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.ic_close_white_24dp, null))
     }
 
     fun setFolderIcon() {
-        hideAllIcons()
+        resetView()
         icon.setVisible()
         icon.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.ic_folder_white_24dp, null))
     }
 
-    fun setErrorIcon() {
-        hideAllIcons()
+    fun setErrorWithText(errorText: String) {
+        resetView()
         icon.setVisible()
         icon.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.ic_error_white_24dp, null))
+        rootFrame.setBackgroundColor(R.color.lightGray)
+        setText(errorText)
     }
 
-    fun setErrorBackgroundColor() {
-        rootFrame.setBackgroundColor(R.color.lightGray)
+    fun resetBackgroundColor() {
+        rootFrame.background = ResourcesCompat.getDrawable(context.resources, R.drawable.ripple_blue, null)
     }
 
     fun setIconOnClickListener(onClick: () -> Unit) {
@@ -73,7 +73,8 @@ class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout
         progressBarBackground.layoutParams.width = 0
     }
 
-    private fun hideAllIcons() {
+    private fun resetView() {
+        resetBackgroundColor()
         indeterminateProgressBar.setVisibilityGone()
         icon.setVisibilityGone()
     }

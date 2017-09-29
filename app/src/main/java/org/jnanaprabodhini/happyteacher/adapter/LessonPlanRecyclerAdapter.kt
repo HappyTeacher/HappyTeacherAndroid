@@ -16,9 +16,9 @@ import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.LessonCard
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.LessonCardViewHolder
 import java.io.File
-import android.util.Log
 import android.support.v4.app.ActivityCompat
 import android.content.pm.PackageManager
+import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.StorageReference
 import org.jnanaprabodhini.happyteacher.activity.LessonViewerActivity
 
@@ -139,7 +139,7 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
         fileRef.metadata.addOnSuccessListener { storageMetadata ->
             val type = storageMetadata.contentType
 
-            holder?.attachmentDownloadButton?.setText("${fileRef.name} (${storageMetadata.sizeBytes / 1000000} MB)")
+            holder?.attachmentDownloadButton?.setText("${fileRef.name} (${storageMetadata.sizeBytes.toMegabyteFromByte()} MB)") // todo: localize string
             holder?.attachmentDownloadButton?.setDownloadIcon()
 
             holder?.attachmentDownloadButton?.setOnClickListener {
@@ -163,34 +163,42 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
 
             val downloadTask = fileRef.getFile(destinationFile)
             downloadTask.addOnSuccessListener({
-                holder.attachmentDownloadButton.setText("Open ${fileRef.name}")// todo extract strings!! all over here
-
-                holder.attachmentDownloadButton.setOnClickListener {
-                    val downloadedFileUri = Uri.fromFile(destinationFile)
-                    val openFileIntent = Intent(Intent.ACTION_VIEW)
-                    openFileIntent.setDataAndType(downloadedFileUri, type)
-                    activity.startActivity(openFileIntent)
-                }
-
+                setAttachmentOpenable(holder, fileRef, destinationFile, type)
             }).addOnFailureListener({ e ->
-                holder.attachmentDownloadButton.setErrorBackgroundColor()
-                holder.attachmentDownloadButton.setErrorIcon()
-                holder.attachmentDownloadButton.setText("Download failed.")
-                e.printStackTrace()
+                if (!downloadTask.isCanceled) setDownloadBarError(holder)
             }).addOnProgressListener { snapshot ->
-                val progressRatio = snapshot.bytesTransferred.toDouble() / snapshot.totalByteCount
-                val percent = Math.abs(progressRatio)
-                holder.attachmentDownloadButton.setProgress(percent)
-                holder.attachmentDownloadButton.setText("Downloading...")
-
-                holder.attachmentDownloadButton.setCancelIcon()
-                holder.attachmentDownloadButton.setIconOnClickListener {
-                    downloadTask.cancel()
-                    // todo: delete file too.
-                }
+                updateDownloadBarProgress(snapshot, holder, downloadTask)
             }
             holder.attachmentDownloadButton.setOnClickListener(null)
         }
+    }
+
+    private fun updateDownloadBarProgress(snapshot: FileDownloadTask.TaskSnapshot, holder: LessonCardViewHolder, downloadTask: FileDownloadTask) {
+        val progressRatio = snapshot.bytesTransferred.toDouble() / snapshot.totalByteCount
+        val percent = Math.abs(progressRatio)
+        holder.attachmentDownloadButton.setProgress(percent)
+        holder.attachmentDownloadButton.setText("Downloading...")
+
+        holder.attachmentDownloadButton.setCancelIcon()
+        holder.attachmentDownloadButton.setIconOnClickListener {
+            downloadTask.cancel()
+            // todo: delete file too.
+        }
+    }
+
+    private fun setAttachmentOpenable(holder: LessonCardViewHolder, fileRef: StorageReference, destinationFile: File, type: String) {
+        holder.attachmentDownloadButton.setText("Open ${fileRef.name}")// todo extract strings!! all over here
+        holder.attachmentDownloadButton.setFolderIcon()
+        holder.attachmentDownloadButton.setOnClickListener {
+            val downloadedFileUri = Uri.fromFile(destinationFile)
+            val openFileIntent = Intent(Intent.ACTION_VIEW)
+            openFileIntent.setDataAndType(downloadedFileUri, type)
+            activity.startActivity(openFileIntent)
+        }
+    }
+
+    private fun setDownloadBarError(holder: LessonCardViewHolder) {
+        holder.attachmentDownloadButton.setErrorWithText("Download failed.")
     }
 }
 
