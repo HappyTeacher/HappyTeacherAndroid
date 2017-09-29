@@ -1,6 +1,7 @@
 package org.jnanaprabodhini.happyteacher.view
 
 import android.content.Context
+import android.support.annotation.DrawableRes
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.util.AttributeSet
@@ -21,47 +22,43 @@ class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout
         DrawableCompat.setTint(indeterminateProgressBar.indeterminateDrawable, R.color.lightGray)
     }
 
+    override fun setOnClickListener(l: OnClickListener?) {
+        rootFrame.setOnClickListener(l)
+    }
+
+    fun removeOnClickListener() {
+        rootFrame.setOnClickListener(null)
+    }
+
     fun setText(text: String) { //todo: resId
         textView.text = text
     }
 
-    fun setLoading() {
+    fun setLoadingWithText(text: String) {
         resetView()
         indeterminateProgressBar.setVisible()
+        setText(text)
     }
 
-    fun setDownloadIcon() {
-        resetView()
-        icon.setVisible()
-        icon.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.ic_file_download_white_24dp, null))
+    fun setDownloadIconWithText(text: String) {
+        setIconDrawable(R.drawable.ic_file_download_white_24dp)
+        setText(text)
     }
 
-    fun setCancelIcon() {
-        resetView()
-        icon.setVisible()
-        icon.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.ic_close_white_24dp, null))
+    fun setCancelIconWithText(text: String) {
+        setIconDrawable(R.drawable.ic_close_white_24dp)
+        setText(text)
     }
 
-    fun setFolderIcon() {
-        resetView()
-        icon.setVisible()
-        icon.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.ic_folder_white_24dp, null))
+    fun setFolderIconWithText(text: String) {
+        setIconDrawable(R.drawable.ic_folder_white_24dp)
+        setText(text)
     }
 
     fun setErrorWithText(errorText: String) {
-        resetView()
-        icon.setVisible()
-        icon.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.ic_error_white_24dp, null))
-        rootFrame.setBackgroundColor(R.color.lightGray)
+        setIconDrawable(R.drawable.ic_error_white_24dp)
         setText(errorText)
-    }
-
-    fun resetBackgroundColor() {
-        rootFrame.background = ResourcesCompat.getDrawable(context.resources, R.drawable.ripple_blue, null)
-    }
-
-    fun setIconOnClickListener(onClick: () -> Unit) {
-        icon.setOnClickListener { onClick() }
+        rootFrame.setBackgroundColor(R.color.lightGray)
     }
 
     fun setProgress(percent: Double) {
@@ -73,13 +70,20 @@ class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout
         progressBarBackground.layoutParams.width = 0
     }
 
-    private fun resetView() {
-        resetBackgroundColor()
-        indeterminateProgressBar.setVisibilityGone()
-        icon.setVisibilityGone()
+    private fun resetBackgroundColor() {
+        rootFrame.background = ResourcesCompat.getDrawable(context.resources, R.drawable.ripple_blue, null)
     }
 
-    override fun setOnClickListener(l: OnClickListener?) {
-        rootFrame.setOnClickListener(l)
+    private fun setIconDrawable(@DrawableRes drawable: Int) {
+        resetView()
+        icon.setVisible()
+        icon.setImageDrawable(ResourcesCompat.getDrawable(context.resources, drawable, null))
+    }
+
+    private fun resetView() {
+        resetBackgroundColor()
+        setText("")
+        indeterminateProgressBar.setVisibilityGone()
+        icon.setVisibilityGone()
     }
 }

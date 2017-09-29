@@ -19,6 +19,7 @@ import java.io.File
 import android.support.v4.app.ActivityCompat
 import android.content.pm.PackageManager
 import com.google.firebase.storage.FileDownloadTask
+import com.google.firebase.storage.StorageMetadata
 import com.google.firebase.storage.StorageReference
 import org.jnanaprabodhini.happyteacher.activity.LessonViewerActivity
 
@@ -27,6 +28,10 @@ import org.jnanaprabodhini.happyteacher.activity.LessonViewerActivity
  * Created by grahamearley on 9/25/17.
  */
 class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity: Activity): RecyclerView.Adapter<LessonCardViewHolder>() {
+
+    val storageRef by lazy {
+        FirebaseStorage.getInstance()
+    }
 
     override fun getItemCount(): Int = lessonCards.size
 
@@ -127,28 +132,29 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
     }
 
     private fun setupAttachmentView(attachmentUrl: String, holder: LessonCardViewHolder?) {
-        val storageRef = FirebaseStorage.getInstance()
-
         val fileRef = storageRef.getReferenceFromUrl(attachmentUrl)
-        val fileExtension = "." + fileRef.name.split(".").last()
-        val fileName = fileRef.name.removeSuffix(fileExtension)
 
         holder?.attachmentDownloadButton?.setVisible()
-        holder?.attachmentDownloadButton?.setLoading()
+        holder?.attachmentDownloadButton?.setLoadingWithText(activity.getString(R.string.loading_attachment))
 
         fileRef.metadata.addOnSuccessListener { storageMetadata ->
-            val type = storageMetadata.contentType
-
-            holder?.attachmentDownloadButton?.setText("${fileRef.name} (${storageMetadata.sizeBytes.toMegabyteFromByte()} MB)") // todo: localize string
-            holder?.attachmentDownloadButton?.setDownloadIcon()
-
-            holder?.attachmentDownloadButton?.setOnClickListener {
-                downloadFileWithPermission(holder, fileRef, fileName, fileExtension, type)
-            }
+            setupDownloadBarWithMetadata(holder, storageMetadata, fileRef)
         }
     }
 
-    private fun downloadFileWithPermission(holder: LessonCardViewHolder, fileRef: StorageReference, fileName: String, fileExtension: String, type: String) {
+    private fun setupDownloadBarWithMetadata(holder: LessonCardViewHolder?, storageMetadata: StorageMetadata, fileRef: StorageReference) {
+        val fileExtension = "." + fileRef.name.split(".").last()
+        val fileName = fileRef.name.removeSuffix(fileExtension)
+
+        holder?.attachmentDownloadButton?.setDownloadIconWithText(activity.getString(R.string.file_with_size_in_mb, fileRef.name, storageMetadata.sizeBytes.toMegabyteFromByte()))
+
+        holder?.attachmentDownloadButton?.setOnClickListener {
+            holder.attachmentDownloadButton.removeOnClickListener()
+            downloadFileWithPermission(holder, fileRef, fileName, fileExtension, storageMetadata)
+        }
+    }
+
+    private fun downloadFileWithPermission(holder: LessonCardViewHolder, fileRef: StorageReference, fileName: String, fileExtension: String, storageMetadata: StorageMetadata) {
         val writePermission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (writePermission != PackageManager.PERMISSION_GRANTED) {
 
@@ -157,38 +163,43 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
                     LessonViewerActivity.WRITE_STORAGE_PERMISSION_CODE)
 
         } else {
-            val destinationDirectory = File(Environment.getExternalStorageDirectory().path + "/Happy Teacher")
+            val destinationDirectory = File(Environment.getExternalStorageDirectory().path + File.separator + activity.getString(R.string.app_name))
             destinationDirectory.mkdirs()
             val destinationFile = File.createTempFile(fileName, fileExtension, destinationDirectory)
 
             val downloadTask = fileRef.getFile(destinationFile)
             downloadTask.addOnSuccessListener({
-                setAttachmentOpenable(holder, fileRef, destinationFile, type)
+                setAttachmentOpenable(holder, fileRef, destinationFile, storageMetadata.contentType)
             }).addOnFailureListener({ e ->
                 if (!downloadTask.isCanceled) setDownloadBarError(holder)
             }).addOnProgressListener { snapshot ->
-                updateDownloadBarProgress(snapshot, holder, downloadTask)
+                val progressRatio = snapshot.bytesTransferred.toDouble() / snapshot.totalByteCount
+                val percent = Math.abs(progressRatio)
+                updateDownloadBarProgress(percent, holder, downloadTask, storageMetadata, fileRef, destinationFile)
             }
-            holder.attachmentDownloadButton.setOnClickListener(null)
         }
     }
 
-    private fun updateDownloadBarProgress(snapshot: FileDownloadTask.TaskSnapshot, holder: LessonCardViewHolder, downloadTask: FileDownloadTask) {
-        val progressRatio = snapshot.bytesTransferred.toDouble() / snapshot.totalByteCount
-        val percent = Math.abs(progressRatio)
+    private fun updateDownloadBarProgress(percent: Double, holder: LessonCardViewHolder, downloadTask: FileDownloadTask, storageMetadata: StorageMetadata, fileRef: StorageReference, destinationFile: File) {
         holder.attachmentDownloadButton.setProgress(percent)
-        holder.attachmentDownloadButton.setText("Downloading...")
 
-        holder.attachmentDownloadButton.setCancelIcon()
-        holder.attachmentDownloadButton.setIconOnClickListener {
+        holder.attachmentDownloadButton.setCancelIconWithText(activity.getString(R.string.downloading))
+
+        holder.attachmentDownloadButton.setOnClickListener {
+            holder.attachmentDownloadButton.removeOnClickListener()
+            holder.attachmentDownloadButton.setText(activity.getString(R.string.cancelling))
+
             downloadTask.cancel()
-            // todo: delete file too.
+            holder.attachmentDownloadButton.resetProgress()
+
+            destinationFile.delete()
+
+            setupDownloadBarWithMetadata(holder, storageMetadata, fileRef)
         }
     }
 
     private fun setAttachmentOpenable(holder: LessonCardViewHolder, fileRef: StorageReference, destinationFile: File, type: String) {
-        holder.attachmentDownloadButton.setText("Open ${fileRef.name}")// todo extract strings!! all over here
-        holder.attachmentDownloadButton.setFolderIcon()
+        holder.attachmentDownloadButton.setFolderIconWithText(activity.getString(R.string.open_x,  fileRef.name))
         holder.attachmentDownloadButton.setOnClickListener {
             val downloadedFileUri = Uri.fromFile(destinationFile)
             val openFileIntent = Intent(Intent.ACTION_VIEW)
@@ -198,7 +209,7 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
     }
 
     private fun setDownloadBarError(holder: LessonCardViewHolder) {
-        holder.attachmentDownloadButton.setErrorWithText("Download failed.")
+        holder.attachmentDownloadButton.setErrorWithText(activity.getString(R.string.download_failed))
     }
 }
 
