@@ -43,8 +43,9 @@ dependencies {
 
     // Firebase Dependencies
     compile 'com.firebaseui:firebase-ui-database:2.3.0'
-    compile 'com.google.firebase:firebase-database:11.0.1'
-    
+    compile 'com.google.firebase:firebase-database:11.4.0'
+    compile 'com.google.firebase:firebase-storage:11.4.0'
+
     // Calligraphy
     compile 'uk.co.chrisjenx:calligraphy:2.3.0'
 
