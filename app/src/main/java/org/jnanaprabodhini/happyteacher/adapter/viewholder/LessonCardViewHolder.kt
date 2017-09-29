@@ -7,6 +7,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.list_item_lesson_card.view.*
+import org.jnanaprabodhini.happyteacher.view.DownloadBarView
 
 /**
  * Created by grahamearley on 9/25/17.
@@ -22,5 +23,5 @@ open class LessonCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVie
     val imageGalleryRecyclerView: RecyclerView = itemView.imageGalleryRecyclerView
     val imageScrollArrowView: View = itemView.imageScrollArrowView
 
-    val attachmentDownloadButton: TextView = itemView.attachmentDownloadButton
+    val attachmentDownloadButton: DownloadBarView = itemView.attachmentDownloadBar
 }

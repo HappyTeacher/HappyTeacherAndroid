@@ -12,11 +12,15 @@
     <color name="dreamsicleOrange">#FFB4A1</color>
 
     <color name="deepLightBlue">#6FC1E8</color>
+    <color name="deepBlue">#0c86bf</color>
+
 
     <color name="gray">#979797</color>
     <color name="lightGray">#F1F1F1</color>
     <color name="lightGrayShadow">#D8D8D8</color>
 
     <color name="deepGreen">#64A97B</color>
+
+    <color name="errorRed">#c20909</color>
 
 </resources>

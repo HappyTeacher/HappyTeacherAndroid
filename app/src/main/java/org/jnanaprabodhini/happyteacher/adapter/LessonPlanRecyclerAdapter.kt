@@ -133,14 +133,14 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
         val fileExtension = "." + fileRef.name.split(".").last()
         val fileName = fileRef.name.removeSuffix(fileExtension)
 
-        // Todo: show progress bar in here to indicate loading metadata
         holder?.attachmentDownloadButton?.setVisible()
+        holder?.attachmentDownloadButton?.setLoading()
 
         fileRef.metadata.addOnSuccessListener { storageMetadata ->
             val type = storageMetadata.contentType
 
-            holder?.attachmentDownloadButton?.text = "${fileRef.name} (${storageMetadata.sizeBytes / 1000000} MB)"
-            holder?.attachmentDownloadButton?.setDrawableLeft(R.drawable.ic_file_download_white_24dp)
+            holder?.attachmentDownloadButton?.setText("${fileRef.name} (${storageMetadata.sizeBytes / 1000000} MB)")
+            holder?.attachmentDownloadButton?.setDownloadIcon()
 
             holder?.attachmentDownloadButton?.setOnClickListener {
                 downloadFileWithPermission(holder, fileRef, fileName, fileExtension, type)
@@ -151,19 +151,19 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
     private fun downloadFileWithPermission(holder: LessonCardViewHolder, fileRef: StorageReference, fileName: String, fileExtension: String, type: String) {
         val writePermission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (writePermission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                    activity,
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE),
-                    LessonViewerActivity.WRITE_STORAGE_PERMISSION_CODE
-            )
-        } else {
 
+            ActivityCompat.requestPermissions(activity,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE),
+                    LessonViewerActivity.WRITE_STORAGE_PERMISSION_CODE)
+
+        } else {
             val destinationDirectory = File(Environment.getExternalStorageDirectory().path + "/Happy Teacher")
             destinationDirectory.mkdirs()
             val destinationFile = File.createTempFile(fileName, fileExtension, destinationDirectory)
 
-            fileRef.getFile(destinationFile).addOnSuccessListener({
-                holder.attachmentDownloadButton.text = "Open ${fileRef.name}"
+            val downloadTask = fileRef.getFile(destinationFile)
+            downloadTask.addOnSuccessListener({
+                holder.attachmentDownloadButton.setText("Open ${fileRef.name}")// todo extract strings!! all over here
 
                 holder.attachmentDownloadButton.setOnClickListener {
                     val downloadedFileUri = Uri.fromFile(destinationFile)
@@ -173,12 +173,21 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
                 }
 
             }).addOnFailureListener({ e ->
-                holder.attachmentDownloadButton.text = "oops nope!"
+                holder.attachmentDownloadButton.setErrorBackgroundColor()
+                holder.attachmentDownloadButton.setErrorIcon()
+                holder.attachmentDownloadButton.setText("Download failed.")
                 e.printStackTrace()
             }).addOnProgressListener { snapshot ->
-                val progressRatio = snapshot.bytesTransferred.toFloat() / snapshot.totalByteCount
-                val percent = Math.abs(progressRatio).toInt()
-                holder.attachmentDownloadButton.text = "$percent%"
+                val progressRatio = snapshot.bytesTransferred.toDouble() / snapshot.totalByteCount
+                val percent = Math.abs(progressRatio)
+                holder.attachmentDownloadButton.setProgress(percent)
+                holder.attachmentDownloadButton.setText("Downloading...")
+
+                holder.attachmentDownloadButton.setCancelIcon()
+                holder.attachmentDownloadButton.setIconOnClickListener {
+                    downloadTask.cancel()
+                    // todo: delete file too.
+                }
             }
             holder.attachmentDownloadButton.setOnClickListener(null)
         }

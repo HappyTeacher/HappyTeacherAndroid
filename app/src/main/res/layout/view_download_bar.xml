@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@drawable/ripple_blue"
+    android:clickable="true"
+    android:id="@+id/rootFrame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/progressBarBackground"
+        android:background="@color/deepBlue"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_gravity="center_vertical"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+        <ProgressBar
+            android:id="@+id/indeterminateProgressBar"
+            android:layout_gravity="center_vertical"
+            android:indeterminate="true"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:textColor="@android:color/white"
+            android:paddingLeft="12dp"
+            android:paddingStart="12dp"
+            android:textAllCaps="true"
+            android:maxLines="1"
+            android:ellipsize="middle"/>
+    </LinearLayout>
+
+</FrameLayout>

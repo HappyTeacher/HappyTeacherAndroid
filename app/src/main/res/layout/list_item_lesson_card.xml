@@ -55,18 +55,10 @@
             android:id="@+id/bodyTextView"
             style="@style/LessonCardText.Body"/>
 
-        <TextView
-            android:id="@+id/attachmentDownloadButton"
-            android:clickable="true"
-            android:gravity="center"
-            android:background="@drawable/ripple_blue"
-            android:textColor="@android:color/white"
-            android:textAllCaps="true"
-            android:padding="12dp"
-            android:drawablePadding="2dp"
+        <org.jnanaprabodhini.happyteacher.view.DownloadBarView
+            android:id="@+id/attachmentDownloadBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
 
     </LinearLayout>
 
