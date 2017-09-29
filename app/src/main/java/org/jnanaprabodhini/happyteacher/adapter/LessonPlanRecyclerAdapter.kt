@@ -149,7 +149,6 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
         holder?.attachmentDownloadButton?.setDownloadIconWithText(activity.getString(R.string.file_with_size_in_mb, fileRef.name, storageMetadata.sizeBytes.toMegabyteFromByte()))
 
         holder?.attachmentDownloadButton?.setOnClickListener {
-            holder.attachmentDownloadButton.removeOnClickListener()
             downloadFileWithPermission(holder, fileRef, fileName, fileExtension, storageMetadata)
         }
     }
@@ -163,6 +162,7 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
                     LessonViewerActivity.WRITE_STORAGE_PERMISSION_CODE)
 
         } else {
+            holder.attachmentDownloadButton.removeOnClickListener()
             val destinationDirectory = File(Environment.getExternalStorageDirectory().path + File.separator + activity.getString(R.string.app_name))
             destinationDirectory.mkdirs()
             val destinationFile = File.createTempFile(fileName, fileExtension, destinationDirectory)
@@ -170,7 +170,7 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
             val downloadTask = fileRef.getFile(destinationFile)
             downloadTask.addOnSuccessListener({
                 setAttachmentOpenable(holder, fileRef, destinationFile, storageMetadata.contentType)
-            }).addOnFailureListener({ e ->
+            }).addOnFailureListener({
                 if (!downloadTask.isCanceled) setDownloadBarError(holder)
             }).addOnProgressListener { snapshot ->
                 val progressRatio = snapshot.bytesTransferred.toDouble() / snapshot.totalByteCount
