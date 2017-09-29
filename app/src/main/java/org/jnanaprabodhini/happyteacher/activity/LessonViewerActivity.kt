@@ -1,8 +1,10 @@
 package org.jnanaprabodhini.happyteacher.activity
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_lesson_viewer.*
@@ -16,7 +18,9 @@ import org.jnanaprabodhini.happyteacher.model.SubtopicLesson
 
 class LessonViewerActivity : HappyTeacherActivity() {
 
-    companion object IntentExtraHelper {
+    companion object Constants {
+        val WRITE_STORAGE_PERMISSION_CODE = 1
+
         val LESSON_ID: String = "LESSON_ID"
         fun Intent.hasLessonId(): Boolean = hasExtra(LESSON_ID)
         fun Intent.getLessonId(): String = getStringExtra(LESSON_ID)
@@ -106,5 +110,12 @@ class LessonViewerActivity : HappyTeacherActivity() {
         // TODO: Log error to analytics.
         Toast.makeText(this, R.string.there_was_an_error_loading_the_lesson, Toast.LENGTH_LONG).show()
         finish()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == WRITE_STORAGE_PERMISSION_CODE && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+            // Re-draw items to reflect new permissions
+            lessonPlanRecyclerView.adapter.notifyDataSetChanged()
+        }
     }
 }

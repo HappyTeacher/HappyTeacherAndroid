@@ -1,16 +1,26 @@
 package org.jnanaprabodhini.happyteacher.adapter
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
+import android.os.Environment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.google.firebase.storage.FirebaseStorage
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.FullScreenGalleryViewerActivity
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.LessonCard
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.LessonCardViewHolder
+import java.io.File
+import android.util.Log
+import android.support.v4.app.ActivityCompat
+import android.content.pm.PackageManager
+import com.google.firebase.storage.StorageReference
+import org.jnanaprabodhini.happyteacher.activity.LessonViewerActivity
 
 
 /**
@@ -117,9 +127,61 @@ class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity:
     }
 
     private fun setupAttachmentView(attachmentUrl: String, holder: LessonCardViewHolder?) {
+        val storageRef = FirebaseStorage.getInstance()
+
+        val fileRef = storageRef.getReferenceFromUrl(attachmentUrl)
+        val fileExtension = "." + fileRef.name.split(".").last()
+        val fileName = fileRef.name.removeSuffix(fileExtension)
+
+        // Todo: show progress bar in here to indicate loading metadata
         holder?.attachmentDownloadButton?.setVisible()
-        holder?.attachmentDownloadButton?.setDrawableLeft(R.drawable.ic_file_download_white_24dp)
-        holder?.attachmentDownloadButton?.text = "Download attachment"
+
+        fileRef.metadata.addOnSuccessListener { storageMetadata ->
+            val type = storageMetadata.contentType
+
+            holder?.attachmentDownloadButton?.text = "${fileRef.name} (${storageMetadata.sizeBytes / 1000000} MB)"
+            holder?.attachmentDownloadButton?.setDrawableLeft(R.drawable.ic_file_download_white_24dp)
+
+            holder?.attachmentDownloadButton?.setOnClickListener {
+                downloadFileWithPermission(holder, fileRef, fileName, fileExtension, type)
+            }
+        }
+    }
+
+    private fun downloadFileWithPermission(holder: LessonCardViewHolder, fileRef: StorageReference, fileName: String, fileExtension: String, type: String) {
+        val writePermission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (writePermission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    activity,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE),
+                    LessonViewerActivity.WRITE_STORAGE_PERMISSION_CODE
+            )
+        } else {
+
+            val destinationDirectory = File(Environment.getExternalStorageDirectory().path + "/Happy Teacher")
+            destinationDirectory.mkdirs()
+            val destinationFile = File.createTempFile(fileName, fileExtension, destinationDirectory)
+
+            fileRef.getFile(destinationFile).addOnSuccessListener({
+                holder.attachmentDownloadButton.text = "Open ${fileRef.name}"
+
+                holder.attachmentDownloadButton.setOnClickListener {
+                    val downloadedFileUri = Uri.fromFile(destinationFile)
+                    val openFileIntent = Intent(Intent.ACTION_VIEW)
+                    openFileIntent.setDataAndType(downloadedFileUri, type)
+                    activity.startActivity(openFileIntent)
+                }
+
+            }).addOnFailureListener({ e ->
+                holder.attachmentDownloadButton.text = "oops nope!"
+                e.printStackTrace()
+            }).addOnProgressListener { snapshot ->
+                val progressRatio = snapshot.bytesTransferred.toFloat() / snapshot.totalByteCount
+                val percent = Math.abs(progressRatio).toInt()
+                holder.attachmentDownloadButton.text = "$percent%"
+            }
+            holder.attachmentDownloadButton.setOnClickListener(null)
+        }
     }
 }
 
