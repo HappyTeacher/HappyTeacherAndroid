@@ -18,6 +18,8 @@ import org.jnanaprabodhini.happyteacher.adapter.viewholder.LessonCardViewHolder
 import java.io.File
 import android.support.v4.app.ActivityCompat
 import android.content.pm.PackageManager
+import android.util.Log
+import android.widget.Toast
 import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.StorageMetadata
 import com.google.firebase.storage.StorageReference
@@ -166,40 +168,47 @@ class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val 
                     LessonViewerActivity.WRITE_STORAGE_PERMISSION_CODE)
 
         } else {
-            holder.attachmentDownloadButton.removeOnClickListener()
-            val destinationDirectory = File(Environment.getExternalStorageDirectory().path + File.separator + activity.getString(R.string.app_name))
-            destinationDirectory.mkdirs()
-            val destinationFile = File.createTempFile(fileName, fileExtension, destinationDirectory)
-
-            val downloadTask = fileRef.getFile(destinationFile)
-            downloadTask.addOnSuccessListener({
-                setAttachmentOpenable(holder, fileRef, destinationFile, storageMetadata.contentType)
-            }).addOnFailureListener({
-                if (!downloadTask.isCanceled) setDownloadBarError(holder)
-            }).addOnProgressListener { snapshot ->
-                val progressRatio = snapshot.bytesTransferred.toDouble() / snapshot.totalByteCount
-                val percent = Math.abs(progressRatio)
-                updateDownloadBarProgress(percent, holder, downloadTask, storageMetadata, fileRef, destinationFile)
-            }
+            beginDownload(holder, fileName, fileExtension, fileRef, storageMetadata)
         }
     }
 
-    private fun updateDownloadBarProgress(percent: Double, holder: LessonCardViewHolder, downloadTask: FileDownloadTask, storageMetadata: StorageMetadata, fileRef: StorageReference, destinationFile: File) {
-        holder.attachmentDownloadButton.setProgress(percent)
+    private fun beginDownload(holder: LessonCardViewHolder, fileName: String, fileExtension: String, fileRef: StorageReference, storageMetadata: StorageMetadata) {
+        holder.attachmentDownloadButton.removeOnClickListener()
+        val destinationDirectory = File(Environment.getExternalStorageDirectory().path + File.separator + activity.getString(R.string.app_name))
+        destinationDirectory.mkdirs()
+        val destinationFile = File.createTempFile(fileName, fileExtension, destinationDirectory)
+        val downloadTask = fileRef.getFile(destinationFile)
 
         holder.attachmentDownloadButton.setCancelIconWithText(activity.getString(R.string.downloading))
-
         holder.attachmentDownloadButton.setOnClickListener {
-            holder.attachmentDownloadButton.removeOnClickListener()
-            holder.attachmentDownloadButton.setText(activity.getString(R.string.cancelling))
-
-            downloadTask.cancel()
-            holder.attachmentDownloadButton.resetProgress()
-
-            destinationFile.delete()
-
+            cancelDownload(holder, downloadTask, destinationFile)
             setupDownloadBarWithMetadata(holder, storageMetadata, fileRef)
         }
+
+        downloadTask.addOnSuccessListener({
+            setAttachmentOpenable(holder, fileRef, destinationFile, storageMetadata.contentType)
+        }).addOnFailureListener({
+            if (!downloadTask.isCanceled) setDownloadBarError(holder)
+        }).addOnProgressListener { snapshot ->
+            val progressRatio = snapshot.bytesTransferred.toDouble() / snapshot.totalByteCount
+            val percent = Math.abs(progressRatio)
+            updateDownloadBarProgress(percent, holder)
+        }
+    }
+
+    private fun updateDownloadBarProgress(percent: Double, holder: LessonCardViewHolder) {
+        holder.attachmentDownloadButton.setProgress(percent)
+    }
+
+    private fun cancelDownload(holder: LessonCardViewHolder, downloadTask: FileDownloadTask, destinationFile: File) {
+        holder.attachmentDownloadButton.removeOnClickListener()
+        holder.attachmentDownloadButton.setText(activity.getString(R.string.cancelling))
+
+        downloadTask.cancel()
+        destinationFile.delete()
+        activity.showToast(R.string.download_cancelled)
+
+        holder.attachmentDownloadButton.resetProgress()
     }
 
     private fun setAttachmentOpenable(holder: LessonCardViewHolder, fileRef: StorageReference, destinationFile: File, type: String) {

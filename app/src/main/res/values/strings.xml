@@ -22,6 +22,7 @@
     <string name="download_failed">Download failed</string>
     <string name="file_with_size_in_mb">%1$s (%2$.2f MB)</string>
     <string name="loading_attachment">Loading attachment...</string>
+    <string name="download_cancelled">Download cancelled</string>
 
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>

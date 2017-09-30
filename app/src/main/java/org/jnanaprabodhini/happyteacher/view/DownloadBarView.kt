@@ -5,6 +5,7 @@ import android.support.annotation.DrawableRes
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.view_download_bar.view.*
@@ -33,6 +34,8 @@ class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout
     fun setText(text: String) { //todo: resId
         textView.text = text
     }
+
+    fun getText(): CharSequence = textView.text
 
     fun setLoadingWithText(text: String) {
         resetView()
