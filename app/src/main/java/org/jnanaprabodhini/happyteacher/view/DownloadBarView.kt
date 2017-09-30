@@ -7,31 +7,46 @@ import android.support.v4.graphics.drawable.DrawableCompat
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.FrameLayout
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.storage.FileDownloadTask
+import com.google.firebase.storage.OnProgressListener
 import kotlinx.android.synthetic.main.view_download_bar.view.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
+import java.lang.Exception
 
 /**
  * Created by grahamearley on 9/29/17.
  */
-class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout(context, attributeSet) {
+class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout(context, attributeSet),
+                                                                        OnFailureListener,
+                                                                        OnProgressListener<FileDownloadTask.TaskSnapshot> {
 
     init {
         LayoutInflater.from(context).inflate(R.layout.view_download_bar, this)
         DrawableCompat.setTint(indeterminateProgressBar.indeterminateDrawable, R.color.lightGray)
     }
 
-    override fun setOnClickListener(l: OnClickListener?) {
-        rootFrame.setOnClickListener(l)
+    fun setOneTimeOnClickListener(onClick: () -> Unit) {
+        setOneTimeOnClickListener(View.OnClickListener { onClick() })
+    }
+
+    fun setOneTimeOnClickListener(l: OnClickListener?) {
+        rootFrame.setOnClickListener{ view ->
+            l?.onClick(view)
+            removeOnClickListener()
+        }
     }
 
     fun removeOnClickListener() {
         rootFrame.setOnClickListener(null)
     }
 
-    fun setText(text: String) { //todo: resId
+    fun setText(text: String) {
         textView.text = text
     }
 
@@ -88,5 +103,17 @@ class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout
         setText("")
         indeterminateProgressBar.setVisibilityGone()
         icon.setVisibilityGone()
+    }
+
+    override fun onProgress(snapshot: FileDownloadTask.TaskSnapshot?) {
+        val bytesTransferred: Double = snapshot?.bytesTransferred?.toDouble() ?: 0.0
+        val totalBytes: Long = snapshot?.totalByteCount ?: 1
+        val progressRatio = bytesTransferred / totalBytes
+        val percent = Math.abs(progressRatio)
+        setProgress(percent)
+    }
+
+    override fun onFailure(exception: Exception) {
+        setErrorWithText(context.getString(R.string.download_failed))
     }
 }

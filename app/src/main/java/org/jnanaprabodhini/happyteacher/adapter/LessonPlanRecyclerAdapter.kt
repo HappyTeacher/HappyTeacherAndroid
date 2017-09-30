@@ -18,8 +18,6 @@ import org.jnanaprabodhini.happyteacher.adapter.viewholder.LessonCardViewHolder
 import java.io.File
 import android.support.v4.app.ActivityCompat
 import android.content.pm.PackageManager
-import android.util.Log
-import android.widget.Toast
 import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.StorageMetadata
 import com.google.firebase.storage.StorageReference
@@ -154,7 +152,7 @@ class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val 
 
         holder?.attachmentDownloadButton?.setDownloadIconWithText(activity.getString(R.string.file_with_size_in_mb, fileRef.name, storageMetadata.sizeBytes.toMegabyteFromByte()))
 
-        holder?.attachmentDownloadButton?.setOnClickListener {
+        holder?.attachmentDownloadButton?.setOneTimeOnClickListener {
             downloadFileWithPermission(holder, fileRef, fileName, fileExtension, storageMetadata)
         }
     }
@@ -173,35 +171,27 @@ class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val 
     }
 
     private fun beginDownload(holder: LessonCardViewHolder, fileName: String, fileExtension: String, fileRef: StorageReference, storageMetadata: StorageMetadata) {
-        holder.attachmentDownloadButton.removeOnClickListener()
         val destinationDirectory = File(Environment.getExternalStorageDirectory().path + File.separator + activity.getString(R.string.app_name))
         destinationDirectory.mkdirs()
         val destinationFile = File.createTempFile(fileName, fileExtension, destinationDirectory)
         val downloadTask = fileRef.getFile(destinationFile)
 
-        holder.attachmentDownloadButton.setCancelIconWithText(activity.getString(R.string.downloading))
-        holder.attachmentDownloadButton.setOnClickListener {
+        downloadTask.addOnProgressListener(holder.attachmentDownloadButton)
+        downloadTask.addOnFailureListener(holder.attachmentDownloadButton)
+
+        holder.attachmentDownloadButton.setOneTimeOnClickListener {
             cancelDownload(holder, downloadTask, destinationFile)
             setupDownloadBarWithMetadata(holder, storageMetadata, fileRef)
         }
 
         downloadTask.addOnSuccessListener({
             setAttachmentOpenable(holder, fileRef, destinationFile, storageMetadata.contentType)
-        }).addOnFailureListener({
-            if (!downloadTask.isCanceled) setDownloadBarError(holder)
-        }).addOnProgressListener { snapshot ->
-            val progressRatio = snapshot.bytesTransferred.toDouble() / snapshot.totalByteCount
-            val percent = Math.abs(progressRatio)
-            updateDownloadBarProgress(percent, holder)
+        }).addOnFailureListener {
+            destinationFile.delete()
         }
     }
 
-    private fun updateDownloadBarProgress(percent: Double, holder: LessonCardViewHolder) {
-        holder.attachmentDownloadButton.setProgress(percent)
-    }
-
     private fun cancelDownload(holder: LessonCardViewHolder, downloadTask: FileDownloadTask, destinationFile: File) {
-        holder.attachmentDownloadButton.removeOnClickListener()
         holder.attachmentDownloadButton.setText(activity.getString(R.string.cancelling))
 
         downloadTask.cancel()
@@ -213,16 +203,12 @@ class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val 
 
     private fun setAttachmentOpenable(holder: LessonCardViewHolder, fileRef: StorageReference, destinationFile: File, type: String) {
         holder.attachmentDownloadButton.setFolderIconWithText(activity.getString(R.string.open_x,  fileRef.name))
-        holder.attachmentDownloadButton.setOnClickListener {
+        holder.attachmentDownloadButton.setOneTimeOnClickListener {
             val downloadedFileUri = Uri.fromFile(destinationFile)
             val openFileIntent = Intent(Intent.ACTION_VIEW)
             openFileIntent.setDataAndType(downloadedFileUri, type)
             activity.startActivity(openFileIntent)
         }
-    }
-
-    private fun setDownloadBarError(holder: LessonCardViewHolder) {
-        holder.attachmentDownloadButton.setErrorWithText(activity.getString(R.string.download_failed))
     }
 }
 
