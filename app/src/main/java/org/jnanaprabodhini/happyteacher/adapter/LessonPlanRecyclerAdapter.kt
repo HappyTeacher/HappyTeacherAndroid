@@ -27,10 +27,14 @@ import org.jnanaprabodhini.happyteacher.activity.LessonViewerActivity
 /**
  * Created by grahamearley on 9/25/17.
  */
-class LessonPlanRecyclerAdapter(val lessonCards: List<LessonCard>, val activity: Activity): RecyclerView.Adapter<LessonCardViewHolder>() {
+class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val activity: Activity): RecyclerView.Adapter<LessonCardViewHolder>() {
 
     val storageRef by lazy {
         FirebaseStorage.getInstance()
+    }
+
+    val lessonCards by lazy {
+        lessonCardMap.toSortedMap().values.toList()
     }
 
     override fun getItemCount(): Int = lessonCards.size

@@ -39,12 +39,7 @@ data class SubtopicLesson(var name: String = "",
                           var authorLocation: String = "",
                           var authorName: String = "",
                           var dateEdited: Long = 0,
-                          var cards: Map<String, LessonCard> = emptyMap()) {
-
-    // Sorted map keeps cards in order by key,
-    //  which is the order they should appear in.
-    fun getLessonCards(): List<LessonCard> = cards.toSortedMap().values.toList()
-}
+                          var cards: Map<String, LessonCard> = emptyMap())
 
 data class LessonCard(var header: String = "",
                       var body: String = "",

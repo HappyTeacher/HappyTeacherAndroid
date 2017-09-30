@@ -91,7 +91,7 @@ class LessonViewerActivity : HappyTeacherActivity() {
         if (lesson == null) {
             showErrorToastAndFinish()
         } else {
-            lessonPlanRecyclerView?.adapter = LessonPlanRecyclerAdapter(lesson.getLessonCards(), this)
+            lessonPlanRecyclerView?.adapter = LessonPlanRecyclerAdapter(lesson.cards, this)
         }
     }
 
