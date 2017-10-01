@@ -2,13 +2,11 @@ package org.jnanaprabodhini.happyteacher.adapter.helper
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Environment
 import android.support.v4.app.ActivityCompat
-import android.util.Log
 import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageMetadata
@@ -22,7 +20,7 @@ import java.io.File
 /**
  * Created by grahamearley on 10/1/17.
  */
-class AttachmentDownloadManager(attachmentUrl: String, val activity: Activity) {
+class AttachmentDownloadManager(attachmentUrl: String, val attachmentDestinationDirectory: File, val activity: Activity) {
 
     val fileRef = FirebaseStorage.getInstance().getReferenceFromUrl(attachmentUrl)
     lateinit var metadata: StorageMetadata
@@ -32,16 +30,15 @@ class AttachmentDownloadManager(attachmentUrl: String, val activity: Activity) {
         fileRef.metadata.addOnSuccessListener { storageMetadata ->
             metadata = storageMetadata
             initializeDownloadBarOnClickListener(downloadBarView)
-        }
-        // todo: add metadata failure listener
+        }.addOnFailureListener { e -> e.printStackTrace() }
+        // todo: add metadata failure listener.. but really -- build metadata into the model so we don't have to do this
     }
 
     private fun initializeDownloadBarOnClickListener(downloadBarView: DownloadBarView) {
         val fileExtension = fileRef.name.split(".").last()
         val fileName = fileRef.name.removeSuffix("." + fileExtension)
 
-        val destinationDirectory = File(Environment.getExternalStorageDirectory().path + File.separator + activity.getString(R.string.app_name))
-        val destinationFile = File(destinationDirectory, "${fileName}_${metadata.updatedTimeMillis}.$fileExtension")
+        val destinationFile = File(attachmentDestinationDirectory, "${fileName}_${metadata.updatedTimeMillis}.$fileExtension")
 
         if (destinationFile.exists()) {
             setAttachmentOpenable(destinationFile, downloadBarView)
@@ -76,6 +73,7 @@ class AttachmentDownloadManager(attachmentUrl: String, val activity: Activity) {
                     LessonViewerActivity.WRITE_STORAGE_PERMISSION_CODE)
 
         } else {
+            attachmentDestinationDirectory.mkdirs()
             destinationFile.createNewFile()
             beginDownload(destinationFile, downloadBarView)
         }
@@ -104,11 +102,11 @@ class AttachmentDownloadManager(attachmentUrl: String, val activity: Activity) {
     }
 
     private fun cancelDownload(downloadTask: FileDownloadTask, destinationFile: File, downloadBarView: DownloadBarView) {
-        downloadBarView.setText(activity.getString(R.string.cancelling))
+        downloadBarView.setText(activity.getString(R.string.canceling))
 
         downloadTask.cancel()
         destinationFile.delete()
-        activity.showToast(R.string.download_cancelled)
+        activity.showToast(R.string.download_canceled)
     }
 
     private fun setAttachmentOpenable(destinationFile: File, downloadBarView: DownloadBarView) {

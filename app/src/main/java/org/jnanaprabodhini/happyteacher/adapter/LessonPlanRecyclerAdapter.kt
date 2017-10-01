@@ -13,12 +13,13 @@ import org.jnanaprabodhini.happyteacher.adapter.helper.AttachmentDownloadManager
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.LessonCard
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.LessonCardViewHolder
+import java.io.File
 
 
 /**
  * Created by grahamearley on 9/25/17.
  */
-class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val activity: Activity): RecyclerView.Adapter<LessonCardViewHolder>() {
+class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val attachmentDestinationDirectory: File, val activity: Activity): RecyclerView.Adapter<LessonCardViewHolder>() {
 
     val lessonCards by lazy {
         lessonCardMap.toSortedMap().values.toList()
@@ -123,7 +124,7 @@ class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val 
     }
 
     private fun setupAttachmentView(attachmentUrl: String, holder: LessonCardViewHolder?) {
-        val downloadManager = AttachmentDownloadManager(attachmentUrl, activity)
+        val downloadManager = AttachmentDownloadManager(attachmentUrl, attachmentDestinationDirectory, activity)
 
         holder?.attachmentDownloadButton?.setVisible()
         holder?.attachmentDownloadButton?.setAttachmentDownloadManager(downloadManager)
