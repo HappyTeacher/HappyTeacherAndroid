@@ -20,10 +20,6 @@ import org.jnanaprabodhini.happyteacher.adapter.viewholder.LessonCardViewHolder
  */
 class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val activity: Activity): RecyclerView.Adapter<LessonCardViewHolder>() {
 
-    val storageRef by lazy {
-        FirebaseStorage.getInstance()
-    }
-
     val lessonCards by lazy {
         lessonCardMap.toSortedMap().values.toList()
     }
