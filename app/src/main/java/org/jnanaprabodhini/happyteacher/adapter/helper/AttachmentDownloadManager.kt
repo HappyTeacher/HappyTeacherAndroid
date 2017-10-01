@@ -133,12 +133,11 @@ class AttachmentDownloadManager(attachmentUrl: String, val attachmentDestination
 
     private fun showDeleteFileAlertDialog(destinationFile: File, downloadBarView: DownloadBarView) {
         AlertDialog.Builder(activity)
-                .setTitle("Delete file?")
-                .setMessage("Do you want to delete this file from your phone?")
-                .setPositiveButton("Yes", { _, _ ->
+                .setMessage(activity.getString(R.string.do_you_want_to_delete_this_file_from_your_device))
+                .setPositiveButton(activity.getString(R.string.yes), { _, _ ->
                     destinationFile.delete()
                     setupDownloadBarWithFileInfo(destinationFile, downloadBarView)
-                }).setNegativeButton("No", { dialogInterface, _ ->
+                }).setNegativeButton(activity.getString(R.string.no), { dialogInterface, _ ->
             dialogInterface.cancel()
         }).show()
     }

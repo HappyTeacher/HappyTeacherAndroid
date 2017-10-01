@@ -23,6 +23,9 @@
     <string name="file_with_size_in_mb">%1$s (%2$.2f MB)</string>
     <string name="loading_attachment">Loading attachment…</string>
     <string name="download_canceled">Download canceled</string>
+    <string name="do_you_want_to_delete_this_file_from_your_device">Do you want to delete this file from your device?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>
