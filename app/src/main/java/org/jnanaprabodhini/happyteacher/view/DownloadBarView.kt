@@ -3,22 +3,15 @@ package org.jnanaprabodhini.happyteacher.view
 import android.content.Context
 import android.support.annotation.DrawableRes
 import android.support.v4.content.res.ResourcesCompat
-import android.support.v4.graphics.drawable.DrawableCompat
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.firebase.storage.FileDownloadTask
-import com.google.firebase.storage.OnProgressListener
 import kotlinx.android.synthetic.main.view_download_bar.view.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.adapter.helper.AttachmentDownloadManager
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
-import java.lang.Exception
 
 /**
  * Created by grahamearley on 9/29/17.
@@ -27,7 +20,6 @@ class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout
 
     init {
         LayoutInflater.from(context).inflate(R.layout.view_download_bar, this)
-        DrawableCompat.setTint(indeterminateProgressBar.indeterminateDrawable, R.color.lightGray)
     }
 
     fun setAttachmentDownloadManager(downloadManager: AttachmentDownloadManager) {

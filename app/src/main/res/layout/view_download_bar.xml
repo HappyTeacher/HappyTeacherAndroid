@@ -29,6 +29,7 @@
             android:layout_gravity="center_vertical"
             android:indeterminate="true"
             android:layout_width="24dp"
+            android:theme="@style/AppTheme.WhiteAccent"
             android:layout_height="24dp" />
 
         <TextView
