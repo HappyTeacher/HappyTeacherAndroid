@@ -5,7 +5,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Environment
 import android.support.v4.app.ActivityCompat
 import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.FirebaseStorage
@@ -60,19 +59,12 @@ class AttachmentDownloadManager(attachmentUrl: String, val attachmentDestination
         downloadBarView.resetProgress()
 
         downloadBarView.setOneTimeOnClickListener {
-            downloadFileWithPermission(destinationFile, downloadBarView)
+            downloadFileIfPermitted(destinationFile, downloadBarView)
         }
     }
 
-    private fun downloadFileWithPermission(destinationFile: File, downloadBarView: DownloadBarView) {
-        val writePermission = ActivityCompat.checkSelfPermission(activity, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        if (writePermission != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(activity,
-                    arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE),
-                    LessonViewerActivity.WRITE_STORAGE_PERMISSION_CODE)
-
-        } else {
+    private fun downloadFileIfPermitted(destinationFile: File, downloadBarView: DownloadBarView) {
+        doIfPermitted {
             attachmentDestinationDirectory.mkdirs()
             destinationFile.createNewFile()
             beginDownload(destinationFile, downloadBarView)
@@ -135,11 +127,23 @@ class AttachmentDownloadManager(attachmentUrl: String, val attachmentDestination
         AlertDialog.Builder(activity)
                 .setMessage(activity.getString(R.string.do_you_want_to_delete_this_file_from_your_device))
                 .setPositiveButton(activity.getString(R.string.yes), { _, _ ->
-                    destinationFile.delete()
+                    doIfPermitted{ destinationFile.delete() }
                     setupDownloadBarWithFileInfo(destinationFile, downloadBarView)
                 }).setNegativeButton(activity.getString(R.string.no), { dialogInterface, _ ->
             dialogInterface.cancel()
         }).show()
     }
 
+    private fun doIfPermitted(action: () -> Unit) {
+        val writePermission = ActivityCompat.checkSelfPermission(activity, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (writePermission != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(activity,
+                    arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                    LessonViewerActivity.WRITE_STORAGE_PERMISSION_CODE)
+
+        } else {
+            action()
+        }
+    }
 }
