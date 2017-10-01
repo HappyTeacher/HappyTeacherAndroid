@@ -1,10 +1,7 @@
 package org.jnanaprabodhini.happyteacher.adapter
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
-import android.os.Environment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -12,16 +9,10 @@ import android.view.ViewGroup
 import com.google.firebase.storage.FirebaseStorage
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.FullScreenGalleryViewerActivity
+import org.jnanaprabodhini.happyteacher.adapter.helper.AttachmentDownloadManager
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.LessonCard
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.LessonCardViewHolder
-import java.io.File
-import android.support.v4.app.ActivityCompat
-import android.content.pm.PackageManager
-import com.google.firebase.storage.FileDownloadTask
-import com.google.firebase.storage.StorageMetadata
-import com.google.firebase.storage.StorageReference
-import org.jnanaprabodhini.happyteacher.activity.LessonViewerActivity
 
 
 /**
@@ -136,79 +127,10 @@ class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val 
     }
 
     private fun setupAttachmentView(attachmentUrl: String, holder: LessonCardViewHolder?) {
-        val fileRef = storageRef.getReferenceFromUrl(attachmentUrl)
+        val downloadManager = AttachmentDownloadManager(attachmentUrl, activity)
 
         holder?.attachmentDownloadButton?.setVisible()
-        holder?.attachmentDownloadButton?.setLoadingWithText(activity.getString(R.string.loading_attachment))
-
-        fileRef.metadata.addOnSuccessListener { storageMetadata ->
-            setupDownloadBarWithMetadata(holder, storageMetadata, fileRef)
-        }
-    }
-
-    private fun setupDownloadBarWithMetadata(holder: LessonCardViewHolder?, storageMetadata: StorageMetadata, fileRef: StorageReference) {
-        val fileExtension = "." + fileRef.name.split(".").last()
-        val fileName = fileRef.name.removeSuffix(fileExtension)
-
-        holder?.attachmentDownloadButton?.setDownloadIconWithText(activity.getString(R.string.file_with_size_in_mb, fileRef.name, storageMetadata.sizeBytes.toMegabyteFromByte()))
-
-        holder?.attachmentDownloadButton?.setOneTimeOnClickListener {
-            downloadFileWithPermission(holder, fileRef, fileName, fileExtension, storageMetadata)
-        }
-    }
-
-    private fun downloadFileWithPermission(holder: LessonCardViewHolder, fileRef: StorageReference, fileName: String, fileExtension: String, storageMetadata: StorageMetadata) {
-        val writePermission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        if (writePermission != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(activity,
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE),
-                    LessonViewerActivity.WRITE_STORAGE_PERMISSION_CODE)
-
-        } else {
-            beginDownload(holder, fileName, fileExtension, fileRef, storageMetadata)
-        }
-    }
-
-    private fun beginDownload(holder: LessonCardViewHolder, fileName: String, fileExtension: String, fileRef: StorageReference, storageMetadata: StorageMetadata) {
-        val destinationDirectory = File(Environment.getExternalStorageDirectory().path + File.separator + activity.getString(R.string.app_name))
-        destinationDirectory.mkdirs()
-        val destinationFile = File.createTempFile(fileName, fileExtension, destinationDirectory)
-        val downloadTask = fileRef.getFile(destinationFile)
-
-        downloadTask.addOnProgressListener(holder.attachmentDownloadButton)
-        downloadTask.addOnFailureListener(holder.attachmentDownloadButton)
-
-        holder.attachmentDownloadButton.setOneTimeOnClickListener {
-            cancelDownload(holder, downloadTask, destinationFile)
-            setupDownloadBarWithMetadata(holder, storageMetadata, fileRef)
-        }
-
-        downloadTask.addOnSuccessListener({
-            setAttachmentOpenable(holder, fileRef, destinationFile, storageMetadata.contentType)
-        }).addOnFailureListener {
-            destinationFile.delete()
-        }
-    }
-
-    private fun cancelDownload(holder: LessonCardViewHolder, downloadTask: FileDownloadTask, destinationFile: File) {
-        holder.attachmentDownloadButton.setText(activity.getString(R.string.cancelling))
-
-        downloadTask.cancel()
-        destinationFile.delete()
-        activity.showToast(R.string.download_cancelled)
-
-        holder.attachmentDownloadButton.resetProgress()
-    }
-
-    private fun setAttachmentOpenable(holder: LessonCardViewHolder, fileRef: StorageReference, destinationFile: File, type: String) {
-        holder.attachmentDownloadButton.setFolderIconWithText(activity.getString(R.string.open_x,  fileRef.name))
-        holder.attachmentDownloadButton.setOneTimeOnClickListener {
-            val downloadedFileUri = Uri.fromFile(destinationFile)
-            val openFileIntent = Intent(Intent.ACTION_VIEW)
-            openFileIntent.setDataAndType(downloadedFileUri, type)
-            activity.startActivity(openFileIntent)
-        }
+        holder?.attachmentDownloadButton?.setAttachmentDownloadManager(downloadManager)
     }
 }
 

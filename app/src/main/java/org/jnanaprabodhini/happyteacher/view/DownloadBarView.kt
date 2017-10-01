@@ -15,6 +15,7 @@ import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.OnProgressListener
 import kotlinx.android.synthetic.main.view_download_bar.view.*
 import org.jnanaprabodhini.happyteacher.R
+import org.jnanaprabodhini.happyteacher.adapter.helper.AttachmentDownloadManager
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import java.lang.Exception
@@ -22,13 +23,15 @@ import java.lang.Exception
 /**
  * Created by grahamearley on 9/29/17.
  */
-class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout(context, attributeSet),
-                                                                        OnFailureListener,
-                                                                        OnProgressListener<FileDownloadTask.TaskSnapshot> {
+class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout(context, attributeSet) {
 
     init {
         LayoutInflater.from(context).inflate(R.layout.view_download_bar, this)
         DrawableCompat.setTint(indeterminateProgressBar.indeterminateDrawable, R.color.lightGray)
+    }
+
+    fun setAttachmentDownloadManager(downloadManager: AttachmentDownloadManager) {
+        downloadManager.initializeViewForDownload(this)
     }
 
     fun setOneTimeOnClickListener(onClick: () -> Unit) {
@@ -103,17 +106,5 @@ class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout
         setText("")
         indeterminateProgressBar.setVisibilityGone()
         icon.setVisibilityGone()
-    }
-
-    override fun onProgress(snapshot: FileDownloadTask.TaskSnapshot?) {
-        val bytesTransferred: Double = snapshot?.bytesTransferred?.toDouble() ?: 0.0
-        val totalBytes: Long = snapshot?.totalByteCount ?: 1
-        val progressRatio = bytesTransferred / totalBytes
-        val percent = Math.abs(progressRatio)
-        setProgress(percent)
-    }
-
-    override fun onFailure(exception: Exception) {
-        setErrorWithText(context.getString(R.string.download_failed))
     }
 }
