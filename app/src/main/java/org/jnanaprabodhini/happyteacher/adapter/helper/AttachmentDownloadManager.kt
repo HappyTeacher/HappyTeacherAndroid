@@ -97,7 +97,7 @@ class AttachmentDownloadManager(attachmentUrl: String, val activity: Activity) {
         }.addOnFailureListener {
             destinationFile.delete()
         }.addOnProgressListener { snapshot ->
-            updateProgressUi(snapshot?.bytesTransferred ?: 0, snapshot?.totalByteCount ?: 1, downloadBarView)
+            if (!downloadTask.isCanceled) updateProgressUi(snapshot?.bytesTransferred ?: 0, snapshot?.totalByteCount ?: 1, downloadBarView)
         }.addOnFailureListener {
             downloadBarView.setErrorWithText(activity.getString(R.string.download_failed))
         }
