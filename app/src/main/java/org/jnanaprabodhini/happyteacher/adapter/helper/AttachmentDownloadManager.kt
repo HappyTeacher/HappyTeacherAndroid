@@ -1,11 +1,14 @@
 package org.jnanaprabodhini.happyteacher.adapter.helper
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Environment
 import android.support.v4.app.ActivityCompat
+import android.util.Log
 import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageMetadata
@@ -24,27 +27,47 @@ class AttachmentDownloadManager(attachmentUrl: String, val activity: Activity) {
     val fileRef = FirebaseStorage.getInstance().getReferenceFromUrl(attachmentUrl)
     lateinit var metadata: StorageMetadata
 
-    fun initializeViewForDownload(downloadBarView: DownloadBarView) {
+    fun bindView(downloadBarView: DownloadBarView) {
         downloadBarView.setLoadingWithText(activity.getString(R.string.loading_attachment))
         fileRef.metadata.addOnSuccessListener { storageMetadata ->
             metadata = storageMetadata
-            setupDownloadBarWithFileInfo(downloadBarView)
+            initializeDownloadBarOnClickListener(downloadBarView)
+        }
+        // todo: add metadata failure listener
+    }
+
+    private fun initializeDownloadBarOnClickListener(downloadBarView: DownloadBarView) {
+        val fileExtension = fileRef.name.split(".").last()
+        val fileName = fileRef.name.removeSuffix("." + fileExtension)
+
+        val destinationDirectory = File(Environment.getExternalStorageDirectory().path + File.separator + activity.getString(R.string.app_name))
+        val destinationFile = File(destinationDirectory, "${fileName}_${metadata.updatedTimeMillis}.$fileExtension")
+
+        if (destinationFile.exists()) {
+            setAttachmentOpenable(destinationFile, downloadBarView)
+        } else {
+            setViewToDownload(destinationFile, downloadBarView)
         }
     }
 
-    private fun setupDownloadBarWithFileInfo(downloadBarView: DownloadBarView) {
-        val fileExtension = "." + fileRef.name.split(".").last()
-        val fileName = fileRef.name.removeSuffix(fileExtension)
+    private fun setViewToDownload(destinationFile: File, downloadBarView: DownloadBarView) {
+        downloadBarView.setLoadingWithText(activity.getString(R.string.loading_attachment))
+        fileRef.metadata.addOnSuccessListener { storageMetadata ->
+            metadata = storageMetadata
+            setupDownloadBarWithFileInfo(destinationFile, downloadBarView)
+        }
+    }
 
+    private fun setupDownloadBarWithFileInfo(destinationFile: File, downloadBarView: DownloadBarView) {
         downloadBarView.setDownloadIconWithText(activity.getString(R.string.file_with_size_in_mb, fileRef.name, metadata.sizeBytes.toMegabyteFromByte()))
         downloadBarView.resetProgress()
 
         downloadBarView.setOneTimeOnClickListener {
-            downloadFileWithPermission(fileName, fileExtension, downloadBarView)
+            downloadFileWithPermission(destinationFile, downloadBarView)
         }
     }
 
-    private fun downloadFileWithPermission(fileName: String, fileExtension: String, downloadBarView: DownloadBarView) {
+    private fun downloadFileWithPermission(destinationFile: File, downloadBarView: DownloadBarView) {
         val writePermission = ActivityCompat.checkSelfPermission(activity, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (writePermission != PackageManager.PERMISSION_GRANTED) {
 
@@ -53,15 +76,12 @@ class AttachmentDownloadManager(attachmentUrl: String, val activity: Activity) {
                     LessonViewerActivity.WRITE_STORAGE_PERMISSION_CODE)
 
         } else {
-            beginDownload(fileName, fileExtension, downloadBarView)
+            destinationFile.createNewFile()
+            beginDownload(destinationFile, downloadBarView)
         }
     }
 
-    private fun beginDownload(fileName: String, fileExtension: String, downloadBarView: DownloadBarView) {
-        val destinationDirectory = File(Environment.getExternalStorageDirectory().path + File.separator + activity.getString(R.string.app_name))
-        destinationDirectory.mkdirs()
-        val destinationFile = File.createTempFile(fileName, fileExtension, destinationDirectory)
-
+    private fun beginDownload(destinationFile: File, downloadBarView: DownloadBarView) {
         // Calling `getFile(..)` starts the download:
         val downloadTask = fileRef.getFile(destinationFile)
 
@@ -69,7 +89,7 @@ class AttachmentDownloadManager(attachmentUrl: String, val activity: Activity) {
 
         downloadBarView.setOneTimeOnClickListener {
             cancelDownload(downloadTask, destinationFile, downloadBarView)
-            setupDownloadBarWithFileInfo(downloadBarView)
+            setupDownloadBarWithFileInfo(destinationFile, downloadBarView)
         }
 
         downloadTask.addOnSuccessListener {
@@ -89,17 +109,20 @@ class AttachmentDownloadManager(attachmentUrl: String, val activity: Activity) {
         downloadTask.cancel()
         destinationFile.delete()
         activity.showToast(R.string.download_cancelled)
-
-        downloadBarView.resetProgress()
     }
 
     private fun setAttachmentOpenable(destinationFile: File, downloadBarView: DownloadBarView) {
+        downloadBarView.setProgressComplete()
         downloadBarView.setFolderIconWithText(activity.getString(R.string.open_x,  fileRef.name))
         downloadBarView.setOneTimeOnClickListener {
             val downloadedFileUri = Uri.fromFile(destinationFile)
             val openFileIntent = Intent(Intent.ACTION_VIEW)
             openFileIntent.setDataAndType(downloadedFileUri, metadata.contentType)
             activity.startActivity(openFileIntent)
+        }
+
+        downloadBarView.setOneTimeOnLongClickListener {
+            showDeleteFileAlertDialog(destinationFile, downloadBarView)
         }
     }
 
@@ -108,6 +131,18 @@ class AttachmentDownloadManager(attachmentUrl: String, val activity: Activity) {
         val percent = Math.abs(progressRatio)
 
         downloadBarView.setProgress(percent)
+    }
+
+    private fun showDeleteFileAlertDialog(destinationFile: File, downloadBarView: DownloadBarView) {
+        AlertDialog.Builder(activity)
+                .setTitle("Delete file?")
+                .setMessage("Do you want to delete this file from your phone?")
+                .setPositiveButton("Yes", { _, _ ->
+                    destinationFile.delete()
+                    setupDownloadBarWithFileInfo(destinationFile, downloadBarView)
+                }).setNegativeButton("No", { dialogInterface, _ ->
+            dialogInterface.cancel()
+        }).show()
     }
 
 }

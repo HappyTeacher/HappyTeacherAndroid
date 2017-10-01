@@ -31,22 +31,37 @@ class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout
     }
 
     fun setAttachmentDownloadManager(downloadManager: AttachmentDownloadManager) {
-        downloadManager.initializeViewForDownload(this)
+        downloadManager.bindView(this)
     }
 
     fun setOneTimeOnClickListener(onClick: () -> Unit) {
         setOneTimeOnClickListener(View.OnClickListener { onClick() })
     }
 
-    fun setOneTimeOnClickListener(l: OnClickListener?) {
+    fun setOneTimeOnClickListener(l: OnClickListener) {
         rootFrame.setOnClickListener{ view ->
-            l?.onClick(view)
             removeOnClickListener()
+            l.onClick(view)
+        }
+    }
+
+    fun setOneTimeOnLongClickListener(onLongClick: () -> Unit) {
+        setOneTimeOnLongClickListener(View.OnLongClickListener{ onLongClick(); true })
+    }
+
+    fun setOneTimeOnLongClickListener(l: OnLongClickListener) {
+        rootFrame.setOnLongClickListener { view ->
+            removeOnLongClickListener()
+            l.onLongClick(view)
         }
     }
 
     fun removeOnClickListener() {
         rootFrame.setOnClickListener(null)
+    }
+
+    fun removeOnLongClickListener() {
+        rootFrame.setOnLongClickListener(null)
     }
 
     fun setText(text: String) {
@@ -89,6 +104,10 @@ class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout
 
     fun resetProgress() {
         progressBarBackground.layoutParams.width = 0
+    }
+
+    fun setProgressComplete() {
+        setProgress(1.0)
     }
 
     private fun resetBackgroundColor() {
