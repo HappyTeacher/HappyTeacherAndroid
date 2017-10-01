@@ -105,14 +105,23 @@ class AttachmentDownloadManager(attachmentUrl: String, val attachmentDestination
         downloadBarView.setProgressComplete()
         downloadBarView.setFolderIconWithText(activity.getString(R.string.open_x,  fileRef.name))
         downloadBarView.setOneTimeOnClickListener {
-            val downloadedFileUri = Uri.fromFile(destinationFile)
-            val openFileIntent = Intent(Intent.ACTION_VIEW)
-            openFileIntent.setDataAndType(downloadedFileUri, metadata.contentType)
-            activity.startActivity(openFileIntent)
+            openFileIfExists(destinationFile, downloadBarView)
         }
 
         downloadBarView.setOneTimeOnLongClickListener {
             showDeleteFileAlertDialog(destinationFile, downloadBarView)
+        }
+    }
+
+    private fun openFileIfExists(destinationFile: File, downloadBarView: DownloadBarView) {
+        if (destinationFile.exists()) {
+            val downloadedFileUri = Uri.fromFile(destinationFile)
+            val openFileIntent = Intent(Intent.ACTION_VIEW)
+            openFileIntent.setDataAndType(downloadedFileUri, metadata.contentType)
+            activity.startActivity(openFileIntent)
+        } else {
+            activity.showToast(R.string.the_file_is_no_longer_available_try_downloading_it_again)
+            setupDownloadBarWithFileInfo(destinationFile, downloadBarView)
         }
     }
 
