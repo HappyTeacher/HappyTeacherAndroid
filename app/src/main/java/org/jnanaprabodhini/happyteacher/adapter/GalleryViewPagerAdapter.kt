@@ -5,11 +5,10 @@ import android.view.View
 import android.support.v4.view.ViewPager
 import android.view.ViewGroup
 import android.view.LayoutInflater
-import android.widget.FrameLayout
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.image_item_fullscreen.view.*
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.extension.loadImage
+import org.jnanaprabodhini.happyteacher.extension.loadImageWithNoPlaceholder
 
 /**
  * Created by grahamearley on 9/28/17.
@@ -24,7 +23,7 @@ class GalleryViewPagerAdapter(val imageUrls: Array<String>): PagerAdapter() {
         val imagePage = LayoutInflater.from(container.context).inflate(R.layout.image_item_fullscreen, container, false)
         val imageUrl = imageUrls[position]
 
-        imagePage.fullscreenImageView.loadImage(imageUrl)
+        imagePage.fullscreenImageView.loadImageWithNoPlaceholder(imageUrl)
         container.addView(imagePage)
 
         return imagePage

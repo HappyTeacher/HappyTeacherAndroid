@@ -112,10 +112,12 @@ fun ImageView.loadImageToFit(imageUrl: String) {
             .into(this)
 }
 
-fun ImageView.loadImage(imageUrl: String) {
+fun ImageView.loadImageWithNoPlaceholder(imageUrl: String) {
     Picasso.with(context)
             .load(imageUrl)
             .error(R.drawable.white_ripple_pill)
+            .fit()
+            .centerInside()
             .into(this)
 }
 
