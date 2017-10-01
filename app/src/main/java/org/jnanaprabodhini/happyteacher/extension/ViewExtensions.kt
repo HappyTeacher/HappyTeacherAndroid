@@ -105,7 +105,7 @@ fun TextView.setHtmlText(htmlString: String) {
 fun ImageView.loadImageToFit(imageUrl: String) {
     Picasso.with(context)
             .load(imageUrl)
-            .placeholder(R.drawable.ripple_accent_gray) // todo: actual placeholders/error views
+            .placeholder(R.drawable.ripple_accent_gray)
             .error(R.drawable.white_ripple_pill)
             .fit()
             .centerCrop()
