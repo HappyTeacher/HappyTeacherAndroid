@@ -37,6 +37,7 @@ class AttachmentDownloadManager(attachmentUrl: String, val activity: Activity) {
         val fileName = fileRef.name.removeSuffix(fileExtension)
 
         downloadBarView.setDownloadIconWithText(activity.getString(R.string.file_with_size_in_mb, fileRef.name, metadata.sizeBytes.toMegabyteFromByte()))
+        downloadBarView.resetProgress()
 
         downloadBarView.setOneTimeOnClickListener {
             downloadFileWithPermission(fileName, fileExtension, downloadBarView)
@@ -60,6 +61,8 @@ class AttachmentDownloadManager(attachmentUrl: String, val activity: Activity) {
         val destinationDirectory = File(Environment.getExternalStorageDirectory().path + File.separator + activity.getString(R.string.app_name))
         destinationDirectory.mkdirs()
         val destinationFile = File.createTempFile(fileName, fileExtension, destinationDirectory)
+
+        // Calling `getFile(..)` starts the download:
         val downloadTask = fileRef.getFile(destinationFile)
 
         downloadBarView.setDownloadIconWithText(activity.getString(R.string.downloading))
