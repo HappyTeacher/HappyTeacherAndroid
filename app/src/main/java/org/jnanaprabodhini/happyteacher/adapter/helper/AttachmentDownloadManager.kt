@@ -85,7 +85,7 @@ class AttachmentDownloadManager(attachmentUrl: String, val activity: Activity) {
         // Calling `getFile(..)` starts the download:
         val downloadTask = fileRef.getFile(destinationFile)
 
-        downloadBarView.setDownloadIconWithText(activity.getString(R.string.downloading))
+        downloadBarView.setLoadingWithText(activity.getString(R.string.downloading))
 
         downloadBarView.setOneTimeOnClickListener {
             cancelDownload(downloadTask, destinationFile, downloadBarView)
