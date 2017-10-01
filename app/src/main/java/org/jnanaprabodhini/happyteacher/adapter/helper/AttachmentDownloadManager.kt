@@ -33,7 +33,7 @@ class AttachmentDownloadManager(attachmentUrl: String, val activity: Activity) {
     }
 
     private fun setupDownloadBarWithFileInfo(downloadBarView: DownloadBarView) {
-        val fileExtension = "" + fileRef.name.split("").last()
+        val fileExtension = "." + fileRef.name.split(".").last()
         val fileName = fileRef.name.removeSuffix(fileExtension)
 
         downloadBarView.setDownloadIconWithText(activity.getString(R.string.file_with_size_in_mb, fileRef.name, metadata.sizeBytes.toMegabyteFromByte()))
