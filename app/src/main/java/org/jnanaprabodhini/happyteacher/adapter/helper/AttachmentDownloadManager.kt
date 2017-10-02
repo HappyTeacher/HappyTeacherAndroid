@@ -104,9 +104,9 @@ class AttachmentDownloadManager(attachmentUrl: String, val attachmentDestination
             setupDownloadBarWithFileInfo(destinationFile, downloadBarView)
         }
 
-        downloadTask.addOnSuccessListener(onSuccess)
-                .addOnFailureListener(onFailure)
-                .addOnProgressListener(onProgress)
+        downloadTask.addOnSuccessListener(activity, onSuccess)
+                .addOnFailureListener(activity, onFailure)
+                .addOnProgressListener(activity, onProgress)
     }
 
     private fun cancelDownload(downloadTask: FileDownloadTask, destinationFile: File, downloadBarView: DownloadBarView) {
