@@ -68,7 +68,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         bottomNavigation.selectedItemId = bottomNavigationMenuItemId
         bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
-        setSpinnerSelectionIndicesFromSavedInstanceState(savedInstanceState)
+        savedInstanceState?.let { setSpinnerSelectionIndicesFromSavedInstanceState(it) }
 
         initializeUiFromIntent()
     }
@@ -77,9 +77,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
      *  If there are stored index positions for the spinners, set their properties accordingly.
      *   These properties will be used to select the stored selection when the spinners are populated.
      */
-    private fun setSpinnerSelectionIndicesFromSavedInstanceState(savedInstanceState: Bundle?) {
-        if (savedInstanceState == null) return
-
+    private fun setSpinnerSelectionIndicesFromSavedInstanceState(savedInstanceState: Bundle) {
         val parentSubjectStoredSelection = savedInstanceState.getInt(SavedInstanceStateConstants.PARENT_SUBJECT_SPINNER_SELECTION, 0)
         val childSubjectStoredSelection = savedInstanceState.getInt(SavedInstanceStateConstants.CHILD_SUBJECT_SPINNER_SELECTION, 0)
 
@@ -265,9 +263,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
             topicViewHolder?.lessonsRecyclerView?.setVisibilityGone()
             topicViewHolder?.emptyView?.setVisible()
 
-            if (level != null) {
-                topicViewHolder?.emptyTextView?.text = getString(R.string.no_lessons_at_level_yet, level)
-            }
+            level?.let { topicViewHolder?.emptyTextView?.text = getString(R.string.no_lessons_at_level_yet, level) }
         }
 
         override fun onDataNonEmpty() {
@@ -338,7 +334,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         subtopicHeaderViewHolder?.institutionTextView?.setDrawableLeft(R.drawable.ic_school_accent)
         subtopicHeaderViewHolder?.locationTextView?.setDrawableLeft(R.drawable.ic_location_accent)
 
-        if (subtopicHeaderModel != null) {
+        subtopicHeaderModel?.let {
             subtopicHeaderViewHolder?.dateEditedTextView?.text = dateFormat.format(Date(subtopicHeaderModel.dateEdited))
             subtopicHeaderViewHolder?.dateEditedTextView?.setDrawableLeft(R.drawable.ic_clock_light_gray)
         }

@@ -42,7 +42,8 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
         bottomNavigation.selectedItemId = bottomNavigationMenuItemId
         bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
-        setSpinnerSelectionIndicesFromSavedInstanceState(savedInstanceState)
+        savedInstanceState?.let { setSpinnerSelectionIndicesFromSavedInstanceState(it) }
+
         setupRecyclerView()
         setupSubjectSpinner()
 
@@ -62,9 +63,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
         dialog.show()
     }
 
-    private fun setSpinnerSelectionIndicesFromSavedInstanceState(savedInstanceState: Bundle?) {
-        if (savedInstanceState == null) return
-
+    private fun setSpinnerSelectionIndicesFromSavedInstanceState(savedInstanceState: Bundle) {
         val levelSpinnerStoredSelection = savedInstanceState.getInt(SavedInstanceStateConstants.LEVEL_SPINNER_SELECTION, 0)
         val subjectSpinnerStoredSelection = savedInstanceState.getInt(SavedInstanceStateConstants.SUBJECT_SPINNER_SELECTION, 0)
 
