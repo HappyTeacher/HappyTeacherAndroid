@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.annotation.DrawableRes
 import android.support.v4.content.res.ResourcesCompat
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
@@ -91,7 +92,11 @@ class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout
 
     fun setProgress(percent: Double) {
         val progressWidth = width * percent
-        progressBarBackground.layoutParams.width = progressWidth.toInt()
+
+        val layoutParams = progressBarBackground.layoutParams
+        layoutParams.width = progressWidth.toInt()
+
+        progressBarBackground.layoutParams = layoutParams
     }
 
     fun resetProgress() {

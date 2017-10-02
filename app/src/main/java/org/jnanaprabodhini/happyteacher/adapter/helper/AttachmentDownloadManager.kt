@@ -39,8 +39,10 @@ class AttachmentDownloadManager(attachmentUrl: String, val attachmentDestination
 
         val destinationFile = File(attachmentDestinationDirectory, "${fileName}_${metadata.updatedTimeMillis}.$fileExtension")
 
-        if (destinationFile.exists()) {
+        if (destinationFile.exists() && fileRef.activeDownloadTasks.isEmpty()) {
             setAttachmentOpenable(destinationFile, downloadBarView)
+        } else if (destinationFile.exists() && fileRef.activeDownloadTasks.isNotEmpty()) {
+            syncViewWithDownloadTask(fileRef.activeDownloadTasks.first(), destinationFile, downloadBarView)
         } else {
             setViewToDownload(destinationFile, downloadBarView)
         }
@@ -74,7 +76,10 @@ class AttachmentDownloadManager(attachmentUrl: String, val attachmentDestination
     private fun beginDownload(destinationFile: File, downloadBarView: DownloadBarView) {
         // Calling `getFile(..)` starts the download:
         val downloadTask = fileRef.getFile(destinationFile)
+        syncViewWithDownloadTask(downloadTask, destinationFile, downloadBarView)
+    }
 
+    private fun syncViewWithDownloadTask(downloadTask: FileDownloadTask, destinationFile: File, downloadBarView: DownloadBarView) {
         downloadBarView.setLoadingWithText(activity.getString(R.string.downloading))
 
         downloadBarView.setOneTimeOnClickListener {
