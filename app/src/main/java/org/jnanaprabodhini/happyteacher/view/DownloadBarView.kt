@@ -100,7 +100,7 @@ class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout
     }
 
     fun resetProgress() {
-        progressBarBackground.layoutParams.width = 0
+        setProgress(0.0)
     }
 
     fun setProgressComplete() {
