@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.support.v4.app.ActivityCompat
+import android.util.Log
 import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageMetadata
@@ -39,9 +40,11 @@ class AttachmentDownloadManager(attachmentUrl: String, val attachmentDestination
 
         val destinationFile = File(attachmentDestinationDirectory, "${fileName}_${metadata.updatedTimeMillis}.$fileExtension")
 
-        if (destinationFile.exists() && fileRef.activeDownloadTasks.isEmpty()) {
+        if (destinationFile.exists() && destinationFile.length() == metadata.sizeBytes) {
+            // ==> File is downloaded completely:
             setAttachmentOpenable(destinationFile, downloadBarView)
         } else if (destinationFile.exists() && fileRef.activeDownloadTasks.isNotEmpty()) {
+            // ==> Download is still in progress:
             syncViewWithDownloadTask(fileRef.activeDownloadTasks.first(), destinationFile, downloadBarView)
         } else {
             setViewToDownload(destinationFile, downloadBarView)
