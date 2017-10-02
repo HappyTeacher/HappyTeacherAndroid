@@ -36,7 +36,7 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="start"
+            android:gravity="center_vertical"
             android:textColor="@android:color/white"
             android:paddingLeft="12dp"
             android:paddingStart="12dp"
