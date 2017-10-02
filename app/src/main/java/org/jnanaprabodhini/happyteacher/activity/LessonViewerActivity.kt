@@ -38,11 +38,15 @@ class LessonViewerActivity : HappyTeacherActivity() {
         fun Intent.hasTopicName(): Boolean = hasExtra(TOPIC_NAME)
         fun Intent.getTopicName(): String = getStringExtra(TOPIC_NAME)
 
+        val  TOPIC_ID: String = "TOPIC_ID"
+        fun Intent.hasTopicId(): Boolean = hasExtra(TOPIC_ID)
+        fun Intent.getTopicId(): String = getStringExtra(TOPIC_ID)
+
         val SUBTOPIC_NAME: String = "SUBTOPIC_NAME"
         fun Intent.hasSubtopicName(): Boolean = hasExtra(SUBTOPIC_NAME)
         fun Intent.getSubtopicName(): String = getStringExtra(SUBTOPIC_NAME)
 
-        fun Intent.hasAllExtras(): Boolean = hasLessonId() && hasSubtopicId() && hasSubject() && hasTopicName() && hasSubtopicName()
+        fun Intent.hasAllExtras(): Boolean = hasLessonId() && hasSubtopicId() && hasSubject() && hasTopicName() && hasSubtopicName() && hasTopicId()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,9 +68,11 @@ class LessonViewerActivity : HappyTeacherActivity() {
         val subtopicId = intent.getSubtopicId()
         val subject = intent.getSubject()
         val topicName = intent.getTopicName()
+        val topicId = intent.getTopicId()
         val subtopicName = intent.getSubtopicName()
 
         val lessonQuery = databaseReference.child(getString(R.string.subtopic_lessons))
+                                            .child(topicId)
                                             .child(subtopicId)
                                             .child(lessonId)
 

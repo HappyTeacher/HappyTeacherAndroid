@@ -31,7 +31,8 @@ data class SubtopicLessonHeader(var name: String = "",
                                 var authorName: String = "",
                                 var dateEdited: Long = 0,
                                 var lesson: String = "",
-                                var subtopic: String = "")
+                                var subtopic: String = "",
+                                var topic: String = "")
 
 data class SubtopicLesson(var name: String = "",
                           var authorEmail: String = "",
