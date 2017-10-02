@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.jnanaprabodhini.happyteacher">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <application
         android:name=".HappyTeacherApplication"
         android:allowBackup="true"
@@ -19,7 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.BoardLessonsActivity"></activity>
+        <activity android:name=".activity.BoardLessonsActivity" />
+        <activity
+            android:name=".activity.LessonViewerActivity"
+            android:parentActivityName=".activity.TopicsListActivity" />
+        <activity android:name=".activity.FullScreenGalleryViewerActivity"
+            android:theme="@style/Theme.Transparent"/>
     </application>
 
 </manifest>

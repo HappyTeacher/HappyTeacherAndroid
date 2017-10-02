@@ -23,8 +23,8 @@ import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.SubtopicLessonHeader
 import org.jnanaprabodhini.happyteacher.model.Topic
 import org.jnanaprabodhini.happyteacher.prefs
-import org.jnanaprabodhini.happyteacher.viewholder.SubtopicHeaderViewHolder
-import org.jnanaprabodhini.happyteacher.viewholder.TopicViewHolder
+import org.jnanaprabodhini.happyteacher.adapter.viewholder.SubtopicHeaderViewHolder
+import org.jnanaprabodhini.happyteacher.adapter.viewholder.TopicViewHolder
 import java.util.*
 
 class TopicsListActivity : BottomNavigationActivity(), DataObserver {
@@ -282,12 +282,12 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         val featuredSubtopicQuery = databaseReference.child(getString(R.string.featured_subtopic_lesson_headers))
                 .child(topicKey)
 
-        setSubtopicRecyclerAdapterUnfiltered(topicViewHolder, featuredSubtopicQuery, DateFormat.getDateFormat(this@TopicsListActivity))
+        setSubtopicRecyclerAdapterUnfiltered(topicViewHolder, topicModel?.name, featuredSubtopicQuery, DateFormat.getDateFormat(this@TopicsListActivity))
     }
 
     private fun populateLevelFilteredTopicViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int, topicKey: String, level: Int) {
         populateTopicViewHolder(topicViewHolder, topicModel, topicPosition)
-        setSubtopicViewHolderRecyclerFilteredByLevel(topicViewHolder, level, topicKey, DateFormat.getDateFormat(this@TopicsListActivity))
+        setSubtopicViewHolderRecyclerFilteredByLevel(topicViewHolder, level, topicKey, topicModel?.name, DateFormat.getDateFormat(this@TopicsListActivity))
     }
 
     private fun populateTopicViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int) {
@@ -305,15 +305,15 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         topicViewHolder?.lessonsRecyclerView?.layoutManager = horizontalLayoutManager
     }
 
-    private fun setSubtopicRecyclerAdapterUnfiltered(topicViewHolder: TopicViewHolder?, subtopicQuery: Query, dateFormat: java.text.DateFormat) {
+    private fun setSubtopicRecyclerAdapterUnfiltered(topicViewHolder: TopicViewHolder?, topicName: String?, subtopicQuery: Query, dateFormat: java.text.DateFormat) {
         topicViewHolder?.lessonsRecyclerView?.adapter = object: FirebaseDataObserverRecyclerAdapter<SubtopicLessonHeader, SubtopicHeaderViewHolder>(SubtopicLessonHeader::class.java, R.layout.list_item_lesson, SubtopicHeaderViewHolder::class.java, subtopicQuery, getSubtopicDataObserverForViewHolder(topicViewHolder)) {
             override fun populateViewHolder(subtopicHeaderViewHolder: SubtopicHeaderViewHolder?, subtopicHeaderModel: SubtopicLessonHeader?, lessonHeaderPosition: Int) {
-                populateLessonHeaderViewHolder(subtopicHeaderViewHolder, subtopicHeaderModel, dateFormat)
+                populateLessonHeaderViewHolder(subtopicHeaderViewHolder, subtopicHeaderModel, topicName, dateFormat)
             }
         }
     }
 
-    private fun setSubtopicViewHolderRecyclerFilteredByLevel(topicViewHolder: TopicViewHolder?, level: Int, topicKey: String, dateFormat: java.text.DateFormat) {
+    private fun setSubtopicViewHolderRecyclerFilteredByLevel(topicViewHolder: TopicViewHolder?, level: Int, topicKey: String, topicName: String?, dateFormat: java.text.DateFormat) {
         val boardLevelSubtopicsQuery = databaseReference.child(getString(R.string.boards))
                 .child(prefs.getBoardKey())
                 .child(getString(R.string.level_topics))
@@ -323,12 +323,12 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
 
         topicViewHolder?.lessonsRecyclerView?.adapter = object: FirebaseIndexDataObserverRecyclerAdapter<SubtopicLessonHeader, SubtopicHeaderViewHolder>(SubtopicLessonHeader::class.java, R.layout.list_item_lesson, SubtopicHeaderViewHolder::class.java, boardLevelSubtopicsQuery, featuredSubtopicLessonHeaderReference, getSubtopicDataObserverForViewHolder(topicViewHolder, level)) {
             override fun populateViewHolder(subtopicHeaderViewHolder: SubtopicHeaderViewHolder?, subtopicHeaderModel: SubtopicLessonHeader?, lessonHeaderPosition: Int) {
-                populateLessonHeaderViewHolder(subtopicHeaderViewHolder, subtopicHeaderModel, dateFormat)
+                populateLessonHeaderViewHolder(subtopicHeaderViewHolder, subtopicHeaderModel, topicName, dateFormat)
             }
         }
     }
 
-    private fun populateLessonHeaderViewHolder(subtopicHeaderViewHolder: SubtopicHeaderViewHolder?, subtopicHeaderModel: SubtopicLessonHeader?, dateFormat: java.text.DateFormat) {
+    private fun populateLessonHeaderViewHolder(subtopicHeaderViewHolder: SubtopicHeaderViewHolder?, subtopicHeaderModel: SubtopicLessonHeader?, topicName: String?, dateFormat: java.text.DateFormat) {
         subtopicHeaderViewHolder?.lessonTitleTextView?.text = subtopicHeaderModel?.name
         subtopicHeaderViewHolder?.authorNameTextView?.text = subtopicHeaderModel?.authorName
         subtopicHeaderViewHolder?.institutionTextView?.text = subtopicHeaderModel?.authorInstitution
@@ -343,6 +343,29 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
             subtopicHeaderViewHolder?.dateEditedTextView?.setDrawableLeft(R.drawable.ic_clock_light_gray)
         }
 
+        subtopicHeaderViewHolder?.itemView?.setOnClickListener {
+            val lessonId = subtopicHeaderModel?.lesson
+            val subtopicId = subtopicHeaderModel?.subtopic
+            val subject = getSelectedSubject()
+
+            val lessonViewerIntent = Intent(this, LessonViewerActivity::class.java)
+            lessonViewerIntent.putExtra(LessonViewerActivity.LESSON_ID, lessonId)
+            lessonViewerIntent.putExtra(LessonViewerActivity.SUBTOPIC_ID, subtopicId)
+            lessonViewerIntent.putExtra(LessonViewerActivity.SUBJECT, subject)
+            lessonViewerIntent.putExtra(LessonViewerActivity.TOPIC_NAME, topicName)
+            lessonViewerIntent.putExtra(LessonViewerActivity.SUBTOPIC_NAME, subtopicHeaderModel?.name)
+
+            startActivity(lessonViewerIntent)
+        }
+
+    }
+
+    private fun getSelectedSubject(): String {
+        if (childSubjectSpinner.isVisible()) {
+            return (childSubjectSpinner.selectedItem as Subject).name
+        } else {
+            return (parentSubjectSpinner.selectedItem as Subject).name
+        }
     }
 
     override fun onBackPressed() {

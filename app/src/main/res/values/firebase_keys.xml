@@ -18,5 +18,6 @@
     <string name="featured">featured</string>
     <string name="level_topics">level_topics</string>
     <string name="featured_subtopic_lesson_headers">featured_subtopic_lesson_headers</string>
+    <string name="subtopic_lessons">subtopic_lessons</string>
 
 </resources>
