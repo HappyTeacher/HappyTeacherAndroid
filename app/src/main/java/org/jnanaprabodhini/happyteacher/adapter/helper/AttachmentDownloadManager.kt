@@ -7,8 +7,11 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.support.v4.app.ActivityCompat
 import android.util.Log
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.OnProgressListener
 import com.google.firebase.storage.StorageMetadata
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.LessonViewerActivity
@@ -85,20 +88,25 @@ class AttachmentDownloadManager(attachmentUrl: String, val attachmentDestination
     private fun syncViewWithDownloadTask(downloadTask: FileDownloadTask, destinationFile: File, downloadBarView: DownloadBarView) {
         downloadBarView.setLoadingWithText(activity.getString(R.string.downloading))
 
+        val onSuccess = OnSuccessListener<FileDownloadTask.TaskSnapshot> { setAttachmentOpenable(destinationFile, downloadBarView) }
+        val onFailure = OnFailureListener {
+            destinationFile.delete()
+            if (!downloadTask.isCanceled) downloadBarView.setErrorWithText(activity.getString(R.string.download_failed))
+        }
+        val onProgress = OnProgressListener<FileDownloadTask.TaskSnapshot> { snapshot ->
+            if (!downloadTask.isCanceled) updateProgressUi(snapshot?.bytesTransferred ?: 0, snapshot?.totalByteCount ?: 1, downloadBarView)
+        }
+
         downloadBarView.setOneTimeOnClickListener {
+            downloadTask.removeOnSuccessListener(onSuccess).removeOnFailureListener(onFailure).removeOnProgressListener(onProgress)
+
             cancelDownload(downloadTask, destinationFile, downloadBarView)
             setupDownloadBarWithFileInfo(destinationFile, downloadBarView)
         }
 
-        downloadTask.addOnSuccessListener {
-            setAttachmentOpenable(destinationFile, downloadBarView)
-        }.addOnFailureListener {
-            destinationFile.delete()
-        }.addOnProgressListener { snapshot ->
-            if (!downloadTask.isCanceled) updateProgressUi(snapshot?.bytesTransferred ?: 0, snapshot?.totalByteCount ?: 1, downloadBarView)
-        }.addOnFailureListener {
-            if (!downloadTask.isCanceled) downloadBarView.setErrorWithText(activity.getString(R.string.download_failed))
-        }
+        downloadTask.addOnSuccessListener(onSuccess)
+                .addOnFailureListener(onFailure)
+                .addOnProgressListener(onProgress)
     }
 
     private fun cancelDownload(downloadTask: FileDownloadTask, destinationFile: File, downloadBarView: DownloadBarView) {
@@ -106,6 +114,7 @@ class AttachmentDownloadManager(attachmentUrl: String, val attachmentDestination
 
         downloadTask.cancel()
         destinationFile.delete()
+
         activity.showToast(R.string.download_canceled)
     }
 
