@@ -86,7 +86,7 @@ class AttachmentDownloadManager(attachmentUrl: String, val attachmentDestination
     }
 
     private fun syncViewWithDownloadTask(downloadTask: FileDownloadTask, destinationFile: File, downloadBarView: DownloadBarView) {
-        downloadBarView.setLoadingWithText(activity.getString(R.string.downloading))
+        downloadBarView.setCancelIconWithText(activity.getString(R.string.downloading))
 
         val onSuccess = OnSuccessListener<FileDownloadTask.TaskSnapshot> { setAttachmentOpenable(destinationFile, downloadBarView) }
         val onFailure = OnFailureListener {
@@ -121,7 +121,7 @@ class AttachmentDownloadManager(attachmentUrl: String, val attachmentDestination
     private fun setAttachmentOpenable(destinationFile: File, downloadBarView: DownloadBarView) {
         downloadBarView.setProgressComplete()
         downloadBarView.setFolderIconWithText(activity.getString(R.string.open_x,  fileRef.name))
-        downloadBarView.setOneTimeOnClickListener {
+        downloadBarView.setOnClickListener {
             openFileIfExists(destinationFile, downloadBarView)
         }
 

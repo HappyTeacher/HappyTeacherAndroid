@@ -11,6 +11,8 @@ import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.view_download_bar.view.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.adapter.helper.AttachmentDownloadManager
+import org.jnanaprabodhini.happyteacher.extension.setOneTimeOnClickListener
+import org.jnanaprabodhini.happyteacher.extension.setOneTimeOnLongClickListener
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 
@@ -25,36 +27,6 @@ class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout
 
     fun setAttachmentDownloadManager(downloadManager: AttachmentDownloadManager) {
         downloadManager.bindView(this)
-    }
-
-    fun setOneTimeOnClickListener(onClick: () -> Unit) {
-        setOneTimeOnClickListener(View.OnClickListener { onClick() })
-    }
-
-    fun setOneTimeOnClickListener(l: OnClickListener) {
-        rootFrame.setOnClickListener{ view ->
-            removeOnClickListener()
-            l.onClick(view)
-        }
-    }
-
-    fun setOneTimeOnLongClickListener(onLongClick: () -> Unit) {
-        setOneTimeOnLongClickListener(View.OnLongClickListener{ onLongClick(); true })
-    }
-
-    fun setOneTimeOnLongClickListener(l: OnLongClickListener) {
-        rootFrame.setOnLongClickListener { view ->
-            removeOnLongClickListener()
-            l.onLongClick(view)
-        }
-    }
-
-    fun removeOnClickListener() {
-        rootFrame.setOnClickListener(null)
-    }
-
-    fun removeOnLongClickListener() {
-        rootFrame.setOnLongClickListener(null)
     }
 
     fun setText(text: String) {
@@ -105,6 +77,18 @@ class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout
 
     fun setProgressComplete() {
         setProgress(1.0)
+    }
+
+    fun setOneTimeOnClickListener(onClick: () -> Unit) {
+        rootFrame.setOneTimeOnClickListener(onClick)
+    }
+
+    fun setOneTimeOnLongClickListener(onLongClick: () -> Unit) {
+        rootFrame.setOneTimeOnLongClickListener(onLongClick)
+    }
+
+    override fun setOnClickListener(l: OnClickListener?) {
+        rootFrame.setOnClickListener(l)
     }
 
     private fun resetBackgroundColor() {

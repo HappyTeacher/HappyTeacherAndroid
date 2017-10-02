@@ -50,6 +50,28 @@ fun View.showSnackbar(message: String) {
     Snackbar.make(this, message, Snackbar.LENGTH_LONG).show()
 }
 
+fun View.setOneTimeOnClickListener(l: View.OnClickListener) {
+    this.setOnClickListener{ view ->
+        setOnClickListener(null)
+        l.onClick(view)
+    }
+}
+
+fun View.setOneTimeOnClickListener(onClick: () -> Unit) {
+    this.setOneTimeOnClickListener(android.view.View.OnClickListener { onClick() })
+}
+
+fun View.setOneTimeOnLongClickListener(l: View.OnLongClickListener) {
+    this.setOnLongClickListener { view ->
+        setOnLongClickListener(null)
+        l.onLongClick(view)
+    }
+}
+
+fun View.setOneTimeOnLongClickListener(onLongClick: () -> Unit) {
+    this.setOneTimeOnLongClickListener(android.view.View.OnLongClickListener { onLongClick(); true })
+}
+
 fun Spinner.onItemSelected(onItemSelected: (Int) -> Unit) {
     this.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
         override fun onNothingSelected(parent: AdapterView<*>?) {}
