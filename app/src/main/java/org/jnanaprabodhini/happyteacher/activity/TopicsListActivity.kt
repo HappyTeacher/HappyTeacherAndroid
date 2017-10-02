@@ -374,6 +374,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
             //  syllabus lesson plan, then pressing back
             //  should take us back to that activity.
             finish()
+            overridePendingTransition(R.anim.fade_in_quick, R.anim.fade_out_quick)
         } else {
             super.onBackPressed()
         }
