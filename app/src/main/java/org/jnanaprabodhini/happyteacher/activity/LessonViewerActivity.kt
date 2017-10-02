@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_lesson_viewer.*
@@ -53,7 +54,7 @@ class LessonViewerActivity : HappyTeacherActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lesson_viewer)
 
-        if (intent.hasLessonId() && intent.hasSubtopicId()) {
+        if (intent.hasAllExtras()) {
             initializeUiForLessonFromDatabase()
         } else {
             showErrorToastAndFinish()
