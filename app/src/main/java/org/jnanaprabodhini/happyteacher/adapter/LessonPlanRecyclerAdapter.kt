@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.google.firebase.storage.FirebaseStorage
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.FullScreenGalleryViewerActivity
 import org.jnanaprabodhini.happyteacher.adapter.helper.AttachmentDownloadManager
@@ -44,8 +43,8 @@ class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val 
             setupImages(card.getCardImageUrls(), holder)
         }
 
-        if (card.attachmentUrl.isNotEmpty()) {
-            setupAttachmentView(card.attachmentUrl, holder)
+        if (card.attachmentPath.isNotEmpty()) {
+            setupAttachmentView(card.attachmentPath, holder)
         }
 
     }

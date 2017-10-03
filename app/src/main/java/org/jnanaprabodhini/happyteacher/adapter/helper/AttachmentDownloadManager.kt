@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.support.v4.app.ActivityCompat
-import android.util.Log
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.storage.FileDownloadTask
@@ -22,9 +21,9 @@ import java.io.File
 /**
  * Created by grahamearley on 10/1/17.
  */
-class AttachmentDownloadManager(attachmentUrl: String, val attachmentDestinationDirectory: File, val activity: Activity) {
+class AttachmentDownloadManager(attachmentPath: String, val attachmentDestinationDirectory: File, val activity: Activity) {
 
-    val fileRef = FirebaseStorage.getInstance().getReferenceFromUrl(attachmentUrl)
+    val fileRef = FirebaseStorage.getInstance().getReference(attachmentPath)
     lateinit var metadata: StorageMetadata
 
     private var onSuccessListener: OnSuccessListener<FileDownloadTask.TaskSnapshot>? = null

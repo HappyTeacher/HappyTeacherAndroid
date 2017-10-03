@@ -45,7 +45,7 @@ data class LessonCard(var header: String = "",
                       var body: String = "",
                       var imageUrls: Map<String, String> = emptyMap(),
                       var youtubeId: String = "",
-                      var attachmentUrl: String = "",
+                      var attachmentPath: String = "",
                       var type: String = "",
                       var number: Int = 0) {
 
