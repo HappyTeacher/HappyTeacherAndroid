@@ -37,6 +37,11 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
         false
     }
 
+    override fun onResume() {
+        super.onResume()
+        overridePendingTransition(R.anim.fade_in_quick, R.anim.fade_out_quick)
+    }
+
     abstract fun onBottomNavigationItemReselected()
 
     /**
@@ -48,7 +53,6 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
      */
     override fun onBackPressed() {
         finishAffinity()
-        overridePendingTransition(R.anim.fade_in_quick, R.anim.fade_out_quick)
     }
 
 }
