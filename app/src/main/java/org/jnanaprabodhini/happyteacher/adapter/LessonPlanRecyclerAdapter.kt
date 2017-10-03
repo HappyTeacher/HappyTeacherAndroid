@@ -129,5 +129,11 @@ class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val 
         holder?.attachmentDownloadButton?.setVisible()
         holder?.attachmentDownloadButton?.setAttachmentDownloadManager(downloadManager)
     }
+
+    override fun onViewRecycled(holder: LessonCardViewHolder?) {
+        super.onViewRecycled(holder)
+        holder?.attachmentDownloadButton?.downloadManager?.removeAllDownloadTaskListeners()
+    }
+
 }
 

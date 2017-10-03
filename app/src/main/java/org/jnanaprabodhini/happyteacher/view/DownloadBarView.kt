@@ -21,12 +21,15 @@ import org.jnanaprabodhini.happyteacher.extension.setVisible
  */
 class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout(context, attributeSet) {
 
+    var downloadManager: AttachmentDownloadManager? = null
+
     init {
         LayoutInflater.from(context).inflate(R.layout.view_download_bar, this)
     }
 
     fun setAttachmentDownloadManager(downloadManager: AttachmentDownloadManager) {
         downloadManager.bindView(this)
+        this.downloadManager = downloadManager
     }
 
     fun setText(text: String) {
