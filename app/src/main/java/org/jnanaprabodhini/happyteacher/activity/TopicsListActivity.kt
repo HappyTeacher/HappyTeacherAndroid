@@ -346,13 +346,13 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         subtopicHeaderViewHolder?.itemView?.setOnClickListener {
             val lessonId = subtopicHeaderModel?.lesson
             val subtopicId = subtopicHeaderModel?.subtopic
-            val subject = getSelectedSubject() // todo: build subject into data model. the selected subject doesn't apply for syllabus lessons when the spinner is gone!
+            val subjectName = subtopicHeaderModel?.subjectName
             val topicId = subtopicHeaderModel?.topic
 
             val lessonViewerIntent = Intent(this, LessonViewerActivity::class.java)
             lessonViewerIntent.putExtra(LessonViewerActivity.LESSON_ID, lessonId)
             lessonViewerIntent.putExtra(LessonViewerActivity.SUBTOPIC_ID, subtopicId)
-            lessonViewerIntent.putExtra(LessonViewerActivity.SUBJECT, subject)
+            lessonViewerIntent.putExtra(LessonViewerActivity.SUBJECT, subjectName)
             lessonViewerIntent.putExtra(LessonViewerActivity.TOPIC_NAME, topicName)
             lessonViewerIntent.putExtra(LessonViewerActivity.TOPIC_ID, topicId)
             lessonViewerIntent.putExtra(LessonViewerActivity.SUBTOPIC_NAME, subtopicHeaderModel?.name)
@@ -360,14 +360,6 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
             startActivity(lessonViewerIntent)
         }
 
-    }
-
-    private fun getSelectedSubject(): String {
-        if (childSubjectSpinner.isVisible()) {
-            return (childSubjectSpinner.selectedItem as Subject).name
-        } else {
-            return (parentSubjectSpinner.selectedItem as Subject).name
-        }
     }
 
     override fun onBackPressed() {

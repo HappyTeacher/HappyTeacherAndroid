@@ -1,7 +1,5 @@
 package org.jnanaprabodhini.happyteacher.model
 
-import java.util.*
-
 /**
  * Data models for Firebase objects.
  */
@@ -32,7 +30,8 @@ data class SubtopicLessonHeader(var name: String = "",
                                 var dateEdited: Long = 0,
                                 var lesson: String = "",
                                 var subtopic: String = "",
-                                var topic: String = "")
+                                var topic: String = "",
+                                var subjectName: String = "")
 
 data class SubtopicLesson(var name: String = "",
                           var authorEmail: String = "",
