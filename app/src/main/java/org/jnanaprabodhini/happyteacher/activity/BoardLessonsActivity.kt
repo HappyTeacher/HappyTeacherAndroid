@@ -176,10 +176,12 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
                         val level = syllabusLessonModel?.level
                         val title = syllabusLessonModel?.name
 
-                        topicsListIntent.putExtra(TopicsListActivity.TOPICS_INDEX_LIST_URL, keyUrl)
-                        topicsListIntent.putExtra(TopicsListActivity.SUBJECT_NAME, subject)
-                        topicsListIntent.putExtra(TopicsListActivity.LESSON_TITLE, title)
-                        topicsListIntent.putExtra(TopicsListActivity.LEVEL, level)
+                        topicsListIntent.apply{
+                            putExtra(TopicsListActivity.TOPICS_INDEX_LIST_URL, keyUrl)
+                            putExtra(TopicsListActivity.SUBJECT_NAME, subject)
+                            putExtra(TopicsListActivity.LESSON_TITLE, title)
+                            putExtra(TopicsListActivity.LEVEL, level)
+                        }
 
                         startBottomNavigationActivityWithFade(topicsListIntent)
                     }

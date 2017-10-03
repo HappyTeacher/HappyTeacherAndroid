@@ -350,12 +350,15 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
             val topicId = subtopicHeaderModel?.topic
 
             val lessonViewerIntent = Intent(this, LessonViewerActivity::class.java)
-            lessonViewerIntent.putExtra(LessonViewerActivity.LESSON_ID, lessonId)
-            lessonViewerIntent.putExtra(LessonViewerActivity.SUBTOPIC_ID, subtopicId)
-            lessonViewerIntent.putExtra(LessonViewerActivity.SUBJECT, subjectName)
-            lessonViewerIntent.putExtra(LessonViewerActivity.TOPIC_NAME, topicName)
-            lessonViewerIntent.putExtra(LessonViewerActivity.TOPIC_ID, topicId)
-            lessonViewerIntent.putExtra(LessonViewerActivity.SUBTOPIC_NAME, subtopicHeaderModel?.name)
+
+            lessonViewerIntent.apply {
+                putExtra(LessonViewerActivity.LESSON_ID, lessonId)
+                putExtra(LessonViewerActivity.SUBTOPIC_ID, subtopicId)
+                putExtra(LessonViewerActivity.SUBJECT, subjectName)
+                putExtra(LessonViewerActivity.TOPIC_NAME, topicName)
+                putExtra(LessonViewerActivity.TOPIC_ID, topicId)
+                putExtra(LessonViewerActivity.SUBTOPIC_NAME, subtopicHeaderModel?.name)
+            }
 
             startActivity(lessonViewerIntent)
         }
