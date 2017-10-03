@@ -15,78 +15,46 @@ data class Board(var name: String = "")
 
 data class Subtopic(var name: String = "")
 
-data class SyllabusLesson(var board: String = "",
-                          var lessonNumber: Int = 0,
-                          var name: String = "",
-                          var level: Int = 0,
-                          var subject: String = "",
-                          var topicCount: Int = 0)
+data class SyllabusLesson(val board: String = "",
+                          val lessonNumber: Int = 0,
+                          val name: String = "",
+                          val level: Int = 0,
+                          val subject: String = "",
+                          val topicCount: Int = 0)
 
-data class SubtopicLessonHeader(var name: String = "",
-                                var authorEmail: String = "",
-                                var authorInstitution: String = "",
-                                var authorLocation: String = "",
-                                var authorName: String = "",
-                                var dateEdited: Long = 0,
-                                var lesson: String = "",
-                                var subtopic: String = "",
-                                var topic: String = "",
-                                var subjectName: String = "")
+data class SubtopicLessonHeader(val name: String = "",
+                                val authorEmail: String = "",
+                                val authorInstitution: String = "",
+                                val authorLocation: String = "",
+                                val authorName: String = "",
+                                val dateEdited: Long = 0,
+                                val lesson: String = "",
+                                val subtopic: String = "",
+                                val topic: String = "",
+                                val subjectName: String = "")
 
-data class SubtopicLesson(var name: String = "",
-                          var authorEmail: String = "",
-                          var authorInstitution: String = "",
-                          var authorLocation: String = "",
-                          var authorName: String = "",
-                          var dateEdited: Long = 0,
-                          var cards: Map<String, LessonCard> = emptyMap())
+data class SubtopicLesson(val name: String = "",
+                          val authorEmail: String = "",
+                          val authorInstitution: String = "",
+                          val authorLocation: String = "",
+                          val authorName: String = "",
+                          val dateEdited: Long = 0,
+                          val cards: Map<String, LessonCard> = emptyMap())
 
-data class LessonCard(var header: String = "",
-                      var body: String = "",
-                      var imageUrls: Map<String, String> = emptyMap(),
-                      var youtubeId: String = "",
-                      var attachmentPath: String = "",
-                      var type: String = "",
-                      var number: Int = 0) {
-
-    fun getCardType(): CardType = CardType.getTypeFromString(type)
+data class LessonCard(val header: String = "",
+                      val body: String = "",
+                      val imageUrls: Map<String, String> = emptyMap(),
+                      val youtubeId: String = "",
+                      val attachmentPath: String = "",
+                      val attachmentMetadata: AttachmentMetadata = AttachmentMetadata(),
+                      val type: String = "",
+                      val number: Int = 0) {
     fun getCardImageUrls(): List<String> = imageUrls.toSortedMap().values.toList()
+}
 
-    enum class CardType(val typeId: Int) {
-        VIDEO(0),
-        VIDEO_AND_ATTACHMENT(1),
-        IMAGE(2),
-        IMAGE_AND_ATTACHMENT(3),
-        PLAIN(4),
-        ATTACHMENT(5),
-        UNSUPPORTED(-1);
-
-        companion object {
-            fun getTypeFromString(typeString: String): CardType {
-                when(typeString) {
-                    "VIDEO" -> return VIDEO
-                    "VIDEO_AND_ATTACHMENT" -> return VIDEO_AND_ATTACHMENT
-                    "IMAGE" -> return IMAGE
-                    "IMAGE_AND_ATTACHMENT" -> return IMAGE_AND_ATTACHMENT
-                    "ATTACHMENT" -> return ATTACHMENT
-                    "PLAIN" -> return PLAIN
-                    else -> return UNSUPPORTED
-                }
-            }
-
-            fun fromId(id: Int): CardType {
-                when (id) {
-                    VIDEO.typeId -> return VIDEO
-                    VIDEO_AND_ATTACHMENT.typeId -> return VIDEO_AND_ATTACHMENT
-                    IMAGE.typeId -> return IMAGE
-                    IMAGE_AND_ATTACHMENT.typeId -> return IMAGE_AND_ATTACHMENT
-                    PLAIN.typeId -> return PLAIN
-                    ATTACHMENT.typeId -> return ATTACHMENT
-
-                    else -> return UNSUPPORTED
-                }
-            }
-        }
-
-    }
+data class AttachmentMetadata(val contentType: String = "",
+                              val size: Long = 0,
+                              val timeCreated: Long = 0) {
+    fun isEmpty() = contentType.isEmpty() && size == 0L && timeCreated == 0L
+    fun isNotEmpty() = !isEmpty()
 }

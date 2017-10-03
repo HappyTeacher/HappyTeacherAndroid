@@ -12,6 +12,7 @@ import org.jnanaprabodhini.happyteacher.adapter.helper.AttachmentDownloadManager
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.LessonCard
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.LessonCardViewHolder
+import org.jnanaprabodhini.happyteacher.model.AttachmentMetadata
 import java.io.File
 
 
@@ -43,8 +44,8 @@ class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val 
             setupImages(card.getCardImageUrls(), holder)
         }
 
-        if (card.attachmentPath.isNotEmpty()) {
-            setupAttachmentView(card.attachmentPath, holder)
+        if (card.attachmentPath.isNotEmpty() && card.attachmentMetadata.isNotEmpty()) {
+            setupAttachmentView(card.attachmentPath, card.attachmentMetadata, holder)
         }
 
     }
@@ -122,8 +123,8 @@ class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val 
         }
     }
 
-    private fun setupAttachmentView(attachmentUrl: String, holder: LessonCardViewHolder?) {
-        val downloadManager = AttachmentDownloadManager(attachmentUrl, attachmentDestinationDirectory, activity)
+    private fun setupAttachmentView(attachmentUrl: String, attachmentMetadata: AttachmentMetadata, holder: LessonCardViewHolder?) {
+        val downloadManager = AttachmentDownloadManager(attachmentUrl, attachmentDestinationDirectory, attachmentMetadata, activity)
 
         holder?.attachmentDownloadButton?.setVisible()
         holder?.attachmentDownloadButton?.setAttachmentDownloadManager(downloadManager)

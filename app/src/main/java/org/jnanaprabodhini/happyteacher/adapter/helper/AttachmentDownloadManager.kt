@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.support.v4.app.ActivityCompat
+import android.util.Log
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.storage.FileDownloadTask
@@ -15,57 +16,44 @@ import com.google.firebase.storage.StorageMetadata
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.LessonViewerActivity
 import org.jnanaprabodhini.happyteacher.extension.*
+import org.jnanaprabodhini.happyteacher.model.AttachmentMetadata
 import org.jnanaprabodhini.happyteacher.view.DownloadBarView
 import java.io.File
 
 /**
  * Created by grahamearley on 10/1/17.
  */
-class AttachmentDownloadManager(attachmentPath: String, val attachmentDestinationDirectory: File, val activity: Activity) {
+class AttachmentDownloadManager(attachmentPath: String, val attachmentDestinationDirectory: File, val attachmentMetadata: AttachmentMetadata, val activity: Activity) {
 
     val fileRef = FirebaseStorage.getInstance().getReference(attachmentPath)
-    lateinit var metadata: StorageMetadata
 
     private var onSuccessListener: OnSuccessListener<FileDownloadTask.TaskSnapshot>? = null
     private var onFailureListener: OnFailureListener? = null
     private var onProgressListener: OnProgressListener<FileDownloadTask.TaskSnapshot>? = null
 
     fun bindView(downloadBarView: DownloadBarView) {
-        downloadBarView.setLoadingWithText(activity.getString(R.string.loading_attachment))
-        fileRef.metadata.addOnSuccessListener { storageMetadata ->
-            metadata = storageMetadata
-            initializeDownloadBarOnClickListener(downloadBarView)
-        }.addOnFailureListener { e -> e.printStackTrace() }
-        // todo: add metadata failure listener.. but really -- build metadata into the model so we don't have to do this
+        initializeDownloadBarOnClickListener(downloadBarView)
     }
 
     private fun initializeDownloadBarOnClickListener(downloadBarView: DownloadBarView) {
         val fileExtension = fileRef.name.split(".").last()
         val fileName = fileRef.name.removeSuffix("." + fileExtension)
 
-        val destinationFile = File(attachmentDestinationDirectory, "${fileName}_${metadata.updatedTimeMillis}.$fileExtension")
+        val destinationFile = File(attachmentDestinationDirectory, "${fileName}_${attachmentMetadata.timeCreated}.$fileExtension")
 
-        if (destinationFile.exists() && destinationFile.length() == metadata.sizeBytes) {
+        if (destinationFile.exists() && destinationFile.length() == attachmentMetadata.size) {
             // ==> File is downloaded completely.
             setAttachmentOpenable(destinationFile, downloadBarView)
         } else if (destinationFile.exists() && fileRef.activeDownloadTasks.isNotEmpty()) {
             // ==> Download is still in progress.
             syncViewWithDownloadTask(fileRef.activeDownloadTasks.first(), destinationFile, downloadBarView)
         } else {
-            setViewToDownload(destinationFile, downloadBarView)
-        }
-    }
-
-    private fun setViewToDownload(destinationFile: File, downloadBarView: DownloadBarView) {
-        downloadBarView.setLoadingWithText(activity.getString(R.string.loading_attachment))
-        fileRef.metadata.addOnSuccessListener { storageMetadata ->
-            metadata = storageMetadata
             setupDownloadBarWithFileInfo(destinationFile, downloadBarView)
         }
     }
 
     private fun setupDownloadBarWithFileInfo(destinationFile: File, downloadBarView: DownloadBarView) {
-        downloadBarView.setDownloadIconWithText(activity.getString(R.string.file_with_size_in_mb, fileRef.name, metadata.sizeBytes.toMegabyteFromByte()))
+        downloadBarView.setDownloadIconWithText(activity.getString(R.string.file_with_size_in_mb, fileRef.name, attachmentMetadata.size.toMegabyteFromByte()))
         downloadBarView.resetProgress()
 
         downloadBarView.setOneTimeOnClickListener {
@@ -120,7 +108,7 @@ class AttachmentDownloadManager(attachmentPath: String, val attachmentDestinatio
     }
 
     private fun setAttachmentOpenable(destinationFile: File, downloadBarView: DownloadBarView) {
-        downloadBarView.setProgressComplete()
+        downloadBarView.resetProgress()
         downloadBarView.setFolderIconWithText(activity.getString(R.string.open_x,  fileRef.name))
         downloadBarView.setOnClickListener {
             openFileIfExists(destinationFile, downloadBarView)
@@ -135,7 +123,7 @@ class AttachmentDownloadManager(attachmentPath: String, val attachmentDestinatio
         if (destinationFile.exists()) {
             val downloadedFileUri = Uri.fromFile(destinationFile)
             val openFileIntent = Intent(Intent.ACTION_VIEW)
-            openFileIntent.setDataAndType(downloadedFileUri, metadata.contentType)
+            openFileIntent.setDataAndType(downloadedFileUri, attachmentMetadata.contentType)
             activity.startActivity(openFileIntent)
         } else {
             activity.showToast(R.string.the_file_is_no_longer_available_try_downloading_it_again)
