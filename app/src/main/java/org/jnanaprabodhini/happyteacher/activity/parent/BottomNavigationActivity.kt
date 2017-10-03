@@ -22,23 +22,24 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
 
             R.id.navigation_board -> {
                 val boardActivityIntent = Intent(this, BoardLessonsActivity::class.java)
-                startActivity(boardActivityIntent)
+                startBottomNavigationActivityWithFade(boardActivityIntent)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_topics -> {
                 val topicsActivityIntent = Intent(this, TopicsListActivity::class.java)
-                startActivity(topicsActivityIntent)
+                startBottomNavigationActivityWithFade(topicsActivityIntent)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_contribute -> {
+                // TODO
                 return@OnNavigationItemSelectedListener true
             }
         }
         false
     }
 
-    override fun onResume() {
-        super.onResume()
+    protected fun startBottomNavigationActivityWithFade(intent: Intent) {
+        startActivity(intent)
         overridePendingTransition(R.anim.fade_in_quick, R.anim.fade_out_quick)
     }
 

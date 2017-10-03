@@ -181,7 +181,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
                         topicsListIntent.putExtra(TopicsListActivity.LESSON_TITLE, title)
                         topicsListIntent.putExtra(TopicsListActivity.LEVEL, level)
 
-                        startActivity(topicsListIntent)
+                        startBottomNavigationActivityWithFade(topicsListIntent)
                     }
                 }
             }
