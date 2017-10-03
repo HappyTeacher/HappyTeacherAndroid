@@ -316,7 +316,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
     private fun setSubtopicViewHolderRecyclerFilteredByLevel(topicViewHolder: TopicViewHolder?, level: Int, topicName: String?, topicKey: String) {
         val boardLevelSubtopicsQuery = databaseReference.child(getString(R.string.boards))
                 .child(prefs.getBoardKey())
-                .child(getString(R.string.level_topics))
+                .child(getString(R.string.level_subtopics))
                 .child(level.toString())
 
         val featuredSubtopicLessonHeaderReference = databaseReference.child(getString(R.string.featured_subtopic_lesson_headers)).child(topicKey)
@@ -346,7 +346,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         subtopicHeaderViewHolder?.itemView?.setOnClickListener {
             val lessonId = subtopicHeaderModel?.lesson
             val subtopicId = subtopicHeaderModel?.subtopic
-            val subject = getSelectedSubject()
+            val subject = getSelectedSubject() // todo: build subject into data model. the selected subject doesn't apply for syllabus lessons when the spinner is gone!
             val topicId = subtopicHeaderModel?.topic
 
             val lessonViewerIntent = Intent(this, LessonViewerActivity::class.java)

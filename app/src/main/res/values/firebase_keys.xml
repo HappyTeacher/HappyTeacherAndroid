@@ -8,7 +8,7 @@
     <string name="subject">subject</string>
     <string name="maharashtra_state_board_key">maharashtra state board</string>
     <string name="levels">levels</string>
-    <string name="syllabus_lessons">syllabusLessons</string>
+    <string name="syllabus_lessons">syllabus_lessons</string>
     <string name="lesson_number">lessonNumber</string>
     <string name="boards">boards</string>
     <string name="names">names</string>
@@ -16,7 +16,7 @@
     <string name="subtopics">subtopics</string>
     <string name="subtopic_lesson_headers">subtopic_lesson_headers</string>
     <string name="featured">featured</string>
-    <string name="level_topics">level_topics</string>
+    <string name="level_subtopics">level_subtopics</string>
     <string name="featured_subtopic_lesson_headers">featured_subtopic_lesson_headers</string>
     <string name="subtopic_lessons">subtopic_lessons</string>
 
