@@ -54,7 +54,6 @@ class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val 
         holder?.headerMediaFrame?.setVisibilityGone()
         holder?.youtubeWebView?.setVisibilityGone()
         holder?.headerImageView?.setVisibilityGone()
-        holder?.imageScrollArrowView?.setVisibilityGone()
         holder?.imageGalleryRecyclerView?.setVisibilityGone()
         holder?.attachmentDownloadButton?.setVisibilityGone()
     }
@@ -104,23 +103,9 @@ class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val 
 
     private fun setupImageGalleryRecycler(imageUrls: List<String>, holder: LessonCardViewHolder?) {
         val recycler = holder?.imageGalleryRecyclerView
-        recycler?.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        recycler?.adapter = ImageGalleryRecyclerAdapter(imageUrls, activity)
+        recycler?.setAdapter(ImageGalleryRecyclerAdapter(imageUrls, activity))
 
         recycler?.setVisible()
-
-        // Show an arrow to indicate to the user that this is scrollable
-        holder?.imageScrollArrowView?.setVisible()
-        holder?.imageScrollArrowView?.setOnClickListener {
-            // Scroll right by half of a single image's width:
-            val dx = activity.resources.getDimensionPixelOffset(R.dimen.card_image_gallery_width) / 2
-            val dy = 0
-            recycler?.smoothScrollBy(dx, dy)
-        }
-        recycler?.onHorizontalScroll {
-            // Once a user scrolls, hide the arrow
-            holder.imageScrollArrowView.setVisibilityGone()
-        }
     }
 
     private fun setupAttachmentView(attachmentUrl: String, attachmentMetadata: AttachmentMetadata, holder: LessonCardViewHolder?) {

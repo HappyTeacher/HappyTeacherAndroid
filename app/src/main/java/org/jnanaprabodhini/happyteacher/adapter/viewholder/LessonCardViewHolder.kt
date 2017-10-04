@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.list_item_lesson_card.view.*
 import org.jnanaprabodhini.happyteacher.view.DownloadBarView
+import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
 
 /**
  * Created by grahamearley on 9/25/17.
@@ -20,8 +21,7 @@ open class LessonCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVie
     val headerImageView: ImageView = itemView.headerImageView
     val youtubeWebView: WebView = itemView.youtubePlayerWebView
 
-    val imageGalleryRecyclerView: RecyclerView = itemView.imageGalleryRecyclerView
-    val imageScrollArrowView: View = itemView.imageScrollArrowView
+    val imageGalleryRecyclerView: HorizontalPagerRecyclerView = itemView.imageGalleryRecyclerView
 
     val attachmentDownloadButton: DownloadBarView = itemView.attachmentDownloadBar
 }
