@@ -19,6 +19,8 @@ import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.taghandler.RootListTagHandler
 import android.content.Intent
 import android.net.Uri
+import android.support.annotation.DimenRes
+import android.support.v4.view.ViewCompat
 
 
 /**
@@ -70,6 +72,10 @@ fun View.setOneTimeOnLongClickListener(l: View.OnLongClickListener) {
 
 fun View.setOneTimeOnLongClickListener(onLongClick: () -> Unit) {
     this.setOneTimeOnLongClickListener(android.view.View.OnLongClickListener { onLongClick(); true })
+}
+
+fun View.setElevation(@DimenRes elevationDimenRes: Int) {
+    ViewCompat.setElevation(this, context.resources.getDimensionPixelSize(elevationDimenRes).toFloat())
 }
 
 fun Spinner.onItemSelected(onItemSelected: (Int) -> Unit) {
