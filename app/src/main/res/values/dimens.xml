@@ -13,4 +13,6 @@
     <dimen name="lesson_card_media_frame_height">200dp</dimen>
 
     <dimen name="card_image_gallery_width">300dp</dimen>
+
+    <dimen name="pager_button_elevation">4dp</dimen>
 </resources>
