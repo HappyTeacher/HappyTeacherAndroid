@@ -17,7 +17,7 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"/>
 
-    <android.support.v7.widget.RecyclerView
+    <org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
         android:id="@+id/lessonsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
