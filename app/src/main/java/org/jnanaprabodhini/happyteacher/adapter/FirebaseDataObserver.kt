@@ -3,7 +3,7 @@ package org.jnanaprabodhini.happyteacher.adapter
 /**
  * Created by grahamearley on 9/18/17.
  */
-interface DataObserver {
+interface FirebaseDataObserver {
     fun onRequestNewData() {}
 
     fun onDataLoaded() {}

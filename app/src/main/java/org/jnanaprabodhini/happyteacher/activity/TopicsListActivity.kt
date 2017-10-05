@@ -13,11 +13,9 @@ import com.firebase.ui.database.FirebaseListAdapter
 import com.google.firebase.database.Query
 import kotlinx.android.synthetic.main.activity_topics_list.*
 import kotlinx.android.synthetic.main.header_syllabus_lesson_topic.*
-import org.jnanaprabodhini.happyteacher.adapter.DataObserver
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
-import org.jnanaprabodhini.happyteacher.adapter.FirebaseDataObserverRecyclerAdapter
-import org.jnanaprabodhini.happyteacher.adapter.FirebaseIndexDataObserverRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.*
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.SubtopicLessonHeader
@@ -27,7 +25,7 @@ import org.jnanaprabodhini.happyteacher.adapter.viewholder.SubtopicHeaderViewHol
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.TopicViewHolder
 import java.util.*
 
-class TopicsListActivity : BottomNavigationActivity(), DataObserver {
+class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
     companion object IntentExtraHelper {
         val TOPICS_INDEX_LIST_URL: String = "TOPICS_INDEX_LIST_URL"
@@ -167,7 +165,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         val topicQuery = databaseReference.child(getString(R.string.topics))
                 .orderByChild(getString(R.string.subject)).equalTo(subjectKey)
 
-        val topicAdapter = object: FirebaseDataObserverRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, topicQuery, this) {
+        val topicAdapter = object: FirebaseObserverRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, topicQuery, this) {
             override fun populateViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int) {
                 val topicKey = this.getRef(topicPosition).key
                 populateUnfilteredTopicViewHolder(topicViewHolder, topicModel, topicPosition, topicKey)
@@ -215,7 +213,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
         val topicsIndexListReference = databaseRoot.getReferenceFromUrl(indexListLocationUrl)
         val topicsReference = databaseReference.child(getString(R.string.topics))
 
-        val topicIndexAdapter = object: FirebaseIndexDataObserverRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, topicsIndexListReference, topicsReference, this) {
+        val topicIndexAdapter = object: FirebaseObserverIndexRecyclerAdapter<Topic, TopicViewHolder>(Topic::class.java, R.layout.list_item_topic, TopicViewHolder::class.java, topicsIndexListReference, topicsReference, this) {
             override fun populateViewHolder(topicViewHolder: TopicViewHolder?, topicModel: Topic?, topicPosition: Int) {
                 val topicKey = this.getRef(topicPosition).key
                 populateLevelFilteredTopicViewHolder(topicViewHolder, topicModel, topicPosition, topicKey, level)
@@ -254,7 +252,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
      * This data observer will respond to subtopic load events and
      *  update the UI accordingly. It is used by subtopic adapters.
      */
-    private fun getSubtopicDataObserverForViewHolder(topicViewHolder: TopicViewHolder?, level: Int? = null) = object: DataObserver {
+    private fun getSubtopicDataObserverForViewHolder(topicViewHolder: TopicViewHolder?, level: Int? = null) = object: FirebaseDataObserver {
         override fun onRequestNewData() {
             topicViewHolder?.progressBar?.setVisible()
         }
@@ -305,7 +303,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
     }
 
     private fun setSubtopicRecyclerAdapterUnfiltered(topicViewHolder: TopicViewHolder?, topicName: String?, subtopicQuery: Query) {
-        val adapter = object: FirebaseDataObserverRecyclerAdapter<SubtopicLessonHeader, SubtopicHeaderViewHolder>(SubtopicLessonHeader::class.java, R.layout.list_item_lesson, SubtopicHeaderViewHolder::class.java, subtopicQuery, getSubtopicDataObserverForViewHolder(topicViewHolder)) {
+        val adapter = object: FirebaseObserverRecyclerAdapter<SubtopicLessonHeader, SubtopicHeaderViewHolder>(SubtopicLessonHeader::class.java, R.layout.list_item_lesson, SubtopicHeaderViewHolder::class.java, subtopicQuery, getSubtopicDataObserverForViewHolder(topicViewHolder)) {
             override fun populateViewHolder(subtopicHeaderViewHolder: SubtopicHeaderViewHolder?, subtopicHeaderModel: SubtopicLessonHeader?, lessonHeaderPosition: Int) {
                 populateLessonHeaderViewHolder(subtopicHeaderViewHolder, subtopicHeaderModel, topicName)
             }
@@ -321,7 +319,7 @@ class TopicsListActivity : BottomNavigationActivity(), DataObserver {
 
         val featuredSubtopicLessonHeaderReference = databaseReference.child(getString(R.string.featured_subtopic_lesson_headers)).child(topicKey)
 
-        val adapter = object: FirebaseIndexDataObserverRecyclerAdapter<SubtopicLessonHeader, SubtopicHeaderViewHolder>(SubtopicLessonHeader::class.java, R.layout.list_item_lesson, SubtopicHeaderViewHolder::class.java, boardLevelSubtopicsQuery, featuredSubtopicLessonHeaderReference, getSubtopicDataObserverForViewHolder(topicViewHolder, level)) {
+        val adapter = object: FirebaseObserverIndexRecyclerAdapter<SubtopicLessonHeader, SubtopicHeaderViewHolder>(SubtopicLessonHeader::class.java, R.layout.list_item_lesson, SubtopicHeaderViewHolder::class.java, boardLevelSubtopicsQuery, featuredSubtopicLessonHeaderReference, getSubtopicDataObserverForViewHolder(topicViewHolder, level)) {
             override fun populateViewHolder(subtopicHeaderViewHolder: SubtopicHeaderViewHolder?, subtopicHeaderModel: SubtopicLessonHeader?, lessonHeaderPosition: Int) {
                 populateLessonHeaderViewHolder(subtopicHeaderViewHolder, subtopicHeaderModel, topicName)
             }

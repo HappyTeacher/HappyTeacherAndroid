@@ -11,11 +11,11 @@ import android.widget.TextView
 import com.firebase.ui.database.FirebaseIndexListAdapter
 import kotlinx.android.synthetic.main.activity_board_lessons.*
 import org.jnanaprabodhini.happyteacher.BoardChoiceDialog
-import org.jnanaprabodhini.happyteacher.adapter.DataObserver
+import org.jnanaprabodhini.happyteacher.adapter.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
-import org.jnanaprabodhini.happyteacher.adapter.FirebaseDataObserverRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseIndexDataObserverListAdapter
+import org.jnanaprabodhini.happyteacher.adapter.FirebaseObserverRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.SyllabusLesson
@@ -23,7 +23,7 @@ import org.jnanaprabodhini.happyteacher.prefs
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.SyllabusLessonViewHolder
 
 
-class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
+class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
     @IntegerRes override val bottomNavigationMenuItemId: Int = R.id.navigation_board
 
@@ -119,7 +119,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
 
         // Observe data in this spinner, and if the previously selected item
         //  is loaded into the data, then select that item.
-        val levelDataObserver = object: DataObserver {
+        val levelDataObserver = object: FirebaseDataObserver {
             override fun onDataNonEmpty() {
                 if (previousSelection != null && previousSelection is Int) {
                     val indexOfPreviousSelection = levelSpinner.items().indexOf(previousSelection)
@@ -152,7 +152,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), DataObserver {
                 .child(selectedLevel)
                 .orderByChild(getString(R.string.lesson_number))
 
-        val syllabusLessonAdapter = object: FirebaseDataObserverRecyclerAdapter<SyllabusLesson, SyllabusLessonViewHolder>(SyllabusLesson::class.java, R.layout.list_item_syllabus_lesson, SyllabusLessonViewHolder::class.java, syllabusLessonQuery, this) {
+        val syllabusLessonAdapter = object: FirebaseObserverRecyclerAdapter<SyllabusLesson, SyllabusLessonViewHolder>(SyllabusLesson::class.java, R.layout.list_item_syllabus_lesson, SyllabusLessonViewHolder::class.java, syllabusLessonQuery, this) {
             override fun populateViewHolder(syllabusLessonViewHolder: SyllabusLessonViewHolder?, syllabusLessonModel: SyllabusLesson?, syllabusLessonPosition: Int) {
                 syllabusLessonViewHolder?.lessonTitleTextView?.text = syllabusLessonModel?.name
                 syllabusLessonViewHolder?.lessonNumberTextView?.text = syllabusLessonModel?.lessonNumber.toString()

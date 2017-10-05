@@ -14,20 +14,20 @@ abstract class FirebaseIndexDataObserverListAdapter<T>(context: Context,
                                               @LayoutRes modelLayout: Int,
                                               keyQuery: Query,
                                               dataRef: DatabaseReference,
-                                              val dataObserver: DataObserver): FirebaseIndexListAdapter<T>(context, modelClass, modelLayout, keyQuery, dataRef) {
+                                              val firebaseDataObserver: FirebaseDataObserver): FirebaseIndexListAdapter<T>(context, modelClass, modelLayout, keyQuery, dataRef) {
 
     init {
-        dataObserver.onRequestNewData()
+        firebaseDataObserver.onRequestNewData()
     }
 
     override fun onDataChanged() {
         super.onDataChanged()
 
-        dataObserver.onDataLoaded()
+        firebaseDataObserver.onDataLoaded()
 
         when (count) {
-            0 -> dataObserver.onDataEmpty()
-            else -> dataObserver.onDataNonEmpty()
+            0 -> firebaseDataObserver.onDataEmpty()
+            else -> firebaseDataObserver.onDataNonEmpty()
         }
     }
 }
