@@ -5,10 +5,10 @@
 
             <solid android:color="@color/colorAccent" />
             <corners android:radius="100dp" />
-            <padding android:bottom="16dp"
-                android:top="16dp"
-                android:right="16dp"
-                android:left="16dp"/>
+            <padding android:bottom="8dp"
+                android:top="8dp"
+                android:right="8dp"
+                android:left="8dp"/>
 
         </shape>
     </item>
@@ -17,10 +17,10 @@
 
             <solid android:color="@color/lightGray" />
             <corners android:radius="100dp" />
-            <padding android:bottom="16dp"
-                android:top="16dp"
-                android:right="16dp"
-                android:left="16dp"/>
+            <padding android:bottom="8dp"
+                android:top="8dp"
+                android:right="8dp"
+                android:left="8dp"/>
 
         </shape>
     </item>
