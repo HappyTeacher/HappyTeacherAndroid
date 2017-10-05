@@ -26,7 +26,6 @@ abstract class FirebaseObserverRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(s
 
     override fun onDataChanged() {
         super.onDataChanged()
-        notifyDataSetChanged()
 
         dataObserver.onDataLoaded()
 
