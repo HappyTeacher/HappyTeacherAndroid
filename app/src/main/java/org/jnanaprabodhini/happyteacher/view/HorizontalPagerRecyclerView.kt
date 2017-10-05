@@ -4,7 +4,6 @@ import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
@@ -27,6 +26,11 @@ class HorizontalPagerRecyclerView(context: Context, attrs: AttributeSet): FrameL
         }
     }
 
+    val onChildAttachListener = object: RecyclerView.OnChildAttachStateChangeListener {
+        override fun onChildViewDetachedFromWindow(view: View?) { showRelevantPagers() }
+        override fun onChildViewAttachedToWindow(view: View?) { showRelevantPagers() }
+    }
+
     val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
     init {
@@ -36,9 +40,19 @@ class HorizontalPagerRecyclerView(context: Context, attrs: AttributeSet): FrameL
         backwardPager.setElevation(R.dimen.pager_button_elevation)
         forwardPager.setElevation(R.dimen.pager_button_elevation)
 
-        recyclerView.addOnScrollListener(onScrollListener)
-
         setPagerClickListeners()
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        recyclerView.addOnChildAttachStateChangeListener(onChildAttachListener)
+        recyclerView.addOnScrollListener(onScrollListener)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        recyclerView.removeOnChildAttachStateChangeListener(onChildAttachListener)
+        recyclerView.removeOnScrollListener(onScrollListener)
     }
 
     fun setAdapter(adapter: RecyclerView.Adapter<*>) {
@@ -69,11 +83,10 @@ class HorizontalPagerRecyclerView(context: Context, attrs: AttributeSet): FrameL
             val firstVisiblePosition = layoutManager.findFirstVisibleItemPosition()
             val firstCompletelyVisiblePosition = layoutManager.findFirstCompletelyVisibleItemPosition()
 
-            if (firstVisiblePosition != firstCompletelyVisiblePosition) {
-                // Then the first visible view is not completely visible. Go there
-                attemptScrollToPosition(firstVisiblePosition)
-            } else {
+            if (layoutManager.isFirstVisiblePositionCompletelyVisible()) {
                 attemptScrollToPosition(firstCompletelyVisiblePosition - 1)
+            } else {
+                attemptScrollToPosition(firstVisiblePosition)
             }
         }
 
@@ -81,11 +94,10 @@ class HorizontalPagerRecyclerView(context: Context, attrs: AttributeSet): FrameL
             val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
             val lastCompletelyVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition()
 
-            if (lastVisiblePosition != lastCompletelyVisiblePosition) {
-                // Then the last visible view is not completely visible. Go there
-                attemptScrollToPosition(lastVisiblePosition)
-            } else {
+            if (layoutManager.isLastVisiblePositionCompletelyVisible()) {
                 attemptScrollToPosition(lastCompletelyVisiblePosition + 1)
+            } else {
+                attemptScrollToPosition(lastVisiblePosition)
             }
         }
     }

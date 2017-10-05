@@ -21,6 +21,7 @@ import android.content.Intent
 import android.net.Uri
 import android.support.annotation.DimenRes
 import android.support.v4.view.ViewCompat
+import android.support.v7.widget.LinearLayoutManager
 
 
 /**
@@ -197,4 +198,18 @@ fun RecyclerView.canScrollLeftHorizontally(): Boolean {
 
 fun RecyclerView.canScrollRightHorizontally(): Boolean {
     return canScrollHorizontally(1)
+}
+
+fun LinearLayoutManager.isFirstVisiblePositionCompletelyVisible(): Boolean {
+    val firstVisiblePosition = findFirstVisibleItemPosition()
+    val firstCompletelyVisiblePosition = findFirstCompletelyVisibleItemPosition()
+
+    return firstVisiblePosition == firstCompletelyVisiblePosition
+}
+
+fun LinearLayoutManager.isLastVisiblePositionCompletelyVisible(): Boolean {
+    val lastVisiblePosition = findLastVisibleItemPosition()
+    val lastCompletelyVisiblePosition = findLastCompletelyVisibleItemPosition()
+
+    return lastVisiblePosition == lastCompletelyVisiblePosition
 }
