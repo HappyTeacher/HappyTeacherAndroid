@@ -1,20 +1,20 @@
 package org.jnanaprabodhini.happyteacher.view
 
 import android.content.Context
-import android.support.annotation.DimenRes
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.view_recycler_horizontal_pager.view.*
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.extension.setElevation
-import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
-import org.jnanaprabodhini.happyteacher.extension.setVisible
+import org.jnanaprabodhini.happyteacher.extension.*
 
 /**
- * Created by grahamearley on 10/4/17.
+ * A horizontal RecyclerView wrapper that has forward and backward pager buttons
+ *  for scrolling content.
  */
 class HorizontalPagerRecyclerView(context: Context, attrs: AttributeSet): FrameLayout(context, attrs) {
 
@@ -23,7 +23,6 @@ class HorizontalPagerRecyclerView(context: Context, attrs: AttributeSet): FrameL
             when (newState) {
                 RecyclerView.SCROLL_STATE_IDLE -> showRelevantPagers()
                 RecyclerView.SCROLL_STATE_DRAGGING -> hidePagers()
-                RecyclerView.SCROLL_STATE_SETTLING -> hidePagers()
             }
         }
     }
@@ -37,33 +36,9 @@ class HorizontalPagerRecyclerView(context: Context, attrs: AttributeSet): FrameL
         backwardPager.setElevation(R.dimen.pager_button_elevation)
         forwardPager.setElevation(R.dimen.pager_button_elevation)
 
-        showRelevantPagers()
         recyclerView.addOnScrollListener(onScrollListener)
 
-        backwardPager.setOnClickListener {
-            val firstVisiblePosition = layoutManager.findFirstVisibleItemPosition()
-            val firstCompletelyVisiblePosition = layoutManager.findFirstCompletelyVisibleItemPosition()
-
-            if (firstVisiblePosition != firstCompletelyVisiblePosition) {
-                // Then the first visible view is not completely visible. Go there
-                recyclerView.smoothScrollToPosition(firstVisiblePosition)
-            } else {
-                recyclerView.smoothScrollToPosition(firstCompletelyVisiblePosition - 1)
-            }
-        }
-
-        forwardPager.setOnClickListener {
-            val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
-            val lastCompletelyVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition()
-
-            if (lastVisiblePosition != lastCompletelyVisiblePosition) {
-                // Then the last visible view is not completely visible. Go there
-                recyclerView.smoothScrollToPosition(lastVisiblePosition)
-            } else {
-                recyclerView.smoothScrollToPosition(lastCompletelyVisiblePosition + 1)
-            }
-        }
-
+        setPagerClickListeners()
     }
 
     fun setAdapter(adapter: RecyclerView.Adapter<*>) {
@@ -71,13 +46,13 @@ class HorizontalPagerRecyclerView(context: Context, attrs: AttributeSet): FrameL
     }
 
     fun showRelevantPagers() {
-        if (recyclerView.canScrollHorizontally(-1)) {
+        if (recyclerView.canScrollLeftHorizontally()) {
             backwardPager.setVisible()
         } else {
             backwardPager.setVisibilityGone()
         }
 
-        if (recyclerView.canScrollHorizontally(1)) {
+        if (recyclerView.canScrollRightHorizontally()) {
             forwardPager.setVisible()
         } else {
             forwardPager.setVisibilityGone()
@@ -87,6 +62,38 @@ class HorizontalPagerRecyclerView(context: Context, attrs: AttributeSet): FrameL
     fun hidePagers() {
         backwardPager.setVisibilityGone()
         forwardPager.setVisibilityGone()
+    }
+
+    fun setPagerClickListeners() {
+        backwardPager.setOnClickListener {
+            val firstVisiblePosition = layoutManager.findFirstVisibleItemPosition()
+            val firstCompletelyVisiblePosition = layoutManager.findFirstCompletelyVisibleItemPosition()
+
+            if (firstVisiblePosition != firstCompletelyVisiblePosition) {
+                // Then the first visible view is not completely visible. Go there
+                attemptScrollToPosition(firstVisiblePosition)
+            } else {
+                attemptScrollToPosition(firstCompletelyVisiblePosition - 1)
+            }
+        }
+
+        forwardPager.setOnClickListener {
+            val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
+            val lastCompletelyVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition()
+
+            if (lastVisiblePosition != lastCompletelyVisiblePosition) {
+                // Then the last visible view is not completely visible. Go there
+                attemptScrollToPosition(lastVisiblePosition)
+            } else {
+                attemptScrollToPosition(lastCompletelyVisiblePosition + 1)
+            }
+        }
+    }
+
+    private fun attemptScrollToPosition(position: Int) {
+        if (position < recyclerView.adapter?.itemCount ?: 0) {
+            recyclerView.smoothScrollToPosition(position)
+        }
     }
 
 }

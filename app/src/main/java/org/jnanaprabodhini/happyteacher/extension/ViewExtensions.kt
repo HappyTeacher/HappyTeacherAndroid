@@ -190,3 +190,11 @@ fun RecyclerView.onHorizontalScroll(onHorizontalScroll: () -> Unit) {
         }
     })
 }
+
+fun RecyclerView.canScrollLeftHorizontally(): Boolean {
+    return canScrollHorizontally(-1)
+}
+
+fun RecyclerView.canScrollRightHorizontally(): Boolean {
+    return canScrollHorizontally(1)
+}
