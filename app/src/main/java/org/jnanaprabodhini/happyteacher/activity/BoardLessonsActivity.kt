@@ -14,7 +14,7 @@ import org.jnanaprabodhini.happyteacher.BoardChoiceDialog
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
-import org.jnanaprabodhini.happyteacher.adapter.FirebaseIndexDataObserverListAdapter
+import org.jnanaprabodhini.happyteacher.adapter.FirebaseIndexObserverListAdapter
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseObserverRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.Subject
@@ -130,7 +130,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
             }
         }
 
-        val boardLevelSpinnerAdapter = object : FirebaseIndexDataObserverListAdapter<Int>(this, Int::class.java, R.layout.spinner_item, boardLevelIndexQuery, levelRef, levelDataObserver) {
+        val boardLevelSpinnerAdapter = object : FirebaseIndexObserverListAdapter<Int>(this, Int::class.java, R.layout.spinner_item, boardLevelIndexQuery, levelRef, levelDataObserver) {
             override fun populateView(view: View, level: Int, position: Int) {
                 (view as TextView).text = getString(R.string.standard_n, level)
             }
