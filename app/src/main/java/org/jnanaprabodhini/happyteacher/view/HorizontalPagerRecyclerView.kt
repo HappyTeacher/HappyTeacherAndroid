@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
@@ -103,7 +104,9 @@ class HorizontalPagerRecyclerView(context: Context, attrs: AttributeSet): FrameL
     }
 
     private fun attemptScrollToPosition(position: Int) {
-        if (position < recyclerView.adapter?.itemCount ?: 0) {
+        val itemCount = recyclerView.adapter?.itemCount ?: 0
+
+        if (position in 0..itemCount) {
             recyclerView.smoothScrollToPosition(position)
         }
     }
