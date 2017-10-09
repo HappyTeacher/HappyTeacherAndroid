@@ -8,6 +8,7 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.list_item_lesson_header.view.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.LessonViewerActivity
+import org.jnanaprabodhini.happyteacher.activity.SubtopicSubmissionsListActivity
 import org.jnanaprabodhini.happyteacher.extension.setDrawableLeft
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
@@ -43,6 +44,9 @@ class SubtopicHeaderViewHolder(itemView: View): RecyclerView.ViewHolder(itemView
             if (subtopicHeaderModel.subtopicSubmissionCount > 1) {
                 submissionCountTextView.setVisible()
                 submissionCountTextView.text = activity.getString(R.string.plus_number, subtopicHeaderModel.subtopicSubmissionCount - 1) // subtract one to exclude the featured lesson
+                submissionCountTextView.setOnClickListener {
+                    SubtopicSubmissionsListActivity.launchActivity(activity, topicName, subtopicHeaderModel.subtopic, subtopicHeaderModel.topic)
+                }
             } else {
                 submissionCountTextView.setVisibilityGone()
             }

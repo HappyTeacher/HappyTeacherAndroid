@@ -118,15 +118,7 @@ class LessonViewerActivity : HappyTeacherActivity() {
             otherSubmissionsTextView.text = getString(R.string.see_all_n_lesson_plans_for_lesson, submissionCount, lesson?.name)
             otherSubmissionsTextView.setDrawableRight(R.drawable.ic_keyboard_arrow_right_white_24dp)
             otherSubmissionsTextView.setOnClickListener {
-                val subtopicSubmissionsIntent = Intent(this, SubtopicSubmissionsListActivity::class.java)
-
-                subtopicSubmissionsIntent.apply {
-                    putExtra(SubtopicSubmissionsListActivity.TOPIC_NAME, topicName)
-                    putExtra(SubtopicSubmissionsListActivity.SUBTOPIC_KEY, subtopicId)
-                    putExtra(SubtopicSubmissionsListActivity.TOPIC_KEY, topicId)
-                }
-
-                startActivity(subtopicSubmissionsIntent)
+                SubtopicSubmissionsListActivity.launchActivity(this, topicName, subtopicId, topicId)
             }
         } else {
             otherSubmissionsTextView.setVisibilityGone()

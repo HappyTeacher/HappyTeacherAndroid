@@ -1,5 +1,6 @@
 package org.jnanaprabodhini.happyteacher.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -15,6 +16,18 @@ import org.jnanaprabodhini.happyteacher.extension.showToast
 class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObserver {
 
     companion object IntentExtraHelper {
+        fun launchActivity(from: Activity, topicName: String, subtopicId: String, topicId: String) {
+            val subtopicSubmissionsIntent = Intent(from, SubtopicSubmissionsListActivity::class.java)
+
+            subtopicSubmissionsIntent.apply {
+                putExtra(SubtopicSubmissionsListActivity.TOPIC_NAME, topicName)
+                putExtra(SubtopicSubmissionsListActivity.SUBTOPIC_KEY, subtopicId)
+                putExtra(SubtopicSubmissionsListActivity.TOPIC_KEY, topicId)
+            }
+
+            from.startActivity(subtopicSubmissionsIntent)
+        }
+
         val TOPIC_KEY: String = "TOPIC_KEY"
         fun Intent.hasTopicKey(): Boolean = hasExtra(TOPIC_KEY)
         fun Intent.getTopicKey(): String = getStringExtra(TOPIC_KEY)
