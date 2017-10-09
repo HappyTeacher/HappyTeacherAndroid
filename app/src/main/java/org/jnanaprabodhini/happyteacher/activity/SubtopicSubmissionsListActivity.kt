@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_subtopic_submissions_list.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseObserverRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.SubtopicLessonHeaderRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.SubtopicHeaderViewHolder
 import org.jnanaprabodhini.happyteacher.extension.setDrawableLeft
@@ -20,10 +21,6 @@ import org.jnanaprabodhini.happyteacher.model.SubtopicLessonHeader
 import java.util.*
 
 class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObserver {
-
-    private val dateFormat by lazy {
-        DateFormat.getDateFormat(this)
-    }
 
     companion object IntentExtraHelper {
         val TOPIC_KEY: String = "TOPIC_KEY"
@@ -60,57 +57,15 @@ class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObse
                                                         .child(topicKey)
                                                         .child(subtopicKey)
 
-        val adapter = object: FirebaseObserverRecyclerAdapter<SubtopicLessonHeader, SubtopicHeaderViewHolder>(SubtopicLessonHeader::class.java, R.layout.list_item_lesson_header, SubtopicHeaderViewHolder::class.java, submissionHeadersQuery, this) {
-            override fun populateViewHolder(subtopicHeaderViewHolder: SubtopicHeaderViewHolder?, subtopicHeaderModel: SubtopicLessonHeader?, lessonHeaderPosition: Int) {
-                populateLessonHeaderViewHolder(subtopicHeaderViewHolder, subtopicHeaderModel, topicName)
-            }
-        }
-
         submissionRecyclerView.layoutManager = LinearLayoutManager(this)
-        submissionRecyclerView.adapter = adapter
+        submissionRecyclerView.adapter = SubtopicLessonHeaderRecyclerAdapter(topicName, submissionHeadersQuery, this, this)
     }
 
-    private fun  populateLessonHeaderViewHolder(subtopicHeaderViewHolder: SubtopicHeaderViewHolder?, subtopicHeaderModel: SubtopicLessonHeader?, topicName: String) {
-        subtopicHeaderViewHolder?.lessonTitleTextView?.text = subtopicHeaderModel?.name
-        subtopicHeaderViewHolder?.authorNameTextView?.text = subtopicHeaderModel?.authorName
-        subtopicHeaderViewHolder?.institutionTextView?.text = subtopicHeaderModel?.authorInstitution
-        subtopicHeaderViewHolder?.locationTextView?.text = subtopicHeaderModel?.authorLocation
+    override fun onRequestNewData() {}
 
-        subtopicHeaderViewHolder?.authorNameTextView?.setDrawableLeft(R.drawable.ic_person_accent)
-        subtopicHeaderViewHolder?.institutionTextView?.setDrawableLeft(R.drawable.ic_school_accent)
-        subtopicHeaderViewHolder?.locationTextView?.setDrawableLeft(R.drawable.ic_location_accent)
+    override fun onDataLoaded() {}
 
-        subtopicHeaderModel?.let {
-            subtopicHeaderViewHolder?.dateEditedTextView?.text = dateFormat.format(Date(subtopicHeaderModel.dateEdited))
-            subtopicHeaderViewHolder?.dateEditedTextView?.setDrawableLeft(R.drawable.ic_clock_light_gray)
+    override fun onDataEmpty() {}
 
-            if (subtopicHeaderModel.subtopicSubmissionCount > 1) {
-                subtopicHeaderViewHolder?.submissionCountTextView?.setVisible()
-                subtopicHeaderViewHolder?.submissionCountTextView?.text = getString(R.string.plus_number, subtopicHeaderModel.subtopicSubmissionCount - 1) // subtract one to exclude the featured lesson
-            } else {
-                subtopicHeaderViewHolder?.submissionCountTextView?.setVisibilityGone()
-            }
-        }
-
-        subtopicHeaderViewHolder?.itemView?.setOnClickListener {
-            val lessonId = subtopicHeaderModel?.lesson
-            val subtopicId = subtopicHeaderModel?.subtopic
-            val subjectName = subtopicHeaderModel?.subjectName
-            val topicId = subtopicHeaderModel?.topic
-
-            val lessonViewerIntent = Intent(this, LessonViewerActivity::class.java)
-
-            lessonViewerIntent.apply {
-                putExtra(LessonViewerActivity.LESSON_ID, lessonId)
-                putExtra(LessonViewerActivity.SUBTOPIC_ID, subtopicId)
-                putExtra(LessonViewerActivity.SUBJECT, subjectName)
-                putExtra(LessonViewerActivity.TOPIC_NAME, topicName)
-                putExtra(LessonViewerActivity.TOPIC_ID, topicId)
-                putExtra(LessonViewerActivity.SUBTOPIC_NAME, subtopicHeaderModel?.name)
-                putExtra(LessonViewerActivity.SUBMISSION_COUNT, subtopicHeaderModel?.subtopicSubmissionCount)
-            }
-
-            startActivity(lessonViewerIntent)
-        }
-    }
+    override fun onDataNonEmpty() {}
 }
