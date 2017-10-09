@@ -1,6 +1,5 @@
 package org.jnanaprabodhini.happyteacher.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.IntegerRes
 import android.support.v4.content.res.ResourcesCompat
@@ -11,16 +10,16 @@ import android.widget.TextView
 import com.firebase.ui.database.FirebaseIndexListAdapter
 import kotlinx.android.synthetic.main.activity_board_lessons.*
 import org.jnanaprabodhini.happyteacher.BoardChoiceDialog
-import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseIndexObserverListAdapter
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseObserverRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
+import org.jnanaprabodhini.happyteacher.adapter.viewholder.SyllabusLessonViewHolder
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.SyllabusLesson
 import org.jnanaprabodhini.happyteacher.prefs
-import org.jnanaprabodhini.happyteacher.adapter.viewholder.SyllabusLessonViewHolder
 
 
 class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
