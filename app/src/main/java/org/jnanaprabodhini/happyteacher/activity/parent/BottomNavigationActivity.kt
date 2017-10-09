@@ -39,7 +39,7 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
         false
     }
 
-    protected fun startBottomNavigationActivityWithFade(intent: Intent) {
+    fun startBottomNavigationActivityWithFade(intent: Intent) {
         startActivity(intent)
         overridePendingTransition(R.anim.fade_in_quick, R.anim.fade_out_quick)
     }
