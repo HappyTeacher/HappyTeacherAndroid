@@ -31,7 +31,8 @@ data class SubtopicLessonHeader(val name: String = "",
                                 val lesson: String = "",
                                 val subtopic: String = "",
                                 val topic: String = "",
-                                val subjectName: String = "")
+                                val subjectName: String = "",
+                                val subtopicSubmissionCount: Int = 0)
 
 data class SubtopicLesson(val name: String = "",
                           val authorEmail: String = "",
