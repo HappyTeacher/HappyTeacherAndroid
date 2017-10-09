@@ -1,6 +1,5 @@
 package org.jnanaprabodhini.happyteacher.activity
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.IntegerRes
@@ -24,8 +23,8 @@ import org.jnanaprabodhini.happyteacher.model.SubtopicLessonHeader
 import org.jnanaprabodhini.happyteacher.model.Topic
 import org.jnanaprabodhini.happyteacher.prefs
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.SubtopicHeaderViewHolder
+import org.jnanaprabodhini.happyteacher.adapter.viewholder.SubtopicLessonHeaderRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.TopicViewHolder
-import java.util.*
 
 class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
 

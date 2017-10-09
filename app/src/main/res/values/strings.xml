@@ -32,6 +32,7 @@
     <string name="error_loading_other_lessons">There was an error loading these lesson plans</string>
     <string name="other_lesson_plans">Other lesson plans</string>
     <string name="there_are_no_other_lessons">There are no other lessons.</string>
+    <string name="classroom_resources">Classroom Resources</string>
 
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>
