@@ -302,7 +302,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
     }
 
     private fun setSubtopicRecyclerAdapterUnfiltered(topicViewHolder: TopicViewHolder?, topicName: String?, subtopicQuery: Query) {
-        topicViewHolder?.lessonsRecyclerView?.setAdapter(SubtopicLessonHeaderRecyclerAdapter(topicName ?: "", subtopicQuery, this, this))
+        topicViewHolder?.lessonsRecyclerView?.setAdapter(SubtopicLessonHeaderRecyclerAdapter(topicName ?: "", subtopicQuery, this, getSubtopicDataObserverForViewHolder(topicViewHolder)))
     }
 
     private fun setSubtopicViewHolderRecyclerFilteredByLevel(topicViewHolder: TopicViewHolder?, level: Int, topicName: String?, topicKey: String) {
