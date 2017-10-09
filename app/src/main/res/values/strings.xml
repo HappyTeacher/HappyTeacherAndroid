@@ -31,6 +31,7 @@
     <string name="see_all_n_lesson_plans_for_lesson">See all %1$d lesson plans for %2$s</string>
     <string name="error_loading_other_lessons">There was an error loading these lesson plans</string>
     <string name="other_lesson_plans">Other lesson plans</string>
+    <string name="there_are_no_other_lessons">There are no other lessons.</string>
 
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>

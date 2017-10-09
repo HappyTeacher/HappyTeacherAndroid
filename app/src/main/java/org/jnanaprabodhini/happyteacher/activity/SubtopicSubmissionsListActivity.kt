@@ -3,22 +3,14 @@ package org.jnanaprabodhini.happyteacher.activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.text.format.DateFormat
-import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_subtopic_submissions_list.*
-
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.HappyTeacherActivity
-import org.jnanaprabodhini.happyteacher.adapter.FirebaseObserverRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.SubtopicLessonHeaderRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
-import org.jnanaprabodhini.happyteacher.adapter.viewholder.SubtopicHeaderViewHolder
-import org.jnanaprabodhini.happyteacher.extension.setDrawableLeft
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.extension.showToast
-import org.jnanaprabodhini.happyteacher.model.SubtopicLessonHeader
-import java.util.*
 
 class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObserver {
 
@@ -61,11 +53,24 @@ class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObse
         submissionRecyclerView.adapter = SubtopicLessonHeaderRecyclerAdapter(topicName, submissionHeadersQuery, this, this)
     }
 
-    override fun onRequestNewData() {}
+    override fun onRequestNewData() {
+        submissionRecyclerView.setVisibilityGone()
+        emptyTextView.setVisibilityGone()
 
-    override fun onDataLoaded() {}
+        progressBar.setVisible()
+    }
 
-    override fun onDataEmpty() {}
+    override fun onDataLoaded() {
+        submissionRecyclerView.setVisible()
 
-    override fun onDataNonEmpty() {}
+        emptyTextView.setVisibilityGone()
+        progressBar.setVisibilityGone()
+    }
+
+    override fun onDataEmpty() {
+        submissionRecyclerView.setVisibilityGone()
+        progressBar.setVisibilityGone()
+
+        emptyTextView.setVisible()
+    }
 }
