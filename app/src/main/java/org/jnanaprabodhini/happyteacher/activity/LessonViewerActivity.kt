@@ -1,5 +1,6 @@
 package org.jnanaprabodhini.happyteacher.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -19,6 +20,22 @@ class LessonViewerActivity : HappyTeacherActivity() {
 
     companion object Constants {
         val WRITE_STORAGE_PERMISSION_CODE = 1
+
+        fun launchActivity(from: Activity, lessonId: String, subtopicId: String, subjectName: String, topicName: String, topicId: String, subtopicName: String, submissionCount: Int) {
+            val lessonViewerIntent = Intent(from, LessonViewerActivity::class.java)
+
+            lessonViewerIntent.apply {
+                putExtra(LessonViewerActivity.LESSON_ID, lessonId)
+                putExtra(LessonViewerActivity.SUBTOPIC_ID, subtopicId)
+                putExtra(LessonViewerActivity.SUBJECT, subjectName)
+                putExtra(LessonViewerActivity.TOPIC_NAME, topicName)
+                putExtra(LessonViewerActivity.TOPIC_ID, topicId)
+                putExtra(LessonViewerActivity.SUBTOPIC_NAME, subtopicName)
+                putExtra(LessonViewerActivity.SUBMISSION_COUNT, submissionCount)
+            }
+
+            from.startActivity(lessonViewerIntent)
+        }
 
         val LESSON_ID: String = "LESSON_ID"
         fun Intent.hasLessonId(): Boolean = hasExtra(LESSON_ID)

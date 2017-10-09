@@ -170,20 +170,12 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
                         //  so that it can display the relevant topics (instead
                         //  of all topics for that subject).
 
-                        val topicsListIntent = Intent(this@BoardLessonsActivity, TopicsListActivity::class.java)
                         val keyUrl = getRef(syllabusLessonPosition).child(getString(R.string.topics)).toString()
                         val subject = syllabusLessonModel?.subject
                         val level = syllabusLessonModel?.level
                         val title = syllabusLessonModel?.name
 
-                        topicsListIntent.apply{
-                            putExtra(TopicsListActivity.TOPICS_INDEX_LIST_URL, keyUrl)
-                            putExtra(TopicsListActivity.SUBJECT_NAME, subject)
-                            putExtra(TopicsListActivity.LESSON_TITLE, title)
-                            putExtra(TopicsListActivity.LEVEL, level)
-                        }
-
-                        startBottomNavigationActivityWithFade(topicsListIntent)
+                        TopicsListActivity.launchActivity(this@BoardLessonsActivity, keyUrl, subject ?: "", title ?: "", level ?: 0)
                     }
                 }
             }

@@ -1,5 +1,6 @@
 package org.jnanaprabodhini.happyteacher.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.IntegerRes
@@ -29,6 +30,18 @@ import java.util.*
 class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
     companion object IntentExtraHelper {
+        fun launchActivity(from: BottomNavigationActivity, keyUrl: String, subjectName: String, lessonTitle: String, level: Int) {
+            val topicsListIntent = Intent(from, TopicsListActivity::class.java)
+            topicsListIntent.apply{
+                putExtra(TopicsListActivity.TOPICS_INDEX_LIST_URL, keyUrl)
+                putExtra(TopicsListActivity.SUBJECT_NAME, subjectName)
+                putExtra(TopicsListActivity.LESSON_TITLE, lessonTitle)
+                putExtra(TopicsListActivity.LEVEL, level)
+            }
+
+            from.startBottomNavigationActivityWithFade(topicsListIntent)
+        }
+
         val TOPICS_INDEX_LIST_URL: String = "TOPICS_INDEX_LIST_URL"
         fun Intent.hasTopicsIndexListUrl(): Boolean = hasExtra(TOPICS_INDEX_LIST_URL)
         // Note: since we the url may have ~ or " " chars, we need to decode it in order to read that db location!
