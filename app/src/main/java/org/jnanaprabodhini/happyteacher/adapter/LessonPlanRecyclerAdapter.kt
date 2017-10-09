@@ -9,7 +9,7 @@ import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.FullScreenGalleryViewerActivity
 import org.jnanaprabodhini.happyteacher.adapter.helper.AttachmentDownloadManager
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.LessonCardViewHolder
-import org.jnanaprabodhini.happyteacher.adapter.viewholder.TopicViewHolder
+import org.jnanaprabodhini.happyteacher.adapter.viewholder.ColoredHorizontalRecyclerViewHolder
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.AttachmentMetadata
 import org.jnanaprabodhini.happyteacher.model.LessonCard
@@ -31,8 +31,8 @@ class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val 
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE) {
-            val classroomResourcesView = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_topic, parent, false)
-            return TopicViewHolder(classroomResourcesView)
+            val classroomResourcesView = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_colored_horizontal_recycler, parent, false)
+            return ColoredHorizontalRecyclerViewHolder(classroomResourcesView)
         } else {
             val cardView = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_lesson_card, parent, false)
             return LessonCardViewHolder(cardView)
@@ -50,7 +50,7 @@ class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         if (holder is LessonCardViewHolder) {
             onBindLessonCardViewHolder(holder, position)
-        } else if (holder is TopicViewHolder) {
+        } else if (holder is ColoredHorizontalRecyclerViewHolder) {
             onBindClassRoomResourcesViewHolder(holder, position)
         }
     }
@@ -72,9 +72,9 @@ class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val 
         }
     }
 
-    private fun onBindClassRoomResourcesViewHolder(holder: TopicViewHolder, position: Int) {
+    private fun onBindClassRoomResourcesViewHolder(holder: ColoredHorizontalRecyclerViewHolder, position: Int) {
         holder.itemView.setBackgroundResource(R.color.colorPrimaryDark)
-        holder.topicTextView.text = activity.getString(R.string.classroom_resources)
+        holder.titleTextView.text = activity.getString(R.string.classroom_resources)
         holder.emptyView.setVisible()
         holder.progressBar.setVisibilityGone()
     }

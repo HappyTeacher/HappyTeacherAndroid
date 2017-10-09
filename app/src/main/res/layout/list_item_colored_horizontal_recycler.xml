@@ -7,7 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:id="@+id/topicTextView"
+        android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
@@ -18,15 +18,15 @@
         android:paddingRight="16dp"/>
 
     <org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
-        android:id="@+id/lessonsRecyclerView"
+        android:id="@+id/horizontalRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layoutAnimation="@anim/layout_fade_in"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/topicTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
     <FrameLayout
-        app:layout_constraintTop_toBottomOf="@+id/topicTextView"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
         android:id="@+id/progressBarFrame"
         android:visibility="visible"
         android:layout_width="@dimen/width_lesson_header_card"
@@ -38,7 +38,7 @@
     </FrameLayout>
 
     <LinearLayout
-        app:layout_constraintTop_toBottomOf="@+id/topicTextView"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
         app:layout_constraintBottom_toBottomOf="parent"
         android:visibility="gone"
         android:id="@+id/emptyView"
@@ -53,8 +53,7 @@
             android:layout_margin="16dp"
             android:textColor="@android:color/white"
             android:textSize="18sp"
-            android:id="@+id/emptyTextView"
-            android:text="@string/there_are_no_lessons_for_this_topic_yet"/>
+            android:id="@+id/emptyTextView"/>
 
         <Button
             android:layout_width="wrap_content"
