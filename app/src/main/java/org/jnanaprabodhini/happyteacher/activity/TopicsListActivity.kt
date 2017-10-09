@@ -304,7 +304,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
     }
 
     private fun setSubtopicRecyclerAdapterUnfiltered(topicViewHolder: TopicViewHolder?, topicName: String?, subtopicQuery: Query) {
-        val adapter = object: FirebaseObserverRecyclerAdapter<SubtopicLessonHeader, SubtopicHeaderViewHolder>(SubtopicLessonHeader::class.java, R.layout.list_item_lesson, SubtopicHeaderViewHolder::class.java, subtopicQuery, getSubtopicDataObserverForViewHolder(topicViewHolder)) {
+        val adapter = object: FirebaseObserverRecyclerAdapter<SubtopicLessonHeader, SubtopicHeaderViewHolder>(SubtopicLessonHeader::class.java, R.layout.list_item_lesson_header, SubtopicHeaderViewHolder::class.java, subtopicQuery, getSubtopicDataObserverForViewHolder(topicViewHolder)) {
             override fun populateViewHolder(subtopicHeaderViewHolder: SubtopicHeaderViewHolder?, subtopicHeaderModel: SubtopicLessonHeader?, lessonHeaderPosition: Int) {
                 populateLessonHeaderViewHolder(subtopicHeaderViewHolder, subtopicHeaderModel, topicName)
             }
@@ -320,7 +320,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
         val featuredSubtopicLessonHeaderReference = databaseReference.child(getString(R.string.featured_subtopic_lesson_headers)).child(topicKey)
 
-        val adapter = object: FirebaseObserverIndexRecyclerAdapter<SubtopicLessonHeader, SubtopicHeaderViewHolder>(SubtopicLessonHeader::class.java, R.layout.list_item_lesson, SubtopicHeaderViewHolder::class.java, boardLevelSubtopicsQuery, featuredSubtopicLessonHeaderReference, getSubtopicDataObserverForViewHolder(topicViewHolder, level)) {
+        val adapter = object: FirebaseObserverIndexRecyclerAdapter<SubtopicLessonHeader, SubtopicHeaderViewHolder>(SubtopicLessonHeader::class.java, R.layout.list_item_lesson_header, SubtopicHeaderViewHolder::class.java, boardLevelSubtopicsQuery, featuredSubtopicLessonHeaderReference, getSubtopicDataObserverForViewHolder(topicViewHolder, level)) {
             override fun populateViewHolder(subtopicHeaderViewHolder: SubtopicHeaderViewHolder?, subtopicHeaderModel: SubtopicLessonHeader?, lessonHeaderPosition: Int) {
                 populateLessonHeaderViewHolder(subtopicHeaderViewHolder, subtopicHeaderModel, topicName)
             }
