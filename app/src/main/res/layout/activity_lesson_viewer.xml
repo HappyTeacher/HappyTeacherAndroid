@@ -81,5 +81,22 @@
             
         </android.support.constraint.ConstraintLayout>
 
+        <TextView
+            android:id="@+id/otherSubmissionsTextView"
+            android:visibility="gone"
+            android:padding="16dp"
+            android:clickable="true"
+            android:drawablePadding="8dp"
+            android:background="@drawable/ripple_accent_gray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            fontPath="fonts/Roboto-Light.ttf"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:ellipsize="marquee"
+            app:layout_scrollFlags="scroll"/>
+
     </android.support.design.widget.AppBarLayout>
 </android.support.design.widget.CoordinatorLayout>

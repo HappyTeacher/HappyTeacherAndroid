@@ -116,6 +116,11 @@ fun TextView.setDrawableLeft(@DrawableRes drawableId: Int) {
     this.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
 }
 
+fun TextView.setDrawableRight(@DrawableRes drawableId: Int) {
+    val drawable = AppCompatResources.getDrawable(context, drawableId)
+    this.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
+}
+
 fun TextView.setHtmlText(htmlString: String) {
     this.movementMethod = LinkMovementMethod.getInstance()
 

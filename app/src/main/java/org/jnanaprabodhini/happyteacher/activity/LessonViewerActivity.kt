@@ -11,9 +11,7 @@ import kotlinx.android.synthetic.main.activity_lesson_viewer.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.LessonPlanRecyclerAdapter
-import org.jnanaprabodhini.happyteacher.extension.onSingleValueEvent
-import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
-import org.jnanaprabodhini.happyteacher.extension.setVisible
+import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.SubtopicLesson
 import java.io.File
 
@@ -46,7 +44,11 @@ class LessonViewerActivity : HappyTeacherActivity() {
         fun Intent.hasSubtopicName(): Boolean = hasExtra(SUBTOPIC_NAME)
         fun Intent.getSubtopicName(): String = getStringExtra(SUBTOPIC_NAME)
 
-        fun Intent.hasAllExtras(): Boolean = hasLessonId() && hasSubtopicId() && hasSubject() && hasTopicName() && hasSubtopicName() && hasTopicId()
+        val  SUBMISSION_COUNT: String = "SUBMISSION_COUNT"
+        fun Intent.hasSubmissionCount(): Boolean = hasExtra(SUBMISSION_COUNT)
+        fun Intent.getSubmissionCount(): Int = getIntExtra(SUBMISSION_COUNT, 0)
+
+        fun Intent.hasAllExtras(): Boolean = hasLessonId() && hasSubtopicId() && hasSubject() && hasTopicName() && hasSubtopicName() && hasTopicId() && hasSubmissionCount()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,6 +73,8 @@ class LessonViewerActivity : HappyTeacherActivity() {
         val topicId = intent.getTopicId()
         val subtopicName = intent.getSubtopicName()
 
+        val submissionCount = intent.getSubmissionCount()
+
         val lessonQuery = databaseReference.child(getString(R.string.subtopic_lessons))
                                             .child(topicId)
                                             .child(subtopicId)
@@ -86,17 +90,17 @@ class LessonViewerActivity : HappyTeacherActivity() {
 
         lessonQuery.onSingleValueEvent { dataSnapshot ->
             val lesson = dataSnapshot?.getValue(SubtopicLesson::class.java)
-            initializeUiForLesson(lesson, subject, attachmentDestinationDirectory)
+            initializeUiForLesson(lesson, subject, attachmentDestinationDirectory, submissionCount)
         }
     }
 
-    private fun initializeUiForLesson(lesson: SubtopicLesson?, subject: String, attachmentDestinationDirectory: File) {
+    private fun initializeUiForLesson(lesson: SubtopicLesson?, subject: String, attachmentDestinationDirectory: File, submissionCount: Int) {
         progressBar.setVisibilityGone()
-        setHeaderViewForLesson(lesson, subject)
+        setHeaderViewForLesson(lesson, subject, submissionCount)
         initializeRecyclerView(lesson, attachmentDestinationDirectory)
     }
 
-    private fun setHeaderViewForLesson(lesson: SubtopicLesson?, subject: String) {
+    private fun setHeaderViewForLesson(lesson: SubtopicLesson?, subject: String, submissionCount: Int) {
         headerView.setVisible()
         supportActionBar?.title = lesson?.name
 
@@ -108,6 +112,15 @@ class LessonViewerActivity : HappyTeacherActivity() {
         authorNameTextView.text = authorName
         institutionTextView.text = institutionName
         locationTextView.text = location
+
+        if (submissionCount > 1) {
+            otherSubmissionsTextView.setVisible()
+            otherSubmissionsTextView.text = getString(R.string.see_all_n_lesson_plans_for_lesson, submissionCount, lesson?.name)
+            otherSubmissionsTextView.setDrawableRight(R.drawable.ic_keyboard_arrow_right_white_24dp)
+        } else {
+            otherSubmissionsTextView.setVisibilityGone()
+        }
+
     }
 
     private fun initializeRecyclerView(lesson: SubtopicLesson?, attachmentDestinationDirectory: File) {

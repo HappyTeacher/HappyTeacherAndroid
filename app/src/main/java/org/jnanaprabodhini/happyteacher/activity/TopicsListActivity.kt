@@ -365,6 +365,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
                 putExtra(LessonViewerActivity.TOPIC_NAME, topicName)
                 putExtra(LessonViewerActivity.TOPIC_ID, topicId)
                 putExtra(LessonViewerActivity.SUBTOPIC_NAME, subtopicHeaderModel?.name)
+                putExtra(LessonViewerActivity.SUBMISSION_COUNT, subtopicHeaderModel?.subtopicSubmissionCount)
             }
 
             startActivity(lessonViewerIntent)
