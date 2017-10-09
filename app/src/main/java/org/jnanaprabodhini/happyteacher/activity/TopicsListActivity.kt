@@ -299,17 +299,10 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
             2 -> topicViewHolder?.itemView?.setBackgroundResource(R.color.bubbleGumPink)
             3 -> topicViewHolder?.itemView?.setBackgroundResource(R.color.dreamsicleOrange)
         }
-
-        val horizontalLayoutManager = LinearLayoutManager(this@TopicsListActivity, LinearLayoutManager.HORIZONTAL, false)
     }
 
     private fun setSubtopicRecyclerAdapterUnfiltered(topicViewHolder: TopicViewHolder?, topicName: String?, subtopicQuery: Query) {
-        val adapter = object: FirebaseObserverRecyclerAdapter<SubtopicLessonHeader, SubtopicHeaderViewHolder>(SubtopicLessonHeader::class.java, R.layout.list_item_lesson, SubtopicHeaderViewHolder::class.java, subtopicQuery, getSubtopicDataObserverForViewHolder(topicViewHolder)) {
-            override fun populateViewHolder(subtopicHeaderViewHolder: SubtopicHeaderViewHolder?, subtopicHeaderModel: SubtopicLessonHeader?, lessonHeaderPosition: Int) {
-                populateLessonHeaderViewHolder(subtopicHeaderViewHolder, subtopicHeaderModel, topicName)
-            }
-        }
-        topicViewHolder?.lessonsRecyclerView?.setAdapter(adapter)
+        topicViewHolder?.lessonsRecyclerView?.setAdapter(SubtopicLessonHeaderRecyclerAdapter(topicName ?: "", subtopicQuery, this, getSubtopicDataObserverForViewHolder(topicViewHolder)))
     }
 
     private fun setSubtopicViewHolderRecyclerFilteredByLevel(topicViewHolder: TopicViewHolder?, level: Int, topicName: String?, topicKey: String) {
@@ -320,49 +313,12 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
         val featuredSubtopicLessonHeaderReference = databaseReference.child(getString(R.string.featured_subtopic_lesson_headers)).child(topicKey)
 
-        val adapter = object: FirebaseObserverIndexRecyclerAdapter<SubtopicLessonHeader, SubtopicHeaderViewHolder>(SubtopicLessonHeader::class.java, R.layout.list_item_lesson, SubtopicHeaderViewHolder::class.java, boardLevelSubtopicsQuery, featuredSubtopicLessonHeaderReference, getSubtopicDataObserverForViewHolder(topicViewHolder, level)) {
+        val adapter = object: FirebaseObserverIndexRecyclerAdapter<SubtopicLessonHeader, SubtopicHeaderViewHolder>(SubtopicLessonHeader::class.java, R.layout.list_item_lesson_header, SubtopicHeaderViewHolder::class.java, boardLevelSubtopicsQuery, featuredSubtopicLessonHeaderReference, getSubtopicDataObserverForViewHolder(topicViewHolder, level)) {
             override fun populateViewHolder(subtopicHeaderViewHolder: SubtopicHeaderViewHolder?, subtopicHeaderModel: SubtopicLessonHeader?, lessonHeaderPosition: Int) {
-                populateLessonHeaderViewHolder(subtopicHeaderViewHolder, subtopicHeaderModel, topicName)
+                subtopicHeaderViewHolder?.populateView(subtopicHeaderModel, topicName ?: "", this@TopicsListActivity, dateFormat)
             }
         }
         topicViewHolder?.lessonsRecyclerView?.setAdapter(adapter)
-    }
-
-    private fun populateLessonHeaderViewHolder(subtopicHeaderViewHolder: SubtopicHeaderViewHolder?, subtopicHeaderModel: SubtopicLessonHeader?, topicName: String?) {
-        subtopicHeaderViewHolder?.lessonTitleTextView?.text = subtopicHeaderModel?.name
-        subtopicHeaderViewHolder?.authorNameTextView?.text = subtopicHeaderModel?.authorName
-        subtopicHeaderViewHolder?.institutionTextView?.text = subtopicHeaderModel?.authorInstitution
-        subtopicHeaderViewHolder?.locationTextView?.text = subtopicHeaderModel?.authorLocation
-
-        subtopicHeaderViewHolder?.authorNameTextView?.setDrawableLeft(R.drawable.ic_person_accent)
-        subtopicHeaderViewHolder?.institutionTextView?.setDrawableLeft(R.drawable.ic_school_accent)
-        subtopicHeaderViewHolder?.locationTextView?.setDrawableLeft(R.drawable.ic_location_accent)
-
-        subtopicHeaderModel?.let {
-            subtopicHeaderViewHolder?.dateEditedTextView?.text = dateFormat.format(Date(subtopicHeaderModel.dateEdited))
-            subtopicHeaderViewHolder?.dateEditedTextView?.setDrawableLeft(R.drawable.ic_clock_light_gray)
-        }
-
-        subtopicHeaderViewHolder?.itemView?.setOnClickListener {
-            val lessonId = subtopicHeaderModel?.lesson
-            val subtopicId = subtopicHeaderModel?.subtopic
-            val subjectName = subtopicHeaderModel?.subjectName
-            val topicId = subtopicHeaderModel?.topic
-
-            val lessonViewerIntent = Intent(this, LessonViewerActivity::class.java)
-
-            lessonViewerIntent.apply {
-                putExtra(LessonViewerActivity.LESSON_ID, lessonId)
-                putExtra(LessonViewerActivity.SUBTOPIC_ID, subtopicId)
-                putExtra(LessonViewerActivity.SUBJECT, subjectName)
-                putExtra(LessonViewerActivity.TOPIC_NAME, topicName)
-                putExtra(LessonViewerActivity.TOPIC_ID, topicId)
-                putExtra(LessonViewerActivity.SUBTOPIC_NAME, subtopicHeaderModel?.name)
-            }
-
-            startActivity(lessonViewerIntent)
-        }
-
     }
 
     override fun onBackPressed() {
