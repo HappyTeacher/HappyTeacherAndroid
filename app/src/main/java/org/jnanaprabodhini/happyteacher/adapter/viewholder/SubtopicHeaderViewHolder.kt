@@ -58,19 +58,7 @@ class SubtopicHeaderViewHolder(itemView: View): RecyclerView.ViewHolder(itemView
             val subjectName = subtopicHeaderModel?.subjectName
             val topicId = subtopicHeaderModel?.topic
 
-            val lessonViewerIntent = Intent(activity, LessonViewerActivity::class.java)
-
-            lessonViewerIntent.apply {
-                putExtra(LessonViewerActivity.LESSON_ID, lessonId)
-                putExtra(LessonViewerActivity.SUBTOPIC_ID, subtopicId)
-                putExtra(LessonViewerActivity.SUBJECT, subjectName)
-                putExtra(LessonViewerActivity.TOPIC_NAME, topicName)
-                putExtra(LessonViewerActivity.TOPIC_ID, topicId)
-                putExtra(LessonViewerActivity.SUBTOPIC_NAME, subtopicHeaderModel?.name)
-                putExtra(LessonViewerActivity.SUBMISSION_COUNT, subtopicHeaderModel?.subtopicSubmissionCount)
-            }
-
-            activity.startActivity(lessonViewerIntent)
+            LessonViewerActivity.launchActivity(activity, lessonId ?: "", subtopicId ?: "", subjectName ?: "", topicName, topicId ?: "", subtopicHeaderModel?.name ?: "", subtopicHeaderModel?.subtopicSubmissionCount ?: 0)
         }
     }
 }
