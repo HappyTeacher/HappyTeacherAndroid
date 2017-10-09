@@ -7,6 +7,7 @@ import com.firebase.ui.database.FirebaseIndexArray
 import com.firebase.ui.database.SnapshotParser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.Query
+import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 
 /**
  * A custom version of the FirebaseIndexRecyclerAdapter that allows for

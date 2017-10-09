@@ -5,7 +5,7 @@ import android.text.Html
 import org.xml.sax.XMLReader
 
 /**
- * Created by grahamearley on 9/26/17.
+ * A ListTagHandler for ordered lists.
  */
 class OrderedListTagHandler(indentationLevel: Int = 0): ListTagHandler(indentationLevel) {
 

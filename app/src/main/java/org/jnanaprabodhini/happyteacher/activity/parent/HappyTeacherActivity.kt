@@ -8,7 +8,8 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 import org.jnanaprabodhini.happyteacher.extension.getBaseReferenceForCurrentLanguage
 
 /**
- * Created by grahamearley on 9/12/17.
+ * An abstract activity for all activities in the app. Includes access
+ *  to the Firebase root database and the database for the current language.
  */
 abstract class HappyTeacherActivity: AppCompatActivity() {
     val databaseRoot: FirebaseDatabase by lazy {

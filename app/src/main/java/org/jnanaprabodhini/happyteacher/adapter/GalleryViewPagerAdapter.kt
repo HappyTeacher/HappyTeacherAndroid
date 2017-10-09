@@ -11,7 +11,7 @@ import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.loadImageWithNoPlaceholder
 
 /**
- * Created by grahamearley on 9/28/17.
+ * A view pager adapter for loading images in the full screen gallery view.
  */
 class GalleryViewPagerAdapter(val imageUrls: Array<String>): PagerAdapter() {
 

@@ -5,6 +5,7 @@ import android.support.annotation.LayoutRes
 import android.support.v7.widget.RecyclerView
 import com.firebase.ui.database.*
 import com.google.firebase.database.Query
+import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 
 /**
  * An override of the FirebaseRecyclerAdapter that allows for

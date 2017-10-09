@@ -1,7 +1,7 @@
-package org.jnanaprabodhini.happyteacher.adapter
+package org.jnanaprabodhini.happyteacher.adapter.helper
 
 /**
- * Created by grahamearley on 9/18/17.
+ * An interface for responding to Firebase data events from an adapter.
  */
 interface FirebaseDataObserver {
     fun onRequestNewData() {}

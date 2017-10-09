@@ -7,7 +7,8 @@ import org.jnanaprabodhini.happyteacher.activity.BoardLessonsActivity
 import org.jnanaprabodhini.happyteacher.activity.TopicsListActivity
 
 /**
- * Created by grahamearley on 9/14/17.
+ * An abstract activity for activities that are opened
+ *  from the bottom navigation bar.
  */
 abstract class BottomNavigationActivity: HappyTeacherActivity() {
 

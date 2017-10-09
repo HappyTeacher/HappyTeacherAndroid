@@ -5,9 +5,14 @@ import android.support.annotation.LayoutRes
 import com.firebase.ui.database.FirebaseIndexListAdapter
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.Query
+import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 
 /**
- * Created by grahamearley on 9/19/17.
+ * A simple subclass of the FirebaseIndexListAdapter that notifies
+ *  a FirebaseDataObserver of loading events in the adapter.
+ *
+ *  See FirebaseObserverRecyclerAdapter (this is a simpler version of that class,
+ *      without the subclassing since we only need this one class).
  */
 abstract class FirebaseIndexObserverListAdapter<T>(context: Context,
                                                    modelClass: Class<T>,

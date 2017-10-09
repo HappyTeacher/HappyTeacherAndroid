@@ -21,7 +21,9 @@ import org.jnanaprabodhini.happyteacher.view.DownloadBarView
 import java.io.File
 
 /**
- * Created by grahamearley on 10/1/17.
+ * An AttachmentDownloadManager instance links a Firebase storage
+ *  download task to a DownloadBarView, updating the UI accordingly
+ *  and responding to interaction with the view.
  */
 class AttachmentDownloadManager(attachmentPath: String, val attachmentDestinationDirectory: File, val attachmentMetadata: AttachmentMetadata, val activity: Activity) {
 
@@ -75,6 +77,10 @@ class AttachmentDownloadManager(attachmentPath: String, val attachmentDestinatio
         syncViewWithDownloadTask(downloadTask, destinationFile, downloadBarView)
     }
 
+    /**
+     * Add listeners to the download task to keep UI updated with download status,
+     *  and cancel the download (and remove listeners) when the button is clicked.
+     */
     private fun syncViewWithDownloadTask(downloadTask: FileDownloadTask, destinationFile: File, downloadBarView: DownloadBarView) {
         downloadBarView.setCancelIconWithText(activity.getString(R.string.downloading))
 

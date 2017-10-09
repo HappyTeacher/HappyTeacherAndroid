@@ -5,7 +5,7 @@ import android.util.Log
 import org.xml.sax.XMLReader
 
 /**
- * Created by grahamearley on 9/26/17.
+ * A ListTagHandler for unordered lists.
  */
 class UnorderedListTagHandler(indentationLevel: Int = 0): ListTagHandler(indentationLevel) {
 

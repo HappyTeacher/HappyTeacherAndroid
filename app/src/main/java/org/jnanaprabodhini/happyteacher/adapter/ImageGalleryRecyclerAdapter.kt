@@ -10,6 +10,10 @@ import org.jnanaprabodhini.happyteacher.activity.FullScreenGalleryViewerActivity
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ImageGalleryItemViewHolder
 import org.jnanaprabodhini.happyteacher.extension.loadImageToFit
 
+/**
+ * A recycler adapter for the in-card image gallery, a horizontal
+ *  list of images in cards that feature more than one image.
+ */
 class ImageGalleryRecyclerAdapter(val imageUrls: List<String>, val context: Context) : RecyclerView.Adapter<ImageGalleryItemViewHolder>() {
     override fun getItemCount(): Int = imageUrls.size
 

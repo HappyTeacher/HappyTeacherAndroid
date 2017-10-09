@@ -4,10 +4,6 @@ import android.app.Application
 import com.google.firebase.database.FirebaseDatabase
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig
 
-/**
- * Created by grahamearley on 9/11/17.
- */
-
 val prefs: PreferencesManager by lazy {
     // Package-wide access to PreferencesManager.
     HappyTeacherApplication.preferences!!

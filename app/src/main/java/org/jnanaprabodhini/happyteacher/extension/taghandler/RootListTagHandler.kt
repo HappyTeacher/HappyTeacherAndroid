@@ -5,7 +5,10 @@ import android.text.Html
 import org.xml.sax.XMLReader
 
 /**
- * Created by grahamearley on 9/26/17.
+ * A base implementation of the ListTagHandler. This class
+ *  acts as the handler for the first level of nesting
+ *  (outside of any list). From there, it delegates list
+ *  tag handling to the other subclasses.
  */
 class RootListTagHandler : ListTagHandler() {
 

@@ -6,14 +6,26 @@ import android.util.Log
 import org.xml.sax.XMLReader
 
 /**
- * Created by grahamearley on 9/26/17.
+ * An abstract class for handling list HTML tags (<ul> and <ol>) in a TextView.
  */
 abstract class ListTagHandler(val indentationLevel: Int = 0) : Html.TagHandler {
 
+    /**
+     * TAG represents the tag that the implementation of this abstract class is
+     *  designed to handle. ("ul", "ol")
+     */
     abstract val TAG: String
 
+    /**
+     * The activeListHandler is an implementation of ListTagHandler
+     *  that is handling the tags at the current level of nesting in
+     *  the input HTML text.
+     */
     var activeListHandler: ListTagHandler? = null
 
+    /**
+     * Determine which tag handler should handle the most recently read tag.
+     */
     override fun handleTag(opening: Boolean, tag: String?, output: Editable?, xmlReader: XMLReader?) {
         if (activeListHandler != null && activeListHandler?.activeListHandler == null
                 && !opening && tag == activeListHandler!!.TAG) {
@@ -51,6 +63,9 @@ abstract class ListTagHandler(val indentationLevel: Int = 0) : Html.TagHandler {
         return builder.toString()
     }
 
+    /**
+     * Subclasses will use this function to display a list item from a tag.
+     */
     abstract fun handleListItem(opening: Boolean, tag: String, output: Editable?, xmlReader: XMLReader?)
 
     fun retractNewLine(output: Editable?) {

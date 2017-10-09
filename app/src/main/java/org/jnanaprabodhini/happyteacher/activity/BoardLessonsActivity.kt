@@ -11,7 +11,7 @@ import android.widget.TextView
 import com.firebase.ui.database.FirebaseIndexListAdapter
 import kotlinx.android.synthetic.main.activity_board_lessons.*
 import org.jnanaprabodhini.happyteacher.BoardChoiceDialog
-import org.jnanaprabodhini.happyteacher.adapter.FirebaseDataObserver
+import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacher.adapter.FirebaseIndexObserverListAdapter
