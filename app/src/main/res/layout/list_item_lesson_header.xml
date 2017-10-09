@@ -63,8 +63,8 @@
         <TextView
             android:id="@+id/submissionCountTextView"
             android:visibility="gone"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:gravity="center"
             android:textSize="26sp"
             app:autoSizeMaxTextSize="26sp"
@@ -75,9 +75,10 @@
             android:ellipsize="end"
             android:padding="12dp"
             android:background="@drawable/gray_ripple_pill"
+            android:textColor="@color/gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            tools:text="+99999"/>
+            tools:text="+50"/>
 
     </android.support.constraint.ConstraintLayout>
 
