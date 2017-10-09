@@ -1,5 +1,6 @@
 package org.jnanaprabodhini.happyteacher.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -10,6 +11,17 @@ import org.jnanaprabodhini.happyteacher.adapter.GalleryViewPagerAdapter
 class FullScreenGalleryViewerActivity : AppCompatActivity() {
 
     companion object IntentExtraHelper {
+        fun launchActivity(context: Context, imageUrls: Array<String>, position: Int) {
+            val fullscreenImageIntent = Intent(context, FullScreenGalleryViewerActivity::class.java)
+
+            fullscreenImageIntent.apply {
+                putExtra(FullScreenGalleryViewerActivity.IMAGE_URLS, imageUrls)
+                putExtra(FullScreenGalleryViewerActivity.SELECTED_IMAGE, position)
+            }
+
+            context.startActivity(fullscreenImageIntent)
+        }
+
         val IMAGE_URLS: String = "IMAGE_URLS"
         fun Intent.hasImageUrls(): Boolean = hasExtra(IMAGE_URLS)
         fun Intent.getImageUrls(): Array<String> = getStringArrayExtra(IMAGE_URLS)

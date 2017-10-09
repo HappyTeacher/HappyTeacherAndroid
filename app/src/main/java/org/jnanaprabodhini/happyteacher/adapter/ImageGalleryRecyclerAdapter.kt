@@ -27,14 +27,7 @@ class ImageGalleryRecyclerAdapter(val imageUrls: List<String>, val context: Cont
         holder?.galleryImageView?.loadImageToFit(imageUrl)
 
         holder?.galleryImageView?.setOnClickListener {
-            val fullscreenImageIntent = Intent(context, FullScreenGalleryViewerActivity::class.java)
-
-            fullscreenImageIntent.apply {
-                putExtra(FullScreenGalleryViewerActivity.IMAGE_URLS, imageUrls.toTypedArray())
-                putExtra(FullScreenGalleryViewerActivity.SELECTED_IMAGE, position)
-            }
-
-            context.startActivity(fullscreenImageIntent)
+            FullScreenGalleryViewerActivity.launchActivity(context, imageUrls.toTypedArray(), position)
         }
 
     }
