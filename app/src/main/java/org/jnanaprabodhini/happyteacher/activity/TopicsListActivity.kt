@@ -344,7 +344,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
             if (subtopicHeaderModel.subtopicSubmissionCount > 1) {
                 subtopicHeaderViewHolder?.submissionCountTextView?.setVisible()
-                subtopicHeaderViewHolder?.submissionCountTextView?.text = getString(R.string.plus_number, subtopicHeaderModel.subtopicSubmissionCount)
+                subtopicHeaderViewHolder?.submissionCountTextView?.text = getString(R.string.plus_number, subtopicHeaderModel.subtopicSubmissionCount - 1) // subtract one to exclude the featured lesson
             } else {
                 subtopicHeaderViewHolder?.submissionCountTextView?.setVisibilityGone()
             }
