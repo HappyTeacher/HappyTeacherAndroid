@@ -29,6 +29,8 @@
     <string name="the_file_is_no_longer_available_try_downloading_it_again">The file is no longer available. Try downloading it again.</string>
     <string name="plus_number">+%d</string>
     <string name="see_all_n_lesson_plans_for_lesson">See all %1$d lesson plans for %2$s</string>
+    <string name="error_loading_other_lessons">There was an error loading these lesson plans</string>
+    <string name="other_lesson_plans">Other lesson plans</string>
 
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>

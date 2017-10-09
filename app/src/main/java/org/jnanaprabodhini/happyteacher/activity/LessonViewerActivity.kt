@@ -90,17 +90,17 @@ class LessonViewerActivity : HappyTeacherActivity() {
 
         lessonQuery.onSingleValueEvent { dataSnapshot ->
             val lesson = dataSnapshot?.getValue(SubtopicLesson::class.java)
-            initializeUiForLesson(lesson, subject, attachmentDestinationDirectory, submissionCount)
+            initializeUiForLesson(lesson, subject, attachmentDestinationDirectory, submissionCount, topicId, subtopicId, topicName)
         }
     }
 
-    private fun initializeUiForLesson(lesson: SubtopicLesson?, subject: String, attachmentDestinationDirectory: File, submissionCount: Int) {
+    private fun initializeUiForLesson(lesson: SubtopicLesson?, subject: String, attachmentDestinationDirectory: File, submissionCount: Int, topicId: String, subtopicId: String, topicName: String) {
         progressBar.setVisibilityGone()
-        setHeaderViewForLesson(lesson, subject, submissionCount)
+        setHeaderViewForLesson(lesson, subject, submissionCount, topicId, subtopicId, topicName)
         initializeRecyclerView(lesson, attachmentDestinationDirectory)
     }
 
-    private fun setHeaderViewForLesson(lesson: SubtopicLesson?, subject: String, submissionCount: Int) {
+    private fun setHeaderViewForLesson(lesson: SubtopicLesson?, subject: String, submissionCount: Int, topicId: String, subtopicId: String, topicName: String) {
         headerView.setVisible()
         supportActionBar?.title = lesson?.name
 
@@ -117,6 +117,17 @@ class LessonViewerActivity : HappyTeacherActivity() {
             otherSubmissionsTextView.setVisible()
             otherSubmissionsTextView.text = getString(R.string.see_all_n_lesson_plans_for_lesson, submissionCount, lesson?.name)
             otherSubmissionsTextView.setDrawableRight(R.drawable.ic_keyboard_arrow_right_white_24dp)
+            otherSubmissionsTextView.setOnClickListener {
+                val subtopicSubmissionsIntent = Intent(this, SubtopicSubmissionsListActivity::class.java)
+
+                subtopicSubmissionsIntent.apply {
+                    putExtra(SubtopicSubmissionsListActivity.TOPIC_NAME, topicName)
+                    putExtra(SubtopicSubmissionsListActivity.SUBTOPIC_KEY, subtopicId)
+                    putExtra(SubtopicSubmissionsListActivity.TOPIC_KEY, topicId)
+                }
+
+                startActivity(subtopicSubmissionsIntent)
+            }
         } else {
             otherSubmissionsTextView.setVisibilityGone()
         }
@@ -131,17 +142,6 @@ class LessonViewerActivity : HappyTeacherActivity() {
         } else {
             lessonPlanRecyclerView?.adapter = LessonPlanRecyclerAdapter(lesson.cards, attachmentDestinationDirectory, this)
         }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            // Make "Up" button go Back
-            android.R.id.home -> {
-                onBackPressed()
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun showErrorToastAndFinish() {
