@@ -341,6 +341,13 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         subtopicHeaderModel?.let {
             subtopicHeaderViewHolder?.dateEditedTextView?.text = dateFormat.format(Date(subtopicHeaderModel.dateEdited))
             subtopicHeaderViewHolder?.dateEditedTextView?.setDrawableLeft(R.drawable.ic_clock_light_gray)
+
+            if (subtopicHeaderModel.subtopicSubmissionCount > 1) {
+                subtopicHeaderViewHolder?.submissionCountTextView?.setVisible()
+                subtopicHeaderViewHolder?.submissionCountTextView?.text = getString(R.string.plus_number, subtopicHeaderModel.subtopicSubmissionCount)
+            } else {
+                subtopicHeaderViewHolder?.submissionCountTextView?.setVisibilityGone()
+            }
         }
 
         subtopicHeaderViewHolder?.itemView?.setOnClickListener {
