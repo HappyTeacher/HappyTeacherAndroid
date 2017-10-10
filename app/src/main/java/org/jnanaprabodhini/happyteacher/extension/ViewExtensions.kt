@@ -195,14 +195,6 @@ fun WebView.loadYoutubeVideo(youtubeId: String) {
     loadData(embedCode, "text/html", "UTF-8")
 }
 
-fun RecyclerView.onHorizontalScroll(onHorizontalScroll: () -> Unit) {
-    addOnScrollListener(object: RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-            if (dx > 0) onHorizontalScroll()
-        }
-    })
-}
-
 fun RecyclerView.canScrollLeftHorizontally(): Boolean {
     return canScrollHorizontally(-1)
 }
