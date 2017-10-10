@@ -42,7 +42,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/subjectTextView"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/bookIcon"
+                app:layout_constraintEnd_toStartOf="@+id/icon"
                 app:layout_constraintVertical_chainStyle="packed"
                 style="@style/LessonViewerHeaderText.Author" />
 
@@ -51,7 +51,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/authorNameTextView"
                 app:layout_constraintBottom_toTopOf="@+id/institutionTextView"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/bookIcon"
+                app:layout_constraintEnd_toStartOf="@+id/icon"
                 style="@style/LessonViewerHeaderText.Subject"/>
 
             <TextView
@@ -59,7 +59,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/subjectTextView"
                 app:layout_constraintBottom_toTopOf="@+id/locationTextView"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/bookIcon"
+                app:layout_constraintEnd_toStartOf="@+id/icon"
                 style="@style/LessonViewerHeaderText.Institution"/>
 
             <TextView
@@ -67,13 +67,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/institutionTextView"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/bookIcon"
+                app:layout_constraintEnd_toStartOf="@+id/icon"
                 style="@style/LessonViewerHeaderText.Location"/>
 
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
-                android:id="@+id/bookIcon"
+                android:id="@+id/icon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
