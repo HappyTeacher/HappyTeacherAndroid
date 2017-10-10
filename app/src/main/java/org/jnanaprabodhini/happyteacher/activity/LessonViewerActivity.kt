@@ -53,7 +53,7 @@ class LessonViewerActivity : HappyTeacherActivity() {
         fun Intent.hasTopicName(): Boolean = hasExtra(TOPIC_NAME)
         fun Intent.getTopicName(): String = getStringExtra(TOPIC_NAME)
 
-        val  TOPIC_ID: String = "TOPIC_ID"
+        val TOPIC_ID: String = "TOPIC_ID"
         fun Intent.hasTopicId(): Boolean = hasExtra(TOPIC_ID)
         fun Intent.getTopicId(): String = getStringExtra(TOPIC_ID)
 
@@ -61,36 +61,34 @@ class LessonViewerActivity : HappyTeacherActivity() {
         fun Intent.hasSubtopicName(): Boolean = hasExtra(SUBTOPIC_NAME)
         fun Intent.getSubtopicName(): String = getStringExtra(SUBTOPIC_NAME)
 
-        val  SUBMISSION_COUNT: String = "SUBMISSION_COUNT"
+        val SUBMISSION_COUNT: String = "SUBMISSION_COUNT"
         fun Intent.hasSubmissionCount(): Boolean = hasExtra(SUBMISSION_COUNT)
         fun Intent.getSubmissionCount(): Int = getIntExtra(SUBMISSION_COUNT, 0)
 
         fun Intent.hasAllExtras(): Boolean = hasLessonId() && hasSubtopicId() && hasSubject() && hasTopicName() && hasSubtopicName() && hasTopicId() && hasSubmissionCount()
     }
 
+    val lessonId by lazy { intent.getLessonId() }
+    val subtopicId by lazy { intent.getSubtopicId() }
+    val subject by lazy { intent.getSubject() }
+    val topicName by lazy { intent.getTopicName() }
+    val topicId by lazy { intent.getTopicId() }
+    val subtopicName by lazy { intent.getSubtopicName() }
+    val submissionCount by lazy { intent.getSubmissionCount() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lesson_viewer)
 
-        if (intent.hasAllExtras()) {
-            initializeUiForLessonFromDatabase()
-        } else {
+        if (!intent.hasAllExtras()) {
             showErrorToastAndFinish()
         }
 
+        initializeUiForLessonFromDatabase()
     }
 
     private fun initializeUiForLessonFromDatabase() {
         progressBar.setVisible()
-
-        val lessonId = intent.getLessonId()
-        val subtopicId = intent.getSubtopicId()
-        val subject = intent.getSubject()
-        val topicName = intent.getTopicName()
-        val topicId = intent.getTopicId()
-        val subtopicName = intent.getSubtopicName()
-
-        val submissionCount = intent.getSubmissionCount()
 
         val lessonQuery = databaseReference.child(getString(R.string.subtopic_lessons))
                                             .child(topicId)
@@ -107,17 +105,17 @@ class LessonViewerActivity : HappyTeacherActivity() {
 
         lessonQuery.onSingleValueEvent { dataSnapshot ->
             val lesson = dataSnapshot?.getValue(SubtopicLesson::class.java)
-            initializeUiForLesson(lesson, subject, attachmentDestinationDirectory, submissionCount, topicId, subtopicId, topicName)
+            initializeUiForLesson(lesson, attachmentDestinationDirectory)
         }
     }
 
-    private fun initializeUiForLesson(lesson: SubtopicLesson?, subject: String, attachmentDestinationDirectory: File, submissionCount: Int, topicId: String, subtopicId: String, topicName: String) {
+    private fun initializeUiForLesson(lesson: SubtopicLesson?, attachmentDestinationDirectory: File) {
         progressBar.setVisibilityGone()
-        setHeaderViewForLesson(lesson, subject, submissionCount, topicId, subtopicId, topicName)
-        initializeRecyclerView(lesson, attachmentDestinationDirectory, topicName, topicId, subtopicId)
+        setHeaderViewForLesson(lesson)
+        initializeRecyclerView(lesson, attachmentDestinationDirectory)
     }
 
-    private fun setHeaderViewForLesson(lesson: SubtopicLesson?, subject: String, submissionCount: Int, topicId: String, subtopicId: String, topicName: String) {
+    private fun setHeaderViewForLesson(lesson: SubtopicLesson?) {
         headerView.setVisible()
         supportActionBar?.title = lesson?.name
 
@@ -143,7 +141,7 @@ class LessonViewerActivity : HappyTeacherActivity() {
 
     }
 
-    private fun initializeRecyclerView(lesson: SubtopicLesson?, attachmentDestinationDirectory: File, topicName: String, topicId: String, subtopicId: String) {
+    private fun initializeRecyclerView(lesson: SubtopicLesson?, attachmentDestinationDirectory: File) {
         lessonPlanRecyclerView.layoutManager = LinearLayoutManager(this)
 
         if (lesson == null) {
