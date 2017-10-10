@@ -48,11 +48,11 @@ class LessonPlanRecyclerAdapter(contentCardMap: Map<String, ContentCard>, attach
         if (holder is ContentCardViewHolder) {
             onBindContentCardViewHolder(holder, position)
         } else if (holder is ContentHeaderRecyclerViewHolder) {
-            onBindClassRoomResourcesViewHolder(holder, position)
+            onBindClassroomResourcesViewHolder(holder, position)
         }
     }
 
-    private fun onBindClassRoomResourcesViewHolder(holder: ContentHeaderRecyclerViewHolder, position: Int) {
+    private fun onBindClassroomResourcesViewHolder(holder: ContentHeaderRecyclerViewHolder, position: Int) {
         holder.itemView.setBackgroundResource(R.color.colorPrimaryDark)
         holder.titleTextView.setText(R.string.classroom_resources)
 
