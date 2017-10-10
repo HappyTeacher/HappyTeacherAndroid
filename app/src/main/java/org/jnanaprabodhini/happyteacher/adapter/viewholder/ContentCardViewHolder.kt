@@ -6,7 +6,7 @@ import android.webkit.WebView
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import kotlinx.android.synthetic.main.list_item_lesson_card.view.*
+import kotlinx.android.synthetic.main.list_item_content_card.view.*
 import org.jnanaprabodhini.happyteacher.view.DownloadBarView
 import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
 

@@ -15,7 +15,7 @@ import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
  * An abstract adapter for a list of cards showing header information for content lists.
  */
 abstract class CardListContentHeaderRecyclerAdapter<VH: CardListHeaderViewHolder>(val topicName: String, contentQuery: Query, val activity: Activity, viewholderClass: Class<VH>, firebaseDataObserver: FirebaseDataObserver):
-        FirebaseObserverRecyclerAdapter<CardListContentHeader, VH>(CardListContentHeader::class.java, R.layout.list_item_lesson_header, viewholderClass, contentQuery, firebaseDataObserver) {
+        FirebaseObserverRecyclerAdapter<CardListContentHeader, VH>(CardListContentHeader::class.java, R.layout.list_item_content_header, viewholderClass, contentQuery, firebaseDataObserver) {
 
     private val dateFormat by lazy {
         DateFormat.getDateFormat(activity)

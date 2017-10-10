@@ -4,7 +4,7 @@ import android.app.Activity
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
-import kotlinx.android.synthetic.main.list_item_lesson_header.view.*
+import kotlinx.android.synthetic.main.list_item_content_header.view.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.setDrawableLeft
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
