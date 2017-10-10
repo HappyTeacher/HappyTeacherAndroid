@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.widget.Toast
 import com.google.firebase.database.DatabaseReference
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
@@ -112,10 +111,7 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity() {
 
 
         getContentRef().onSingleValueEvent { dataSnapshot ->
-            Log.d("GRAHAM", "contentRef: ${getContentRef()}")
-            Log.d("GRAHAM", "getting content ref snapshot. $dataSnapshot")
             val content = dataSnapshot?.getValue(CardListContent::class.java)
-            Log.d("GRAHAM", "Here's the content. $content")
             initializeUiForContent(content, attachmentDestinationDirectory)
         }
     }
@@ -140,7 +136,7 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity() {
         locationTextView.text = location
     }
 
-    private fun initializeRecyclerView(content: CardListContent?, attachmentDestinationDirectory: File) {
+    open fun initializeRecyclerView(content: CardListContent?, attachmentDestinationDirectory: File) {
         cardRecyclerView.layoutManager = LinearLayoutManager(this)
 
         if (content == null) {
