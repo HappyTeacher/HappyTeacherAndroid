@@ -23,7 +23,7 @@ abstract class CardListContentRecyclerAdapter(val contentCardMap: Map<String, Co
 
     override fun getItemCount(): Int = lessonCards.size
 
-    protected fun onBindLessonCardViewHolder(holder: ContentCardViewHolder, position: Int) {
+    protected fun onBindContentCardViewHolder(holder: ContentCardViewHolder, position: Int) {
         val card = lessonCards[position]
 
         resetViewVisibility(holder)

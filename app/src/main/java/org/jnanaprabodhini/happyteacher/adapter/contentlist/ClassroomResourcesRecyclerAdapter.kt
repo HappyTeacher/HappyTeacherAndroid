@@ -12,7 +12,7 @@ import java.io.File
 class ClassroomResourcesRecyclerAdapter(contentCardMap: Map<String, ContentCard>, attachmentDestinationDirectory: File, topicName: String, topicId: String, subtopicId: String, activity: HappyTeacherActivity): CardListContentRecyclerAdapter(contentCardMap, attachmentDestinationDirectory, topicName, topicId, subtopicId, activity) {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         if (holder is ContentCardViewHolder) {
-            onBindLessonCardViewHolder(holder, position)
+            onBindContentCardViewHolder(holder, position)
         }
     }
 

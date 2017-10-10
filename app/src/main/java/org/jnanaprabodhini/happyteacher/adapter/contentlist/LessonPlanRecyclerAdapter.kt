@@ -1,6 +1,5 @@
 package org.jnanaprabodhini.happyteacher.adapter.contentlist
 
-import android.support.v4.view.ViewCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -47,7 +46,7 @@ class LessonPlanRecyclerAdapter(contentCardMap: Map<String, ContentCard>, attach
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         if (holder is ContentCardViewHolder) {
-            onBindLessonCardViewHolder(holder, position)
+            onBindContentCardViewHolder(holder, position)
         } else if (holder is ContentHeaderRecyclerViewHolder) {
             onBindClassRoomResourcesViewHolder(holder, position)
         }
