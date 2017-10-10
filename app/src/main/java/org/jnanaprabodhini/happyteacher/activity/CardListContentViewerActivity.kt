@@ -136,7 +136,7 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity() {
         locationTextView.text = location
     }
 
-    open fun initializeRecyclerView(content: CardListContent?, attachmentDestinationDirectory: File) {
+    private fun initializeRecyclerView(content: CardListContent?, attachmentDestinationDirectory: File) {
         cardRecyclerView.layoutManager = LinearLayoutManager(this)
 
         if (content == null) {

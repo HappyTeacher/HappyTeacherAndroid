@@ -5,7 +5,6 @@ import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.CardListContentRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.LessonPlanRecyclerAdapter
-import org.jnanaprabodhini.happyteacher.adapter.helper.LastItemTopPaddingDecoration
 import org.jnanaprabodhini.happyteacher.extension.setDrawableRight
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
@@ -37,10 +36,5 @@ class LessonViewerActivity : CardListContentViewerActivity() {
 
     override fun getCardRecyclerAdapter(cards: Map<String, ContentCard>, attachmentDestinationDirectory: File): CardListContentRecyclerAdapter {
         return LessonPlanRecyclerAdapter(cards, attachmentDestinationDirectory, topicName, topicId, subtopicId, this)
-    }
-
-    override fun initializeRecyclerView(content: CardListContent?, attachmentDestinationDirectory: File) {
-        super.initializeRecyclerView(content, attachmentDestinationDirectory)
-        cardRecyclerView?.addItemDecoration(LastItemTopPaddingDecoration())
     }
 }

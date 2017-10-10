@@ -1,5 +1,6 @@
 package org.jnanaprabodhini.happyteacher.adapter.contentlist
 
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -23,6 +24,12 @@ class LessonPlanRecyclerAdapter(contentCardMap: Map<String, ContentCard>, attach
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE) {
             val classroomResourcesView = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_content_header_recycler, parent, false)
+
+            // Add margin to top of view:
+            val margins = classroomResourcesView.layoutParams as ViewGroup.MarginLayoutParams
+            margins.topMargin = activity.resources.getDimensionPixelSize(R.dimen.classroom_resources_list_top_padding)
+            classroomResourcesView.layoutParams = margins
+
             return ContentHeaderRecyclerViewHolder(classroomResourcesView)
         } else {
             val cardView = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_content_card, parent, false)
@@ -53,7 +60,6 @@ class LessonPlanRecyclerAdapter(contentCardMap: Map<String, ContentCard>, attach
         val classroomResourceQuery = activity.databaseReference.child(activity.getString(R.string.classroom_resources_headers)).child(topicId).child(subtopicId)
 
         holder.horizontalRecyclerView.setAdapter(ClassroomResourcesHeaderRecyclerAdapter(topicName, classroomResourceQuery, activity, getClassroomResourcesDataObserver(holder)))
-        holder.horizontalRecyclerView.setVisible()
     }
 
     private fun getClassroomResourcesDataObserver(holder: ContentHeaderRecyclerViewHolder): FirebaseDataObserver = object: FirebaseDataObserver {
