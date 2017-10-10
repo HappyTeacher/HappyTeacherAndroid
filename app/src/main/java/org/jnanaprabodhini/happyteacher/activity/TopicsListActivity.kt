@@ -19,12 +19,13 @@ import org.jnanaprabodhini.happyteacher.adapter.*
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.Subject
-import org.jnanaprabodhini.happyteacher.model.SubtopicLessonHeader
+import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 import org.jnanaprabodhini.happyteacher.model.Topic
 import org.jnanaprabodhini.happyteacher.prefs
-import org.jnanaprabodhini.happyteacher.adapter.viewholder.SubtopicHeaderViewHolder
-import org.jnanaprabodhini.happyteacher.adapter.SubtopicLessonHeaderRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.viewholder.CardListHeaderViewHolder
+import org.jnanaprabodhini.happyteacher.adapter.CardListContentHeaderRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ColoredHorizontalRecyclerViewHolder
+import org.jnanaprabodhini.happyteacher.adapter.viewholder.LessonHeaderViewHolder
 
 class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
@@ -315,7 +316,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
     }
 
     private fun setSubtopicRecyclerAdapterUnfiltered(topicViewHolder: ColoredHorizontalRecyclerViewHolder?, topicName: String?, subtopicQuery: Query) {
-        topicViewHolder?.horizontalRecyclerView?.setAdapter(SubtopicLessonHeaderRecyclerAdapter(topicName ?: "", subtopicQuery, this, getSubtopicDataObserverForViewHolder(topicViewHolder)))
+        topicViewHolder?.horizontalRecyclerView?.setAdapter(LessonHeaderRecyclerAdapter(topicName ?: "", subtopicQuery, this, getSubtopicDataObserverForViewHolder(topicViewHolder)))
     }
 
     private fun setSubtopicViewHolderRecyclerFilteredByLevel(topicViewHolder: ColoredHorizontalRecyclerViewHolder?, level: Int, topicName: String?, topicKey: String) {
@@ -326,9 +327,9 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
         val featuredSubtopicLessonHeaderReference = databaseReference.child(getString(R.string.featured_subtopic_lesson_headers)).child(topicKey)
 
-        val adapter = object: FirebaseObserverIndexRecyclerAdapter<SubtopicLessonHeader, SubtopicHeaderViewHolder>(SubtopicLessonHeader::class.java, R.layout.list_item_lesson_header, SubtopicHeaderViewHolder::class.java, boardLevelSubtopicsQuery, featuredSubtopicLessonHeaderReference, getSubtopicDataObserverForViewHolder(topicViewHolder, level)) {
-            override fun populateViewHolder(subtopicHeaderViewHolder: SubtopicHeaderViewHolder?, subtopicHeaderModel: SubtopicLessonHeader?, lessonHeaderPosition: Int) {
-                subtopicHeaderViewHolder?.populateView(subtopicHeaderModel, topicName ?: "", this@TopicsListActivity, dateFormat, getString(R.string.subtopic_lessons))
+        val adapter = object: FirebaseObserverIndexRecyclerAdapter<CardListContentHeader, LessonHeaderViewHolder>(CardListContentHeader::class.java, R.layout.list_item_lesson_header, LessonHeaderViewHolder::class.java, boardLevelSubtopicsQuery, featuredSubtopicLessonHeaderReference, getSubtopicDataObserverForViewHolder(topicViewHolder, level)) {
+            override fun populateViewHolder(lessonHeaderViewHolder: LessonHeaderViewHolder?, subtopicHeaderModel: CardListContentHeader?, lessonHeaderPosition: Int) {
+                lessonHeaderViewHolder?.populateView(subtopicHeaderModel, topicName ?: "", this@TopicsListActivity, dateFormat)
             }
         }
         topicViewHolder?.horizontalRecyclerView?.setAdapter(adapter)

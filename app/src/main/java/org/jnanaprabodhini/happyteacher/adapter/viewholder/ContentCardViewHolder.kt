@@ -13,7 +13,7 @@ import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
 /**
  * Created by grahamearley on 9/25/17.
  */
-open class LessonCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     val headerTextView: TextView = itemView.headerTextView
     val bodyTextView: TextView = itemView.bodyTextView
 
