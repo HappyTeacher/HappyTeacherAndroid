@@ -43,20 +43,32 @@ class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObse
         fun Intent.hasAllExtras(): Boolean = hasTopicKey() && hasSubtopicKey() && hasTopicName()
     }
 
+    val topicKey: String by lazy {
+        intent.getTopicKey()
+    }
+
+    val subtopicKey: String by lazy {
+        intent.getSubtopicKey()
+    }
+
+    val topicName: String by lazy {
+        intent.getTopicName()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_subtopic_submissions_list)
 
-        if (intent.hasAllExtras()) {
-            initializeRecyclerViewForSubtopic(intent.getTopicKey(), intent.getSubtopicKey(), intent.getTopicName())
-        } else {
+        if (!intent.hasAllExtras()) {
             // todo: log error
             showToast(R.string.error_loading_other_lessons)
             finish()
         }
+
+        initializeRecyclerViewForSubtopic()
     }
 
-    fun initializeRecyclerViewForSubtopic(topicKey: String, subtopicKey: String, topicName: String) {
+    fun initializeRecyclerViewForSubtopic() {
 
         val submissionHeadersQuery = databaseReference.child(getString(R.string.subtopic_lesson_headers))
                                                         .child(topicKey)
