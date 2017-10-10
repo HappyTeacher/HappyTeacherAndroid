@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
-import org.jnanaprabodhini.happyteacher.adapter.viewholder.ColoredHorizontalRecyclerViewHolder
+import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentHeaderRecyclerViewHolder
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentCardViewHolder
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
@@ -21,8 +21,8 @@ class LessonPlanRecyclerAdapter(contentCardMap: Map<String, ContentCard>, attach
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE) {
-            val classroomResourcesView = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_colored_horizontal_recycler, parent, false)
-            return ColoredHorizontalRecyclerViewHolder(classroomResourcesView)
+            val classroomResourcesView = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_content_header_recycler, parent, false)
+            return ContentHeaderRecyclerViewHolder(classroomResourcesView)
         } else {
             val cardView = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_lesson_card, parent, false)
             return ContentCardViewHolder(cardView)
@@ -40,12 +40,12 @@ class LessonPlanRecyclerAdapter(contentCardMap: Map<String, ContentCard>, attach
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         if (holder is ContentCardViewHolder) {
             onBindLessonCardViewHolder(holder, position)
-        } else if (holder is ColoredHorizontalRecyclerViewHolder) {
+        } else if (holder is ContentHeaderRecyclerViewHolder) {
             onBindClassRoomResourcesViewHolder(holder, position)
         }
     }
 
-    private fun onBindClassRoomResourcesViewHolder(holder: ColoredHorizontalRecyclerViewHolder, position: Int) {
+    private fun onBindClassRoomResourcesViewHolder(holder: ContentHeaderRecyclerViewHolder, position: Int) {
         holder.itemView.setBackgroundResource(R.color.colorPrimaryDark)
         holder.titleTextView.text = activity.getString(R.string.classroom_resources)
 //        holder.emptyView.setVisible()

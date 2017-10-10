@@ -22,9 +22,7 @@ import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 import org.jnanaprabodhini.happyteacher.model.Topic
 import org.jnanaprabodhini.happyteacher.prefs
-import org.jnanaprabodhini.happyteacher.adapter.viewholder.CardListHeaderViewHolder
-import org.jnanaprabodhini.happyteacher.adapter.CardListContentHeaderRecyclerAdapter
-import org.jnanaprabodhini.happyteacher.adapter.viewholder.ColoredHorizontalRecyclerViewHolder
+import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentHeaderRecyclerViewHolder
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.LessonHeaderViewHolder
 
 class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
@@ -179,8 +177,8 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val topicQuery = databaseReference.child(getString(R.string.topics))
                 .orderByChild(getString(R.string.subject)).equalTo(subjectKey)
 
-        val topicAdapter = object: FirebaseObserverRecyclerAdapter<Topic, ColoredHorizontalRecyclerViewHolder>(Topic::class.java, R.layout.list_item_colored_horizontal_recycler, ColoredHorizontalRecyclerViewHolder::class.java, topicQuery, this) {
-            override fun populateViewHolder(topicViewHolder: ColoredHorizontalRecyclerViewHolder?, topicModel: Topic?, topicPosition: Int) {
+        val topicAdapter = object: FirebaseObserverRecyclerAdapter<Topic, ContentHeaderRecyclerViewHolder>(Topic::class.java, R.layout.list_item_content_header_recycler, ContentHeaderRecyclerViewHolder::class.java, topicQuery, this) {
+            override fun populateViewHolder(topicViewHolder: ContentHeaderRecyclerViewHolder?, topicModel: Topic?, topicPosition: Int) {
                 val topicKey = this.getRef(topicPosition).key
                 populateUnfilteredTopicViewHolder(topicViewHolder, topicModel, topicPosition, topicKey)
             }
@@ -227,8 +225,8 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val topicsIndexListReference = databaseRoot.getReferenceFromUrl(indexListLocationUrl)
         val topicsReference = databaseReference.child(getString(R.string.topics))
 
-        val topicIndexAdapter = object: FirebaseObserverIndexRecyclerAdapter<Topic, ColoredHorizontalRecyclerViewHolder>(Topic::class.java, R.layout.list_item_colored_horizontal_recycler, ColoredHorizontalRecyclerViewHolder::class.java, topicsIndexListReference, topicsReference, this) {
-            override fun populateViewHolder(topicViewHolder: ColoredHorizontalRecyclerViewHolder?, topicModel: Topic?, topicPosition: Int) {
+        val topicIndexAdapter = object: FirebaseObserverIndexRecyclerAdapter<Topic, ContentHeaderRecyclerViewHolder>(Topic::class.java, R.layout.list_item_content_header_recycler, ContentHeaderRecyclerViewHolder::class.java, topicsIndexListReference, topicsReference, this) {
+            override fun populateViewHolder(topicViewHolder: ContentHeaderRecyclerViewHolder?, topicModel: Topic?, topicPosition: Int) {
                 val topicKey = this.getRef(topicPosition).key
                 populateLevelFilteredTopicViewHolder(topicViewHolder, topicModel, topicPosition, topicKey, level)
             }
@@ -266,7 +264,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
      * This data observer will respond to subtopic load events and
      *  update the UI accordingly. It is used by subtopic adapters.
      */
-    private fun getSubtopicDataObserverForViewHolder(topicViewHolder: ColoredHorizontalRecyclerViewHolder?, level: Int? = null) = object: FirebaseDataObserver {
+    private fun getSubtopicDataObserverForViewHolder(topicViewHolder: ContentHeaderRecyclerViewHolder?, level: Int? = null) = object: FirebaseDataObserver {
         override fun onRequestNewData() {
             topicViewHolder?.progressBar?.setVisible()
         }
@@ -289,7 +287,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         }
     }
 
-    private fun populateUnfilteredTopicViewHolder(topicViewHolder: ColoredHorizontalRecyclerViewHolder?, topicModel: Topic?, topicPosition: Int, topicKey: String) {
+    private fun populateUnfilteredTopicViewHolder(topicViewHolder: ContentHeaderRecyclerViewHolder?, topicModel: Topic?, topicPosition: Int, topicKey: String) {
         populateTopicViewHolder(topicViewHolder, topicModel, topicPosition)
 
         val featuredSubtopicQuery = databaseReference.child(getString(R.string.featured_subtopic_lesson_headers))
@@ -298,12 +296,12 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         setSubtopicRecyclerAdapterUnfiltered(topicViewHolder, topicModel?.name, featuredSubtopicQuery)
     }
 
-    private fun populateLevelFilteredTopicViewHolder(topicViewHolder: ColoredHorizontalRecyclerViewHolder?, topicModel: Topic?, topicPosition: Int, topicKey: String, level: Int) {
+    private fun populateLevelFilteredTopicViewHolder(topicViewHolder: ContentHeaderRecyclerViewHolder?, topicModel: Topic?, topicPosition: Int, topicKey: String, level: Int) {
         populateTopicViewHolder(topicViewHolder, topicModel, topicPosition)
         setSubtopicViewHolderRecyclerFilteredByLevel(topicViewHolder, level, topicModel?.name, topicKey)
     }
 
-    private fun populateTopicViewHolder(topicViewHolder: ColoredHorizontalRecyclerViewHolder?, topicModel: Topic?, topicPosition: Int) {
+    private fun populateTopicViewHolder(topicViewHolder: ContentHeaderRecyclerViewHolder?, topicModel: Topic?, topicPosition: Int) {
         topicViewHolder?.titleTextView?.text = topicModel?.name
 
         // Alternate between these four colors:
@@ -315,11 +313,11 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         }
     }
 
-    private fun setSubtopicRecyclerAdapterUnfiltered(topicViewHolder: ColoredHorizontalRecyclerViewHolder?, topicName: String?, subtopicQuery: Query) {
+    private fun setSubtopicRecyclerAdapterUnfiltered(topicViewHolder: ContentHeaderRecyclerViewHolder?, topicName: String?, subtopicQuery: Query) {
         topicViewHolder?.horizontalRecyclerView?.setAdapter(LessonHeaderRecyclerAdapter(topicName ?: "", subtopicQuery, this, getSubtopicDataObserverForViewHolder(topicViewHolder)))
     }
 
-    private fun setSubtopicViewHolderRecyclerFilteredByLevel(topicViewHolder: ColoredHorizontalRecyclerViewHolder?, level: Int, topicName: String?, topicKey: String) {
+    private fun setSubtopicViewHolderRecyclerFilteredByLevel(topicViewHolder: ContentHeaderRecyclerViewHolder?, level: Int, topicName: String?, topicKey: String) {
         val boardLevelSubtopicsQuery = databaseReference.child(getString(R.string.boards))
                 .child(prefs.getBoardKey())
                 .child(getString(R.string.level_subtopics))
