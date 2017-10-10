@@ -27,7 +27,7 @@ class SubtopicHeaderViewHolder(itemView: View): RecyclerView.ViewHolder(itemView
     val dateEditedTextView: TextView = itemView.dateEditedTextView
     val submissionCountTextView: TextView = itemView.submissionCountTextView
 
-    fun populateView(subtopicHeaderModel: SubtopicLessonHeader?, topicName: String, activity: Activity, dateFormat: DateFormat) {
+    fun populateView(subtopicHeaderModel: SubtopicLessonHeader?, topicName: String, activity: Activity, dateFormat: DateFormat, dataKey: String) {
         lessonTitleTextView.text = subtopicHeaderModel?.name
         authorNameTextView.text = subtopicHeaderModel?.authorName
         institutionTextView.text = subtopicHeaderModel?.authorInstitution
@@ -58,7 +58,7 @@ class SubtopicHeaderViewHolder(itemView: View): RecyclerView.ViewHolder(itemView
             val subjectName = subtopicHeaderModel?.subjectName
             val topicId = subtopicHeaderModel?.topic
 
-            LessonViewerActivity.launchActivity(activity, lessonId ?: "", subtopicId ?: "", subjectName ?: "", topicName, topicId ?: "", subtopicHeaderModel?.name ?: "", subtopicHeaderModel?.subtopicSubmissionCount ?: 0)
+            LessonViewerActivity.launchActivity(activity, lessonId ?: "", subtopicId ?: "", subjectName ?: "", topicName, topicId ?: "", subtopicHeaderModel?.name ?: "", subtopicHeaderModel?.subtopicSubmissionCount ?: 0, dataKey)
         }
     }
 }

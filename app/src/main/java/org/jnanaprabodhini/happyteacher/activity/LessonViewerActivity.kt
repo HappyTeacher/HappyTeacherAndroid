@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_lesson_viewer.*
@@ -21,7 +22,7 @@ class LessonViewerActivity : HappyTeacherActivity() {
     companion object Constants {
         val WRITE_STORAGE_PERMISSION_CODE = 1
 
-        fun launchActivity(from: Activity, lessonId: String, subtopicId: String, subjectName: String, topicName: String, topicId: String, subtopicName: String, submissionCount: Int) {
+        fun launchActivity(from: Activity, lessonId: String, subtopicId: String, subjectName: String, topicName: String, topicId: String, subtopicName: String, submissionCount: Int, dataKey: String) {
             val lessonViewerIntent = Intent(from, LessonViewerActivity::class.java)
 
             lessonViewerIntent.apply {
@@ -32,6 +33,7 @@ class LessonViewerActivity : HappyTeacherActivity() {
                 putExtra(LessonViewerActivity.TOPIC_ID, topicId)
                 putExtra(LessonViewerActivity.SUBTOPIC_NAME, subtopicName)
                 putExtra(LessonViewerActivity.SUBMISSION_COUNT, submissionCount)
+                putExtra(LessonViewerActivity.DATA_KEY, dataKey)
             }
 
             from.startActivity(lessonViewerIntent)
@@ -65,7 +67,11 @@ class LessonViewerActivity : HappyTeacherActivity() {
         fun Intent.hasSubmissionCount(): Boolean = hasExtra(SUBMISSION_COUNT)
         fun Intent.getSubmissionCount(): Int = getIntExtra(SUBMISSION_COUNT, 0)
 
-        fun Intent.hasAllExtras(): Boolean = hasLessonId() && hasSubtopicId() && hasSubject() && hasTopicName() && hasSubtopicName() && hasTopicId() && hasSubmissionCount()
+        val DATA_KEY: String = "DATA_KEY"
+        fun Intent.hasDataKey(): Boolean = hasExtra(DATA_KEY)
+        fun Intent.getDataKey(): String = getStringExtra(DATA_KEY)
+
+        fun Intent.hasAllExtras(): Boolean = hasLessonId() && hasSubtopicId() && hasSubject() && hasTopicName() && hasSubtopicName() && hasTopicId() && hasSubmissionCount() && hasDataKey()
     }
 
     val lessonId by lazy { intent.getLessonId() }
@@ -75,6 +81,7 @@ class LessonViewerActivity : HappyTeacherActivity() {
     val topicId by lazy { intent.getTopicId() }
     val subtopicName by lazy { intent.getSubtopicName() }
     val submissionCount by lazy { intent.getSubmissionCount() }
+    val dataKey by lazy { intent.getDataKey() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,7 +97,7 @@ class LessonViewerActivity : HappyTeacherActivity() {
     private fun initializeUiForLessonFromDatabase() {
         progressBar.setVisible()
 
-        val lessonQuery = databaseReference.child(getString(R.string.subtopic_lessons))
+        val lessonQuery = databaseReference.child(dataKey)
                                             .child(topicId)
                                             .child(subtopicId)
                                             .child(lessonId)

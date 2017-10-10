@@ -1,6 +1,5 @@
 package org.jnanaprabodhini.happyteacher.adapter
 
-import android.app.Activity
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -10,8 +9,8 @@ import org.jnanaprabodhini.happyteacher.activity.FullScreenGalleryViewerActivity
 import org.jnanaprabodhini.happyteacher.activity.parent.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.helper.AttachmentDownloadManager
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
-import org.jnanaprabodhini.happyteacher.adapter.viewholder.LessonCardViewHolder
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ColoredHorizontalRecyclerViewHolder
+import org.jnanaprabodhini.happyteacher.adapter.viewholder.LessonCardViewHolder
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.AttachmentMetadata
 import org.jnanaprabodhini.happyteacher.model.LessonCard
@@ -78,13 +77,13 @@ class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val 
         holder.itemView.setBackgroundResource(R.color.colorPrimaryDark)
         holder.titleTextView.text = activity.getString(R.string.classroom_resources)
 //        holder.emptyView.setVisible()
-//        holder.emptyTextView.text = "No resources here yo!" // todo: extract strings, firebase keys
+//        holder.emptyTextView.text = "No resources here yo!" // todo: extract strings
         holder.progressBar.setVisibilityGone()
 
-        val classroomResourceQuery = activity.databaseReference.child("classroom_resources_headers").child(topicId).child(subtopicId)
+        val classroomResourceQuery = activity.databaseReference.child(activity.getString(R.string.classroom_resources_headers)).child(topicId).child(subtopicId)
         val observer = object: FirebaseDataObserver{} // todo: fill in
 
-        holder.horizontalRecyclerView.setAdapter(SubtopicLessonHeaderRecyclerAdapter(topicName, classroomResourceQuery, activity, observer))
+        holder.horizontalRecyclerView.setAdapter(ClassroomResourceHeaderRecyclerAdapter(topicName, classroomResourceQuery, activity, observer))
         holder.horizontalRecyclerView.setVisible()
     }
 

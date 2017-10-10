@@ -19,5 +19,7 @@
     <string name="level_subtopics">level_subtopics</string>
     <string name="featured_subtopic_lesson_headers">featured_subtopic_lesson_headers</string>
     <string name="subtopic_lessons">subtopic_lessons</string>
+    <string name="classroom_resources_key">classroom_resources</string>
+    <string name="classroom_resources_headers">classroom_resources_headers</string>
 
 </resources>
