@@ -48,16 +48,34 @@ class LessonPlanRecyclerAdapter(contentCardMap: Map<String, ContentCard>, attach
 
     private fun onBindClassRoomResourcesViewHolder(holder: ContentHeaderRecyclerViewHolder, position: Int) {
         holder.itemView.setBackgroundResource(R.color.colorPrimaryDark)
-        holder.titleTextView.text = activity.getString(R.string.classroom_resources)
-//        holder.emptyView.setVisible()
-//        holder.emptyTextView.text = "No resources here yo!" // todo: extract strings
-        holder.progressBar.setVisibilityGone()
+        holder.titleTextView.setText(R.string.classroom_resources)
 
         val classroomResourceQuery = activity.databaseReference.child(activity.getString(R.string.classroom_resources_headers)).child(topicId).child(subtopicId)
-        val observer = object: FirebaseDataObserver{} // todo: fill in
 
-        holder.horizontalRecyclerView.setAdapter(ClassroomResourcesHeaderRecyclerAdapter(topicName, classroomResourceQuery, activity, observer))
+        holder.horizontalRecyclerView.setAdapter(ClassroomResourcesHeaderRecyclerAdapter(topicName, classroomResourceQuery, activity, getClassroomResourcesDataObserver(holder)))
         holder.horizontalRecyclerView.setVisible()
+    }
+
+    private fun getClassroomResourcesDataObserver(holder: ContentHeaderRecyclerViewHolder): FirebaseDataObserver = object: FirebaseDataObserver {
+        override fun onRequestNewData() {
+            holder.progressBar.setVisible()
+            holder.emptyView.setVisibilityGone()
+            holder.horizontalRecyclerView.setVisibilityGone()
+        }
+
+        override fun onDataLoaded() {
+            holder.progressBar.setVisibilityGone()
+            holder.emptyView.setVisibilityGone()
+            holder.horizontalRecyclerView.setVisible()
+        }
+
+        override fun onDataEmpty() {
+            holder.progressBar.setVisibilityGone()
+            holder.horizontalRecyclerView.setVisibilityGone()
+
+            holder.emptyView.setVisible()
+            holder.emptyTextView.setText(R.string.there_are_no_classroom_resources_for_this_lesson_yet)
+        }
     }
 
 }
