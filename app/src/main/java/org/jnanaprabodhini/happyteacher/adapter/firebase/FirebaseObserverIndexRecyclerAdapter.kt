@@ -1,4 +1,4 @@
-package org.jnanaprabodhini.happyteacher.adapter
+package org.jnanaprabodhini.happyteacher.adapter.firebase
 
 import android.support.annotation.LayoutRes
 import android.support.v7.widget.RecyclerView

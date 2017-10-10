@@ -1,4 +1,4 @@
-package org.jnanaprabodhini.happyteacher.adapter
+package org.jnanaprabodhini.happyteacher.adapter.contentlist
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater

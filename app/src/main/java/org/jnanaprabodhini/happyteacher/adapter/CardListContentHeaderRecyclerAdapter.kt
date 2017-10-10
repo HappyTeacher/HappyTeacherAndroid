@@ -4,6 +4,7 @@ import android.app.Activity
 import android.text.format.DateFormat
 import com.google.firebase.database.Query
 import org.jnanaprabodhini.happyteacher.R
+import org.jnanaprabodhini.happyteacher.adapter.firebase.FirebaseObserverRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.CardListHeaderViewHolder
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ClassroomResourcesHeaderViewHolder

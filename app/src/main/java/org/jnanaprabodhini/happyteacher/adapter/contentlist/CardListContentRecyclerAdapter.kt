@@ -1,9 +1,10 @@
-package org.jnanaprabodhini.happyteacher.adapter
+package org.jnanaprabodhini.happyteacher.adapter.contentlist
 
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import org.jnanaprabodhini.happyteacher.activity.FullScreenGalleryViewerActivity
 import org.jnanaprabodhini.happyteacher.activity.parent.HappyTeacherActivity
+import org.jnanaprabodhini.happyteacher.adapter.ImageGalleryRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.AttachmentDownloadManager
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentCardViewHolder
 import org.jnanaprabodhini.happyteacher.extension.*

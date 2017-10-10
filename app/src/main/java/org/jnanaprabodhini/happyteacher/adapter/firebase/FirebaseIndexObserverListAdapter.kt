@@ -1,4 +1,4 @@
-package org.jnanaprabodhini.happyteacher.adapter
+package org.jnanaprabodhini.happyteacher.adapter.firebase
 
 import android.content.Context
 import android.support.annotation.LayoutRes

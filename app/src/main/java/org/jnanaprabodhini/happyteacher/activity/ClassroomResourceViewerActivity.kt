@@ -3,8 +3,8 @@ package org.jnanaprabodhini.happyteacher.activity
 import com.google.firebase.database.DatabaseReference
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.adapter.CardListContentRecyclerAdapter
-import org.jnanaprabodhini.happyteacher.adapter.ClassroomResourcesRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.contentlist.CardListContentRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.contentlist.ClassroomResourcesRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.extension.setDrawableResource
 import org.jnanaprabodhini.happyteacher.model.CardListContent
 import org.jnanaprabodhini.happyteacher.model.ContentCard

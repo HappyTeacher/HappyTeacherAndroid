@@ -1,11 +1,10 @@
 package org.jnanaprabodhini.happyteacher.activity
 
-import android.util.Log
 import com.google.firebase.database.DatabaseReference
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.adapter.CardListContentRecyclerAdapter
-import org.jnanaprabodhini.happyteacher.adapter.LessonPlanRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.contentlist.CardListContentRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.contentlist.LessonPlanRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.extension.setDrawableRight
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
