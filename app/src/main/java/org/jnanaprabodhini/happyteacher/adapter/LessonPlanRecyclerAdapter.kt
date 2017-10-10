@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.FullScreenGalleryViewerActivity
+import org.jnanaprabodhini.happyteacher.activity.parent.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.helper.AttachmentDownloadManager
+import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.LessonCardViewHolder
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ColoredHorizontalRecyclerViewHolder
 import org.jnanaprabodhini.happyteacher.extension.*
@@ -19,7 +21,7 @@ import java.io.File
 /**
  * Created by grahamearley on 9/25/17.
  */
-class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val attachmentDestinationDirectory: File, val activity: Activity): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val attachmentDestinationDirectory: File, val topicName: String, val topicId: String, val subtopicId: String, val activity: HappyTeacherActivity): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object { val LESSON_CARD_VIEW_TYPE = 0; val CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE = 1 }
 
@@ -75,8 +77,15 @@ class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val 
     private fun onBindClassRoomResourcesViewHolder(holder: ColoredHorizontalRecyclerViewHolder, position: Int) {
         holder.itemView.setBackgroundResource(R.color.colorPrimaryDark)
         holder.titleTextView.text = activity.getString(R.string.classroom_resources)
-        holder.emptyView.setVisible()
+//        holder.emptyView.setVisible()
+//        holder.emptyTextView.text = "No resources here yo!" // todo: extract strings, firebase keys
         holder.progressBar.setVisibilityGone()
+
+        val classroomResourceQuery = activity.databaseReference.child("classroom_resources_headers").child(topicId).child(subtopicId)
+        val observer = object: FirebaseDataObserver{} // todo: fill in
+
+        holder.horizontalRecyclerView.setAdapter(SubtopicLessonHeaderRecyclerAdapter(topicName, classroomResourceQuery, activity, observer))
+        holder.horizontalRecyclerView.setVisible()
     }
 
     private fun resetViewVisibility(holder: LessonCardViewHolder?) {

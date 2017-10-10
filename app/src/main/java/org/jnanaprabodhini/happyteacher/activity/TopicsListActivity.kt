@@ -23,7 +23,7 @@ import org.jnanaprabodhini.happyteacher.model.SubtopicLessonHeader
 import org.jnanaprabodhini.happyteacher.model.Topic
 import org.jnanaprabodhini.happyteacher.prefs
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.SubtopicHeaderViewHolder
-import org.jnanaprabodhini.happyteacher.adapter.viewholder.SubtopicLessonHeaderRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.SubtopicLessonHeaderRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ColoredHorizontalRecyclerViewHolder
 
 class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {

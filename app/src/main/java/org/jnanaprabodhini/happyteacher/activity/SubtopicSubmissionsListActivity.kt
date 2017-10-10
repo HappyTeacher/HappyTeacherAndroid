@@ -7,7 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_subtopic_submissions_list.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.HappyTeacherActivity
-import org.jnanaprabodhini.happyteacher.adapter.viewholder.SubtopicLessonHeaderRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.SubtopicLessonHeaderRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible

@@ -114,7 +114,7 @@ class LessonViewerActivity : HappyTeacherActivity() {
     private fun initializeUiForLesson(lesson: SubtopicLesson?, subject: String, attachmentDestinationDirectory: File, submissionCount: Int, topicId: String, subtopicId: String, topicName: String) {
         progressBar.setVisibilityGone()
         setHeaderViewForLesson(lesson, subject, submissionCount, topicId, subtopicId, topicName)
-        initializeRecyclerView(lesson, attachmentDestinationDirectory)
+        initializeRecyclerView(lesson, attachmentDestinationDirectory, topicName, topicId, subtopicId)
     }
 
     private fun setHeaderViewForLesson(lesson: SubtopicLesson?, subject: String, submissionCount: Int, topicId: String, subtopicId: String, topicName: String) {
@@ -143,13 +143,13 @@ class LessonViewerActivity : HappyTeacherActivity() {
 
     }
 
-    private fun initializeRecyclerView(lesson: SubtopicLesson?, attachmentDestinationDirectory: File) {
+    private fun initializeRecyclerView(lesson: SubtopicLesson?, attachmentDestinationDirectory: File, topicName: String, topicId: String, subtopicId: String) {
         lessonPlanRecyclerView.layoutManager = LinearLayoutManager(this)
 
         if (lesson == null) {
             showErrorToastAndFinish()
         } else {
-            lessonPlanRecyclerView?.adapter = LessonPlanRecyclerAdapter(lesson.cards, attachmentDestinationDirectory, this)
+            lessonPlanRecyclerView?.adapter = LessonPlanRecyclerAdapter(lesson.cards, attachmentDestinationDirectory, topicName, topicId, subtopicId, this)
         }
     }
 
