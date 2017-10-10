@@ -17,7 +17,7 @@ class ClassroomResourcesRecyclerAdapter(contentCardMap: Map<String, ContentCard>
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
-        val cardView = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_lesson_card, parent, false)
+        val cardView = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_content_card, parent, false)
         return ContentCardViewHolder(cardView)
     }
 

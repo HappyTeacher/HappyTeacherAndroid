@@ -25,7 +25,7 @@ class LessonPlanRecyclerAdapter(contentCardMap: Map<String, ContentCard>, attach
             val classroomResourcesView = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_content_header_recycler, parent, false)
             return ContentHeaderRecyclerViewHolder(classroomResourcesView)
         } else {
-            val cardView = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_lesson_card, parent, false)
+            val cardView = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_content_card, parent, false)
             return ContentCardViewHolder(cardView)
         }
     }
