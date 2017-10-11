@@ -103,6 +103,8 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
             }
         }
 
+        boardSubjectSpinnerAdapter.startListening()
+
         // The level spinner depends on what subject is selected:
         subjectSpinner.onItemSelected { pos -> setupLevelSpinnerForSubject(boardSubjectSpinnerAdapter.getRef(pos).key) }
 
@@ -144,6 +146,8 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
             }
         }
 
+        boardLevelSpinnerAdapter.startListening()
+
         // Once a level is selected, we can update the list of lessons
         levelSpinner.onItemSelected { pos -> updateSyllabusLessonList(subjectKey, boardLevelSpinnerAdapter.getRef(pos).key) }
 
@@ -160,9 +164,13 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
                 .child(selectedLevel)
                 .orderByChild(getString(R.string.lesson_number))
 
-        val adapterOptions = FirebaseRecyclerOptions.Builder<SyllabusLesson>().setQuery(syllabusLessonQuery, SyllabusLesson::class.java).build()
+        val adapterOptions = FirebaseRecyclerOptions.Builder<SyllabusLesson>()
+                .setQuery(syllabusLessonQuery, SyllabusLesson::class.java).build()
 
-        syllabusLessonsRecyclerView.adapter = SyllabusLessonRecyclerAdapter(adapterOptions, this, this)
+        val adapter = SyllabusLessonRecyclerAdapter(adapterOptions, this, this)
+        adapter.startListening()
+
+        syllabusLessonsRecyclerView.adapter = adapter
     }
 
     override fun onRequestNewData() {

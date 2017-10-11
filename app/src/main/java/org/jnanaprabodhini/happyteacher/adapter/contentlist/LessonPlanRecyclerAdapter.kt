@@ -60,9 +60,14 @@ class LessonPlanRecyclerAdapter(contentCardMap: Map<String, ContentCard>, attach
         holder.titleTextView.setText(R.string.classroom_resources)
 
         val classroomResourceQuery = activity.databaseReference.child(activity.getString(R.string.classroom_resources_headers)).child(topicId).child(subtopicId)
-        val adapterOptions = FirebaseRecyclerOptions.Builder<CardListContentHeader>().setQuery(classroomResourceQuery, CardListContentHeader::class.java).build()
+        val adapterOptions = FirebaseRecyclerOptions.Builder<CardListContentHeader>()
+                .setQuery(classroomResourceQuery, CardListContentHeader::class.java)
+                .build()
 
-        holder.horizontalRecyclerView.setAdapter(ClassroomResourcesHeaderRecyclerAdapter(topicName, adapterOptions, activity, getClassroomResourcesDataObserver(holder)))
+        val adapter = ClassroomResourcesHeaderRecyclerAdapter(topicName, adapterOptions, activity, getClassroomResourcesDataObserver(holder))
+        adapter.startListening()
+
+        holder.horizontalRecyclerView.setAdapter(adapter)
     }
 
     private fun getClassroomResourcesDataObserver(holder: ContentHeaderRecyclerViewHolder): FirebaseDataObserver = object: FirebaseDataObserver {

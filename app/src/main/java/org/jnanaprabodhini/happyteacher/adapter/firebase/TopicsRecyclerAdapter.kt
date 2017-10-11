@@ -43,7 +43,10 @@ abstract class TopicsRecyclerAdapter(topicsAdapterOptions: FirebaseRecyclerOptio
 
     private fun initializeChildRecyclerView(recyclerView: HorizontalPagerRecyclerView?, topicKey: String, model: Topic?, holder: ContentHeaderRecyclerViewHolder?) {
         val adapterOptions = getSubtopicAdapterOptions(topicKey)
-        recyclerView?.setAdapter(LessonHeaderRecyclerAdapter(model?.name ?: "", adapterOptions, activity, getSubtopicDataObserverForViewHolder(holder)))
+        val adapter = LessonHeaderRecyclerAdapter(model?.name ?: "", adapterOptions, activity, getSubtopicDataObserverForViewHolder(holder))
+
+        adapter.startListening()
+        recyclerView?.setAdapter(adapter)
     }
 
     abstract fun getSubtopicAdapterOptions(topicId: String): FirebaseRecyclerOptions<CardListContentHeader>

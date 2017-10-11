@@ -77,10 +77,14 @@ class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObse
                                                         .child(topicKey)
                                                         .child(subtopicKey)
 
-        val adapterOptions = FirebaseRecyclerOptions.Builder<CardListContentHeader>().setQuery(submissionHeadersQuery, CardListContentHeader::class.java).build()
+        val adapterOptions = FirebaseRecyclerOptions.Builder<CardListContentHeader>()
+                .setQuery(submissionHeadersQuery, CardListContentHeader::class.java).build()
+
+        val adapter = LessonHeaderRecyclerAdapter(topicName, adapterOptions, this, this)
+        adapter.startListening()
 
         submissionRecyclerView.layoutManager = LinearLayoutManager(this)
-        submissionRecyclerView.adapter = LessonHeaderRecyclerAdapter(topicName, adapterOptions, this, this)
+        submissionRecyclerView.adapter = adapter
     }
 
     override fun onRequestNewData() {

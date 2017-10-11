@@ -67,10 +67,6 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
     private var parentSubjectSelectionIndex = 0
     private var childSubjectSelectionIndex = 0
 
-    private val dateFormat by lazy {
-        DateFormat.getDateFormat(this)
-    }
-
     @IntegerRes override val bottomNavigationMenuItemId: Int = R.id.navigation_topics
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -149,6 +145,8 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
             }
         }
 
+        spinnerAdapter.startListening()
+
         spinner.adapter = spinnerAdapter
 
         spinner.selectIndexWhenPopulated(selectionIndex)
@@ -185,7 +183,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val topicAdapterOptions = FirebaseRecyclerOptions.Builder<Topic>()
                 .setQuery(topicQuery, Topic::class.java).build()
 
-        topicsRecyclerView.adapter = object: TopicsRecyclerAdapter(topicAdapterOptions, this, this) {
+        val topicAdapter = object: TopicsRecyclerAdapter(topicAdapterOptions, this, this) {
             override fun getSubtopicAdapterOptions(topicId: String): FirebaseRecyclerOptions<CardListContentHeader> {
                 val featuredSubtopicQuery = databaseReference.child(getString(R.string.featured_subtopic_lesson_headers)).child(topicId)
 
@@ -193,6 +191,10 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
                         .setQuery(featuredSubtopicQuery, CardListContentHeader::class.java).build()
             }
         }
+
+        topicAdapter.startListening()
+
+        topicsRecyclerView.adapter = topicAdapter
     }
 
     /**
@@ -207,7 +209,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val topicsAdapterOptions = FirebaseRecyclerOptions.Builder<Topic>()
                 .setIndexedQuery(topicsIndexListReference, topicsReference, Topic::class.java).build()
 
-        topicsRecyclerView.adapter = object: TopicsRecyclerAdapter(topicsAdapterOptions, this, this) {
+        val adapter = object: TopicsRecyclerAdapter(topicsAdapterOptions, this, this) {
             override fun getSubtopicAdapterOptions(topicId: String): FirebaseRecyclerOptions<CardListContentHeader> {
                 val indicesOfLessonsForCurrentLevel = databaseReference.child(getString(R.string.boards))
                         .child(prefs.getBoardKey())
@@ -219,8 +221,11 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
                 return FirebaseRecyclerOptions.Builder<CardListContentHeader>()
                         .setIndexedQuery(indicesOfLessonsForCurrentLevel, featuredSubtopicLessonHeaderReference, CardListContentHeader::class.java).build()
             }
-
         }
+        adapter.startListening()
+
+        topicsRecyclerView.adapter = adapter
+
     }
 
     /**

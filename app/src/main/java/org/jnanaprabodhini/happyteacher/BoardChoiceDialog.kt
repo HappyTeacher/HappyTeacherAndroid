@@ -36,9 +36,12 @@ class BoardChoiceDialog(context: Context): Dialog(context) {
                 v.setOnClickListener {
                     prefs.setBoardKey(getRef(position).key)
                     dismiss()
+                    this.stopListening()
                 }
             }
         }
+
+        boardChoiceAdapter.startListening()
 
         boardOptionsListView.adapter = boardChoiceAdapter
     }
