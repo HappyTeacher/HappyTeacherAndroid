@@ -5,7 +5,7 @@
     tools:context="org.jnanaprabodhini.happyteacher.activity.TopicsListActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent">
+    android:background="@color/lightGray">
 
     <android.support.design.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -15,15 +15,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/topicsListWithHeader"
-        android:layout_above="@id/bottomNavigation"
-        android:background="@color/colorAccent">
+        android:layout_above="@id/bottomNavigation">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/topicsRecyclerView"
-            android:background="@color/lightGray"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layoutAnimation="@anim/layout_fall_down" />
 
         <TextView
