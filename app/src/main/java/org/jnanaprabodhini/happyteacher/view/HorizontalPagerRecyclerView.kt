@@ -4,16 +4,12 @@ import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.view_recycler_horizontal_pager.view.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.*
 import android.animation.LayoutTransition
-
 
 
 /**
@@ -29,11 +25,6 @@ class HorizontalPagerRecyclerView(context: Context, attrs: AttributeSet): FrameL
                 RecyclerView.SCROLL_STATE_DRAGGING -> hidePagers()
             }
         }
-    }
-
-    val onChildAttachListener = object: RecyclerView.OnChildAttachStateChangeListener {
-        override fun onChildViewDetachedFromWindow(view: View?) { showRelevantPagers() }
-        override fun onChildViewAttachedToWindow(view: View?) { showRelevantPagers() }
     }
 
     val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -53,18 +44,23 @@ class HorizontalPagerRecyclerView(context: Context, attrs: AttributeSet): FrameL
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        recyclerView.addOnChildAttachStateChangeListener(onChildAttachListener)
         recyclerView.addOnScrollListener(onScrollListener)
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        recyclerView.removeOnChildAttachStateChangeListener(onChildAttachListener)
         recyclerView.removeOnScrollListener(onScrollListener)
     }
 
     fun setAdapter(adapter: RecyclerView.Adapter<*>) {
         recyclerView.adapter = adapter
+        adapter.onDataChanged {
+            if (adapter.itemCount > 1) {
+                forwardPager.setVisible()
+            } else {
+                hidePagers()
+            }
+        }
     }
 
     fun showRelevantPagers() {
