@@ -9,7 +9,8 @@ import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentCardViewHolder
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 import java.io.File
 
-class ClassroomResourcesRecyclerAdapter(contentCardMap: Map<String, ContentCard>, attachmentDestinationDirectory: File, topicName: String, topicId: String, subtopicId: String, activity: HappyTeacherActivity): CardListContentRecyclerAdapter(contentCardMap, attachmentDestinationDirectory, topicName, topicId, subtopicId, activity) {
+class ClassroomResourcesRecyclerAdapter(contentCardMap: Map<String, ContentCard>, attachmentDestinationDirectory: File, topicName: String, topicId: String, subtopicId: String, activity: HappyTeacherActivity):
+        CardListContentRecyclerAdapter(contentCardMap, attachmentDestinationDirectory, topicName, topicId, subtopicId, activity) {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         if (holder is ContentCardViewHolder) {
             onBindContentCardViewHolder(holder, position)

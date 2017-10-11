@@ -15,7 +15,8 @@ import org.jnanaprabodhini.happyteacher.model.ContentCard
 import java.io.File
 
 
-class LessonPlanRecyclerAdapter(contentCardMap: Map<String, ContentCard>, attachmentDestinationDirectory: File, topicName: String, topicId: String, subtopicId: String, activity: HappyTeacherActivity): CardListContentRecyclerAdapter(contentCardMap, attachmentDestinationDirectory, topicName, topicId, subtopicId, activity) {
+class LessonPlanRecyclerAdapter(contentCardMap: Map<String, ContentCard>, attachmentDestinationDirectory: File, topicName: String, topicId: String, subtopicId: String, activity: HappyTeacherActivity):
+        CardListContentRecyclerAdapter(contentCardMap, attachmentDestinationDirectory, topicName, topicId, subtopicId, activity) {
     companion object { val LESSON_CARD_VIEW_TYPE = 0; val CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE = 1 }
 
     override fun getItemCount(): Int = super.getItemCount() + 1 // + 1 for footer view (classroom resources section)
