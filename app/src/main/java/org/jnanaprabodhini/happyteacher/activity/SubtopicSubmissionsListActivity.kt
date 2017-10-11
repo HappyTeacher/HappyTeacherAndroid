@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import com.firebase.ui.database.FirebaseRecyclerOptions
 import kotlinx.android.synthetic.main.activity_subtopic_submissions_list.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.HappyTeacherActivity
@@ -13,6 +14,7 @@ import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.extension.showToast
+import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 
 class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObserver {
 
@@ -75,8 +77,10 @@ class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObse
                                                         .child(topicKey)
                                                         .child(subtopicKey)
 
+        val adapterOptions = FirebaseRecyclerOptions.Builder<CardListContentHeader>().setQuery(submissionHeadersQuery, CardListContentHeader::class.java).build()
+
         submissionRecyclerView.layoutManager = LinearLayoutManager(this)
-        submissionRecyclerView.adapter = LessonHeaderRecyclerAdapter(topicName, submissionHeadersQuery, this, this)
+        submissionRecyclerView.adapter = LessonHeaderRecyclerAdapter(topicName, adapterOptions, this, this)
     }
 
     override fun onRequestNewData() {

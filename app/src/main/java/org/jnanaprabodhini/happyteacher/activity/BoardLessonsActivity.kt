@@ -7,15 +7,16 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.widget.TextView
-import com.firebase.ui.database.FirebaseIndexListAdapter
+import com.firebase.ui.database.FirebaseListAdapter
+import com.firebase.ui.database.FirebaseListOptions
+import com.firebase.ui.database.FirebaseRecyclerOptions
 import kotlinx.android.synthetic.main.activity_board_lessons.*
 import org.jnanaprabodhini.happyteacher.BoardChoiceDialog
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
-import org.jnanaprabodhini.happyteacher.adapter.firebase.FirebaseIndexObserverListAdapter
-import org.jnanaprabodhini.happyteacher.adapter.firebase.FirebaseObserverRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.firebase.FirebaseObserverListAdapter
+import org.jnanaprabodhini.happyteacher.adapter.firebase.SyllabusLessonRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
-import org.jnanaprabodhini.happyteacher.adapter.viewholder.SyllabusLessonViewHolder
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.SyllabusLesson
@@ -92,7 +93,11 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
         val subjectRef = databaseReference.child(getString(R.string.subjects))
 
-        val boardSubjectSpinnerAdapter = object : FirebaseIndexListAdapter<Subject>(this, Subject::class.java, R.layout.spinner_item, boardSubjectIndexQuery, subjectRef) {
+        val subjectSpinnerAdapterOptions = FirebaseListOptions.Builder<Subject>()
+                .setIndexedQuery(boardSubjectIndexQuery, subjectRef, Subject::class.java)
+                .setLayout(R.layout.spinner_item).build()
+
+        val boardSubjectSpinnerAdapter = object : FirebaseListAdapter<Subject>(subjectSpinnerAdapterOptions) {
             override fun populateView(view: View, subject: Subject, position: Int) {
                 (view as TextView).text = subject.name
             }
@@ -129,7 +134,11 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
             }
         }
 
-        val boardLevelSpinnerAdapter = object : FirebaseIndexObserverListAdapter<Int>(this, Int::class.java, R.layout.spinner_item, boardLevelIndexQuery, levelRef, levelDataObserver) {
+        val boardLevelSpinnerAdapterOptions = FirebaseListOptions.Builder<Int>()
+                .setIndexedQuery(boardLevelIndexQuery, levelRef, Int::class.java)
+                .setLayout(R.layout.spinner_item).build()
+
+        val boardLevelSpinnerAdapter = object : FirebaseObserverListAdapter<Int>(boardLevelSpinnerAdapterOptions, levelDataObserver) {
             override fun populateView(view: View, level: Int, position: Int) {
                 (view as TextView).text = getString(R.string.standard_n, level)
             }
@@ -151,36 +160,9 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
                 .child(selectedLevel)
                 .orderByChild(getString(R.string.lesson_number))
 
-        val syllabusLessonAdapter = object: FirebaseObserverRecyclerAdapter<SyllabusLesson, SyllabusLessonViewHolder>(SyllabusLesson::class.java, R.layout.list_item_syllabus_lesson, SyllabusLessonViewHolder::class.java, syllabusLessonQuery, this) {
-            override fun populateViewHolder(syllabusLessonViewHolder: SyllabusLessonViewHolder?, syllabusLessonModel: SyllabusLesson?, syllabusLessonPosition: Int) {
-                syllabusLessonViewHolder?.lessonTitleTextView?.text = syllabusLessonModel?.name
-                syllabusLessonViewHolder?.lessonNumberTextView?.text = syllabusLessonModel?.lessonNumber.toString()
-                syllabusLessonViewHolder?.topicCountTextView?.text = resources.getQuantityString(R.plurals.topics_count, syllabusLessonModel?.topicCount ?: 0, syllabusLessonModel?.topicCount ?: 0)
+        val adapterOptions = FirebaseRecyclerOptions.Builder<SyllabusLesson>().setQuery(syllabusLessonQuery, SyllabusLesson::class.java).build()
 
-                syllabusLessonViewHolder?.itemView?.setOnClickListener {
-
-                    val topicCount = syllabusLessonModel?.topicCount ?: 0
-                    if (topicCount == 0) {
-                        // If there are no topics to display, jiggle the count and tell the user.
-                        syllabusLessonViewHolder.topicCountTextView.jiggle()
-                        rootLayout.showSnackbar(R.string.this_lesson_has_no_relevant_topics)
-                    } else {
-                        // Pass syllabus lesson data to the TopicsListActivity
-                        //  so that it can display the relevant topics (instead
-                        //  of all topics for that subject).
-
-                        val keyUrl = getRef(syllabusLessonPosition).child(getString(R.string.topics)).toString()
-                        val subject = syllabusLessonModel?.subject
-                        val level = syllabusLessonModel?.level
-                        val title = syllabusLessonModel?.name
-
-                        TopicsListActivity.launchActivity(this@BoardLessonsActivity, keyUrl, subject ?: "", title ?: "", level ?: 0)
-                    }
-                }
-            }
-        }
-
-        syllabusLessonsRecyclerView.adapter = syllabusLessonAdapter
+        syllabusLessonsRecyclerView.adapter = SyllabusLessonRecyclerAdapter(adapterOptions, this, this)
     }
 
     override fun onRequestNewData() {

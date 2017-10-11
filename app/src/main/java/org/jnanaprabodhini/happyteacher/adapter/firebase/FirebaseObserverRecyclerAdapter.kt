@@ -1,10 +1,8 @@
 package org.jnanaprabodhini.happyteacher.adapter.firebase
 
-import android.arch.lifecycle.LifecycleOwner
-import android.support.annotation.LayoutRes
 import android.support.v7.widget.RecyclerView
-import com.firebase.ui.database.*
-import com.google.firebase.database.Query
+import com.firebase.ui.database.FirebaseRecyclerAdapter
+import com.firebase.ui.database.FirebaseRecyclerOptions
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 
 /**
@@ -16,11 +14,7 @@ import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
  *  used in the original FirebaseRecyclerAdapter class.
  */
 
-abstract class FirebaseObserverRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(snapshots: ObservableSnapshotArray<T>,
-                                                                               @LayoutRes modelLayout: Int,
-                                                                               viewHolderClass: Class<VH>,
-                                                                               owner: LifecycleOwner?,
-                                                                               val dataObserver: FirebaseDataObserver): FirebaseRecyclerAdapter<T, VH>(snapshots, modelLayout, viewHolderClass, owner) {
+abstract class FirebaseObserverRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(options: FirebaseRecyclerOptions<T>, val dataObserver: FirebaseDataObserver): FirebaseRecyclerAdapter<T, VH>(options) {
     init {
         dataObserver.onRequestNewData()
     }
@@ -35,15 +29,5 @@ abstract class FirebaseObserverRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(s
             else -> dataObserver.onDataNonEmpty()
         }
     }
-
-    constructor(snapshots: ObservableSnapshotArray<T>, @LayoutRes modelLayout: Int, viewHolderClass: Class<VH>, dataObserver: FirebaseDataObserver):
-        this(snapshots, modelLayout, viewHolderClass, null, dataObserver) {
-            startListening()
-    }
-
-    constructor(parser: SnapshotParser<T>, @LayoutRes modelLayout: Int, viewHolderClass: Class<VH>, query: Query, dataObserver: FirebaseDataObserver):
-        this(FirebaseArray(query, parser), modelLayout, viewHolderClass, dataObserver)
-
-    constructor(modelClass: Class<T>, @LayoutRes modelLayout: Int, viewHolderClass: Class<VH>, query: Query, dataObserver: FirebaseDataObserver):
-            this(ClassSnapshotParser<T>(modelClass), modelLayout, viewHolderClass, query, dataObserver)
 }
+

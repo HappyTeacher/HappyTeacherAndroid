@@ -3,6 +3,7 @@ package org.jnanaprabodhini.happyteacher.adapter.contentlist
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.firebase.ui.database.FirebaseRecyclerOptions
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.ClassroomResourcesHeaderRecyclerAdapter
@@ -11,6 +12,7 @@ import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentHeaderRecycler
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentCardViewHolder
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
+import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 import java.io.File
 
@@ -58,8 +60,9 @@ class LessonPlanRecyclerAdapter(contentCardMap: Map<String, ContentCard>, attach
         holder.titleTextView.setText(R.string.classroom_resources)
 
         val classroomResourceQuery = activity.databaseReference.child(activity.getString(R.string.classroom_resources_headers)).child(topicId).child(subtopicId)
+        val adapterOptions = FirebaseRecyclerOptions.Builder<CardListContentHeader>().setQuery(classroomResourceQuery, CardListContentHeader::class.java).build()
 
-        holder.horizontalRecyclerView.setAdapter(ClassroomResourcesHeaderRecyclerAdapter(topicName, classroomResourceQuery, activity, getClassroomResourcesDataObserver(holder)))
+        holder.horizontalRecyclerView.setAdapter(ClassroomResourcesHeaderRecyclerAdapter(topicName, adapterOptions, activity, getClassroomResourcesDataObserver(holder)))
     }
 
     private fun getClassroomResourcesDataObserver(holder: ContentHeaderRecyclerViewHolder): FirebaseDataObserver = object: FirebaseDataObserver {
