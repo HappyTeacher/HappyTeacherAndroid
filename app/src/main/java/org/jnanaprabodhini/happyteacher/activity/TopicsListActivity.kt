@@ -327,7 +327,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
         val featuredSubtopicLessonHeaderReference = databaseReference.child(getString(R.string.featured_subtopic_lesson_headers)).child(topicKey)
 
-        val adapter = object: FirebaseObserverIndexRecyclerAdapter<CardListContentHeader, LessonHeaderViewHolder>(CardListContentHeader::class.java, R.layout.list_item_content_header, LessonHeaderViewHolder::class.java, boardLevelSubtopicsQuery, featuredSubtopicLessonHeaderReference, getSubtopicDataObserverForViewHolder(topicViewHolder, level)) {
+        val adapter = object: FirebaseObserverIndexRecyclerAdapter<CardListContentHeader, LessonHeaderViewHolder>(CardListContentHeader::class.java, R.layout.list_item_content_header_card, LessonHeaderViewHolder::class.java, boardLevelSubtopicsQuery, featuredSubtopicLessonHeaderReference, getSubtopicDataObserverForViewHolder(topicViewHolder, level)) {
             override fun populateViewHolder(lessonHeaderViewHolder: LessonHeaderViewHolder?, subtopicHeaderModel: CardListContentHeader?, lessonHeaderPosition: Int) {
                 lessonHeaderViewHolder?.populateView(subtopicHeaderModel, topicName ?: "", this@TopicsListActivity, dateFormat)
             }
