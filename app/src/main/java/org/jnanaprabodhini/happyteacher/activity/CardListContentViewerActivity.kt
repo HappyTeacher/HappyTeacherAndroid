@@ -143,6 +143,7 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity() {
             showErrorToastAndFinish()
         } else {
             cardRecyclerView?.adapter = getCardRecyclerAdapter(content.cards, attachmentDestinationDirectory)
+            cardRecyclerView?.setHasFixedSize(true)
         }
     }
 
