@@ -30,12 +30,11 @@
                 android:scaleType="fitCenter"
                 android:layout_height="match_parent"/>
             <TextView
-                android:id="@+id/playButton"
+                android:id="@+id/loadButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 style="@style/Button"
-                android:text="Load Video"
                 android:visibility="gone"/>
             <org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
                 android:id="@+id/imageGalleryRecyclerView"

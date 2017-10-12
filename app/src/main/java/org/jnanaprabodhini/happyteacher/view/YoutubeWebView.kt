@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.webkit.*
 import android.widget.ImageView
@@ -30,26 +31,27 @@ class YoutubeWebView(context: Context, attrs: AttributeSet): WebView(context, at
         isHorizontalScrollBarEnabled = false
     }
 
-    fun initializeForYoutubeIdWithControlViews(videoId: String, thumbnailView: ImageView, playButton: TextView, progressBar: ProgressBar) {
+    fun initializeForYoutubeIdWithControlViews(videoId: String, thumbnailView: ImageView, loadButton: TextView, progressBar: ProgressBar) {
         thumbnailView.setVisible()
-        playButton.setVisible()
+        loadButton.setVisible()
+        loadButton.setText(R.string.load_Video)
 
         thumbnailView.loadImageToFit("https://img.youtube.com/vi/$videoId/hqdefault.jpg")
 
         this.setVisibilityGone()
 
-        playButton.setOnClickListener{
-            initializeForYoutubeId(videoId, progressBar, playButton)
+        loadButton.setOnClickListener{
+            initializeForYoutubeId(videoId, thumbnailView, loadButton, progressBar)
 
             thumbnailView.setVisibilityGone()
-            playButton.setVisibilityGone()
+            loadButton.setVisibilityGone()
 
             this.setVisible()
         }
     }
 
-    private fun initializeForYoutubeId(videoId: String, progressBar: ProgressBar, playButton: TextView) {
-        val embedCode = "<iframe width='100%' height='100%' src=\"https://www.youtube.com/embed/$videoId?autoplay=1&theme=dark&color=white&autohide=1&fs=0&showinfo=0&rel=0\"frameborder=\"0\"></iframe>"
+    private fun initializeForYoutubeId(videoId: String, thumbnailView: ImageView, loadButton: TextView, progressBar: ProgressBar) {
+        val embedCode = "<iframe width='100%' height='100%' src=\"https://www.youtube.com/embed/$videoId?&theme=dark&color=white&autohide=1&fs=0&showinfo=0&rel=0\"frameborder=\"0\"></iframe>"
 
         progressBar.setVisible()
 
@@ -57,7 +59,7 @@ class YoutubeWebView(context: Context, attrs: AttributeSet): WebView(context, at
             override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
                 // TODO: Better error, translated:
                 progressBar.setVisibilityGone()
-                onError(videoId, playButton)
+                onError(videoId, loadButton, thumbnailView)
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
@@ -84,12 +86,17 @@ class YoutubeWebView(context: Context, attrs: AttributeSet): WebView(context, at
         loadData(embedCode, "text/html", "UTF-8")
     }
 
-    fun onError(videoId: String, playButton: TextView) {
+    fun onError(videoId: String, loadButton: TextView, thumbnailView: ImageView) {
         context.showToast(R.string.unable_to_load_youtube_video)
-        val linkText = context.getString(R.string.click_here_to_open_in_youtube)
-        playButton.text = linkText
+        this.setVisibilityGone()
 
-        playButton.setOnClickListener{ launchYoutubeIntent(videoId) }
+        loadButton.setVisible()
+        thumbnailView.setVisible()
+
+        val linkText = context.getString(R.string.open_in_youtube)
+        loadButton.text = linkText
+
+        loadButton.setOnClickListener{ launchYoutubeIntent(videoId) }
     }
 
     fun launchYoutubeIntent(videoId: String) {

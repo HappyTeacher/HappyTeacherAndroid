@@ -2,7 +2,6 @@ package org.jnanaprabodhini.happyteacher.adapter.viewholder
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.webkit.WebView
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -23,7 +22,7 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
     val headerImageView: ImageView = itemView.headerImageView
     val youtubeWebView: YoutubeWebView = itemView.youtubePlayerWebView
     val headerProgressBar: ProgressBar = itemView.headerProgressBar
-    val playButton: TextView = itemView.playButton
+    val loadButton: TextView = itemView.loadButton
 
     val imageGalleryRecyclerView: HorizontalPagerRecyclerView = itemView.imageGalleryRecyclerView
 
