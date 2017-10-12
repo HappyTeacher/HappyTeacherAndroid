@@ -5,6 +5,7 @@ import android.view.View
 import android.webkit.WebView
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import kotlinx.android.synthetic.main.list_item_content_card.view.*
 import org.jnanaprabodhini.happyteacher.view.DownloadBarView
@@ -21,6 +22,7 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
     val headerMediaFrame: FrameLayout = itemView.headerMediaFrame
     val headerImageView: ImageView = itemView.headerImageView
     val youtubeWebView: YoutubeWebView = itemView.youtubePlayerWebView
+    val headerProgressBar: ProgressBar = itemView.headerProgressBar
 
     val imageGalleryRecyclerView: HorizontalPagerRecyclerView = itemView.imageGalleryRecyclerView
 

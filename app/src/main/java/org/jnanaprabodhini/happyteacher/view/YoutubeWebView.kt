@@ -26,13 +26,25 @@ class YoutubeWebView(context: Context, attrs: AttributeSet): WebView(context, at
         isHorizontalScrollBarEnabled = false
     }
 
-    fun initializeForYoutubeId(id: String) {
+    fun initializeForYoutubeIdWithProgressBar(id: String, progressBar: ProgressBar) {
+        initializeForYoutubeId(id, progressBar)
+    }
+
+    private fun initializeForYoutubeId(id: String, progressBar: ProgressBar? = null) {
         val embedCode = "<iframe width='100%' height='100%' src=\"https://www.youtube.com/embed/$id?autoplay=1&theme=dark&color=white&autohide=1&fs=0&showinfo=0&rel=0\"frameborder=\"0\"></iframe>"
+
+        progressBar?.setVisible()
 
         webViewClient = object: WebViewClient() {
             override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
                 // TODO: Better error, translated:
+                progressBar?.setVisibilityGone()
                 loadData("Error loading the page.", "text/html", "UTF-8")
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                progressBar?.setVisibilityGone()
             }
 
             /**
