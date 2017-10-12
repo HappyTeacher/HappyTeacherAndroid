@@ -9,6 +9,7 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.list_item_content_card.view.*
 import org.jnanaprabodhini.happyteacher.view.DownloadBarView
 import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
+import org.jnanaprabodhini.happyteacher.view.YoutubeWebView
 
 /**
  * Created by grahamearley on 9/25/17.
@@ -19,7 +20,7 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
 
     val headerMediaFrame: FrameLayout = itemView.headerMediaFrame
     val headerImageView: ImageView = itemView.headerImageView
-    val youtubeWebView: WebView = itemView.youtubePlayerWebView
+    val youtubeWebView: YoutubeWebView = itemView.youtubePlayerWebView
 
     val imageGalleryRecyclerView: HorizontalPagerRecyclerView = itemView.imageGalleryRecyclerView
 
