@@ -44,6 +44,8 @@ abstract class CardListContentRecyclerAdapter(val contentCardMap: Map<String, Co
         holder?.headerMediaFrame?.setVisibilityGone()
         holder?.youtubeWebView?.setVisibilityGone()
         holder?.headerImageView?.setVisibilityGone()
+        holder?.playButton?.setVisibilityGone()
+        holder?.headerProgressBar?.setVisibilityGone()
         holder?.imageGalleryRecyclerView?.setVisibilityGone()
         holder?.attachmentDownloadButton?.setVisibilityGone()
     }
