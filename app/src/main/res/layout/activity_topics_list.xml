@@ -17,7 +17,7 @@
         android:id="@+id/topicsListWithHeader"
         android:layout_above="@id/bottomNavigation">
 
-        <android.support.v7.widget.RecyclerView
+        <org.jnanaprabodhini.happyteacher.view.ClickableScrollingRecyclerView
             android:id="@+id/topicsRecyclerView"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
