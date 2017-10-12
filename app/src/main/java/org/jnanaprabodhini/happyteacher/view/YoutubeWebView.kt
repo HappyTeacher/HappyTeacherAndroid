@@ -5,8 +5,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.AttributeSet
-import android.util.Log
-import android.view.View
 import android.webkit.*
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -41,16 +39,12 @@ class YoutubeWebView(context: Context, attrs: AttributeSet): WebView(context, at
         this.setVisibilityGone()
 
         loadButton.setOnClickListener{
-            initializeForYoutubeId(videoId, thumbnailView, loadButton, progressBar)
-
-            thumbnailView.setVisibilityGone()
-            loadButton.setVisibilityGone()
-
+            initializeForYoutubeId(videoId, loadButton, progressBar)
             this.setVisible()
         }
     }
 
-    private fun initializeForYoutubeId(videoId: String, thumbnailView: ImageView, loadButton: TextView, progressBar: ProgressBar) {
+    private fun initializeForYoutubeId(videoId: String, loadButton: TextView, progressBar: ProgressBar) {
         val embedCode = "<iframe width='100%' height='100%' src=\"https://www.youtube.com/embed/$videoId?&theme=dark&color=white&autohide=1&fs=0&showinfo=0&rel=0\"frameborder=\"0\"></iframe>"
 
         progressBar.setVisible()
@@ -59,7 +53,7 @@ class YoutubeWebView(context: Context, attrs: AttributeSet): WebView(context, at
             override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
                 // TODO: Better error, translated:
                 progressBar.setVisibilityGone()
-                onError(videoId, loadButton, thumbnailView)
+                onError(videoId, loadButton)
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
@@ -86,12 +80,11 @@ class YoutubeWebView(context: Context, attrs: AttributeSet): WebView(context, at
         loadData(embedCode, "text/html", "UTF-8")
     }
 
-    fun onError(videoId: String, loadButton: TextView, thumbnailView: ImageView) {
+    fun onError(videoId: String, loadButton: TextView) {
         context.showToast(R.string.unable_to_load_youtube_video)
         this.setVisibilityGone()
 
         loadButton.setVisible()
-        thumbnailView.setVisible()
 
         val linkText = context.getString(R.string.open_in_youtube)
         loadButton.text = linkText

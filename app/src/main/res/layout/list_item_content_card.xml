@@ -20,10 +20,6 @@
             android:animateLayoutChanges="true"
             android:layout_width="match_parent"
             android:layout_height="@dimen/lesson_card_media_frame_height">
-            <org.jnanaprabodhini.happyteacher.view.YoutubeWebView
-                android:id="@+id/youtubePlayerWebView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
             <ImageView
                 android:id="@+id/headerImageView"
                 android:layout_width="match_parent"
@@ -36,6 +32,10 @@
                 android:layout_gravity="center"
                 style="@style/Button"
                 android:visibility="gone"/>
+            <org.jnanaprabodhini.happyteacher.view.YoutubeWebView
+                android:id="@+id/youtubePlayerWebView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
             <org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
                 android:id="@+id/imageGalleryRecyclerView"
                 android:layout_width="match_parent"
