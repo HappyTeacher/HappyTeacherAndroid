@@ -54,27 +54,36 @@ class HorizontalPagerRecyclerView(context: Context, attrs: AttributeSet): FrameL
 
     fun setAdapter(adapter: RecyclerView.Adapter<*>) {
         recyclerView.adapter = adapter
+
+        // Check if initial adapter count is >1, show pager if so
+        showForwardPager(adapter.itemCount > 1)
+
+        // Monitor adapter for changes in count:
         adapter.onDataChanged {
-            if (adapter.itemCount > 1) {
-                forwardPager.setVisible()
-            } else {
-                hidePagers()
-            }
+            hidePagers()
+            showForwardPager(adapter.itemCount > 1)
         }
     }
 
-    fun showRelevantPagers() {
-        if (recyclerView.canScrollLeftHorizontally()) {
-            backwardPager.setVisible()
-        } else {
-            backwardPager.setVisibilityGone()
-        }
-
-        if (recyclerView.canScrollRightHorizontally()) {
+    fun showForwardPager(show: Boolean) {
+        if (show) {
             forwardPager.setVisible()
         } else {
             forwardPager.setVisibilityGone()
         }
+    }
+
+    fun showBackwardPager(show: Boolean) {
+        if (show) {
+            backwardPager.setVisible()
+        } else {
+            backwardPager.setVisibilityGone()
+        }
+    }
+
+    fun showRelevantPagers() {
+        showBackwardPager(recyclerView.canScrollLeftHorizontally())
+        showForwardPager(recyclerView.canScrollRightHorizontally())
     }
 
     fun hidePagers() {
