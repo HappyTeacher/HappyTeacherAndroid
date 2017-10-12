@@ -44,6 +44,8 @@ abstract class CardListContentRecyclerAdapter(val contentCardMap: Map<String, Co
         holder?.headerMediaFrame?.setVisibilityGone()
         holder?.youtubeWebView?.setVisibilityGone()
         holder?.headerImageView?.setVisibilityGone()
+        holder?.loadButton?.setVisibilityGone()
+        holder?.headerProgressBar?.setVisibilityGone()
         holder?.imageGalleryRecyclerView?.setVisibilityGone()
         holder?.attachmentDownloadButton?.setVisibilityGone()
     }
@@ -67,7 +69,8 @@ abstract class CardListContentRecyclerAdapter(val contentCardMap: Map<String, Co
     private fun setupYoutubePlayer(youtubeId: String, holder: ContentCardViewHolder) {
         holder.headerMediaFrame.setVisible()
         holder.youtubeWebView.setVisible()
-        holder.youtubeWebView.loadYoutubeVideo(youtubeId)
+
+        holder.youtubeWebView.initializeForYoutubeIdWithControlViews(youtubeId, holder.headerImageView, holder.loadButton, holder.headerProgressBar)
     }
 
     private fun setupImages(imageUrls: List<String>, holder: ContentCardViewHolder) {

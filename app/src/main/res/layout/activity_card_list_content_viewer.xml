@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
+    <org.jnanaprabodhini.happyteacher.view.ClickableScrollingRecyclerView
         android:id="@+id/cardRecyclerView"
         android:background="@color/lightGray"
         android:paddingTop="8dp"

@@ -25,14 +25,27 @@
                 android:layout_width="match_parent"
                 android:scaleType="fitCenter"
                 android:layout_height="match_parent"/>
+            <TextView
+                android:id="@+id/loadButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                style="@style/Button"
+                android:visibility="gone"/>
+            <org.jnanaprabodhini.happyteacher.view.YoutubeWebView
+                android:id="@+id/youtubePlayerWebView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
             <org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
                 android:id="@+id/imageGalleryRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
-            <WebView
-                android:id="@+id/youtubePlayerWebView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+            <ProgressBar
+                android:id="@+id/headerProgressBar"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </FrameLayout>
 
         <TextView

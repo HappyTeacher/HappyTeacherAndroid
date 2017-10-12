@@ -161,40 +161,6 @@ fun ImageView.setDrawableResource(@DrawableRes drawableRes: Int) {
     this.setImageDrawable(ResourcesCompat.getDrawable(resources, drawableRes, null))
 }
 
-fun WebView.loadYoutubeVideo(youtubeId: String) {
-    settings.javaScriptEnabled = true
-    settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
-
-    isVerticalScrollBarEnabled = false
-    isHorizontalScrollBarEnabled = false
-
-    val embedCode = "<iframe width='100%' height='100%' src=\"https://www.youtube.com/embed/$youtubeId?&theme=dark&color=white&autohide=1&fs=0&showinfo=0&rel=0\"frameborder=\"0\"></iframe>"
-
-    webViewClient = object: WebViewClient() {
-        override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
-            // TODO: Better error, translated:
-            loadData("Error loading the page.", "text/html", "UTF-8")
-        }
-
-        /**
-         * If the WebView tries to load a page that is not a "data" url (i.e. the embed data we're loading),
-         *   then load the Youtube video in the Youtube app or browser.
-         *
-         *   This prevents the webview from displaying anything else from the internet.
-         */
-        override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-            if (url?.substring(0, 4) != "data") {
-                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=$youtubeId")))
-                loadData(embedCode, "text/html", "UTF-8")
-            } else {
-                super.onPageStarted(view, url, favicon)
-            }
-        }
-    }
-
-    loadData(embedCode, "text/html", "UTF-8")
-}
-
 fun RecyclerView.canScrollLeftHorizontally(): Boolean {
     return canScrollHorizontally(-1)
 }
