@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.CheckedTextView
 import android.widget.TextView
 import com.firebase.ui.database.FirebaseListAdapter
+import com.firebase.ui.database.FirebaseListOptions
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.dialog_board_choice.*
 import org.jnanaprabodhini.happyteacher.extension.getBaseReferenceForCurrentLanguage
@@ -24,16 +25,23 @@ class BoardChoiceDialog(context: Context): Dialog(context) {
         val databaseReference = FirebaseDatabase.getInstance().getBaseReferenceForCurrentLanguage()
         val boardQuery = databaseReference.child(context.getString(R.string.boards))
 
-        val boardChoiceAdapter = object: FirebaseListAdapter<Board>(context, Board::class.java, R.layout.select_dialog_singlechoice_material, boardQuery) {
+        val adapterOptions = FirebaseListOptions.Builder<Board>()
+                .setQuery(boardQuery, Board::class.java)
+                .setLayout(R.layout.select_dialog_singlechoice_material).build()
+
+        val boardChoiceAdapter = object: FirebaseListAdapter<Board>(adapterOptions) {
             override fun populateView(v: View?, model: Board?, position: Int) {
                 (v as CheckedTextView).text = model?.name
 
                 v.setOnClickListener {
                     prefs.setBoardKey(getRef(position).key)
                     dismiss()
+                    this.stopListening()
                 }
             }
         }
+
+        boardChoiceAdapter.startListening()
 
         boardOptionsListView.adapter = boardChoiceAdapter
     }

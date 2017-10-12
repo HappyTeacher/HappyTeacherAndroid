@@ -4,14 +4,17 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import com.firebase.ui.database.FirebaseRecyclerOptions
 import kotlinx.android.synthetic.main.activity_subtopic_submissions_list.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.HappyTeacherActivity
-import org.jnanaprabodhini.happyteacher.adapter.SubtopicLessonHeaderRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.CardListContentHeaderRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.LessonHeaderRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.extension.showToast
+import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 
 class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObserver {
 
@@ -43,27 +46,45 @@ class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObse
         fun Intent.hasAllExtras(): Boolean = hasTopicKey() && hasSubtopicKey() && hasTopicName()
     }
 
+    val topicKey: String by lazy {
+        intent.getTopicKey()
+    }
+
+    val subtopicKey: String by lazy {
+        intent.getSubtopicKey()
+    }
+
+    val topicName: String by lazy {
+        intent.getTopicName()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_subtopic_submissions_list)
 
-        if (intent.hasAllExtras()) {
-            initializeRecyclerViewForSubtopic(intent.getTopicKey(), intent.getSubtopicKey(), intent.getTopicName())
-        } else {
+        if (!intent.hasAllExtras()) {
             // todo: log error
             showToast(R.string.error_loading_other_lessons)
             finish()
         }
+
+        initializeRecyclerViewForSubtopic()
     }
 
-    fun initializeRecyclerViewForSubtopic(topicKey: String, subtopicKey: String, topicName: String) {
+    fun initializeRecyclerViewForSubtopic() {
 
         val submissionHeadersQuery = databaseReference.child(getString(R.string.subtopic_lesson_headers))
                                                         .child(topicKey)
                                                         .child(subtopicKey)
 
+        val adapterOptions = FirebaseRecyclerOptions.Builder<CardListContentHeader>()
+                .setQuery(submissionHeadersQuery, CardListContentHeader::class.java).build()
+
+        val adapter = LessonHeaderRecyclerAdapter(topicName, adapterOptions, this, this)
+        adapter.startListening()
+
         submissionRecyclerView.layoutManager = LinearLayoutManager(this)
-        submissionRecyclerView.adapter = SubtopicLessonHeaderRecyclerAdapter(topicName, submissionHeadersQuery, this, this)
+        submissionRecyclerView.adapter = adapter
     }
 
     override fun onRequestNewData() {

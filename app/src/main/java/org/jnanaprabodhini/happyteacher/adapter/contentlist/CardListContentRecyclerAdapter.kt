@@ -1,38 +1,29 @@
-package org.jnanaprabodhini.happyteacher.adapter
+package org.jnanaprabodhini.happyteacher.adapter.contentlist
 
-import android.app.Activity
 import android.content.Intent
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.FullScreenGalleryViewerActivity
+import org.jnanaprabodhini.happyteacher.activity.parent.HappyTeacherActivity
+import org.jnanaprabodhini.happyteacher.adapter.ImageGalleryRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.AttachmentDownloadManager
+import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentCardViewHolder
 import org.jnanaprabodhini.happyteacher.extension.*
-import org.jnanaprabodhini.happyteacher.model.LessonCard
-import org.jnanaprabodhini.happyteacher.adapter.viewholder.LessonCardViewHolder
 import org.jnanaprabodhini.happyteacher.model.AttachmentMetadata
+import org.jnanaprabodhini.happyteacher.model.ContentCard
 import java.io.File
-
 
 /**
  * Created by grahamearley on 9/25/17.
  */
-class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val attachmentDestinationDirectory: File, val activity: Activity): RecyclerView.Adapter<LessonCardViewHolder>() {
+abstract class CardListContentRecyclerAdapter(val contentCardMap: Map<String, ContentCard>, val attachmentDestinationDirectory: File, val topicName: String, val topicId: String, val subtopicId: String, val activity: HappyTeacherActivity): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val lessonCards by lazy {
-        lessonCardMap.toSortedMap().values.toList()
+        contentCardMap.toSortedMap().values.toList()
     }
 
     override fun getItemCount(): Int = lessonCards.size
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): LessonCardViewHolder {
-        val cardView = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_lesson_card, parent, false)
-        return LessonCardViewHolder(cardView)
-    }
-
-    override fun onBindViewHolder(holder: LessonCardViewHolder?, position: Int) {
+    protected fun onBindContentCardViewHolder(holder: ContentCardViewHolder, position: Int) {
         val card = lessonCards[position]
 
         resetViewVisibility(holder)
@@ -47,10 +38,9 @@ class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val 
         if (card.attachmentPath.isNotEmpty() && card.attachmentMetadata.isNotEmpty()) {
             setupAttachmentView(card.attachmentPath, card.attachmentMetadata, holder)
         }
-
     }
 
-    private fun resetViewVisibility(holder: LessonCardViewHolder?) {
+    private fun resetViewVisibility(holder: ContentCardViewHolder?) {
         holder?.headerMediaFrame?.setVisibilityGone()
         holder?.youtubeWebView?.setVisibilityGone()
         holder?.headerImageView?.setVisibilityGone()
@@ -58,7 +48,7 @@ class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val 
         holder?.attachmentDownloadButton?.setVisibilityGone()
     }
 
-    private fun setupText(card: LessonCard, holder: LessonCardViewHolder?) {
+    private fun setupText(card: ContentCard, holder: ContentCardViewHolder?) {
         if (card.header.isNotEmpty()) {
             holder?.headerTextView?.setVisible()
             holder?.headerTextView?.text = card.header
@@ -74,20 +64,20 @@ class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val 
         }
     }
 
-    private fun setupYoutubePlayer(youtubeId: String, holder: LessonCardViewHolder?) {
-        holder?.headerMediaFrame?.setVisible()
-        holder?.youtubeWebView?.setVisible()
-        holder?.youtubeWebView?.loadYoutubeVideo(youtubeId)
+    private fun setupYoutubePlayer(youtubeId: String, holder: ContentCardViewHolder) {
+        holder.headerMediaFrame.setVisible()
+        holder.youtubeWebView.setVisible()
+        holder.youtubeWebView.loadYoutubeVideo(youtubeId)
     }
 
-    private fun setupImages(imageUrls: List<String>, holder: LessonCardViewHolder?) {
+    private fun setupImages(imageUrls: List<String>, holder: ContentCardViewHolder) {
 
         if (imageUrls.size == 1) {
-            holder?.headerMediaFrame?.setVisible()
-            holder?.headerImageView?.setVisible()
-            holder?.headerImageView?.loadImageToFit(imageUrls.first())
+            holder.headerMediaFrame.setVisible()
+            holder.headerImageView.setVisible()
+            holder.headerImageView.loadImageToFit(imageUrls.first())
 
-            holder?.headerImageView?.setOnClickListener {
+            holder.headerImageView.setOnClickListener {
                 val fullscreenImageIntent = Intent(activity, FullScreenGalleryViewerActivity::class.java)
                 fullscreenImageIntent.putExtra(FullScreenGalleryViewerActivity.IMAGE_URLS, imageUrls.toTypedArray())
                 fullscreenImageIntent.putExtra(FullScreenGalleryViewerActivity.SELECTED_IMAGE, 0)
@@ -96,29 +86,31 @@ class LessonPlanRecyclerAdapter(val lessonCardMap: Map<String, LessonCard>, val 
             }
 
         } else {
-            holder?.headerMediaFrame?.setVisible()
+            holder.headerMediaFrame.setVisible()
             setupImageGalleryRecycler(imageUrls, holder)
         }
     }
 
-    private fun setupImageGalleryRecycler(imageUrls: List<String>, holder: LessonCardViewHolder?) {
-        val recycler = holder?.imageGalleryRecyclerView
-        recycler?.setAdapter(ImageGalleryRecyclerAdapter(imageUrls, activity))
+    private fun setupImageGalleryRecycler(imageUrls: List<String>, holder: ContentCardViewHolder) {
+        val recycler = holder.imageGalleryRecyclerView
+        recycler.setAdapter(ImageGalleryRecyclerAdapter(imageUrls, activity))
 
-        recycler?.setVisible()
+        recycler.setVisible()
     }
 
-    private fun setupAttachmentView(attachmentUrl: String, attachmentMetadata: AttachmentMetadata, holder: LessonCardViewHolder?) {
+    private fun setupAttachmentView(attachmentUrl: String, attachmentMetadata: AttachmentMetadata, holder: ContentCardViewHolder) {
         val downloadManager = AttachmentDownloadManager(attachmentUrl, attachmentDestinationDirectory, attachmentMetadata, activity)
 
-        holder?.attachmentDownloadButton?.setVisible()
-        holder?.attachmentDownloadButton?.setAttachmentDownloadManager(downloadManager)
+        holder.attachmentDownloadButton.setVisible()
+        holder.attachmentDownloadButton.setAttachmentDownloadManager(downloadManager)
     }
 
-    override fun onViewRecycled(holder: LessonCardViewHolder?) {
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder?) {
         super.onViewRecycled(holder)
-        holder?.attachmentDownloadButton?.downloadManager?.removeAllDownloadTaskListeners()
+
+        if (holder is ContentCardViewHolder) {
+            holder.attachmentDownloadButton.downloadManager?.removeAllDownloadTaskListeners()
+        }
     }
 
 }
-

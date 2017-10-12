@@ -7,6 +7,6 @@ import kotlinx.android.synthetic.main.list_item_syllabus_lesson.view.*
 
 class SyllabusLessonViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     val lessonNumberTextView: TextView = itemView.lessonNumberTextView
-    val lessonTitleTextView: TextView = itemView.lessonTitleTextView
+    val lessonTitleTextView: TextView = itemView.titleTextView
     val topicCountTextView: TextView = itemView.topicCountTextView
 }

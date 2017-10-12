@@ -19,7 +19,7 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/lessonTitleTextView"
+            android:id="@+id/titleTextView"
             style="@style/HeaderCardTitleText"
             android:paddingBottom="12dp"
             tools:text="Lesson Title"
@@ -32,7 +32,7 @@
             tools:text="Author Name Here"
             android:paddingBottom="6dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lessonTitleTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
         <TextView
             android:id="@+id/institutionTextView"

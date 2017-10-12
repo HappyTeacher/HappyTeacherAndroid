@@ -4,13 +4,13 @@ import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.view_recycler_horizontal_pager.view.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.*
+import android.animation.LayoutTransition
+
 
 /**
  * A horizontal RecyclerView wrapper that has forward and backward pager buttons
@@ -27,16 +27,14 @@ class HorizontalPagerRecyclerView(context: Context, attrs: AttributeSet): FrameL
         }
     }
 
-    val onChildAttachListener = object: RecyclerView.OnChildAttachStateChangeListener {
-        override fun onChildViewDetachedFromWindow(view: View?) { showRelevantPagers() }
-        override fun onChildViewAttachedToWindow(view: View?) { showRelevantPagers() }
-    }
-
     val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.view_recycler_horizontal_pager, this)
+        View.inflate(context, R.layout.view_recycler_horizontal_pager, this)
+        layoutTransition = LayoutTransition()
+
         recyclerView.layoutManager = layoutManager
+        recyclerView.setHasFixedSize(true)
 
         backwardPager.setElevation(R.dimen.pager_button_elevation)
         forwardPager.setElevation(R.dimen.pager_button_elevation)
@@ -46,32 +44,46 @@ class HorizontalPagerRecyclerView(context: Context, attrs: AttributeSet): FrameL
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        recyclerView.addOnChildAttachStateChangeListener(onChildAttachListener)
         recyclerView.addOnScrollListener(onScrollListener)
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        recyclerView.removeOnChildAttachStateChangeListener(onChildAttachListener)
         recyclerView.removeOnScrollListener(onScrollListener)
     }
 
     fun setAdapter(adapter: RecyclerView.Adapter<*>) {
         recyclerView.adapter = adapter
+
+        // Check if initial adapter count is >1, show pager if so
+        showForwardPager(adapter.itemCount > 1)
+
+        // Monitor adapter for changes in count:
+        adapter.onDataChanged {
+            hidePagers()
+            showForwardPager(adapter.itemCount > 1)
+        }
     }
 
-    fun showRelevantPagers() {
-        if (recyclerView.canScrollLeftHorizontally()) {
-            backwardPager.setVisible()
-        } else {
-            backwardPager.setVisibilityGone()
-        }
-
-        if (recyclerView.canScrollRightHorizontally()) {
+    fun showForwardPager(show: Boolean) {
+        if (show) {
             forwardPager.setVisible()
         } else {
             forwardPager.setVisibilityGone()
         }
+    }
+
+    fun showBackwardPager(show: Boolean) {
+        if (show) {
+            backwardPager.setVisible()
+        } else {
+            backwardPager.setVisibilityGone()
+        }
+    }
+
+    fun showRelevantPagers() {
+        showBackwardPager(recyclerView.canScrollLeftHorizontally())
+        showForwardPager(recyclerView.canScrollRightHorizontally())
     }
 
     fun hidePagers() {

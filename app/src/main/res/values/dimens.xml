@@ -15,4 +15,6 @@
     <dimen name="card_image_gallery_width">300dp</dimen>
 
     <dimen name="pager_button_elevation">4dp</dimen>
+
+    <dimen name="classroom_resources_list_top_padding">42dp</dimen>
 </resources>

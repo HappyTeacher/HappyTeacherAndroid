@@ -19,7 +19,9 @@ import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.taghandler.RootListTagHandler
 import android.content.Intent
 import android.net.Uri
+import android.support.annotation.ColorRes
 import android.support.annotation.DimenRes
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
 
@@ -155,6 +157,10 @@ fun ImageView.loadImageWithNoPlaceholder(imageUrl: String) {
             .into(this)
 }
 
+fun ImageView.setDrawableResource(@DrawableRes drawableRes: Int) {
+    this.setImageDrawable(ResourcesCompat.getDrawable(resources, drawableRes, null))
+}
+
 fun WebView.loadYoutubeVideo(youtubeId: String) {
     settings.javaScriptEnabled = true
     settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
@@ -187,14 +193,6 @@ fun WebView.loadYoutubeVideo(youtubeId: String) {
     }
 
     loadData(embedCode, "text/html", "UTF-8")
-}
-
-fun RecyclerView.onHorizontalScroll(onHorizontalScroll: () -> Unit) {
-    addOnScrollListener(object: RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-            if (dx > 0) onHorizontalScroll()
-        }
-    })
 }
 
 fun RecyclerView.canScrollLeftHorizontally(): Boolean {
