@@ -5,15 +5,16 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.webkit.*
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.loadImageToFit
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
+import org.jnanaprabodhini.happyteacher.extension.showToast
 
 
 /**
@@ -29,7 +30,7 @@ class YoutubeWebView(context: Context, attrs: AttributeSet): WebView(context, at
         isHorizontalScrollBarEnabled = false
     }
 
-    fun initializeForYoutubeIdWithControlViews(videoId: String, thumbnailView: ImageView, playButton: View, progressBar: ProgressBar) {
+    fun initializeForYoutubeIdWithControlViews(videoId: String, thumbnailView: ImageView, playButton: TextView, progressBar: ProgressBar) {
         thumbnailView.setVisible()
         playButton.setVisible()
 
@@ -38,7 +39,7 @@ class YoutubeWebView(context: Context, attrs: AttributeSet): WebView(context, at
         this.setVisibilityGone()
 
         playButton.setOnClickListener{
-            initializeForYoutubeId(videoId, progressBar)
+            initializeForYoutubeId(videoId, progressBar, playButton)
 
             thumbnailView.setVisibilityGone()
             playButton.setVisibilityGone()
@@ -47,21 +48,21 @@ class YoutubeWebView(context: Context, attrs: AttributeSet): WebView(context, at
         }
     }
 
-    private fun initializeForYoutubeId(videoId: String, progressBar: ProgressBar? = null) {
+    private fun initializeForYoutubeId(videoId: String, progressBar: ProgressBar, playButton: TextView) {
         val embedCode = "<iframe width='100%' height='100%' src=\"https://www.youtube.com/embed/$videoId?autoplay=1&theme=dark&color=white&autohide=1&fs=0&showinfo=0&rel=0\"frameborder=\"0\"></iframe>"
 
-        progressBar?.setVisible()
+        progressBar.setVisible()
 
         webViewClient = object: WebViewClient() {
             override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
                 // TODO: Better error, translated:
-                progressBar?.setVisibilityGone()
-                showErrorInWebview(videoId)
+                progressBar.setVisibilityGone()
+                onError(videoId, playButton)
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
-                progressBar?.setVisibilityGone()
+                progressBar.setVisibilityGone()
             }
 
             /**
@@ -83,27 +84,12 @@ class YoutubeWebView(context: Context, attrs: AttributeSet): WebView(context, at
         loadData(embedCode, "text/html", "UTF-8")
     }
 
-    fun showErrorInWebview(videoId: String) {
-        val errorText = context.getString(R.string.unable_to_load_youtube_video)
+    fun onError(videoId: String, playButton: TextView) {
+        context.showToast(R.string.unable_to_load_youtube_video)
         val linkText = context.getString(R.string.click_here_to_open_in_youtube)
-        val htmlCode = "<!DOCTYPE html>\n" +
-                "<html>\n" +
-                "    <head>\n" +
-                "        <style>\n" +
-                "        html, body { height: 100%; margin: 0; padding: 0; width: 100%; }\n" +
-                "        body { display: table; }\n" +
-                "        .centered { text-align: center; display: table-cell; vertical-align: middle; }\n" +
-                "        </style>\n" +
-                "    </head>\n" +
-                "    <body>\n" +
-                "    <div class=\"centered\">\n" +
-                "       $errorText </br>" +
-                "       $linkText" +
-                "    </div>\n" +
-                "    </body>\n" +
-                "</html>"
+        playButton.text = linkText
 
-        loadData(htmlCode, "text/html", "UTF-8")
+        playButton.setOnClickListener{ launchYoutubeIntent(videoId) }
     }
 
     fun launchYoutubeIntent(videoId: String) {

@@ -29,14 +29,14 @@
                 android:layout_width="match_parent"
                 android:scaleType="fitCenter"
                 android:layout_height="match_parent"/>
-            <ImageView
+            <TextView
                 android:id="@+id/playButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@drawable/dark_ripple_pill"
-                android:visibility="gone"
-                android:src="@android:drawable/ic_media_play"/>
+                style="@style/Button"
+                android:text="Load Video"
+                android:visibility="gone"/>
             <org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
                 android:id="@+id/imageGalleryRecyclerView"
                 android:layout_width="match_parent"

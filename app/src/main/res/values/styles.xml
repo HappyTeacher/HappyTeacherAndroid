@@ -143,6 +143,7 @@
         <item name="android:paddingLeft">24dp</item>
         <item name="android:paddingRight">24dp</item>
         <item name="android:paddingBottom">16dp</item>
+        <item name="android:clickable">true</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:background">@drawable/white_ripple_pill</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
