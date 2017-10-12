@@ -67,7 +67,7 @@ abstract class CardListContentRecyclerAdapter(val contentCardMap: Map<String, Co
     private fun setupYoutubePlayer(youtubeId: String, holder: ContentCardViewHolder) {
         holder.headerMediaFrame.setVisible()
         holder.youtubeWebView.setVisible()
-        holder.youtubeWebView.initializeForYoutubeIdWithProgressBar(youtubeId, holder.headerProgressBar)
+        holder.youtubeWebView.initializeForYoutubeIdWithControlViews(youtubeId, holder.headerImageView, holder.playButton, holder.headerProgressBar)
     }
 
     private fun setupImages(imageUrls: List<String>, holder: ContentCardViewHolder) {

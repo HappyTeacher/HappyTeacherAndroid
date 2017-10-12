@@ -34,6 +34,8 @@
     <string name="there_are_no_other_lessons">There are no other lessons.</string>
     <string name="classroom_resources">Classroom Resources</string>
     <string name="there_are_no_classroom_resources_for_this_lesson_yet">There are no classroom resources for this lesson yet.</string>
+    <string name="unable_to_load_youtube_video">Unable to load video.</string>
+    <string name="click_here_to_open_in_youtube">Click here to open in YouTube.</string>
 
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>

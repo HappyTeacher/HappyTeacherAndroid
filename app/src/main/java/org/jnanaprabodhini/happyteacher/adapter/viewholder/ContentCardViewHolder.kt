@@ -23,6 +23,7 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
     val headerImageView: ImageView = itemView.headerImageView
     val youtubeWebView: YoutubeWebView = itemView.youtubePlayerWebView
     val headerProgressBar: ProgressBar = itemView.headerProgressBar
+    val playButton: View = itemView.playButton
 
     val imageGalleryRecyclerView: HorizontalPagerRecyclerView = itemView.imageGalleryRecyclerView
 
