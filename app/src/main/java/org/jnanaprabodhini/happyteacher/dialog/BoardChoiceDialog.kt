@@ -20,23 +20,27 @@ import org.jnanaprabodhini.happyteacher.prefs
 class BoardChoiceDialog(context: Context): SettingsChoiceDialog(context, R.string.choose_your_syllabus, R.string.you_can_change_this_in_your_settings_later) {
 
     override fun configureOptionsListView(optionsListView: ListView) {
+        optionsListView.choiceMode = ListView.CHOICE_MODE_SINGLE
+
         val databaseReference = FirebaseDatabase.getInstance().getBaseReferenceForCurrentLanguage()
         val boardQuery = databaseReference.child(context.getString(R.string.boards))
 
         val adapterOptions = FirebaseListOptions.Builder<Board>()
                 .setQuery(boardQuery, Board::class.java)
-                .setLayout(R.layout.select_dialog_singlechoice_material).build()
+                .setLayout(R.layout.dialog_option_singlechoice).build()
 
         val boardChoiceAdapter = object: FirebaseListAdapter<Board>(adapterOptions) {
             override fun populateView(v: View?, model: Board?, position: Int) {
                 (v as CheckedTextView).text = model?.name
-
-                v.setOnClickListener {
-                    prefs.setBoardKey(getRef(position).key)
-                    dismiss()
-                    this.stopListening()
-                }
             }
+        }
+
+        boardOptionsListView.setOnItemClickListener { _, _, position, _ ->
+            val selectedKey = boardChoiceAdapter.getRef(position).key
+            optionsListView.setItemChecked(position, true)
+            prefs.setBoardKey(selectedKey)
+            boardChoiceAdapter.stopListening()
+            dismiss()
         }
 
         boardChoiceAdapter.startListening()
