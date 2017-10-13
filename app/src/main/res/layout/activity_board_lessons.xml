@@ -40,24 +40,24 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigation" />
 
-    <TextView
-        android:id="@+id/emptySyllabusLessonsTextView"
-        style="@style/EmptyListFeedbackText"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        android:text="@string/there_are_currently_no_lesson_plans_for_this_subject_and_level"
-        app:layout_constraintTop_toBottomOf="@+id/subjectSpinner"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"/>
-
     <ProgressBar
         android:id="@+id/boardLessonsProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
+        app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintTop_toBottomOf="@+id/subjectSpinner"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/statusTextView"/>
+
+    <TextView
+        android:id="@+id/statusTextView"
+        style="@style/EmptyListFeedbackText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/boardLessonsProgressBar"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"/>

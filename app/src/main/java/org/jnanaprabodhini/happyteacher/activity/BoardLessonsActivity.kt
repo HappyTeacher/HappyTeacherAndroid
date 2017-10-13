@@ -7,7 +7,6 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.widget.TextView
-import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseListOptions
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import kotlinx.android.synthetic.main.activity_board_lessons.*
@@ -181,7 +180,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
     }
 
     override fun onRequestNewData() {
-        emptySyllabusLessonsTextView.setVisibilityGone()
+        statusTextView.setVisibilityGone()
         boardLessonsProgressBar.setVisible()
     }
 
@@ -191,12 +190,13 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
     override fun onDataEmpty() {
         // Show empty view
-        emptySyllabusLessonsTextView.setVisible()
+        statusTextView.setVisible()
+        statusTextView.setText(R.string.there_are_currently_no_lesson_plans_for_this_subject_and_level)
     }
 
     override fun onDataNonEmpty() {
         // Hide empty view
-        emptySyllabusLessonsTextView.setVisibilityGone()
+        statusTextView.setVisibilityGone()
 
         // Animate layout changes
         syllabusLessonsRecyclerView.scheduleLayoutAnimation()
