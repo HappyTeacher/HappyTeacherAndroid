@@ -38,6 +38,7 @@
     <string name="open_in_youtube">Open in YouTube</string>
     <string name="load_Video">Load video</string>
     <string name="play_video">Play video</string>
+    <string name="choose_your_language">Choose your language</string>
 
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>

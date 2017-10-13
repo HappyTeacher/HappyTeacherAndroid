@@ -6,12 +6,12 @@
     android:layout_height="match_parent">
 
     <TextView
-        style="@style/DialogHeaderText.Title"
-        android:text="@string/choose_your_syllabus"/>
+        android:id="@+id/dialogHeader"
+        style="@style/DialogHeaderText.Title"/>
 
     <TextView
-        style="@style/DialogHeaderText.Subtitle"
-        android:text="@string/you_can_change_this_in_your_settings_later"/>
+        android:id="@+id/dialogSubheader"
+        style="@style/DialogHeaderText.Subtitle"/>
 
     <ListView
         android:id="@+id/boardOptionsListView"
