@@ -101,11 +101,9 @@ fun Spinner.items(): List<Any> = (0..count - 1).map { adapter.getItem(it) }
  *   is reset (across configuration changes).
  */
 fun Spinner.selectIndexWhenPopulated(index: Int) {
-    if (adapter == null) return
-
-    adapter.registerDataSetObserver(object: DataSetObserver() {
+    adapter?.registerDataSetObserver(object: DataSetObserver() {
         override fun onChanged() {
-            if (count >= index) {
+            if (count > 0 && count >= index) {
                 setSelection(index)
                 adapter?.unregisterDataSetObserver(this)
             }
