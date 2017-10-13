@@ -6,7 +6,11 @@ import android.os.Build
 import java.util.*
 
 /**
- * Created by grahamearley on 10/13/17.
+ * A singleton object for managing language in the app.
+ * 
+ *  🙏
+ *  Thanks to this blog post:
+ *  https://proandroiddev.com/change-language-programmatically-at-runtime-on-android-5e6bc15c758
  */
 object LocaleManager {
 

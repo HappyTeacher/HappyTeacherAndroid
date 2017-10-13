@@ -2,6 +2,8 @@ package org.jnanaprabodhini.happyteacher.activity.parent
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.google.firebase.database.DatabaseReference
@@ -13,7 +15,8 @@ import org.jnanaprabodhini.happyteacher.extension.withCurrentLocale
 
 /**
  * An abstract activity for all activities in the app. Includes access
- *  to the Firebase root database and the database for the current language.
+ *  to the Firebase root database and the database for the current language,
+ *  and locale switching.
  */
 abstract class HappyTeacherActivity: AppCompatActivity() {
     val databaseRoot: FirebaseDatabase by lazy {
@@ -22,6 +25,11 @@ abstract class HappyTeacherActivity: AppCompatActivity() {
 
     val databaseReference: DatabaseReference by lazy {
         databaseRoot.getBaseReferenceForCurrentLanguage()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        resetTitle()
     }
 
     override fun attachBaseContext(newBase: Context) {
@@ -44,5 +52,16 @@ abstract class HappyTeacherActivity: AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun resetTitle() {
+        try {
+            val titleId = packageManager.getActivityInfo(componentName, PackageManager.GET_META_DATA).labelRes
+            if (titleId != 0) {
+                setTitle(titleId)
+            }
+        } catch (e: PackageManager.NameNotFoundException) {
+            // Then we will show the title as it is set in top-level resources.
+        }
     }
 }
