@@ -16,6 +16,10 @@ object LocaleManager {
 
     fun changeLocale(newLocale: String) {
         prefs.setCurrentLanguageCode(newLocale)
+
+        // Make user choose a new board (since current
+        // choice may not be available in this new locale):
+        prefs.resetBoardChoice()
     }
 
     fun setLocale(context: Context): Context {

@@ -32,6 +32,10 @@ class PreferencesManager(val context: Context) {
         preferences.edit().putBoolean(HAS_CHOSEN_BOARD, true).apply()
     }
 
+    fun resetBoardChoice() {
+        preferences.edit().putBoolean(HAS_CHOSEN_BOARD, false).apply()
+    }
+
     fun getBoardKey(): String = preferences.getString(BOARD, context.getString(R.string.maharashtra_state_board_key))
 
     fun hasChosenBoard(): Boolean = preferences.getBoolean(HAS_CHOSEN_BOARD, false)
