@@ -63,6 +63,10 @@ class HorizontalPagerRecyclerView(context: Context, attrs: AttributeSet): FrameL
             override fun onChanged() {
                 if (adapter.itemCount > 1) {
                     hidePagers()
+
+                    // View is not always scrollable at this point,
+                    //  so force-show forward pager instead of checking
+                    //  to show relevant pagers.
                     showForwardPager(true)
                     adapter.unregisterAdapterDataObserver(this)
                 }
