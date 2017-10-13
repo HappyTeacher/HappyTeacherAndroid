@@ -6,9 +6,10 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_full_screen_gallery_viewer.*
 import org.jnanaprabodhini.happyteacher.R
+import org.jnanaprabodhini.happyteacher.activity.parent.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.GalleryViewPagerAdapter
 
-class FullScreenGalleryViewerActivity : AppCompatActivity() {
+class FullScreenGalleryViewerActivity : HappyTeacherActivity() {
 
     companion object IntentExtraHelper {
         fun launchActivity(context: Context, imageUrls: Array<String>, position: Int) {

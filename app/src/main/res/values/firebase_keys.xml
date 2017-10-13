@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="lesson_headers">lesson_headers</string>
-    <string name="DUMMY_KEY_FOR_TESTING">mathematics_addition</string>
-    <string name="name">name</string>
-    <string name="topics">topics</string>
-    <string name="subjects">subjects</string>
-    <string name="subject">subject</string>
-    <string name="maharashtra_state_board_key">maharashtra state board</string>
-    <string name="levels">levels</string>
-    <string name="syllabus_lessons">syllabus_lessons</string>
-    <string name="lesson_number">lessonNumber</string>
-    <string name="boards">boards</string>
-    <string name="names">names</string>
-    <string name="parent_subject">parentSubject</string>
-    <string name="subtopics">subtopics</string>
-    <string name="subtopic_lesson_headers">subtopic_lesson_headers</string>
-    <string name="featured">featured</string>
-    <string name="level_subtopics">level_subtopics</string>
-    <string name="featured_subtopic_lesson_headers">featured_subtopic_lesson_headers</string>
-    <string name="subtopic_lessons">subtopic_lessons</string>
-    <string name="classroom_resources_key">classroom_resources</string>
-    <string name="classroom_resources_headers">classroom_resources_headers</string>
-
+    <string name="lesson_headers" translatable="false">lesson_headers</string>
+    <string name="name" translatable="false">name</string>
+    <string name="topics" translatable="false">topics</string>
+    <string name="subjects" translatable="false">subjects</string>
+    <string name="subject" translatable="false">subject</string>
+    <string name="maharashtra_state_board_key" translatable="false">maharashtra state board</string>
+    <string name="levels" translatable="false">levels</string>
+    <string name="syllabus_lessons" translatable="false">syllabus_lessons</string>
+    <string name="lesson_number" translatable="false">lessonNumber</string>
+    <string name="boards" translatable="false">boards</string>
+    <string name="names" translatable="false">names</string>
+    <string name="parent_subject" translatable="false">parentSubject</string>
+    <string name="subtopics" translatable="false">subtopics</string>
+    <string name="subtopic_lesson_headers" translatable="false">subtopic_lesson_headers</string>
+    <string name="featured" translatable="false">featured</string>
+    <string name="level_subtopics" translatable="false">level_subtopics</string>
+    <string name="featured_subtopic_lesson_headers" translatable="false">featured_subtopic_lesson_headers</string>
+    <string name="subtopic_lessons" translatable="false">subtopic_lessons</string>
+    <string name="classroom_resources_key" translatable="false">classroom_resources</string>
+    <string name="classroom_resources_headers" translatable="false">classroom_resources_headers</string>
 </resources>

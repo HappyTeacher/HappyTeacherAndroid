@@ -1,10 +1,9 @@
-package org.jnanaprabodhini.happyteacher
+package org.jnanaprabodhini.happyteacher.util
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.LocaleList
 import android.support.v4.os.ConfigurationCompat
-import java.util.*
+import org.jnanaprabodhini.happyteacher.R
 
 /**
  * PreferencesManager is a wrapper for the SharedPreferences API.
@@ -30,6 +29,10 @@ class PreferencesManager(val context: Context) {
     fun setBoardKey(boardKey: String) {
         preferences.edit().putString(BOARD, boardKey).apply()
         preferences.edit().putBoolean(HAS_CHOSEN_BOARD, true).apply()
+    }
+
+    fun resetBoardChoice() {
+        preferences.edit().putBoolean(HAS_CHOSEN_BOARD, false).apply()
     }
 
     fun getBoardKey(): String = preferences.getString(BOARD, context.getString(R.string.maharashtra_state_board_key))

@@ -11,7 +11,7 @@ import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseListOptions
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import kotlinx.android.synthetic.main.activity_board_lessons.*
-import org.jnanaprabodhini.happyteacher.BoardChoiceDialog
+import org.jnanaprabodhini.happyteacher.dialog.BoardChoiceDialog
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacher.adapter.firebase.FirebaseObserverListAdapter
@@ -45,19 +45,20 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
         savedInstanceState?.let { setSpinnerSelectionIndicesFromSavedInstanceState(it) }
 
         setupRecyclerView()
-        setupSubjectSpinner()
 
         if (!prefs.hasChosenBoard()) {
             // Prompt the user to select which board they would like
             //  to see syllabus lesson plans from.
             showBoardChooser()
+        } else {
+            setupSubjectSpinner()
         }
     }
 
     private fun showBoardChooser() {
         val dialog = BoardChoiceDialog(this)
         dialog.setOnDismissListener {
-            // Re-initialize spinners after board is chosen.
+            clearAdapters()
             setupSubjectSpinner()
         }
         dialog.show()
@@ -205,5 +206,12 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
         super.onSaveInstanceState(savedInstanceState)
     }
+
+    private fun clearAdapters() {
+        subjectSpinner.adapter = null
+        levelSpinner.adapter = null
+        syllabusLessonsRecyclerView.adapter = null
+    }
+
 }
 

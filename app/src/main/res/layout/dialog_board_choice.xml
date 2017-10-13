@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:padding="32dp"
+    android:padding="16dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
-        style="@style/DialogHeaderText.Title"
-        android:text="@string/choose_your_syllabus"/>
+        android:id="@+id/dialogHeader"
+        style="@style/DialogHeaderText.Title"/>
 
     <TextView
-        style="@style/DialogHeaderText.Subtitle"
-        android:text="@string/you_can_change_this_in_your_settings_later"/>
+        android:id="@+id/dialogSubheader"
+        style="@style/DialogHeaderText.Subtitle"/>
 
     <ListView
         android:id="@+id/boardOptionsListView"
         android:layout_width="match_parent"
-        android:layout_height="126dp"/>
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

@@ -107,7 +107,7 @@ fun Spinner.selectIndexWhenPopulated(index: Int) {
         override fun onChanged() {
             if (count >= index) {
                 setSelection(index)
-                adapter.unregisterDataSetObserver(this)
+                adapter?.unregisterDataSetObserver(this)
             }
         }
     })

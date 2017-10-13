@@ -39,6 +39,7 @@ class YoutubeWebView(context: Context, attrs: AttributeSet): WebView(context, at
         this.setVisibilityGone()
 
         loadButton.setOnClickListener{
+            loadButton.setVisibilityGone()
             initializeForYoutubeId(videoId, loadButton, progressBar)
             this.setVisible()
         }
@@ -59,12 +60,6 @@ class YoutubeWebView(context: Context, attrs: AttributeSet): WebView(context, at
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
                 progressBar.setVisibilityGone()
-
-                // On some devices, after scrolling the video off-screen for a moment,
-                //  the WebView shows nothing (even though the content is loaded).
-                //  As a fallback, the load button will say "Play video" so the user knows
-                //  they can still click the view to see the video.
-                loadButton.setText(R.string.play_video)
             }
 
             /**
