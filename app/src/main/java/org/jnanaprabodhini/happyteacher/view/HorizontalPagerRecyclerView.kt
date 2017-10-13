@@ -59,10 +59,15 @@ class HorizontalPagerRecyclerView(context: Context, attrs: AttributeSet): FrameL
         showForwardPager(adapter.itemCount > 1)
 
         // Monitor adapter for changes in count:
-        adapter.onDataChanged {
-            hidePagers()
-            showForwardPager(adapter.itemCount > 1)
-        }
+        adapter.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                if (adapter.itemCount > 1) {
+                    hidePagers()
+                    showForwardPager(true)
+                    adapter.unregisterAdapterDataObserver(this)
+                }
+            }
+        })
     }
 
     fun showForwardPager(show: Boolean) {
