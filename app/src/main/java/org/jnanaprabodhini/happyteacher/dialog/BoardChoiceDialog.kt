@@ -7,7 +7,6 @@ import android.widget.ListView
 import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseListOptions
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.android.synthetic.main.dialog_board_choice.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.getBaseReferenceForCurrentLanguage
 import org.jnanaprabodhini.happyteacher.model.Board
@@ -35,7 +34,7 @@ class BoardChoiceDialog(context: Context): SettingsChoiceDialog(context, R.strin
             }
         }
 
-        boardOptionsListView.setOnItemClickListener { _, _, position, _ ->
+        optionsListView.setOnItemClickListener { _, _, position, _ ->
             val selectedKey = boardChoiceAdapter.getRef(position).key
             optionsListView.setItemChecked(position, true)
             prefs.setBoardKey(selectedKey)
@@ -44,7 +43,7 @@ class BoardChoiceDialog(context: Context): SettingsChoiceDialog(context, R.strin
         }
 
         boardChoiceAdapter.startListening()
-        boardOptionsListView.adapter = boardChoiceAdapter
+        optionsListView.adapter = boardChoiceAdapter
     }
 
 }

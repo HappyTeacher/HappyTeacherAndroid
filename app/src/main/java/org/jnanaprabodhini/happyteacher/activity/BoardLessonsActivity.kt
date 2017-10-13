@@ -7,6 +7,7 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.widget.TextView
+import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseListOptions
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import kotlinx.android.synthetic.main.activity_board_lessons.*
@@ -50,7 +51,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
             //  to see syllabus lesson plans from.
             showBoardChooser()
         } else {
-            setupSubjectSpinner()
+            initializeUi()
         }
     }
 
@@ -58,7 +59,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val dialog = BoardChoiceDialog(this)
         dialog.setOnDismissListener {
             clearAdapters()
-            setupSubjectSpinner()
+            initializeUi()
         }
         dialog.show()
     }
@@ -85,6 +86,11 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
         syllabusLessonsRecyclerView.smoothScrollToPosition(0)
     }
 
+    private fun initializeUi() {
+        boardLessonsProgressBar.setVisible()
+        setupSubjectSpinner()
+    }
+
     private fun setupSubjectSpinner() {
         // Get an index list of subjects that are used by the currently active board:
         val boardSubjectIndexQuery = databaseReference.child(getString(R.string.boards))
@@ -100,6 +106,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val subjectDataObserver = object: FirebaseDataObserver {
             override fun onDataNonEmpty() {
                 setSpinnersVisible()
+                boardLessonsProgressBar.setVisibilityGone()
             }
         }
 
