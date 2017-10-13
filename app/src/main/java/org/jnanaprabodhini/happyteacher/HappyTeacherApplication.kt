@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.res.Configuration
 import com.google.firebase.database.FirebaseDatabase
 import org.jnanaprabodhini.happyteacher.extension.withCurrentLocale
+import org.jnanaprabodhini.happyteacher.util.LocaleManager
+import org.jnanaprabodhini.happyteacher.util.PreferencesManager
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig
 
 val prefs: PreferencesManager by lazy {

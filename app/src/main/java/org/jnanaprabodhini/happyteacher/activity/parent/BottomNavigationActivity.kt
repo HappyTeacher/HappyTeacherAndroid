@@ -4,7 +4,7 @@ import android.content.Intent
 import android.support.design.widget.BottomNavigationView
 import android.view.Menu
 import android.view.MenuItem
-import org.jnanaprabodhini.happyteacher.LocaleManager
+import org.jnanaprabodhini.happyteacher.util.LocaleManager
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.BoardLessonsActivity
 import org.jnanaprabodhini.happyteacher.activity.TopicsListActivity

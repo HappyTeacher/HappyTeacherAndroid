@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import org.jnanaprabodhini.happyteacher.LocaleManager
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 import org.jnanaprabodhini.happyteacher.extension.getBaseReferenceForCurrentLanguage
 import org.jnanaprabodhini.happyteacher.extension.withCurrentLocale

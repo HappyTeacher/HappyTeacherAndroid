@@ -3,7 +3,7 @@ package org.jnanaprabodhini.happyteacher.extension
 import android.content.Context
 import android.support.annotation.StringRes
 import android.widget.Toast
-import org.jnanaprabodhini.happyteacher.LocaleManager
+import org.jnanaprabodhini.happyteacher.util.LocaleManager
 
 /**
  * Extension functions for Activities and Context.

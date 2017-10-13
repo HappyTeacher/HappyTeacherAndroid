@@ -1,8 +1,9 @@
-package org.jnanaprabodhini.happyteacher
+package org.jnanaprabodhini.happyteacher.util
 
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
+import org.jnanaprabodhini.happyteacher.prefs
 import java.util.*
 
 /**

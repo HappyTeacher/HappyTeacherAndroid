@@ -1,10 +1,9 @@
-package org.jnanaprabodhini.happyteacher
+package org.jnanaprabodhini.happyteacher.util
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.LocaleList
 import android.support.v4.os.ConfigurationCompat
-import java.util.*
+import org.jnanaprabodhini.happyteacher.R
 
 /**
  * PreferencesManager is a wrapper for the SharedPreferences API.
