@@ -12,6 +12,7 @@ import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.SyllabusLessonViewHolder
 import org.jnanaprabodhini.happyteacher.extension.jiggle
 import org.jnanaprabodhini.happyteacher.extension.showSnackbar
+import org.jnanaprabodhini.happyteacher.extension.toLocaleString
 import org.jnanaprabodhini.happyteacher.model.SyllabusLesson
 
 /**
@@ -27,7 +28,7 @@ class SyllabusLessonRecyclerAdapter(options: FirebaseRecyclerOptions<SyllabusLes
 
     override fun onBindViewHolder(holder: SyllabusLessonViewHolder?, position: Int, model: SyllabusLesson?) {
         holder?.lessonTitleTextView?.text = model?.name
-        holder?.lessonNumberTextView?.text = model?.lessonNumber.toString()
+        holder?.lessonNumberTextView?.text = model?.lessonNumber?.toLocaleString()
         holder?.topicCountTextView?.text = activity.resources.getQuantityString(R.plurals.topics_count, model?.topicCount ?: 0, model?.topicCount ?: 0)
 
         holder?.itemView?.setOnClickListener {
