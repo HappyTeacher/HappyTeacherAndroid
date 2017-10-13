@@ -1,5 +1,6 @@
 package org.jnanaprabodhini.happyteacher.dialog
 
+import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,7 @@ import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
 
 /**
- * Created by grahamearley on 10/13/17.
+ * A Dialog for choosing language from a BottomNavigationActivity.
  */
 class LanguageChoiceDialog(val activity: BottomNavigationActivity): SettingsChoiceDialog(activity, R.string.choose_your_language, R.string.you_can_change_this_in_your_settings_later) {
 
@@ -22,22 +23,23 @@ class LanguageChoiceDialog(val activity: BottomNavigationActivity): SettingsChoi
                 LocaleCodeWithTitle("mr", "Marathi")
         )
 
-        val supportedLanguagesAdapter = LanguageListAdapter(activity, supportedLanguages)
+        val supportedLanguagesAdapter = LanguageListAdapter(activity, supportedLanguages, this)
 
         optionsListView.adapter = supportedLanguagesAdapter
     }
 
-    class LocaleCodeWithTitle(val code: String, val title: String) {
+    data class LocaleCodeWithTitle(val code: String, val title: String) {
         override fun toString(): String = title
     }
 
-    class LanguageListAdapter(val activity: BottomNavigationActivity, val items: Array<LocaleCodeWithTitle>):
+    class LanguageListAdapter(val activity: BottomNavigationActivity, val items: Array<LocaleCodeWithTitle>, val dialog: Dialog):
             ArrayAdapter<LocaleCodeWithTitle>(activity, R.layout.select_dialog_singlechoice_material, items) {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val view = super.getView(position, convertView, parent)
             view.setOnClickListener{
                 activity.changeLocaleAndRefresh(items[position].code)
+                dialog.dismiss()
             }
 
             return view

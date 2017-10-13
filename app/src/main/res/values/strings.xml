@@ -39,6 +39,7 @@
     <string name="load_Video">Load video</string>
     <string name="play_video">Play video</string>
     <string name="choose_your_language">Choose your language</string>
+    <string name="change_language">Change language</string>
 
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>

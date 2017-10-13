@@ -8,6 +8,8 @@ import org.jnanaprabodhini.happyteacher.LocaleManager
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.BoardLessonsActivity
 import org.jnanaprabodhini.happyteacher.activity.TopicsListActivity
+import org.jnanaprabodhini.happyteacher.dialog.LanguageChoiceDialog
+import org.jnanaprabodhini.happyteacher.prefs
 
 /**
  * An abstract activity for activities that are opened
@@ -56,15 +58,21 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_english_language -> changeLocaleAndRefresh("en")
-            R.id.menu_marathi_language -> changeLocaleAndRefresh("mr")
+            R.id.menu_change_language -> showLanguageChangeDialog()
         }
         return true
     }
 
+    fun showLanguageChangeDialog() {
+        val dialog = LanguageChoiceDialog(this)
+        dialog.show()
+    }
+
     fun changeLocaleAndRefresh(locale: String) {
-        LocaleManager.changeLocale(locale)
-        refreshActivity()
+        if (locale != prefs.getCurrentLanguageCode()) {
+            LocaleManager.changeLocale(locale)
+            refreshActivity()
+        }
     }
 
     /**
