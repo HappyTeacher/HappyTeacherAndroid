@@ -45,12 +45,13 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
         savedInstanceState?.let { setSpinnerSelectionIndicesFromSavedInstanceState(it) }
 
         setupRecyclerView()
-        setupSubjectSpinner()
 
         if (!prefs.hasChosenBoard()) {
             // Prompt the user to select which board they would like
             //  to see syllabus lesson plans from.
             showBoardChooser()
+        } else {
+            setupSubjectSpinner()
         }
     }
 
@@ -58,8 +59,6 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val dialog = BoardChoiceDialog(this)
         dialog.setOnDismissListener {
             clearAdapters()
-
-            // Re-initialize spinners after board is chosen.
             setupSubjectSpinner()
         }
         dialog.show()
