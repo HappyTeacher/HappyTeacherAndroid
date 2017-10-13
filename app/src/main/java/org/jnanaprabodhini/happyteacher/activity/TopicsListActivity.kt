@@ -111,6 +111,8 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
     }
 
     fun initializeTopicListForSubject() {
+        topicsProgressBar.setVisible()
+
         // Show all topics for a subject, selected by spinner
         setupParentSubjectSpinner()
         hideSyllabusLessonTopicHeader()
@@ -141,6 +143,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
         val spinnerDataObserver = object: FirebaseDataObserver {
             override fun onDataNonEmpty() {
+                topicsProgressBar.setVisibilityGone()
                 spinner.setVisible()
             }
         }
@@ -150,9 +153,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
                 (view as TextView).text = subject.name
             }
         }
-
         spinnerAdapter.startListening()
-
         spinner.adapter = spinnerAdapter
 
         spinner.selectIndexWhenPopulated(selectionIndex)
