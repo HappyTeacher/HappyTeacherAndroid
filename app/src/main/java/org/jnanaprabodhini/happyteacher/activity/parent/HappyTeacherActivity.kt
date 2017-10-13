@@ -1,12 +1,15 @@
 package org.jnanaprabodhini.happyteacher.activity.parent
 
 import android.content.Context
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import org.jnanaprabodhini.happyteacher.LocaleManager
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 import org.jnanaprabodhini.happyteacher.extension.getBaseReferenceForCurrentLanguage
+import org.jnanaprabodhini.happyteacher.extension.withCurrentLocale
 
 /**
  * An abstract activity for all activities in the app. Includes access
@@ -22,12 +25,19 @@ abstract class HappyTeacherActivity: AppCompatActivity() {
     }
 
     override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase.withCurrentLocale()))
+    }
+
+    protected fun refreshActivity() {
+        val intent = intent
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+        finish()
+        startActivity(intent)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-        // Make "Up" button go Back
+            // Make "Up" button go Back
             android.R.id.home -> {
                 onBackPressed()
                 return true

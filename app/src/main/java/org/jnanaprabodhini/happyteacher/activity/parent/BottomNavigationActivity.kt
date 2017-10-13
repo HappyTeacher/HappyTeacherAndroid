@@ -2,6 +2,9 @@ package org.jnanaprabodhini.happyteacher.activity.parent
 
 import android.content.Intent
 import android.support.design.widget.BottomNavigationView
+import android.view.Menu
+import android.view.MenuItem
+import org.jnanaprabodhini.happyteacher.LocaleManager
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.BoardLessonsActivity
 import org.jnanaprabodhini.happyteacher.activity.TopicsListActivity
@@ -45,6 +48,24 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
     }
 
     abstract fun onBottomNavigationItemReselected()
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.top_level_activity, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_english_language -> changeLocaleAndRefresh("en")
+            R.id.menu_marathi_language -> changeLocaleAndRefresh("mr")
+        }
+        return true
+    }
+
+    fun changeLocaleAndRefresh(locale: String) {
+        LocaleManager.changeLocale(locale)
+        refreshActivity()
+    }
 
     /**
      * According to Material Design Guidelines, top-level activities

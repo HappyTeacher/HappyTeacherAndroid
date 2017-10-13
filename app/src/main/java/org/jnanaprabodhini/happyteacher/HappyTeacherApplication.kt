@@ -1,7 +1,10 @@
 package org.jnanaprabodhini.happyteacher
 
 import android.app.Application
+import android.content.Context
+import android.content.res.Configuration
 import com.google.firebase.database.FirebaseDatabase
+import org.jnanaprabodhini.happyteacher.extension.withCurrentLocale
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig
 
 val prefs: PreferencesManager by lazy {
@@ -18,9 +21,6 @@ class HappyTeacherApplication: Application() {
     override fun onCreate() {
         super.onCreate()
 
-        // Initialize preferences (package-wide)
-        preferences = PreferencesManager(this)
-
         // Set Firebase offline persistence to true
         val databaseInstance = FirebaseDatabase.getInstance()
         databaseInstance.setPersistenceEnabled(true)
@@ -34,5 +34,19 @@ class HappyTeacherApplication: Application() {
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         )
+    }
+
+    override fun attachBaseContext(base: Context) {
+        val localeContext = base.withCurrentLocale()
+
+        // Initialize preferences (package-wide)
+        preferences = PreferencesManager(localeContext)
+
+        super.attachBaseContext(localeContext)
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        LocaleManager.setLocale(this)
     }
 }
