@@ -37,10 +37,10 @@ class HappyTeacherApplication: Application() {
     }
 
     override fun attachBaseContext(base: Context) {
-        val localeContext = base.withCurrentLocale()
-
         // Initialize preferences (package-wide)
-        preferences = PreferencesManager(localeContext)
+        preferences = PreferencesManager(base)
+
+        val localeContext = base.withCurrentLocale()
 
         super.attachBaseContext(localeContext)
     }
