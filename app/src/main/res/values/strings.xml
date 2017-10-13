@@ -41,6 +41,10 @@
     <string name="choose_your_language">Choose your language</string>
     <string name="change_language">Change language</string>
 
+    <!-- For displaying language names no matter what current language is: -->
+    <string name="english_in_english" translatable="false">English</string>
+    <string name="marathi_in_marathi" translatable="false">मराठी</string>
+
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>
         <item quantity="other">%d topics</item>

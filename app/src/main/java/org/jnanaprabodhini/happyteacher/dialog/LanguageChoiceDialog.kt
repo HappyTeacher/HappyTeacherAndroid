@@ -19,8 +19,8 @@ class LanguageChoiceDialog(val activity: BottomNavigationActivity): SettingsChoi
     override fun configureOptionsListView(optionsListView: ListView) {
 
         val supportedLanguages = arrayOf(
-                LocaleCodeWithTitle("en", "English"),
-                LocaleCodeWithTitle("mr", "Marathi")
+                LocaleCodeWithTitle("en", context.getString(R.string.english_in_english)),
+                LocaleCodeWithTitle("mr", context.getString(R.string.marathi_in_marathi))
         )
 
         val supportedLanguagesAdapter = LanguageListAdapter(activity, supportedLanguages, this)
