@@ -98,7 +98,13 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
                 .setIndexedQuery(boardSubjectIndexQuery, subjectRef, Subject::class.java)
                 .setLayout(R.layout.spinner_item).build()
 
-        val boardSubjectSpinnerAdapter = object : FirebaseListAdapter<Subject>(subjectSpinnerAdapterOptions) {
+        val subjectDataObserver = object: FirebaseDataObserver {
+            override fun onDataNonEmpty() {
+                setSpinnersVisible()
+            }
+        }
+
+        val boardSubjectSpinnerAdapter = object : FirebaseObserverListAdapter<Subject>(subjectSpinnerAdapterOptions, subjectDataObserver) {
             override fun populateView(view: View, subject: Subject, position: Int) {
                 (view as TextView).text = subject.name
             }
@@ -197,6 +203,17 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
         syllabusLessonsRecyclerView.invalidate()
     }
 
+    private fun setSpinnersVisible() {
+        subjectSpinner.setVisible()
+        levelSpinner.setVisible()
+    }
+
+    private fun clearAdapters() {
+        subjectSpinner.adapter = null
+        levelSpinner.adapter = null
+        syllabusLessonsRecyclerView.adapter = null
+    }
+
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         val levelSpinnerSelectionIndex = levelSpinner.selectedItemPosition
         val subjectSpinnerSelectionIndex = subjectSpinner.selectedItemPosition
@@ -205,12 +222,6 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
         savedInstanceState.putInt(SavedInstanceStateConstants.SUBJECT_SPINNER_SELECTION, subjectSpinnerSelectionIndex)
 
         super.onSaveInstanceState(savedInstanceState)
-    }
-
-    private fun clearAdapters() {
-        subjectSpinner.adapter = null
-        levelSpinner.adapter = null
-        syllabusLessonsRecyclerView.adapter = null
     }
 
 }

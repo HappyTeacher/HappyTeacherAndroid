@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.jnanaprabodhini.happyteacher.activity.TopicsListActivity"
+    android:animateLayoutChanges="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorAccent">
@@ -13,6 +14,7 @@
         android:id="@+id/subjectSpinner"
         style="@style/PurpleSpinner"
         android:layout_width="0dp"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/levelSpinner"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,6 +24,7 @@
         android:id="@+id/levelSpinner"
         style="@style/PurpleSpinner"
         android:layout_width="0dp"
+        android:visibility="gone"
         app:layout_constraintLeft_toRightOf="@id/subjectSpinner"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
