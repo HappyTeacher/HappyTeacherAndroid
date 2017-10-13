@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_topics_list.*
 import kotlinx.android.synthetic.main.header_syllabus_lesson_topic.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
+import org.jnanaprabodhini.happyteacher.adapter.firebase.FirebaseObserverListAdapter
 import org.jnanaprabodhini.happyteacher.adapter.firebase.TopicsRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.*
@@ -138,7 +139,13 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
                 .setQuery(spinnerQuery, Subject::class.java)
                 .setLayout(spinnerLayout).build()
 
-        val spinnerAdapter = object : FirebaseListAdapter<Subject>(spinnerAdapterOptions) {
+        val spinnerDataObserver = object: FirebaseDataObserver {
+            override fun onDataNonEmpty() {
+                spinner.setVisible()
+            }
+        }
+
+        val spinnerAdapter = object: FirebaseObserverListAdapter<Subject>(spinnerAdapterOptions, spinnerDataObserver) {
             override fun populateView(view: View, subject: Subject, position: Int) {
                 (view as TextView).text = subject.name
             }
@@ -163,8 +170,6 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
                 childSubjectSpinner.setVisibilityGone()
             }
         }
-
-        spinner.setVisible()
     }
 
     private fun setupParentSubjectSpinner() {
