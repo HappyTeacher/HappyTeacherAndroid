@@ -74,7 +74,6 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         setContentView(R.layout.activity_topics_list)
 
         topicsRecyclerView.layoutManager = LinearLayoutManager(this)
-        topicsRecyclerView.setHasFixedSize(true)
         bottomNavigation.selectedItemId = bottomNavigationMenuItemId
         bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
