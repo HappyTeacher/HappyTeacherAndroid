@@ -57,6 +57,8 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
     private fun showBoardChooser() {
         val dialog = BoardChoiceDialog(this)
         dialog.setOnDismissListener {
+            clearAdapters()
+
             // Re-initialize spinners after board is chosen.
             setupSubjectSpinner()
         }
@@ -205,5 +207,12 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
         super.onSaveInstanceState(savedInstanceState)
     }
+
+    private fun clearAdapters() {
+        subjectSpinner.adapter = null
+        levelSpinner.adapter = null
+        syllabusLessonsRecyclerView.adapter = null
+    }
+
 }
 
