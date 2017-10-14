@@ -31,7 +31,10 @@ class HorizontalPagerRecyclerView(context: Context, attrs: AttributeSet): FrameL
 
     init {
         View.inflate(context, R.layout.view_recycler_horizontal_pager, this)
-        layoutTransition = LayoutTransition()
+    }
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
 
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)

@@ -5,6 +5,7 @@
     tools:context="org.jnanaprabodhini.happyteacher.activity.TopicsListActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="@color/lightGray">
 
     <android.support.design.widget.CoordinatorLayout
@@ -49,6 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
+                android:animateLayoutChanges="true"
                 android:background="@color/colorAccent"
                 app:layout_scrollFlags="scroll|enterAlways"
                 android:orientation="vertical">
