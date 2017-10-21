@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.TextView
 import com.firebase.ui.database.FirebaseListOptions
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import kotlinx.android.synthetic.main.activity_board_lessons.*
 import org.jnanaprabodhini.happyteacher.dialog.BoardChoiceDialog
 import org.jnanaprabodhini.happyteacher.R
@@ -168,18 +169,15 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
     }
 
     private fun updateSyllabusLessonList(selectedSubjectKey: String, selectedLevel: String) {
-        onRequestNewData()
+        val syllabusLessonQuery = firestoreLocalized.collection("syllabusLessons")
+                .whereEqualTo("board", prefs.getBoardKey())
+                .whereEqualTo("subject", selectedSubjectKey)
+                .whereEqualTo("level", selectedLevel)
 
-        val syllabusLessonQuery = databaseReference.child(getString(R.string.syllabus_lessons))
-                .child(prefs.getBoardKey())
-                .child(selectedSubjectKey)
-                .child(selectedLevel)
-                .orderByChild(getString(R.string.lesson_number))
-
-        val adapterOptions = FirebaseRecyclerOptions.Builder<SyllabusLesson>()
+        val adapterOptions = FirestoreRecyclerOptions.Builder<SyllabusLesson>()
                 .setQuery(syllabusLessonQuery, SyllabusLesson::class.java).build()
 
-        val adapter = SyllabusLessonRecyclerAdapter(adapterOptions, this, this)
+        val adapter = org.jnanaprabodhini.happyteacher.adapter.firestore.SyllabusLessonRecyclerAdapter(adapterOptions, this, this)
         adapter.startListening()
 
         syllabusLessonsRecyclerView.adapter = adapter
