@@ -8,9 +8,12 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 import org.jnanaprabodhini.happyteacher.extension.getBaseReferenceForCurrentLanguage
 import org.jnanaprabodhini.happyteacher.extension.withCurrentLocale
+import org.jnanaprabodhini.happyteacher.prefs
 
 /**
  * An abstract activity for all activities in the app. Includes access
@@ -24,6 +27,14 @@ abstract class HappyTeacherActivity: AppCompatActivity() {
 
     val databaseReference: DatabaseReference by lazy {
         databaseRoot.getBaseReferenceForCurrentLanguage()
+    }
+
+    val firestoreRoot: FirebaseFirestore by lazy {
+        FirebaseFirestore.getInstance()
+    }
+
+    val firestoreLocalized: DocumentReference by lazy {
+        firestoreRoot.collection("localized").document(prefs.getCurrentLanguageCode())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
