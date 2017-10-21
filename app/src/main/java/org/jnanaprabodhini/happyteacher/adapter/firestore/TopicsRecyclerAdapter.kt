@@ -4,6 +4,7 @@ import android.app.Activity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.adapter.LessonHeaderRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
@@ -17,10 +18,10 @@ import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
 /**
  * Created by grahamearley on 10/11/17.
  */
-abstract class TopicsRecyclerAdapter(topicsAdapterOptions: FirebaseRecyclerOptions<Topic>,
+abstract class TopicsRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOptions<Topic>,
                                      topicsDataObserver: FirebaseDataObserver,
                                      val activity: Activity):
-        FirebaseObserverRecyclerAdapter<Topic, ContentHeaderRecyclerViewHolder>(topicsAdapterOptions, topicsDataObserver) {
+        FirestoreObserverRecyclerAdapter<Topic, ContentHeaderRecyclerViewHolder>(topicsAdapterOptions, topicsDataObserver) {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ContentHeaderRecyclerViewHolder {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_content_header_recycler, parent, false)
@@ -38,7 +39,8 @@ abstract class TopicsRecyclerAdapter(topicsAdapterOptions: FirebaseRecyclerOptio
             3 -> holder?.itemView?.setBackgroundResource(R.color.dreamsicleOrange)
         }
 
-        initializeChildRecyclerView(holder?.horizontalRecyclerView, getRef(position).key, model, holder)
+                // todo:
+//        initializeChildRecyclerView(holder?.horizontalRecyclerView, getRef(position).key, model, holder)
     }
 
     private fun initializeChildRecyclerView(recyclerView: HorizontalPagerRecyclerView?, topicKey: String, model: Topic?, holder: ContentHeaderRecyclerViewHolder?) {

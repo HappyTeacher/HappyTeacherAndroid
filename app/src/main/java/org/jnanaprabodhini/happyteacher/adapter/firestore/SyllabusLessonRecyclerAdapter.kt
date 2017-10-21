@@ -3,6 +3,7 @@ package org.jnanaprabodhini.happyteacher.adapter.firestore
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import kotlinx.android.synthetic.main.activity_board_lessons.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.TopicsListActivity
@@ -17,8 +18,8 @@ import org.jnanaprabodhini.happyteacher.model.SyllabusLesson
 /**
  * Created by grahamearley on 10/11/17.
  */
-class SyllabusLessonRecyclerAdapter(options: FirebaseRecyclerOptions<SyllabusLesson>, dataObserver: FirebaseDataObserver, val activity: BottomNavigationActivity):
-        FirebaseObserverRecyclerAdapter<SyllabusLesson, SyllabusLessonViewHolder>(options, dataObserver) {
+class SyllabusLessonRecyclerAdapter(options: FirestoreRecyclerOptions<SyllabusLesson>, dataObserver: FirebaseDataObserver, val activity: BottomNavigationActivity):
+        FirestoreObserverRecyclerAdapter<SyllabusLesson, SyllabusLessonViewHolder>(options, dataObserver) {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SyllabusLessonViewHolder {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_syllabus_lesson, parent, false)
@@ -42,12 +43,13 @@ class SyllabusLessonRecyclerAdapter(options: FirebaseRecyclerOptions<SyllabusLes
                 //  so that it can display the relevant topics (instead
                 //  of all topics for that subject).
 
-                val keyUrl = getRef(position).child(activity.getString(R.string.topics)).toString()
-                val subject = model?.subject
-                val level = model?.level
-                val title = model?.name
-
-                TopicsListActivity.launchActivity(activity, keyUrl, subject ?: "", title ?: "", level ?: 0)
+                // TODO: make this work with topics list once topics list is converted to Firestore
+//                val keyUrl = getRef(position).child(activity.getString(R.string.topics)).toString()
+//                val subject = model?.subject
+//                val level = model?.level
+//                val title = model?.name
+//
+//                TopicsListActivity.launchActivity(activity, keyUrl, subject ?: "", title ?: "", level ?: 0)
             }
         }
     }

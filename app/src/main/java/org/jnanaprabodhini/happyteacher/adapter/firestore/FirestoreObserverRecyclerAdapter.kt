@@ -8,12 +8,12 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 
 /**
- * An override of the FirebaseRecyclerAdapter that allows for
+ * An override of the FirestoreRecyclerAdapter that allows for
  *  AdapterDataObservers (since it calls `notifyDataSetChanged()`),
- *  and handles our custom FirebaseDataObserver interface calls.
+ *  and handles our custom FirestoreDataObserver interface calls.
  *
  *  Constructors are based on the hierarchy of constructors
- *  used in the original FirebaseRecyclerAdapter class.
+ *  used in the original FirestoreRecyclerAdapter class.
  */
 
 abstract class FirestoreObserverRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(options: FirestoreRecyclerOptions<T>, val dataObserver: FirebaseDataObserver): FirestoreRecyclerAdapter<T, VH>(options) {
