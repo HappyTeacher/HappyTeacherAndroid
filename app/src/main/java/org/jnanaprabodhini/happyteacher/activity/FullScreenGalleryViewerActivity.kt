@@ -3,10 +3,9 @@ package org.jnanaprabodhini.happyteacher.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_full_screen_gallery_viewer.*
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.activity.parent.HappyTeacherActivity
+import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.GalleryViewPagerAdapter
 
 class FullScreenGalleryViewerActivity : HappyTeacherActivity() {

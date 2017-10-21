@@ -10,7 +10,7 @@ import android.widget.Toast
 import com.google.firebase.database.DatabaseReference
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.activity.parent.HappyTeacherActivity
+import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.CardListContentRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.extension.onSingleValueEvent
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
