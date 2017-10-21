@@ -5,6 +5,7 @@ import android.support.annotation.IntegerRes
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import com.firebase.ui.database.FirebaseListOptions
@@ -172,7 +173,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val syllabusLessonQuery = firestoreLocalized.collection("syllabusLessons")
                 .whereEqualTo("board", prefs.getBoardKey())
                 .whereEqualTo("subject", selectedSubjectKey)
-                .whereEqualTo("level", selectedLevel)
+                .whereEqualTo("standard", selectedLevel.toIntOrNull()) //todo: make `selectedLevel` an Int, not a string int!
 
         val adapterOptions = FirestoreRecyclerOptions.Builder<SyllabusLesson>()
                 .setQuery(syllabusLessonQuery, SyllabusLesson::class.java).build()
