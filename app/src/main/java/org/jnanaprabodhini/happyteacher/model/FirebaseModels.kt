@@ -1,5 +1,8 @@
 package org.jnanaprabodhini.happyteacher.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 /**
  * Data models for Firebase objects.
  */
@@ -22,6 +25,7 @@ data class SyllabusLesson(val board: String = "",
                           val subject: String = "",
                           val topicCount: Int = 0)
 
+@Parcelize
 data class CardListContentHeader(val name: String = "",
                                  val authorEmail: String = "",
                                  val authorInstitution: String = "",
@@ -32,7 +36,7 @@ data class CardListContentHeader(val name: String = "",
                                  val subtopic: String = "",
                                  val topic: String = "",
                                  val subjectName: String = "",
-                                 val subtopicSubmissionCount: Int = 0) // todo: move submission count to subclass?
+                                 val subtopicSubmissionCount: Int = 0): Parcelable // todo: move submission count to subclass?
 
 data class CardListContent(val name: String = "",
                            val authorEmail: String = "",

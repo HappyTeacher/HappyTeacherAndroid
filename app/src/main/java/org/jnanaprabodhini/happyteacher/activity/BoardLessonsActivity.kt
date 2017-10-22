@@ -173,7 +173,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val syllabusLessonQuery = firestoreLocalized.collection("syllabusLessons")
                 .whereEqualTo("board", prefs.getBoardKey())
                 .whereEqualTo("subject", selectedSubjectKey)
-                .whereEqualTo("standard", selectedLevel.toIntOrNull()) //todo: make `selectedLevel` an Int, not a string int!
+                .whereEqualTo("level", selectedLevel.toIntOrNull()) //todo: make `selectedLevel` an Int, not a string int!
 
         val adapterOptions = FirestoreRecyclerOptions.Builder<SyllabusLesson>()
                 .setQuery(syllabusLessonQuery, SyllabusLesson::class.java).build()

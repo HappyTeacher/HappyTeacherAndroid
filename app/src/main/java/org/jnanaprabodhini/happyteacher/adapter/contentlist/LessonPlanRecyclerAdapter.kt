@@ -1,12 +1,14 @@
 package org.jnanaprabodhini.happyteacher.adapter.contentlist
 
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
-import org.jnanaprabodhini.happyteacher.adapter.ClassroomResourcesHeaderRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.firestore.ClassroomResourcesHeaderRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentCardViewHolder
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentHeaderRecyclerViewHolder
@@ -16,13 +18,16 @@ import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 import java.io.File
 
-class LessonPlanRecyclerAdapter(contentCardMap: Map<String, ContentCard>, attachmentDestinationDirectory: File, topicName: String, topicId: String, subtopicId: String, activity: HappyTeacherActivity):
-        CardListContentRecyclerAdapter(contentCardMap, attachmentDestinationDirectory, topicName, topicId, subtopicId, activity) {
+class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, attachmentDestinationDirectory: File, topicName: String, topicId: String, subtopicId: String, activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
+        CardListContentRecyclerAdapter(options, attachmentDestinationDirectory, topicName, topicId, subtopicId, activity, dataObserver) {
     companion object { val LESSON_CARD_VIEW_TYPE = 0; val CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE = 1 }
 
-    override fun getItemCount(): Int = super.getItemCount() + 1 // + 1 for footer view (classroom resources section)
+    override fun getItemCount(): Int {
+        Log.d("GRAHAM", "getting count")
+        return super.getItemCount() + 1  // + 1 for footer view (classroom resources section)
+    }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder? {
         if (viewType == CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE) {
             val classroomResourcesView = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_content_header_recycler, parent, false)
 
@@ -46,20 +51,23 @@ class LessonPlanRecyclerAdapter(contentCardMap: Map<String, ContentCard>, attach
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, model: ContentCard?) {
         if (holder is ContentCardViewHolder) {
-            onBindContentCardViewHolder(holder, position)
+            onBindContentCardViewHolder(holder, model)
         } else if (holder is ContentHeaderRecyclerViewHolder) {
-            onBindClassroomResourcesViewHolder(holder, position)
+            onBindClassroomResourcesViewHolder(holder)
         }
     }
 
-    private fun onBindClassroomResourcesViewHolder(holder: ContentHeaderRecyclerViewHolder, position: Int) {
+    private fun onBindClassroomResourcesViewHolder(holder: ContentHeaderRecyclerViewHolder) {
         holder.itemView.setBackgroundResource(R.color.colorPrimaryDark)
         holder.titleTextView.setText(R.string.classroom_resources)
 
-        val classroomResourceQuery = activity.databaseReference.child(activity.getString(R.string.classroom_resources_headers)).child(topicId).child(subtopicId)
-        val adapterOptions = FirebaseRecyclerOptions.Builder<CardListContentHeader>()
+        val classroomResourceQuery = activity.firestoreLocalized.collection("classroom_resources")
+                .whereEqualTo("subtopic", subtopicId)
+                .orderBy("name")
+
+        val adapterOptions = FirestoreRecyclerOptions.Builder<CardListContentHeader>()
                 .setQuery(classroomResourceQuery, CardListContentHeader::class.java)
                 .build()
 

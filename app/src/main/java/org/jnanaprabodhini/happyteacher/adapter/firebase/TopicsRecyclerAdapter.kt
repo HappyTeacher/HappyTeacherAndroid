@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.adapter.LessonHeaderRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentHeaderRecyclerViewHolder
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
@@ -43,10 +42,10 @@ abstract class TopicsRecyclerAdapter(topicsAdapterOptions: FirebaseRecyclerOptio
 
     private fun initializeChildRecyclerView(recyclerView: HorizontalPagerRecyclerView?, topicKey: String, model: Topic?, holder: ContentHeaderRecyclerViewHolder?) {
         val adapterOptions = getSubtopicAdapterOptions(topicKey)
-        val adapter = LessonHeaderRecyclerAdapter(model?.name ?: "", adapterOptions, activity, getSubtopicDataObserverForViewHolder(holder))
+//        val adapter = LessonHeaderRecyclerAdapter(model?.name ?: "", adapterOptions, activity, getSubtopicDataObserverForViewHolder(holder))
 
-        adapter.startListening()
-        recyclerView?.setAdapter(adapter)
+//        adapter.startListening()
+//        recyclerView?.setAdapter(adapter)
     }
 
     abstract fun getSubtopicAdapterOptions(topicId: String): FirebaseRecyclerOptions<CardListContentHeader>

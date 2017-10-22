@@ -42,12 +42,11 @@ class SyllabusLessonRecyclerAdapter(options: FirebaseRecyclerOptions<SyllabusLes
                 //  so that it can display the relevant topics (instead
                 //  of all topics for that subject).
 
-                val keyUrl = getRef(position).child(activity.getString(R.string.topics)).toString()
                 val subject = model?.subject
                 val level = model?.level
                 val title = model?.name
 
-                TopicsListActivity.launchActivity(activity, keyUrl, subject ?: "", title ?: "", level ?: 0)
+//                TopicsListActivity.launchActivity(activity, subject ?: "", title ?: "", level ?: 0)
             }
         }
     }

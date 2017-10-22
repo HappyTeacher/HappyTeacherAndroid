@@ -1,5 +1,6 @@
 package org.jnanaprabodhini.happyteacher.adapter.firestore
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -43,13 +44,12 @@ class SyllabusLessonRecyclerAdapter(options: FirestoreRecyclerOptions<SyllabusLe
                 //  so that it can display the relevant topics (instead
                 //  of all topics for that subject).
 
-                // TODO: make this work with topics list once topics list is converted to Firestore
-//                val keyUrl = getRef(position).child(activity.getString(R.string.topics)).toString()
-//                val subject = model?.subject
-//                val level = model?.level
-//                val title = model?.name
-//
-//                TopicsListActivity.launchActivity(activity, keyUrl, subject ?: "", title ?: "", level ?: 0)
+                val syllabusLessonId = snapshots.getSnapshot(position).reference.id
+                val subject = model?.subject
+                val level = model?.level
+                val title = model?.name
+
+                TopicsListActivity.launchActivity(activity, syllabusLessonId, subject ?: "", title ?: "", level ?: 0)
             }
         }
     }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.annotation.IntegerRes
 import android.support.annotation.LayoutRes
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.View
 import android.widget.Spinner
 import android.widget.TextView
@@ -29,22 +30,21 @@ import org.jnanaprabodhini.happyteacher.prefs
 class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
     companion object IntentExtraHelper {
-        fun launchActivity(from: BottomNavigationActivity, keyUrl: String, subjectName: String, lessonTitle: String, level: Int) {
+        fun launchActivity(from: BottomNavigationActivity, syllabusLessonId: String, subjectName: String, lessonTitle: String, level: Int) {
             val topicsListIntent = Intent(from, TopicsListActivity::class.java)
             topicsListIntent.apply{
-                putExtra(TopicsListActivity.TOPICS_INDEX_LIST_URL, keyUrl)
-                putExtra(TopicsListActivity.SUBJECT_NAME, subjectName)
-                putExtra(TopicsListActivity.LESSON_TITLE, lessonTitle)
-                putExtra(TopicsListActivity.LEVEL, level)
+                putExtra(SYLLABUS_LESSON_ID, syllabusLessonId)
+                putExtra(SUBJECT_NAME, subjectName)
+                putExtra(LESSON_TITLE, lessonTitle)
+                putExtra(LEVEL, level)
             }
 
             from.startBottomNavigationActivityWithFade(topicsListIntent)
         }
 
-        val TOPICS_INDEX_LIST_URL: String = "TOPICS_INDEX_LIST_URL"
-        fun Intent.hasTopicsIndexListUrl(): Boolean = hasExtra(TOPICS_INDEX_LIST_URL)
-        // Note: since we the url may have ~ or " " chars, we need to decode it in order to read that db location!
-        fun Intent.getTopicsIndexListUrl(): String = java.net.URLDecoder.decode(getStringExtra(TOPICS_INDEX_LIST_URL), "UTF-8")
+        val SYLLABUS_LESSON_ID: String = "SYLLABUS_LESSON_ID"
+        fun Intent.hasSyllabusLessonId(): Boolean = hasExtra(SYLLABUS_LESSON_ID)
+        fun Intent.getSyllabusLessonId(): String = getStringExtra(SYLLABUS_LESSON_ID)
 
         val SUBJECT_NAME: String = "SUBJECT_NAME"
         fun Intent.hasSubject(): Boolean = hasExtra(SUBJECT_NAME)
@@ -58,7 +58,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         fun Intent.hasLessonTitle(): Boolean = hasExtra(LESSON_TITLE)
         fun Intent.getLessonTitle(): String = getStringExtra(LESSON_TITLE)
 
-        fun Intent.hasAllExtras(): Boolean = hasTopicsIndexListUrl() && hasSubject() && hasLevel() && hasLessonTitle()
+        fun Intent.hasAllExtras(): Boolean = hasSyllabusLessonId() && hasSubject() && hasLevel() && hasLessonTitle()
     }
 
     object SavedInstanceStateConstants {
@@ -99,13 +99,13 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
     fun initializeUiFromIntent() {
         if (intent.hasAllExtras()) {
             // Show topics related to the given syllabus lesson plan
-            val topicsIndexListUrl = intent.getTopicsIndexListUrl()
+            val syllabusLessonId = intent.getSyllabusLessonId()
             val subject = intent.getSubject()
             val level = intent.getLevel()
             val title = intent.getLessonTitle()
 
             showSyllabusLessonTopicHeader(title, subject, level)
-            updateListOfTopicsFromIndexList(topicsIndexListUrl, level)
+            updateListOfTopicsFromIndexList(syllabusLessonId)
         } else {
             initializeTopicListForSubject()
         }
@@ -209,24 +209,22 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
      *   The adapter looks for topics with specific keys (these keys come
      *   from the syllabus lesson's index list of relevant topics).
      */
-    private fun updateListOfTopicsFromIndexList(indexListLocationUrl: String, level: Int) {
-        val topicsIndexListReference = databaseRoot.getReferenceFromUrl(indexListLocationUrl)
-        val topicsReference = databaseReference.child(getString(R.string.topics))
+    private fun updateListOfTopicsFromIndexList(syllabusLessonId: String) {
+        val topicsQuery = firestoreLocalized.collection("topics")
+                .whereEqualTo("syllabus_lessons.$syllabusLessonId", true)
 
-        val topicsAdapterOptions = FirebaseRecyclerOptions.Builder<Topic>()
-                .setIndexedQuery(topicsIndexListReference, topicsReference, Topic::class.java).build()
+        val topicsAdapterOptions = FirestoreRecyclerOptions.Builder<Topic>()
+                .setQuery(topicsQuery, Topic::class.java).build()
 
-        val adapter = object: TopicsRecyclerAdapter(topicsAdapterOptions, this, this) {
-            override fun getSubtopicAdapterOptions(topicId: String): FirebaseRecyclerOptions<CardListContentHeader> {
-                val indicesOfLessonsForCurrentLevel = databaseReference.child(getString(R.string.boards))
-                        .child(prefs.getBoardKey())
-                        .child(getString(R.string.level_subtopics))
-                        .child(level.toString())
+        val adapter = object: org.jnanaprabodhini.happyteacher.adapter.firestore.TopicsRecyclerAdapter(topicsAdapterOptions, this, this) {
+            override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<CardListContentHeader> {
+                val subtopicQuery = firestoreLocalized.collection("lessons")
+                        .whereEqualTo("topic", topicId) // todo: extract strings
+                        .whereEqualTo("syllabus_lessons.$syllabusLessonId", true)
+                        .whereEqualTo("isFeatured", true)
 
-                val featuredSubtopicLessonHeaderReference = databaseReference.child(getString(R.string.featured_subtopic_lesson_headers)).child(topicId)
-
-                return FirebaseRecyclerOptions.Builder<CardListContentHeader>()
-                        .setIndexedQuery(indicesOfLessonsForCurrentLevel, featuredSubtopicLessonHeaderReference, CardListContentHeader::class.java).build()
+                return FirestoreRecyclerOptions.Builder<CardListContentHeader>()
+                        .setQuery(subtopicQuery, CardListContentHeader::class.java).build()
             }
         }
         adapter.startListening()

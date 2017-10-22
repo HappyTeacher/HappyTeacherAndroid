@@ -2,6 +2,7 @@ package org.jnanaprabodhini.happyteacher.adapter.firestore
 
 import android.app.Activity
 import android.text.format.DateFormat
+import android.util.Log
 import android.view.ViewGroup
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import org.jnanaprabodhini.happyteacher.R
@@ -28,7 +29,8 @@ abstract class CardListContentHeaderRecyclerAdapter<VH: CardListHeaderViewHolder
     }
 
     override fun onBindViewHolder(holder: VH, position: Int, model: CardListContentHeader?) {
-        holder.populateView(model, topicName, activity, dateFormat)
+        val cardRef = snapshots.getSnapshot(position).reference.collection("cards") // todo: extract
+        holder.populateView(model, cardRef, topicName, activity, dateFormat)
     }
 
     fun inflateView(parent: ViewGroup?): View {

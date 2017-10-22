@@ -23,6 +23,9 @@ class HappyTeacherApplication: Application() {
     override fun onCreate() {
         super.onCreate()
 
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+        FirebaseDatabase.getInstance().reference.keepSynced(true)
+
         // Set Roboto as default font
         CalligraphyConfig.initDefault(CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/Roboto-Regular.ttf")

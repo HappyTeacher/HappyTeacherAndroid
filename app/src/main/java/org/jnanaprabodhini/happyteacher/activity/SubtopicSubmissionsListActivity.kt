@@ -5,10 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import kotlinx.android.synthetic.main.activity_subtopic_submissions_list.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
-import org.jnanaprabodhini.happyteacher.adapter.LessonHeaderRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.firestore.LessonHeaderRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
@@ -72,11 +73,11 @@ class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObse
 
     fun initializeRecyclerViewForSubtopic() {
 
-        val submissionHeadersQuery = databaseReference.child(getString(R.string.subtopic_lesson_headers))
-                                                        .child(topicKey)
-                                                        .child(subtopicKey)
+        val submissionHeadersQuery = firestoreLocalized.collection("lessons")
+                .whereEqualTo("subtopic", subtopicKey)
+                .orderBy("isFeatured")
 
-        val adapterOptions = FirebaseRecyclerOptions.Builder<CardListContentHeader>()
+        val adapterOptions = FirestoreRecyclerOptions.Builder<CardListContentHeader>()
                 .setQuery(submissionHeadersQuery, CardListContentHeader::class.java).build()
 
         val adapter = LessonHeaderRecyclerAdapter(topicName, adapterOptions, this, this)

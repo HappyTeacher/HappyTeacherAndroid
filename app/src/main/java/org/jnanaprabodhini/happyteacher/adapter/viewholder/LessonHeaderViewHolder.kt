@@ -2,6 +2,7 @@ package org.jnanaprabodhini.happyteacher.adapter.viewholder
 
 import android.app.Activity
 import android.view.View
+import com.google.firebase.firestore.CollectionReference
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.CardListContentViewerActivity
 import org.jnanaprabodhini.happyteacher.activity.SubtopicSubmissionsListActivity
@@ -11,12 +12,12 @@ import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 import java.text.DateFormat
 
 class LessonHeaderViewHolder(itemView: View): CardListHeaderViewHolder(itemView) {
-    override fun launchContentViewerActivity(activity: Activity, contentId: String, subtopicId: String, subjectName: String, topicName: String, topicId: String, subtopicName: String, subtopicSubmissionCount: Int) {
-        CardListContentViewerActivity.launchLessonViewerActivity(activity, contentId, subtopicId, subjectName, topicName, topicId, subtopicName, subtopicSubmissionCount)
+    override fun launchContentViewerActivity(activity: Activity, cardRef: CollectionReference, cardListContentHeaderModel: CardListContentHeader?, topicName: String) {
+        CardListContentViewerActivity.launchLessonViewerActivity(activity, cardRef, cardListContentHeaderModel ?: CardListContentHeader(), topicName)
     }
 
-    override fun populateView(cardListContentHeaderModel: CardListContentHeader?, topicName: String, activity: Activity, dateFormat: DateFormat) {
-        super.populateView(cardListContentHeaderModel, topicName, activity, dateFormat)
+    override fun populateView(cardListContentHeaderModel: CardListContentHeader?, cardRef: CollectionReference, topicName: String, activity: Activity, dateFormat: DateFormat) {
+        super.populateView(cardListContentHeaderModel, cardRef, topicName, activity, dateFormat)
 
         cardListContentHeaderModel?.let {
             if (cardListContentHeaderModel.subtopicSubmissionCount > 1) {

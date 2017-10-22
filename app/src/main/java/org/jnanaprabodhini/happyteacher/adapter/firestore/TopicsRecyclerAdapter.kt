@@ -1,6 +1,7 @@
 package org.jnanaprabodhini.happyteacher.adapter.firestore
 
 import android.app.Activity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerOptions

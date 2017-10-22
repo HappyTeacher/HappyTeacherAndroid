@@ -2,41 +2,43 @@ package org.jnanaprabodhini.happyteacher.adapter.contentlist
 
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
+import android.view.ViewGroup
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.CollectionReference
 import org.jnanaprabodhini.happyteacher.activity.FullScreenGalleryViewerActivity
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.ImageGalleryRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.firestore.FirestoreObserverRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.AttachmentDownloadManager
+import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentCardViewHolder
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.AttachmentMetadata
+import org.jnanaprabodhini.happyteacher.model.CardListContent
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 import java.io.File
 
 /**
  * Created by grahamearley on 9/25/17.
  */
-abstract class CardListContentRecyclerAdapter(val contentCardMap: Map<String, ContentCard>, val attachmentDestinationDirectory: File, val topicName: String, val topicId: String, val subtopicId: String, val activity: HappyTeacherActivity): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+abstract class CardListContentRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, val attachmentDestinationDirectory: File, val topicName: String, val topicId: String, val subtopicId: String, val activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
+        FirestoreObserverRecyclerAdapter<ContentCard, RecyclerView.ViewHolder>(options, dataObserver) {
 
-    val lessonCards by lazy {
-        contentCardMap.toSortedMap().values.toList()
-    }
-
-    override fun getItemCount(): Int = lessonCards.size
-
-    protected fun onBindContentCardViewHolder(holder: ContentCardViewHolder, position: Int) {
-        val card = lessonCards[position]
-
+    protected fun onBindContentCardViewHolder(holder: ContentCardViewHolder, model: ContentCard?) {
         resetViewVisibility(holder)
-        setupText(card, holder)
 
-        if (card.youtubeId.isNotEmpty()) {
-            setupYoutubePlayer(card.youtubeId, holder)
-        } else if (card.imageUrls.isNotEmpty()) {
-            setupImages(card.getCardImageUrls(), holder)
-        }
+        model?.let {
+            setupText(model, holder)
 
-        if (card.attachmentPath.isNotEmpty() && card.attachmentMetadata.isNotEmpty()) {
-            setupAttachmentView(card.attachmentPath, card.attachmentMetadata, holder)
+            if (model.youtubeId.isNotEmpty()) {
+                setupYoutubePlayer(model.youtubeId, holder)
+            } else if (model.imageUrls.isNotEmpty()) {
+                setupImages(model.getCardImageUrls(), holder)
+            }
+
+            if (model.attachmentPath.isNotEmpty() && model.attachmentMetadata.isNotEmpty()) {
+                setupAttachmentView(model.attachmentPath, model.attachmentMetadata, holder)
+            }
         }
     }
 
