@@ -3,10 +3,9 @@ package org.jnanaprabodhini.happyteacher.adapter.firestore
 import android.app.Activity
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.DocumentReference
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.adapter.LessonHeaderRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentHeaderRecyclerViewHolder
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
@@ -39,19 +38,19 @@ abstract class TopicsRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOpti
             3 -> holder?.itemView?.setBackgroundResource(R.color.dreamsicleOrange)
         }
 
-                // todo:
-//        initializeChildRecyclerView(holder?.horizontalRecyclerView, getRef(position).key, model, holder)
+        val topicId = snapshots.getSnapshot(position).reference.id
+        initializeChildRecyclerView(holder?.horizontalRecyclerView, topicId, model, holder)
     }
 
-    private fun initializeChildRecyclerView(recyclerView: HorizontalPagerRecyclerView?, topicKey: String, model: Topic?, holder: ContentHeaderRecyclerViewHolder?) {
-        val adapterOptions = getSubtopicAdapterOptions(topicKey)
+    private fun initializeChildRecyclerView(recyclerView: HorizontalPagerRecyclerView?, topicId: String, model: Topic?, holder: ContentHeaderRecyclerViewHolder?) {
+        val adapterOptions = getSubtopicAdapterOptions(topicId)
         val adapter = LessonHeaderRecyclerAdapter(model?.name ?: "", adapterOptions, activity, getSubtopicDataObserverForViewHolder(holder))
 
         adapter.startListening()
         recyclerView?.setAdapter(adapter)
     }
 
-    abstract fun getSubtopicAdapterOptions(topicId: String): FirebaseRecyclerOptions<CardListContentHeader>
+    abstract fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<CardListContentHeader>
 
     private fun getSubtopicDataObserverForViewHolder(topicViewHolder: ContentHeaderRecyclerViewHolder?, level: Int? = null) = object: FirebaseDataObserver {
         override fun onRequestNewData() {

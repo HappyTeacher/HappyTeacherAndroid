@@ -10,6 +10,9 @@ import android.widget.Spinner
 import android.widget.TextView
 import com.firebase.ui.database.FirebaseListOptions
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_topics_list.*
 import kotlinx.android.synthetic.main.header_syllabus_lesson_topic.*
 import org.jnanaprabodhini.happyteacher.R
@@ -180,18 +183,19 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
      *  Display list of topics for the selected subject.
      */
     fun updateListOfTopics(subjectKey: String) {
-        val topicQuery = databaseReference.child(getString(R.string.topics))
-                .orderByChild(getString(R.string.subject)).equalTo(subjectKey)
+        val topicQuery = firestoreLocalized.collection("topics")
+                .whereEqualTo("subject", subjectKey) // todo: ordering
 
-        val topicAdapterOptions = FirebaseRecyclerOptions.Builder<Topic>()
+        val topicAdapterOptions = FirestoreRecyclerOptions.Builder<Topic>()
                 .setQuery(topicQuery, Topic::class.java).build()
 
-        val topicAdapter = object: TopicsRecyclerAdapter(topicAdapterOptions, this, this) {
-            override fun getSubtopicAdapterOptions(topicId: String): FirebaseRecyclerOptions<CardListContentHeader> {
-                val featuredSubtopicQuery = databaseReference.child(getString(R.string.featured_subtopic_lesson_headers)).child(topicId)
+        val topicAdapter = object: org.jnanaprabodhini.happyteacher.adapter.firestore.TopicsRecyclerAdapter(topicAdapterOptions, this, this) {
+            override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<CardListContentHeader> {
+                val query: Query = firestoreLocalized.collection("lessons")
+                        .whereEqualTo("topic", topicId)
+                        .whereEqualTo("isFeatured", true)
 
-                return FirebaseRecyclerOptions.Builder<CardListContentHeader>()
-                        .setQuery(featuredSubtopicQuery, CardListContentHeader::class.java).build()
+                return FirestoreRecyclerOptions.Builder<CardListContentHeader>().setQuery(query, CardListContentHeader::class.java).build()
             }
         }
 
