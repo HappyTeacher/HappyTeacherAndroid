@@ -192,7 +192,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val topicAdapter = object: org.jnanaprabodhini.happyteacher.adapter.firestore.TopicsRecyclerAdapter(topicAdapterOptions, this, this) {
             override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<CardListContentHeader> {
                 val query: Query = firestoreLocalized.collection("lessons")
-                        .whereEqualTo("topic", topicId)
+                        .whereEqualTo("topic", topicId) // todo: extract strings
                         .whereEqualTo("isFeatured", true)
 
                 return FirestoreRecyclerOptions.Builder<CardListContentHeader>().setQuery(query, CardListContentHeader::class.java).build()

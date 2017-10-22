@@ -24,7 +24,7 @@ class LessonHeaderViewHolder(itemView: View): CardListHeaderViewHolder(itemView)
                 submissionCountTextView.text = activity.getString(R.string.plus_number, cardListContentHeaderModel.subtopicSubmissionCount - 1) // subtract one to exclude the featured contentKey
                 submissionCountTextView.setOnClickListener {
                     SubtopicSubmissionsListActivity.launchActivity(activity, topicName, cardListContentHeaderModel.subtopic, cardListContentHeaderModel.topic)
-                }
+                } // todo: ^ make submission list work!
             } else {
                 submissionCountTextView.setVisibilityGone()
             }
