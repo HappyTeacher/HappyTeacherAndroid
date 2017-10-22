@@ -1,10 +1,12 @@
 package org.jnanaprabodhini.happyteacher.adapter.firestore
 
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.FirebaseFirestoreException
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 
 /**
@@ -17,7 +19,9 @@ import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
  */
 
 abstract class FirestoreObserverRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(options: FirestoreRecyclerOptions<T>, val dataObserver: FirebaseDataObserver): FirestoreRecyclerAdapter<T, VH>(options) {
-    init {
+
+    override fun startListening() {
+        super.startListening()
         dataObserver.onRequestNewData()
     }
 
