@@ -33,7 +33,7 @@ abstract class CardListContentRecyclerAdapter(options: FirestoreRecyclerOptions<
             if (model.youtubeId.isNotEmpty()) {
                 setupYoutubePlayer(model.youtubeId, holder)
             } else if (model.imageUrls.isNotEmpty()) {
-                setupImages(model.getCardImageUrls(), holder)
+                setupImages(model.imageUrls, holder)
             }
 
             if (model.attachmentPath.isNotEmpty() && model.attachmentMetadata.isNotEmpty()) {

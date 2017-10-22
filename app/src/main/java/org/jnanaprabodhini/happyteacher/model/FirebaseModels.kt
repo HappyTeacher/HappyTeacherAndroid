@@ -1,5 +1,6 @@
 package org.jnanaprabodhini.happyteacher.model
 
+import android.annotation.SuppressLint
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
@@ -48,14 +49,12 @@ data class CardListContent(val name: String = "",
 
 data class ContentCard(val header: String = "",
                        val body: String = "",
-                       val imageUrls: Map<String, String> = emptyMap(),
+                       val imageUrls: List<String> = emptyList(),
                        val youtubeId: String = "",
                        val attachmentPath: String = "",
                        val attachmentMetadata: AttachmentMetadata = AttachmentMetadata(),
                        val type: String = "",
-                       val number: Int = 0) {
-    fun getCardImageUrls(): List<String> = imageUrls.toSortedMap().values.toList()
-}
+                       val number: Int = 0)
 
 data class AttachmentMetadata(val contentType: String = "",
                               val size: Long = 0,

@@ -88,7 +88,7 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
                                                         + File.separator
                                                         + header.subjectName + File.separator + topicName + File.separator + header.name)
 
-        val cardRef = firestoreLocalized.collection(cardRefPath)
+        val cardRef = firestoreRoot.collection(cardRefPath)
 
         initializeUiForContent(cardRef, attachmentDestinationDirectory)
     }

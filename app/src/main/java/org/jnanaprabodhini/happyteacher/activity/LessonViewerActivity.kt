@@ -1,5 +1,6 @@
 package org.jnanaprabodhini.happyteacher.activity
 
+import android.util.Log
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.firestore.CollectionReference
@@ -34,7 +35,8 @@ class LessonViewerActivity : CardListContentViewerActivity(){
 
     override fun getCardRecyclerAdapter(cardRef: CollectionReference, attachmentDestinationDirectory: File): CardListContentRecyclerAdapter {
         val options = FirestoreRecyclerOptions.Builder<ContentCard>()
-                .setQuery(cardRef, ContentCard::class.java).build()
+                .setQuery(cardRef.orderBy("orderNumber"), ContentCard::class.java).build()
+
         return LessonPlanRecyclerAdapter(options, attachmentDestinationDirectory, topicName, header.topic, header.subtopic, this, this)
     }
 }

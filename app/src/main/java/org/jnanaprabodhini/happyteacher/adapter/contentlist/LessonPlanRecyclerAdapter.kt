@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
@@ -20,12 +19,10 @@ import java.io.File
 
 class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, attachmentDestinationDirectory: File, topicName: String, topicId: String, subtopicId: String, activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
         CardListContentRecyclerAdapter(options, attachmentDestinationDirectory, topicName, topicId, subtopicId, activity, dataObserver) {
+
     companion object { val LESSON_CARD_VIEW_TYPE = 0; val CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE = 1 }
 
-    override fun getItemCount(): Int {
-        Log.d("GRAHAM", "getting count")
-        return super.getItemCount() + 1  // + 1 for footer view (classroom resources section)
-    }
+    override fun getItemCount(): Int = super.getItemCount() + 1 // + 1 for footer view (classroom resources section)
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder? {
         if (viewType == CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE) {
@@ -51,11 +48,21 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
         }
     }
 
+    /**
+     * We override this method (in addition to the abstract onBindViewHolder(holder, position, model) method)
+     *  because this base method calls `getItem(position`, and this throws an error for the last item in the
+     *  list because it is not an item in the list but rather the footer view.
+     */
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+        when (getItemViewType(position)) {
+            LESSON_CARD_VIEW_TYPE -> onBindViewHolder(holder, position, getItem(position))
+            CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE -> onBindClassroomResourcesViewHolder(holder as ContentHeaderRecyclerViewHolder)
+        }
+    }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, model: ContentCard?) {
         if (holder is ContentCardViewHolder) {
             onBindContentCardViewHolder(holder, model)
-        } else if (holder is ContentHeaderRecyclerViewHolder) {
-            onBindClassroomResourcesViewHolder(holder)
         }
     }
 
