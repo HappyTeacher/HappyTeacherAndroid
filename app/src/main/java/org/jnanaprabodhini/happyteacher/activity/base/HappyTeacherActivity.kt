@@ -21,13 +21,6 @@ import org.jnanaprabodhini.happyteacher.prefs
  *  and locale switching.
  */
 abstract class HappyTeacherActivity: AppCompatActivity() {
-    val databaseRoot: FirebaseDatabase by lazy {
-        FirebaseDatabase.getInstance()
-    }
-
-    val databaseReference: DatabaseReference by lazy {
-        databaseRoot.getBaseReferenceForCurrentLanguage()
-    }
 
     val firestoreRoot: FirebaseFirestore by lazy {
         FirebaseFirestore.getInstance()
