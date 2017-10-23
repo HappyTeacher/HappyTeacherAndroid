@@ -5,30 +5,22 @@ import android.os.Bundle
 import android.support.annotation.IntegerRes
 import android.support.annotation.LayoutRes
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.widget.Spinner
 import android.widget.TextView
-import com.firebase.ui.database.FirebaseListOptions
-import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_topics_list.*
 import kotlinx.android.synthetic.main.header_syllabus_lesson_topic.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.BottomNavigationActivity
-import org.jnanaprabodhini.happyteacher.adapter.firebase.FirebaseObserverListAdapter
-import org.jnanaprabodhini.happyteacher.adapter.firebase.TopicsRecyclerAdapter
-import org.jnanaprabodhini.happyteacher.adapter.firestore.FirestoreListAdapter
+import org.jnanaprabodhini.happyteacher.adapter.firestore.FirestoreObserverListAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 import org.jnanaprabodhini.happyteacher.model.Topic
-import org.jnanaprabodhini.happyteacher.prefs
 
 class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
@@ -149,19 +141,16 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
             }
         }
 
-        val adapter = object: FirestoreListAdapter<Subject>(subjectQuery, Subject::class.java, spinnerLayout, this) {
+        val adapter = object: FirestoreObserverListAdapter<Subject>(subjectQuery, Subject::class.java, spinnerLayout, spinnerDataObserver, this) {
             override fun populateView(view: View, model: Subject) {
                 (view as TextView).text = model.name
             }
-
         }
 
         adapter.startListening()
         spinner.adapter = adapter
 
         spinner.selectIndexWhenPopulated(selectionIndex)
-
-        spinner.setVisible() // todo: let observer handle this
 
         spinner.onItemSelected { position ->
             val subject = adapter.getItem(position)

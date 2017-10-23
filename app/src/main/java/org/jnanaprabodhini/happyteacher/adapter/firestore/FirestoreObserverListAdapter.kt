@@ -21,13 +21,13 @@ import com.firebase.ui.firestore.FirestoreArray
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.QueryListenOptions
+import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 
 
 /**
  * Created by grahamearley on 10/23/17.
  */
-// todo: add observers!!
-abstract class FirestoreListAdapter<T>(query: Query, modelClass: Class<T>, @LayoutRes val layoutId: Int, context: Context):
+abstract class FirestoreObserverListAdapter<T>(query: Query, modelClass: Class<T>, @LayoutRes val layoutId: Int, val dataObserver: FirebaseDataObserver, context: Context):
         ArrayAdapter<T>(context, layoutId),
         ChangeEventListener {
 
@@ -35,6 +35,7 @@ abstract class FirestoreListAdapter<T>(query: Query, modelClass: Class<T>, @Layo
 
     fun startListening() {
         if (!snapshots.isListening(this)) {
+            dataObserver.onRequestNewData()
             snapshots.addChangeEventListener(this)
         }
     }
@@ -65,7 +66,13 @@ abstract class FirestoreListAdapter<T>(query: Query, modelClass: Class<T>, @Layo
     abstract fun populateView(view: View, model: T)
 
     override fun onDataChanged() {
-        // todo
+        dataObserver.onDataLoaded()
+
+        when (count) {
+            0 -> dataObserver.onDataEmpty()
+            else -> dataObserver.onDataNonEmpty()
+        }
+
     }
 
     override fun onChildChanged(type: ChangeEventType?, snapshot: DocumentSnapshot?, newIndex: Int, oldIndex: Int) {
@@ -73,6 +80,7 @@ abstract class FirestoreListAdapter<T>(query: Query, modelClass: Class<T>, @Layo
     }
 
     override fun onError(e: FirebaseFirestoreException?) {
+        e?.printStackTrace()
         // todo
     }
 }
