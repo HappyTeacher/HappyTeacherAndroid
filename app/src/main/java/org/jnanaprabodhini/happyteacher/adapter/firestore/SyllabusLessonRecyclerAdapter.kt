@@ -19,7 +19,7 @@ import org.jnanaprabodhini.happyteacher.model.SyllabusLesson
 /**
  * Created by grahamearley on 10/11/17.
  */
-class SyllabusLessonRecyclerAdapter(options: FirestoreRecyclerOptions<SyllabusLesson>, dataObserver: FirebaseDataObserver, val activity: BottomNavigationActivity):
+class SyllabusLessonRecyclerAdapter(options: FirestoreRecyclerOptions<SyllabusLesson>, val subjectName: String, dataObserver: FirebaseDataObserver, val activity: BottomNavigationActivity):
         FirestoreObserverRecyclerAdapter<SyllabusLesson, SyllabusLessonViewHolder>(options, dataObserver) {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SyllabusLessonViewHolder {
@@ -45,11 +45,10 @@ class SyllabusLessonRecyclerAdapter(options: FirestoreRecyclerOptions<SyllabusLe
                 //  of all topics for that subject).
 
                 val syllabusLessonId = snapshots.getSnapshot(position).reference.id
-                val subject = model?.subject
                 val level = model?.level
                 val title = model?.name
 
-                TopicsListActivity.launchActivity(activity, syllabusLessonId, subject ?: "", title ?: "", level ?: 0)
+                TopicsListActivity.launchActivity(activity, syllabusLessonId, subjectName, title ?: "", level ?: 0)
             }
         }
     }

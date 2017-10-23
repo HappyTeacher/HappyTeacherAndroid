@@ -5,21 +5,24 @@ import android.os.Bundle
 import android.support.annotation.IntegerRes
 import android.support.annotation.LayoutRes
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.View
 import android.widget.Spinner
 import android.widget.TextView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_topics_list.*
 import kotlinx.android.synthetic.main.header_syllabus_lesson_topic.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacher.adapter.firestore.FirestoreObserverListAdapter
+import org.jnanaprabodhini.happyteacher.adapter.firestore.TopicsRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.*
-import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
+import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.Topic
 
 class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
@@ -181,7 +184,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val topicAdapterOptions = FirestoreRecyclerOptions.Builder<Topic>()
                 .setQuery(topicQuery, Topic::class.java).build()
 
-        val topicAdapter = object: org.jnanaprabodhini.happyteacher.adapter.firestore.TopicsRecyclerAdapter(topicAdapterOptions, this, this) {
+        val topicAdapter = object: TopicsRecyclerAdapter(topicAdapterOptions, this, this) {
             override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<CardListContentHeader> {
                 val query: Query = firestoreLocalized.collection("lessons")
                         .whereEqualTo("topic", topicId) // todo: extract strings
@@ -208,7 +211,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val topicsAdapterOptions = FirestoreRecyclerOptions.Builder<Topic>()
                 .setQuery(topicsQuery, Topic::class.java).build()
 
-        val adapter = object: org.jnanaprabodhini.happyteacher.adapter.firestore.TopicsRecyclerAdapter(topicsAdapterOptions, this, this) {
+        val adapter = object: TopicsRecyclerAdapter(topicsAdapterOptions, this, this) {
             override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<CardListContentHeader> {
                 val subtopicQuery = firestoreLocalized.collection("lessons")
                         .whereEqualTo("topic", topicId) // todo: extract strings
@@ -240,14 +243,8 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
         syllabusLessonPlanNameTextView.text = syllabusLessonPlanTitle
 
-        // Get the actual subject model so we can access its name:
-        databaseReference.child(getString(R.string.subjects)).child(subject).ref.onSingleValueEvent { dataSnapshot ->
-            val subjectModel = dataSnapshot?.getValue(Subject::class.java)
-            val subjectName = subjectModel?.name
-
-            val standardString = getString(R.string.standard_n, standard)
-            syllabusLessonSubjectStandardTextView.text = "$subjectName, $standardString"
-        }
+        val standardString = getString(R.string.standard_n, standard)
+        syllabusLessonSubjectStandardTextView.text = "$subject, $standardString"
     }
 
     private fun hideSyllabusLessonTopicHeader() {

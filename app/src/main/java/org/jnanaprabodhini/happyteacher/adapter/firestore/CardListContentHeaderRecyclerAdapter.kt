@@ -2,11 +2,8 @@ package org.jnanaprabodhini.happyteacher.adapter.firestore
 
 import android.app.Activity
 import android.text.format.DateFormat
-import android.util.Log
 import android.view.ViewGroup
-import com.firebase.ui.database.FirebaseRecyclerOptions
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.adapter.firebase.FirebaseObserverRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.CardListHeaderViewHolder
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ClassroomResourcesHeaderViewHolder
@@ -15,7 +12,6 @@ import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 import android.view.LayoutInflater
 import android.view.View
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.database.DatabaseReference
 
 
 /**

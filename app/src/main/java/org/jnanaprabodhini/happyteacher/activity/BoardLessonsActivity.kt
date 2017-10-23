@@ -5,23 +5,22 @@ import android.support.annotation.IntegerRes
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import com.firebase.ui.database.FirebaseListOptions
-import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import kotlinx.android.synthetic.main.activity_board_lessons.*
-import org.jnanaprabodhini.happyteacher.dialog.BoardChoiceDialog
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.BottomNavigationActivity
-import org.jnanaprabodhini.happyteacher.adapter.firebase.FirebaseObserverListAdapter
-import org.jnanaprabodhini.happyteacher.adapter.firebase.SyllabusLessonRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.firestore.FirestoreObserverListAdapter
+import org.jnanaprabodhini.happyteacher.adapter.firestore.SyllabusLessonRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
-import org.jnanaprabodhini.happyteacher.extension.*
+import org.jnanaprabodhini.happyteacher.dialog.BoardChoiceDialog
+import org.jnanaprabodhini.happyteacher.extension.onItemSelected
+import org.jnanaprabodhini.happyteacher.extension.selectIndexWhenPopulated
+import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
+import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.SyllabusLesson
 import org.jnanaprabodhini.happyteacher.prefs
@@ -156,7 +155,9 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val adapterOptions = FirestoreRecyclerOptions.Builder<SyllabusLesson>()
                 .setQuery(syllabusLessonQuery, SyllabusLesson::class.java).build()
 
-        val adapter = org.jnanaprabodhini.happyteacher.adapter.firestore.SyllabusLessonRecyclerAdapter(adapterOptions, this, this)
+        val subjectName = (subjectSpinner.selectedItem as Subject).name
+
+        val adapter = SyllabusLessonRecyclerAdapter(adapterOptions, subjectName, this, this)
         adapter.startListening()
 
         syllabusLessonsRecyclerView.adapter = adapter
