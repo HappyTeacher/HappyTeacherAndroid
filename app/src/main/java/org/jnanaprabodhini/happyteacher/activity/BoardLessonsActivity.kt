@@ -7,6 +7,8 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.firebase.ui.database.FirebaseListOptions
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -17,6 +19,7 @@ import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacher.adapter.firebase.FirebaseObserverListAdapter
 import org.jnanaprabodhini.happyteacher.adapter.firebase.SyllabusLessonRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.firestore.FirestoreObserverListAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.Subject
@@ -93,16 +96,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
     }
 
     private fun setupSubjectSpinner() {
-        // Get an index list of subjects that are used by the currently active board:
-        val boardSubjectIndexQuery = databaseReference.child(getString(R.string.boards))
-                .child(prefs.getBoardKey())
-                .child(getString(R.string.subjects))
-
-        val subjectRef = databaseReference.child(getString(R.string.subjects))
-
-        val subjectSpinnerAdapterOptions = FirebaseListOptions.Builder<Subject>()
-                .setIndexedQuery(boardSubjectIndexQuery, subjectRef, Subject::class.java)
-                .setLayout(R.layout.spinner_item).build()
+        val subjectQuery = firestoreLocalized.collection("subjects").whereEqualTo("boards.${prefs.getBoardKey()}", true)
 
         val subjectDataObserver = object: FirebaseDataObserver {
             override fun onDataNonEmpty() {
@@ -111,69 +105,52 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
             }
         }
 
-        val boardSubjectSpinnerAdapter = object : FirebaseObserverListAdapter<Subject>(subjectSpinnerAdapterOptions, subjectDataObserver) {
-            override fun populateView(view: View, subject: Subject, position: Int) {
-                (view as TextView).text = subject.name
+        val adapter = object: FirestoreObserverListAdapter<Subject>(subjectQuery, Subject::class.java, R.layout.spinner_item, subjectDataObserver, this) {
+            override fun populateView(view: View, model: Subject) {
+                (view as TextView).text = model.name
             }
         }
-
-        boardSubjectSpinnerAdapter.startListening()
+        adapter.startListening()
 
         // The level spinner depends on what subject is selected:
-        subjectSpinner.onItemSelected { pos -> setupLevelSpinnerForSubject(boardSubjectSpinnerAdapter.getRef(pos).key) }
+        subjectSpinner.onItemSelected { pos -> setupLevelSpinnerForSubject(adapter.getItem(pos).getStandardArrayForCurrentBoard(), adapter.getItemKey(pos)) }
 
-        subjectSpinner.adapter = boardSubjectSpinnerAdapter
+        subjectSpinner.adapter = adapter
         subjectSpinner.selectIndexWhenPopulated(subjectSpinnerSelectionIndex)
     }
 
-    private fun setupLevelSpinnerForSubject(subjectKey: String) {
+    private fun setupLevelSpinnerForSubject(standards: List<Int>, subjectId: String) {
         val previousSelection = levelSpinner.selectedItem
 
-        val levelRef = databaseReference.child(getString(R.string.levels))
-
-        // Get an index list of levels that are used by the currently active board:
-        val boardLevelIndexQuery = databaseReference.child(getString(R.string.boards))
-                                                    .child(prefs.getBoardKey())
-                                                    .child(getString(R.string.subjects))
-                                                    .child(subjectKey)
-
-        // Observe data in this spinner, and if the previously selected item
-        //  is loaded into the data, then select that item.
-        val levelDataObserver = object: FirebaseDataObserver {
-            override fun onDataNonEmpty() {
-                if (previousSelection != null && previousSelection is Int) {
-                    val indexOfPreviousSelection = levelSpinner.items().indexOf(previousSelection)
-                    if (indexOfPreviousSelection != -1) {
-                        levelSpinner.setSelection(indexOfPreviousSelection, true)
-                    }
-                }
+        // If the item that was previously selected (i.e. before the subject changed)
+        //  is still available in this list, then set it to be selected
+        if (previousSelection != null && previousSelection is Int) {
+            val indexOfPreviousSelection = standards.indexOf(previousSelection)
+            if (indexOfPreviousSelection != -1) {
+                levelSpinnerSelectionIndex = previousSelection
             }
         }
 
-        val boardLevelSpinnerAdapterOptions = FirebaseListOptions.Builder<Int>()
-                .setIndexedQuery(boardLevelIndexQuery, levelRef, Int::class.java)
-                .setLayout(R.layout.spinner_item).build()
-
-        val boardLevelSpinnerAdapter = object : FirebaseObserverListAdapter<Int>(boardLevelSpinnerAdapterOptions, levelDataObserver) {
-            override fun populateView(view: View, level: Int, position: Int) {
-                (view as TextView).text = getString(R.string.standard_n, level)
+        val adapter = object: ArrayAdapter<Int>(this, R.layout.spinner_item, standards) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+                val view = super.getView(position, convertView, parent)
+                (view as TextView).text = getString(R.string.standard_n, standards[position])
+                return view
             }
         }
-
-        boardLevelSpinnerAdapter.startListening()
 
         // Once a level is selected, we can update the list of lessons
-        levelSpinner.onItemSelected { pos -> updateSyllabusLessonList(subjectKey, boardLevelSpinnerAdapter.getRef(pos).key) }
+        levelSpinner.onItemSelected { pos -> updateSyllabusLessonList(subjectId, standards[pos]) }
 
-        levelSpinner.adapter = boardLevelSpinnerAdapter
+        levelSpinner.adapter = adapter
         levelSpinner.selectIndexWhenPopulated(levelSpinnerSelectionIndex)
     }
 
-    private fun updateSyllabusLessonList(selectedSubjectKey: String, selectedLevel: String) {
+    private fun updateSyllabusLessonList(selectedSubjectKey: String, selectedLevel: Int) {
         val syllabusLessonQuery = firestoreLocalized.collection("syllabusLessons")
                 .whereEqualTo("board", prefs.getBoardKey())
                 .whereEqualTo("subject", selectedSubjectKey)
-                .whereEqualTo("level", selectedLevel.toIntOrNull()) //todo: make `selectedLevel` an Int, not a string int!
+                .whereEqualTo("level", selectedLevel)
 
         Log.d("GRAHAM", "querying for subject $selectedSubjectKey and level $selectedLevel")
         syllabusLessonQuery.addSnapshotListener { querySnapshot, firebaseFirestoreException ->

@@ -3,6 +3,7 @@ package org.jnanaprabodhini.happyteacher.model
 import android.annotation.SuppressLint
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
+import org.jnanaprabodhini.happyteacher.prefs
 
 /**
  * Data models for Firebase objects.
@@ -10,7 +11,10 @@ import kotlinx.android.parcel.Parcelize
 
 data class Subject(var name: String = "",
                    var parentSubject: String? = null,
-                   var hasChildren: Boolean = false)
+                   var boardStandards: Map<String, @JvmSuppressWildcards ArrayList<Int>> = emptyMap(),
+                   var hasChildren: Boolean = false) {
+    fun getStandardArrayForCurrentBoard() = boardStandards[prefs.getBoardKey()] ?: ArrayList()
+}
 
 data class Topic(var name: String = "",
                  var subject: String = "")

@@ -6,7 +6,6 @@ import android.support.annotation.LayoutRes
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListAdapter
-import com.google.firebase.firestore.Query
 import org.jnanaprabodhini.happyteacher.R.id.textView
 import android.support.v7.widget.RecyclerView.ViewHolder
 import android.support.design.widget.CoordinatorLayout.Behavior.setTag
@@ -18,9 +17,7 @@ import com.firebase.ui.common.ChangeEventType
 import com.firebase.ui.firestore.ChangeEventListener
 import com.firebase.ui.firestore.ClassSnapshotParser
 import com.firebase.ui.firestore.FirestoreArray
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.QueryListenOptions
+import com.google.firebase.firestore.*
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 
 
@@ -44,7 +41,9 @@ abstract class FirestoreObserverListAdapter<T>(query: Query, modelClass: Class<T
 
     override fun getItem(position: Int): T = snapshots[position]
 
-    fun getItemKey(position: Int) = snapshots.getSnapshot(position).reference.id
+    fun getItemRef(position: Int): DocumentReference = snapshots.getSnapshot(position).reference
+
+    fun getItemKey(position: Int) = getItemRef(position).id
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         if (convertView == null) {
