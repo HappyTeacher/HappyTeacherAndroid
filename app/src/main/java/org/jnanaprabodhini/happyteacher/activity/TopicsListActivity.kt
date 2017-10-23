@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.support.annotation.IntegerRes
 import android.support.annotation.LayoutRes
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.widget.Spinner
 import android.widget.TextView
 import com.firebase.ui.database.FirebaseListOptions
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
@@ -20,6 +22,7 @@ import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacher.adapter.firebase.FirebaseObserverListAdapter
 import org.jnanaprabodhini.happyteacher.adapter.firebase.TopicsRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.firestore.FirestoreListAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.Subject
@@ -115,7 +118,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         topicsProgressBar.setVisible()
 
         // Show all topics for a subject, selected by spinner
-        setupParentSubjectSpinner()
+        setupSubjectSpinner()//todo
         hideSyllabusLessonTopicHeader()
     }
 
@@ -127,6 +130,25 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
             // Scroll to top of topic list:
             topicsRecyclerView.smoothScrollToPosition(0)
         }
+    }
+
+    private fun setupSubjectSpinner() {
+        val subjectQuery = firestoreLocalized.collection("subjects").whereEqualTo("boards.${prefs.getBoardKey()}", true)
+
+        subjectQuery.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+            Log.d("GRAHAM", "subjects? ${querySnapshot.documents.map { it.data }}")
+        }
+
+        val adapter = object: FirestoreListAdapter<Subject>(subjectQuery, Subject::class.java, R.layout.spinner_item, this) {
+            override fun populateView(view: View, model: Subject) {
+                (view as TextView).text = model.name
+            }
+
+        }
+
+        adapter.startListening()
+        parentSubjectSpinner.adapter = adapter
+        parentSubjectSpinner.setVisible()
     }
 
     /**

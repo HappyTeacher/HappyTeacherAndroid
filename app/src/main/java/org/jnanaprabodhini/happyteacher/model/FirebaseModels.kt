@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
  */
 
 data class Subject(var name: String = "",
-                   var parentSubject: String = "",
+                   var parentSubject: String? = null,
                    var hasChildren: Boolean = false)
 
 data class Topic(var name: String = "",
