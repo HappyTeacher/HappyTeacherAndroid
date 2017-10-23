@@ -127,7 +127,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
         if (previousSelection != null && previousSelection is Int) {
             val indexOfPreviousSelection = standards.indexOf(previousSelection)
             if (indexOfPreviousSelection != -1) {
-                levelSpinnerSelectionIndex = previousSelection
+                levelSpinnerSelectionIndex = indexOfPreviousSelection
             }
         }
 
@@ -143,7 +143,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
         levelSpinner.onItemSelected { pos -> updateSyllabusLessonList(subjectId, standards[pos]) }
 
         levelSpinner.adapter = adapter
-        levelSpinner.selectIndexWhenPopulated(levelSpinnerSelectionIndex)
+        levelSpinner.setSelection(levelSpinnerSelectionIndex)
     }
 
     private fun updateSyllabusLessonList(selectedSubjectKey: String, selectedLevel: Int) {
