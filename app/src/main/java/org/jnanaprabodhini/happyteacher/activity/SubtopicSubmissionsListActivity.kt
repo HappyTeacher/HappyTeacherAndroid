@@ -72,9 +72,9 @@ class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObse
 
     fun initializeRecyclerViewForSubtopic() {
 
-        val submissionHeadersQuery = firestoreLocalized.collection("lessons")
-                .whereEqualTo("subtopic", subtopicKey)
-                .orderBy("isFeatured")
+        val submissionHeadersQuery = firestoreLocalized.collection(getString(R.string.lessons))
+                .whereEqualTo(getString(R.string.subtopic), subtopicKey)
+                .orderBy(getString(R.string.is_featured))
 
         val adapterOptions = FirestoreRecyclerOptions.Builder<CardListContentHeader>()
                 .setQuery(submissionHeadersQuery, CardListContentHeader::class.java).build()

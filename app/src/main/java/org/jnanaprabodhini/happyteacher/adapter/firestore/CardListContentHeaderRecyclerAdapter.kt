@@ -25,7 +25,7 @@ abstract class CardListContentHeaderRecyclerAdapter<VH: CardListHeaderViewHolder
     }
 
     override fun onBindViewHolder(holder: VH, position: Int, model: CardListContentHeader?) {
-        val cardRef = snapshots.getSnapshot(position).reference.collection("cards") // todo: extract
+        val cardRef = snapshots.getSnapshot(position).reference.collection(activity.getString(R.string.cards))
         holder.populateView(model, cardRef, topicName, activity, dateFormat)
     }
 

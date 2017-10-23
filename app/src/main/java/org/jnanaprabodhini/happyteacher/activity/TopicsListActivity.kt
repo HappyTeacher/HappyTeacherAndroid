@@ -134,7 +134,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
      *   to display topics relevant to a specific syllabus lesson plan.
      */
     private fun setupSpinner(spinner: Spinner, @LayoutRes spinnerLayout: Int, parentSubjectId: String?, selectionIndex: Int) {
-        val subjectQuery = firestoreLocalized.collection("subjects").whereEqualTo("parentSubject", parentSubjectId)
+        val subjectQuery = firestoreLocalized.collection(getString(R.string.subjects)).whereEqualTo(getString(R.string.parent_subject), parentSubjectId)
 
         val spinnerDataObserver = object: FirebaseDataObserver {
             override fun onDataNonEmpty() {
@@ -178,17 +178,17 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
      *  Display list of topics for the selected subject.
      */
     fun updateListOfTopics(subjectKey: String) {
-        val topicQuery = firestoreLocalized.collection("topics")
-                .whereEqualTo("subject", subjectKey) // todo: ordering
+        val topicQuery = firestoreLocalized.collection(getString(R.string.topics))
+                .whereEqualTo(getString(R.string.subject), subjectKey) // todo: ordering
 
         val topicAdapterOptions = FirestoreRecyclerOptions.Builder<Topic>()
                 .setQuery(topicQuery, Topic::class.java).build()
 
         val topicAdapter = object: TopicsRecyclerAdapter(topicAdapterOptions, this, this) {
             override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<CardListContentHeader> {
-                val query: Query = firestoreLocalized.collection("lessons")
-                        .whereEqualTo("topic", topicId) // todo: extract strings
-                        .whereEqualTo("isFeatured", true)
+                val query: Query = firestoreLocalized.collection(getString(R.string.lessons))
+                        .whereEqualTo(getString(R.string.topic), topicId)
+                        .whereEqualTo(getString(R.string.is_featured), true)
 
                 return FirestoreRecyclerOptions.Builder<CardListContentHeader>().setQuery(query, CardListContentHeader::class.java).build()
             }
@@ -205,7 +205,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
      *   from the syllabus lesson's index list of relevant topics).
      */
     private fun updateListOfTopicsFromIndexList(syllabusLessonId: String) {
-        val topicsQuery = firestoreLocalized.collection("topics")
+        val topicsQuery = firestoreLocalized.collection(getString(R.string.topics))
                 .whereEqualTo("syllabus_lessons.$syllabusLessonId", true)
 
         val topicsAdapterOptions = FirestoreRecyclerOptions.Builder<Topic>()
@@ -213,10 +213,10 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
         val adapter = object: TopicsRecyclerAdapter(topicsAdapterOptions, this, this) {
             override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<CardListContentHeader> {
-                val subtopicQuery = firestoreLocalized.collection("lessons")
-                        .whereEqualTo("topic", topicId) // todo: extract strings
+                val subtopicQuery = firestoreLocalized.collection(getString(R.string.lessons))
+                        .whereEqualTo(getString(R.string.topic), topicId)
                         .whereEqualTo("syllabus_lessons.$syllabusLessonId", true)
-                        .whereEqualTo("isFeatured", true)
+                        .whereEqualTo(getString(R.string.is_featured), true)
 
                 return FirestoreRecyclerOptions.Builder<CardListContentHeader>()
                         .setQuery(subtopicQuery, CardListContentHeader::class.java).build()

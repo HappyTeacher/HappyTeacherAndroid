@@ -70,9 +70,9 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
         holder.itemView.setBackgroundResource(R.color.colorPrimaryDark)
         holder.titleTextView.setText(R.string.classroom_resources)
 
-        val classroomResourceQuery = activity.firestoreLocalized.collection("classroom_resources")
-                .whereEqualTo("subtopic", subtopicId)
-                .orderBy("name")
+        val classroomResourceQuery = activity.firestoreLocalized.collection(activity.getString(R.string.classroom_resources))
+                .whereEqualTo(activity.getString(R.string.subtopic), subtopicId)
+                .orderBy(activity.getString(R.string.name))
 
         val adapterOptions = FirestoreRecyclerOptions.Builder<CardListContentHeader>()
                 .setQuery(classroomResourceQuery, CardListContentHeader::class.java)

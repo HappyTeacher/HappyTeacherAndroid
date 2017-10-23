@@ -19,7 +19,7 @@ class BoardChoiceDialog(val activity: HappyTeacherActivity): SettingsChoiceDialo
     override fun configureOptionsListView(optionsListView: ListView) {
         optionsListView.choiceMode = ListView.CHOICE_MODE_SINGLE
 
-        val boardQuery = activity.firestoreLocalized.collection("boards") // todo: ordering
+        val boardQuery = activity.firestoreLocalized.collection(activity.getString(R.string.boards)) // todo: ordering
 
         val emptyDataObserver = object: FirebaseDataObserver {}
 

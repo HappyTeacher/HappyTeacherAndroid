@@ -95,7 +95,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
     }
 
     private fun setupSubjectSpinner() {
-        val subjectQuery = firestoreLocalized.collection("subjects").whereEqualTo("boards.${prefs.getBoardKey()}", true)
+        val subjectQuery = firestoreLocalized.collection(getString(R.string.subjects)).whereEqualTo("boards.${prefs.getBoardKey()}", true)
 
         val subjectDataObserver = object: FirebaseDataObserver {
             override fun onDataNonEmpty() {
@@ -147,10 +147,10 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
     }
 
     private fun updateSyllabusLessonList(selectedSubjectKey: String, selectedLevel: Int) {
-        val syllabusLessonQuery = firestoreLocalized.collection("syllabus_lessons")
-                .whereEqualTo("board", prefs.getBoardKey())
-                .whereEqualTo("subject", selectedSubjectKey)
-                .whereEqualTo("level", selectedLevel)
+        val syllabusLessonQuery = firestoreLocalized.collection(getString(R.string.syllabus_lessons))
+                .whereEqualTo(getString(R.string.board), prefs.getBoardKey())
+                .whereEqualTo(getString(R.string.subject), selectedSubjectKey)
+                .whereEqualTo(getString(R.string.level), selectedLevel)
 
         val adapterOptions = FirestoreRecyclerOptions.Builder<SyllabusLesson>()
                 .setQuery(syllabusLessonQuery, SyllabusLesson::class.java).build()
