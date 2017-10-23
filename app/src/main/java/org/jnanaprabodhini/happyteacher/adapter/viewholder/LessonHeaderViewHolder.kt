@@ -11,24 +11,23 @@ import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 import java.text.DateFormat
 
-class LessonHeaderViewHolder(itemView: View): CardListHeaderViewHolder(itemView) {
+class LessonHeaderViewHolder(itemView: View, val shouldShowSubmissionCount: Boolean): CardListHeaderViewHolder(itemView) {
     override fun launchContentViewerActivity(activity: Activity, cardRef: CollectionReference, cardListContentHeaderModel: CardListContentHeader?, topicName: String) {
-        CardListContentViewerActivity.launchLessonViewerActivity(activity, cardRef, cardListContentHeaderModel ?: CardListContentHeader(), topicName)
+        CardListContentViewerActivity.launchLessonViewerActivity(activity, cardRef, cardListContentHeaderModel ?: CardListContentHeader(), topicName, shouldShowSubmissionCount)
     }
 
     override fun populateView(cardListContentHeaderModel: CardListContentHeader?, cardRef: CollectionReference, topicName: String, activity: Activity, dateFormat: DateFormat) {
         super.populateView(cardListContentHeaderModel, cardRef, topicName, activity, dateFormat)
 
-        cardListContentHeaderModel?.let {
-            if (cardListContentHeaderModel.subtopicSubmissionCount > 1) {
-                submissionCountTextView.setVisible()
-                submissionCountTextView.text = activity.getString(R.string.plus_number, cardListContentHeaderModel.subtopicSubmissionCount - 1) // subtract one to exclude the featured contentKey
-                submissionCountTextView.setOnClickListener {
-                    SubtopicSubmissionsListActivity.launchActivity(activity, topicName, cardListContentHeaderModel.subtopic, cardListContentHeaderModel.topic)
-                } // todo: ^ make submission list work!
-            } else {
-                submissionCountTextView.setVisibilityGone()
+        if (shouldShowSubmissionCount && cardListContentHeaderModel != null
+                && cardListContentHeaderModel.subtopicSubmissionCount > 1) {
+            submissionCountTextView.setVisible()
+            submissionCountTextView.text = activity.getString(R.string.plus_number, cardListContentHeaderModel.subtopicSubmissionCount - 1) // subtract one to exclude the featured contentKey
+            submissionCountTextView.setOnClickListener {
+                SubtopicSubmissionsListActivity.launchActivity(activity, topicName, cardListContentHeaderModel.subtopic, cardListContentHeaderModel.topic)
             }
+        } else {
+            submissionCountTextView.setVisibilityGone()
         }
     }
 }

@@ -39,11 +39,11 @@ abstract class CardListContentHeaderRecyclerAdapter<VH: CardListHeaderViewHolder
 /**
  * A CardListContentHeaderRecyclerAdapter implementation for Lesson headers.
  */
-class LessonHeaderRecyclerAdapter(topicName: String, options: FirestoreRecyclerOptions<CardListContentHeader>, activity: Activity, firebaseDataObserver: FirebaseDataObserver):
+class LessonHeaderRecyclerAdapter(topicName: String, val shouldShowSubmissionCount: Boolean, options: FirestoreRecyclerOptions<CardListContentHeader>, activity: Activity, firebaseDataObserver: FirebaseDataObserver):
         CardListContentHeaderRecyclerAdapter<LessonHeaderViewHolder>(options, activity, topicName, firebaseDataObserver) {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): LessonHeaderViewHolder {
-        return LessonHeaderViewHolder(inflateView(parent))
+        return LessonHeaderViewHolder(inflateView(parent), shouldShowSubmissionCount)
     }
 }
 

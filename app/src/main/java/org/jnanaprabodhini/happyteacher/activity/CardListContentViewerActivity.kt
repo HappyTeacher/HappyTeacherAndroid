@@ -26,9 +26,9 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
     companion object Constants {
         val WRITE_STORAGE_PERMISSION_CODE = 1
 
-        fun launchLessonViewerActivity(from: Activity, cardRef: CollectionReference, cardListContentHeader: CardListContentHeader, topicName: String) {
+        fun launchLessonViewerActivity(from: Activity, cardRef: CollectionReference, cardListContentHeader: CardListContentHeader, topicName: String, shouldShowSubmissionCount: Boolean) {
             val lessonViewerIntent = Intent(from, LessonViewerActivity::class.java)
-            launchIntentWithExtras(lessonViewerIntent, from, cardRef, cardListContentHeader, topicName)
+            launchIntentWithExtras(lessonViewerIntent, from, cardRef, cardListContentHeader, topicName, shouldShowSubmissionCount)
         }
 
         fun launchClassroomResourcesActivity(from: Activity, cardRef: CollectionReference, cardListContentHeader: CardListContentHeader, topicName: String) {
@@ -36,11 +36,12 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
             launchIntentWithExtras(classroomResourcesViewerIntent, from, cardRef, cardListContentHeader, topicName)
         }
 
-        private fun launchIntentWithExtras(intent: Intent, activity: Activity, cardRef: CollectionReference, cardListContentHeader: CardListContentHeader, topicName: String) {
+        private fun launchIntentWithExtras(intent: Intent, activity: Activity, cardRef: CollectionReference, cardListContentHeader: CardListContentHeader, topicName: String, shouldShowSubmissionCount: Boolean = false) {
             intent.apply {
-                putExtra(CardListContentViewerActivity.CARD_REF_PATH, cardRef.path)
-                putExtra(CardListContentViewerActivity.TOPIC_NAME, topicName)
-                putExtra(CardListContentViewerActivity.HEADER, cardListContentHeader)
+                putExtra(CARD_REF_PATH, cardRef.path)
+                putExtra(TOPIC_NAME, topicName)
+                putExtra(HEADER, cardListContentHeader)
+                putExtra(SHOW_SUBMISSION_COUNT, shouldShowSubmissionCount)
             }
             activity.startActivity(intent)
         }
@@ -57,12 +58,16 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
         fun Intent.hasHeader(): Boolean = hasExtra(HEADER)
         fun Intent.getHeader(): CardListContentHeader = getParcelableExtra(HEADER)
 
+        val SHOW_SUBMISSION_COUNT: String = "SHOW_SUBMISSION_COUNT"
+        fun Intent.shouldShowSubmissionCount(): Boolean = getBooleanExtra(SHOW_SUBMISSION_COUNT, false)
+
         fun Intent.hasAllExtras(): Boolean = hasCardRefPath() && hasTopicName() && hasHeader()
     }
 
     val cardRefPath by lazy { intent.getCardRefPath() }
     val topicName by lazy { intent.getTopicName() }
     val header by lazy { intent.getHeader() }
+    val shouldShowSubmissionCount by lazy { intent.shouldShowSubmissionCount() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

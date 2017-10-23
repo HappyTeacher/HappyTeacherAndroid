@@ -79,7 +79,8 @@ class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObse
         val adapterOptions = FirestoreRecyclerOptions.Builder<CardListContentHeader>()
                 .setQuery(submissionHeadersQuery, CardListContentHeader::class.java).build()
 
-        val adapter = LessonHeaderRecyclerAdapter(topicName, adapterOptions, this, this)
+        val shouldShowSubmissionsCount = false
+        val adapter = LessonHeaderRecyclerAdapter(topicName, shouldShowSubmissionsCount, adapterOptions, this, this)
         adapter.startListening()
 
         submissionRecyclerView.layoutManager = LinearLayoutManager(this)

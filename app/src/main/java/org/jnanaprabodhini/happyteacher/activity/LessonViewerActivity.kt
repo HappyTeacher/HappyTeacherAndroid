@@ -20,7 +20,7 @@ class LessonViewerActivity : CardListContentViewerActivity(){
     override fun setHeaderView() {
         super.setHeaderView()
 
-        if (header.subtopicSubmissionCount > 1) {
+        if (shouldShowSubmissionCount && header.subtopicSubmissionCount > 1) {
             otherSubmissionsTextView.setVisible()
             otherSubmissionsTextView.text = getString(R.string.see_all_n_lesson_plans_for_lesson, header.subtopicSubmissionCount, header.name)
             otherSubmissionsTextView.setDrawableRight(R.drawable.ic_keyboard_arrow_right_white_24dp)
