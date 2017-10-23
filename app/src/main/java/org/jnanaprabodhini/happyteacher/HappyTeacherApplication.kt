@@ -3,7 +3,6 @@ package org.jnanaprabodhini.happyteacher
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import org.jnanaprabodhini.happyteacher.extension.withCurrentLocale
 import org.jnanaprabodhini.happyteacher.util.LocaleManager
@@ -26,9 +25,6 @@ class HappyTeacherApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
-        FirebaseDatabase.getInstance().reference.keepSynced(true)
 
         val settings = FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(true)

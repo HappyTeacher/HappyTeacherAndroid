@@ -1,18 +1,12 @@
 package org.jnanaprabodhini.happyteacher.dialog
 
-import android.content.Context
 import android.view.View
 import android.widget.CheckedTextView
 import android.widget.ListView
-import com.firebase.ui.database.FirebaseListAdapter
-import com.firebase.ui.database.FirebaseListOptions
-import com.google.firebase.database.FirebaseDatabase
-import kotlinx.android.synthetic.main.dialog_settings_choice.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.firestore.FirestoreObserverListAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
-import org.jnanaprabodhini.happyteacher.extension.getBaseReferenceForCurrentLanguage
 import org.jnanaprabodhini.happyteacher.model.Board
 import org.jnanaprabodhini.happyteacher.prefs
 

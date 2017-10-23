@@ -2,8 +2,6 @@ package org.jnanaprabodhini.happyteacher.adapter.firestore
 
 import android.support.v7.widget.RecyclerView
 import android.util.Log
-import com.firebase.ui.database.FirebaseRecyclerAdapter
-import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestoreException

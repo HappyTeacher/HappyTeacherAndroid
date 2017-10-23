@@ -2,7 +2,6 @@ package org.jnanaprabodhini.happyteacher.activity
 
 import android.util.Log
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.firestore.CollectionReference
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import org.jnanaprabodhini.happyteacher.R
