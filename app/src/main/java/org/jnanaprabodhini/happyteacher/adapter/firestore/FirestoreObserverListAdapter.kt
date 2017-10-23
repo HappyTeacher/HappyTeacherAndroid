@@ -37,6 +37,11 @@ abstract class FirestoreObserverListAdapter<T>(query: Query, modelClass: Class<T
         }
     }
 
+    fun stopListening() {
+        snapshots.removeChangeEventListener(this)
+        notifyDataSetChanged()
+    }
+
     override fun getCount(): Int = snapshots.size
 
     override fun getItem(position: Int): T = snapshots[position]
