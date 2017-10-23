@@ -36,19 +36,14 @@ abstract class FirestoreListAdapter<T>(query: Query, modelClass: Class<T>, @Layo
     fun startListening() {
         if (!snapshots.isListening(this)) {
             snapshots.addChangeEventListener(this)
-            Log.d("GRAHAM", "started listening.")
         }
     }
 
-    override fun getCount(): Int {
-        Log.d("GRAHAM", "getting count. it's ${snapshots.size}. $snapshots")
-        return snapshots.size
-    }
+    override fun getCount(): Int = snapshots.size
 
-    override fun getItem(position: Int): T {
-        Log.d("GRAHAM", "getting snapshot at position $position.")
-        return snapshots[position]
-    }
+    override fun getItem(position: Int): T = snapshots[position]
+
+    fun getItemKey(position: Int) = snapshots.getSnapshot(position).reference.id
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         if (convertView == null) {
@@ -74,7 +69,6 @@ abstract class FirestoreListAdapter<T>(query: Query, modelClass: Class<T>, @Layo
     }
 
     override fun onChildChanged(type: ChangeEventType?, snapshot: DocumentSnapshot?, newIndex: Int, oldIndex: Int) {
-        Log.d("GRAHAM", "onchildchanged.")
         notifyDataSetChanged()
     }
 

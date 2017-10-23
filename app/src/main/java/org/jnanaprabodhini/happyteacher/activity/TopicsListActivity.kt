@@ -118,7 +118,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         topicsProgressBar.setVisible()
 
         // Show all topics for a subject, selected by spinner
-        setupSubjectSpinner()//todo
+        setupParentSubjectSpinner()
         hideSyllabusLessonTopicHeader()
     }
 
@@ -132,25 +132,6 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         }
     }
 
-    private fun setupSubjectSpinner() {
-        val subjectQuery = firestoreLocalized.collection("subjects").whereEqualTo("boards.${prefs.getBoardKey()}", true)
-
-        subjectQuery.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-            Log.d("GRAHAM", "subjects? ${querySnapshot.documents.map { it.data }}")
-        }
-
-        val adapter = object: FirestoreListAdapter<Subject>(subjectQuery, Subject::class.java, R.layout.spinner_item, this) {
-            override fun populateView(view: View, model: Subject) {
-                (view as TextView).text = model.name
-            }
-
-        }
-
-        adapter.startListening()
-        parentSubjectSpinner.adapter = adapter
-        parentSubjectSpinner.setVisible()
-    }
-
     /**
      *  Set up one of the two spinners (the subject spinner or the sub-subject spinner).
      *
@@ -158,12 +139,9 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
      *   to display topics relevant to a specific syllabus lesson plan.
      */
     private fun setupSpinner(spinner: Spinner, @LayoutRes spinnerLayout: Int, parentSubjectId: String?, selectionIndex: Int) {
-        val spinnerQuery = databaseReference.child(getString(R.string.subjects)).orderByChild(getString(R.string.parent_subject)).equalTo(parentSubjectId)
+        val subjectQuery = firestoreLocalized.collection("subjects").whereEqualTo("parentSubject", parentSubjectId)
 
-        val spinnerAdapterOptions = FirebaseListOptions.Builder<Subject>()
-                .setQuery(spinnerQuery, Subject::class.java)
-                .setLayout(spinnerLayout).build()
-
+        // TODO: use!
         val spinnerDataObserver = object: FirebaseDataObserver {
             override fun onDataNonEmpty() {
                 topicsProgressBar.setVisibilityGone()
@@ -171,19 +149,23 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
             }
         }
 
-        val spinnerAdapter = object: FirebaseObserverListAdapter<Subject>(spinnerAdapterOptions, spinnerDataObserver) {
-            override fun populateView(view: View, subject: Subject, position: Int) {
-                (view as TextView).text = subject.name
+        val adapter = object: FirestoreListAdapter<Subject>(subjectQuery, Subject::class.java, spinnerLayout, this) {
+            override fun populateView(view: View, model: Subject) {
+                (view as TextView).text = model.name
             }
+
         }
-        spinnerAdapter.startListening()
-        spinner.adapter = spinnerAdapter
+
+        adapter.startListening()
+        spinner.adapter = adapter
 
         spinner.selectIndexWhenPopulated(selectionIndex)
 
+        spinner.setVisible() // todo: let observer handle this
+
         spinner.onItemSelected { position ->
-            val subject = spinnerAdapter.getItem(position)
-            val selectedSubjectKey = spinnerAdapter.getRef(position).key
+            val subject = adapter.getItem(position)
+            val selectedSubjectKey = adapter.getItemKey(position)
 
             if (subject.hasChildren) {
                 setupSpinner(childSubjectSpinner, R.layout.spinner_item_child, selectedSubjectKey, childSubjectSelectionIndex)
