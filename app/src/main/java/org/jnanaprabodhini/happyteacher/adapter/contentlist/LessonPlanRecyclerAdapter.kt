@@ -91,7 +91,7 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
             holder.horizontalRecyclerView.setVisibilityGone()
         }
 
-        override fun onDataLoaded() {
+        override fun onDataNonEmpty() {
             holder.progressBar.setVisibilityGone()
             holder.emptyView.setVisibilityGone()
             holder.horizontalRecyclerView.setVisible()
