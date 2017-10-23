@@ -147,7 +147,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
     }
 
     private fun updateSyllabusLessonList(selectedSubjectKey: String, selectedLevel: Int) {
-        val syllabusLessonQuery = firestoreLocalized.collection("syllabusLessons")
+        val syllabusLessonQuery = firestoreLocalized.collection("syllabus_lessons")
                 .whereEqualTo("board", prefs.getBoardKey())
                 .whereEqualTo("subject", selectedSubjectKey)
                 .whereEqualTo("level", selectedLevel)

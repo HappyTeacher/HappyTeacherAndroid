@@ -133,7 +133,6 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
     private fun setupSpinner(spinner: Spinner, @LayoutRes spinnerLayout: Int, parentSubjectId: String?, selectionIndex: Int) {
         val subjectQuery = firestoreLocalized.collection("subjects").whereEqualTo("parentSubject", parentSubjectId)
 
-        // TODO: use!
         val spinnerDataObserver = object: FirebaseDataObserver {
             override fun onDataNonEmpty() {
                 topicsProgressBar.setVisibilityGone()
