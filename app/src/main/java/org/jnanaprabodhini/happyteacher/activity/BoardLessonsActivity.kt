@@ -144,6 +144,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
         levelSpinner.adapter = adapter
         levelSpinner.setSelection(levelSpinnerSelectionIndex)
+        levelSpinnerSelectionIndex = 0
     }
 
     private fun updateSyllabusLessonList(selectedSubjectKey: String, selectedLevel: Int) {
