@@ -152,14 +152,6 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
                 .whereEqualTo("subject", selectedSubjectKey)
                 .whereEqualTo("level", selectedLevel)
 
-        Log.d("GRAHAM", "querying for subject $selectedSubjectKey and level $selectedLevel")
-        syllabusLessonQuery.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                    Log.d("GRAHAM", "\n======= got BOARD result from snapshot")
-                    Log.d("GRAHAM", "== ${querySnapshot.documents.map { it.data }}")
-                    Log.d("GRAHAM", "== From cache? ${querySnapshot.metadata.isFromCache}")
-                    Log.d("GRAHAM", "\n=======")
-                }
-
         val adapterOptions = FirestoreRecyclerOptions.Builder<SyllabusLesson>()
                 .setQuery(syllabusLessonQuery, SyllabusLesson::class.java).build()
 

@@ -179,14 +179,6 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val topicQuery = firestoreLocalized.collection("topics")
                 .whereEqualTo("subject", subjectKey) // todo: ordering
 
-        // todo: remove logs
-        topicQuery.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-            Log.d("GRAHAM", "\n****** got result from snapshot")
-            Log.d("GRAHAM", "** ${querySnapshot.documents.map { it.data }}")
-            Log.d("GRAHAM", "** From cache? ${querySnapshot.metadata.isFromCache}")
-            Log.d("GRAHAM", "\n****** that's all")
-        }
-
         val topicAdapterOptions = FirestoreRecyclerOptions.Builder<Topic>()
                 .setQuery(topicQuery, Topic::class.java).build()
 
