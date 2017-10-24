@@ -66,7 +66,7 @@ abstract class TopicsRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOpti
 
         override fun onDataEmpty() {
             topicViewHolder?.horizontalRecyclerView?.setVisibilityGone()
-            topicViewHolder?.emptyView?.setVisible()
+            topicViewHolder?.showEmptyViews()
             topicViewHolder?.emptyTextView?.setText(R.string.there_are_no_lessons_for_this_topic_yet)
 
             level?.let { topicViewHolder?.emptyTextView?.text = activity.getString(R.string.no_lessons_at_level_yet, level) }
@@ -74,7 +74,7 @@ abstract class TopicsRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOpti
 
         override fun onDataNonEmpty() {
             topicViewHolder?.horizontalRecyclerView?.setVisible()
-            topicViewHolder?.emptyView?.setVisibilityGone()
+            topicViewHolder?.hideEmptyViews()
         }
     }
 }
