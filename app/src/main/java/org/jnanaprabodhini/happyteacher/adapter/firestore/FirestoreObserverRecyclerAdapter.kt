@@ -1,7 +1,6 @@
 package org.jnanaprabodhini.happyteacher.adapter.firestore
 
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -33,6 +32,11 @@ abstract class FirestoreObserverRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(
             0 -> dataObserver.onDataEmpty()
             else -> dataObserver.onDataNonEmpty()
         }
+    }
+
+    override fun onError(e: FirebaseFirestoreException?) {
+        super.onError(e)
+        dataObserver.onError(e)
     }
 }
 

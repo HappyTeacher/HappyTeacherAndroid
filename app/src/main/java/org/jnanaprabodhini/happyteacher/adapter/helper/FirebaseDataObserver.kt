@@ -1,5 +1,7 @@
 package org.jnanaprabodhini.happyteacher.adapter.helper
 
+import com.google.firebase.firestore.FirebaseFirestoreException
+
 /**
  * An interface for responding to Firebase data events from an adapter.
  */
@@ -12,5 +14,5 @@ interface FirebaseDataObserver {
 
     fun onDataNonEmpty() {}
 
-    fun onError() {}
+    fun onError(e: FirebaseFirestoreException?) {}
 }

@@ -1,18 +1,11 @@
 package org.jnanaprabodhini.happyteacher.adapter.firestore
 
 import android.content.Context
-import android.database.DataSetObserver
 import android.support.annotation.LayoutRes
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListAdapter
-import org.jnanaprabodhini.happyteacher.R.id.textView
-import android.support.v7.widget.RecyclerView.ViewHolder
-import android.support.design.widget.CoordinatorLayout.Behavior.setTag
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import com.firebase.ui.common.ChangeEventType
 import com.firebase.ui.firestore.ChangeEventListener
 import com.firebase.ui.firestore.ClassSnapshotParser
@@ -85,6 +78,6 @@ abstract class FirestoreObserverListAdapter<T>(query: Query, modelClass: Class<T
 
     override fun onError(e: FirebaseFirestoreException?) {
         e?.printStackTrace()
-        dataObserver.onError()
+        dataObserver.onError(e)
     }
 }
