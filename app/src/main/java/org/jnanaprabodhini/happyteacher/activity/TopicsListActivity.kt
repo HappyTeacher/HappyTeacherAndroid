@@ -9,9 +9,6 @@ import android.view.View
 import android.widget.Spinner
 import android.widget.TextView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_topics_list.*
 import kotlinx.android.synthetic.main.header_syllabus_lesson_topic.*
@@ -103,18 +100,18 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
             val title = intent.getLessonTitle()
 
             showSyllabusLessonTopicHeader(title, subject, level)
-            updateListOfTopicsFromIndexList(syllabusLessonId)
+            updateListOfTopicsForSyllabusLesson(syllabusLessonId)
         } else {
             initializeTopicListForSubject()
         }
     }
 
     fun initializeTopicListForSubject() {
+        hideSyllabusLessonTopicHeader()
         topicsProgressBar.setVisible()
 
         // Show all topics for a subject, selected by spinner
         setupParentSubjectSpinner()
-        hideSyllabusLessonTopicHeader()
     }
 
     override fun onBottomNavigationItemReselected() {
@@ -125,6 +122,11 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
             // Scroll to top of topic list:
             topicsRecyclerView.smoothScrollToPosition(0)
         }
+    }
+
+    private fun setupParentSubjectSpinner() {
+        // Parent subjects have no parents, so pass null as value for parentSubject:
+        setupSpinner(parentSubjectSpinner, R.layout.spinner_item, null, parentSubjectSelectionIndex)
     }
 
     /**
@@ -161,23 +163,18 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
             if (subject.hasChildren) {
                 setupSpinner(childSubjectSpinner, R.layout.spinner_item_child, selectedSubjectKey, childSubjectSelectionIndex)
             } else if (!subject.hasChildren && spinner == childSubjectSpinner) {
-                updateListOfTopics(selectedSubjectKey)
+                updateListOfTopicsForSubject(selectedSubjectKey)
             } else {
-                updateListOfTopics(selectedSubjectKey)
+                updateListOfTopicsForSubject(selectedSubjectKey)
                 childSubjectSpinner.setVisibilityGone()
             }
         }
     }
 
-    private fun setupParentSubjectSpinner() {
-        // Parent subjects have no parents, so pass null as value for parentSubject:
-        setupSpinner(parentSubjectSpinner, R.layout.spinner_item, null, parentSubjectSelectionIndex)
-    }
-
     /**
      *  Display list of topics for the selected subject.
      */
-    fun updateListOfTopics(subjectKey: String) {
+    fun updateListOfTopicsForSubject(subjectKey: String) {
         val topicQuery = firestoreLocalized.collection(getString(R.string.topics))
                 .whereEqualTo(getString(R.string.subject), subjectKey) // todo: ordering
 
@@ -199,12 +196,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         topicsRecyclerView.adapter = topicAdapter
     }
 
-    /**
-     *  Display list of topics relevant to the given syllabus lesson plan.
-     *   The adapter looks for topics with specific keys (these keys come
-     *   from the syllabus lesson's index list of relevant topics).
-     */
-    private fun updateListOfTopicsFromIndexList(syllabusLessonId: String) {
+    private fun updateListOfTopicsForSyllabusLesson(syllabusLessonId: String) {
         val topicsQuery = firestoreLocalized.collection(getString(R.string.topics))
                 .whereEqualTo("syllabus_lessons.$syllabusLessonId", true)
 
@@ -225,7 +217,6 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         adapter.startListening()
 
         topicsRecyclerView.adapter = adapter
-
     }
 
     /**

@@ -18,21 +18,16 @@ import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObserver {
 
     companion object IntentExtraHelper {
-        fun launchActivity(from: Activity, topicName: String, subtopicId: String, topicId: String) {
+        fun launchActivity(from: Activity, topicName: String, subtopicId: String) {
             val subtopicSubmissionsIntent = Intent(from, SubtopicSubmissionsListActivity::class.java)
 
             subtopicSubmissionsIntent.apply {
                 putExtra(SubtopicSubmissionsListActivity.TOPIC_NAME, topicName)
                 putExtra(SubtopicSubmissionsListActivity.SUBTOPIC_KEY, subtopicId)
-                putExtra(SubtopicSubmissionsListActivity.TOPIC_KEY, topicId)
             }
 
             from.startActivity(subtopicSubmissionsIntent)
         }
-
-        const val TOPIC_KEY: String = "TOPIC_KEY"
-        fun Intent.hasTopicKey(): Boolean = hasExtra(TOPIC_KEY)
-        fun Intent.getTopicKey(): String = getStringExtra(TOPIC_KEY)
 
         const val SUBTOPIC_KEY: String = "SUBTOPIC_KEY"
         fun Intent.hasSubtopicKey(): Boolean = hasExtra(SUBTOPIC_KEY)
@@ -42,11 +37,7 @@ class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObse
         fun Intent.hasTopicName(): Boolean = hasExtra(TOPIC_NAME)
         fun Intent.getTopicName(): String = getStringExtra(TOPIC_NAME)
 
-        fun Intent.hasAllExtras(): Boolean = hasTopicKey() && hasSubtopicKey() && hasTopicName()
-    }
-
-    val topicKey: String by lazy {
-        intent.getTopicKey()
+        fun Intent.hasAllExtras(): Boolean = hasSubtopicKey() && hasTopicName()
     }
 
     val subtopicKey: String by lazy {

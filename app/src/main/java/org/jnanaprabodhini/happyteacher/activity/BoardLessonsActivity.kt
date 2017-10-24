@@ -112,34 +112,34 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
         adapter.startListening()
 
         // The level spinner depends on what subject is selected:
-        subjectSpinner.onItemSelected { pos -> setupLevelSpinnerForSubject(adapter.getItem(pos).getStandardArrayForCurrentBoard(), adapter.getItemKey(pos)) }
+        subjectSpinner.onItemSelected { pos -> setupLevelSpinnerForSubject(adapter.getItem(pos).getLevelsArrayForCurrentBoard(), adapter.getItemKey(pos)) }
 
         subjectSpinner.adapter = adapter
         subjectSpinner.selectIndexWhenPopulated(subjectSpinnerSelectionIndex)
     }
 
-    private fun setupLevelSpinnerForSubject(standards: List<Int>, subjectId: String) {
+    private fun setupLevelSpinnerForSubject(levels: List<Int>, subjectId: String) {
         val previousSelection = levelSpinner.selectedItem
 
         // If the item that was previously selected (i.e. before the subject changed)
         //  is still available in this list, then set it to be selected
         if (previousSelection != null && previousSelection is Int) {
-            val indexOfPreviousSelection = standards.indexOf(previousSelection)
+            val indexOfPreviousSelection = levels.indexOf(previousSelection)
             if (indexOfPreviousSelection != -1) {
                 levelSpinnerSelectionIndex = indexOfPreviousSelection
             }
         }
 
-        val adapter = object: ArrayAdapter<Int>(this, R.layout.spinner_item, standards) {
+        val adapter = object: ArrayAdapter<Int>(this, R.layout.spinner_item, levels) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
                 val view = super.getView(position, convertView, parent)
-                (view as TextView).text = getString(R.string.standard_n, standards[position])
+                (view as TextView).text = getString(R.string.standard_n, levels[position])
                 return view
             }
         }
 
         // Once a level is selected, we can update the list of lessons
-        levelSpinner.onItemSelected { pos -> updateSyllabusLessonList(subjectId, standards[pos]) }
+        levelSpinner.onItemSelected { pos -> updateSyllabusLessonList(subjectId, levels[pos]) }
 
         levelSpinner.adapter = adapter
         levelSpinner.setSelection(levelSpinnerSelectionIndex)

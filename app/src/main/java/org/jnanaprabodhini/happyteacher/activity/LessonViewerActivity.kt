@@ -25,7 +25,7 @@ class LessonViewerActivity : CardListContentViewerActivity(){
             otherSubmissionsTextView.text = getString(R.string.see_all_n_lesson_plans_for_lesson, header.subtopicSubmissionCount, header.name)
             otherSubmissionsTextView.setDrawableRight(R.drawable.ic_keyboard_arrow_right_white_24dp)
             otherSubmissionsTextView.setOnClickListener {
-                SubtopicSubmissionsListActivity.launchActivity(this, topicName, header.subtopic, header.topic)
+                SubtopicSubmissionsListActivity.launchActivity(this, topicName, header.subtopic)
             }
         } else {
             otherSubmissionsTextView.setVisibilityGone()

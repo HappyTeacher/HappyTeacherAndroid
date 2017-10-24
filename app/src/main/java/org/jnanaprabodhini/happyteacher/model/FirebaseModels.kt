@@ -13,7 +13,7 @@ data class Subject(var name: String = "",
                    var parentSubject: String? = null,
                    var boardStandards: Map<String, @JvmSuppressWildcards ArrayList<Int>> = emptyMap(),
                    var hasChildren: Boolean = false) {
-    fun getStandardArrayForCurrentBoard() = boardStandards[prefs.getBoardKey()] ?: ArrayList()
+    fun getLevelsArrayForCurrentBoard() = boardStandards[prefs.getBoardKey()] ?: ArrayList()
 }
 
 data class Topic(var name: String = "",
