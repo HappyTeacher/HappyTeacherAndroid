@@ -37,6 +37,7 @@ abstract class FirestoreObserverRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(
     override fun onError(e: FirebaseFirestoreException?) {
         super.onError(e)
         dataObserver.onError(e)
+        // todo: log error
     }
 }
 

@@ -79,5 +79,6 @@ abstract class FirestoreObserverListAdapter<T>(query: Query, modelClass: Class<T
     override fun onError(e: FirebaseFirestoreException?) {
         e?.printStackTrace()
         dataObserver.onError(e)
+        // todo: log error
     }
 }

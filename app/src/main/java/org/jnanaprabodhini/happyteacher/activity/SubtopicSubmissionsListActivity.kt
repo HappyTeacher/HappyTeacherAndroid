@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.android.synthetic.main.activity_subtopic_submissions_list.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
@@ -80,7 +81,7 @@ class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObse
 
     override fun onRequestNewData() {
         submissionRecyclerView.setVisibilityGone()
-        emptyTextView.setVisibilityGone()
+        statusTextView.setVisibilityGone()
 
         progressBar.setVisible()
     }
@@ -88,7 +89,7 @@ class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObse
     override fun onDataLoaded() {
         submissionRecyclerView.setVisible()
 
-        emptyTextView.setVisibilityGone()
+        statusTextView.setVisibilityGone()
         progressBar.setVisibilityGone()
     }
 
@@ -96,6 +97,15 @@ class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObse
         submissionRecyclerView.setVisibilityGone()
         progressBar.setVisibilityGone()
 
-        emptyTextView.setVisible()
+        statusTextView.setVisible()
+        statusTextView.setText(R.string.there_are_no_other_lessons)
+    }
+
+    override fun onError(e: FirebaseFirestoreException?) {
+        submissionRecyclerView.setVisibilityGone()
+        progressBar.setVisibilityGone()
+
+        statusTextView.setVisible()
+        statusTextView.setText(R.string.there_was_an_error_loading_the_other_lessons)
     }
 }

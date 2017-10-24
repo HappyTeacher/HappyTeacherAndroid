@@ -1,16 +1,17 @@
 package org.jnanaprabodhini.happyteacher.adapter.contentlist
 
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.FirebaseFirestoreException
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.firestore.ClassroomResourcesHeaderRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentCardViewHolder
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentHeaderRecyclerViewHolder
+import org.jnanaprabodhini.happyteacher.extension.setInvisible
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
@@ -104,7 +105,15 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
             holder.horizontalRecyclerView.setVisibilityGone()
 
             holder.showEmptyViews()
-            holder.emptyTextView.setText(R.string.there_are_no_classroom_resources_for_this_lesson_yet)
+            holder.statusTextView.setText(R.string.there_are_no_classroom_resources_for_this_lesson_yet)
+        }
+
+        override fun onError(e: FirebaseFirestoreException?) {
+            holder.horizontalRecyclerView.setVisibilityGone()
+            holder.contributeButton.setInvisible()
+
+            holder.statusTextView.setVisible()
+            holder.statusTextView.setText(R.string.there_was_an_error_loading_classroom_resources_for_this_lesson)
         }
     }
 

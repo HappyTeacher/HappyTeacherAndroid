@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Spinner
 import android.widget.TextView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_topics_list.*
 import kotlinx.android.synthetic.main.header_syllabus_lesson_topic.*
@@ -248,8 +249,9 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
     }
 
     override fun onRequestNewData() {
+        topicsRecyclerView.setVisibilityGone()
         topicsProgressBar.setVisible()
-        emptyTopicsTextView.setVisibilityGone()
+        statusTextView.setVisibilityGone()
     }
 
     override fun onDataLoaded() {
@@ -257,15 +259,24 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
     }
 
     override fun onDataEmpty() {
-        emptyTopicsTextView.setVisible()
+        topicsRecyclerView.setVisibilityGone()
+        statusTextView.setVisible()
+        statusTextView.setText(R.string.there_are_no_topics_for_this_subject_yet)
     }
 
     override fun onDataNonEmpty() {
-        emptyTopicsTextView.setVisibilityGone()
+        topicsRecyclerView.setVisible()
+        statusTextView.setVisibilityGone()
 
         // Animate layout changes
         topicsRecyclerView.scheduleLayoutAnimation()
         topicsRecyclerView.invalidate()
+    }
+
+    override fun onError(e: FirebaseFirestoreException?) {
+        topicsRecyclerView.setVisibilityGone()
+        statusTextView.setVisible()
+        statusTextView.setText(R.string.there_was_an_error_loading_topics_for_this_subject)
     }
 
     override fun onBackPressed() {

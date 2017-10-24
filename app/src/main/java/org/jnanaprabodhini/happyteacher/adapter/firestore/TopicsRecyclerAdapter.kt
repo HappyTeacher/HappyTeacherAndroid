@@ -1,14 +1,14 @@
 package org.jnanaprabodhini.happyteacher.adapter.firestore
 
 import android.app.Activity
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestoreException
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentHeaderRecyclerViewHolder
+import org.jnanaprabodhini.happyteacher.extension.setInvisible
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
@@ -67,14 +67,21 @@ abstract class TopicsRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOpti
         override fun onDataEmpty() {
             topicViewHolder?.horizontalRecyclerView?.setVisibilityGone()
             topicViewHolder?.showEmptyViews()
-            topicViewHolder?.emptyTextView?.setText(R.string.there_are_no_lessons_for_this_topic_yet)
+            topicViewHolder?.statusTextView?.setText(R.string.there_are_no_lessons_for_this_topic_yet)
 
-            level?.let { topicViewHolder?.emptyTextView?.text = activity.getString(R.string.no_lessons_at_level_yet, level) }
+            level?.let { topicViewHolder?.statusTextView?.text = activity.getString(R.string.no_lessons_at_level_yet, level) }
         }
 
         override fun onDataNonEmpty() {
             topicViewHolder?.horizontalRecyclerView?.setVisible()
             topicViewHolder?.hideEmptyViews()
+        }
+
+        override fun onError(e: FirebaseFirestoreException?) {
+            topicViewHolder?.horizontalRecyclerView?.setVisibilityGone()
+            topicViewHolder?.contributeButton?.setInvisible()
+            topicViewHolder?.statusTextView?.setVisible()
+            topicViewHolder?.statusTextView?.setText(R.string.there_was_an_error_loading_lessons_for_this_topic)
         }
     }
 }

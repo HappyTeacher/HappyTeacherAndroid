@@ -38,6 +38,10 @@ fun View.setVisible() {
     this.visibility = View.VISIBLE
 }
 
+fun View.setInvisible() {
+    this.visibility = View.INVISIBLE
+}
+
 fun View.isGone(): Boolean = this.visibility == View.GONE
 fun View.isVisible(): Boolean = this.visibility == View.VISIBLE
 
