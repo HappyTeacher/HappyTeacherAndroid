@@ -57,6 +57,8 @@ abstract class TopicsRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOpti
 
     private fun getSubtopicDataObserverForViewHolder(topicViewHolder: ContentHeaderRecyclerViewHolder?, level: Int? = null) = object: FirebaseDataObserver {
         override fun onRequestNewData() {
+            topicViewHolder?.horizontalRecyclerView?.setVisibilityGone()
+            topicViewHolder?.hideEmptyViews()
             topicViewHolder?.progressBar?.setVisible()
         }
 
