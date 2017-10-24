@@ -70,7 +70,7 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
         holder.itemView.setBackgroundResource(R.color.colorPrimaryDark)
         holder.titleTextView.setText(R.string.classroom_resources)
 
-        val classroomResourceQuery = activity.firestoreLocalized.collection(activity.getString(R.string.classroom_resources))
+        val classroomResourceQuery = activity.firestoreLocalized.collection(activity.getString(R.string.classroom_resources_key))
                 .whereEqualTo(activity.getString(R.string.subtopic), subtopicId)
                 .orderBy(activity.getString(R.string.name))
 
@@ -91,14 +91,16 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
             holder.horizontalRecyclerView.setVisibilityGone()
         }
 
-        override fun onDataNonEmpty() {
+        override fun onDataLoaded() {
             holder.progressBar.setVisibilityGone()
+        }
+
+        override fun onDataNonEmpty() {
             holder.emptyView.setVisibilityGone()
             holder.horizontalRecyclerView.setVisible()
         }
 
         override fun onDataEmpty() {
-            holder.progressBar.setVisibilityGone()
             holder.horizontalRecyclerView.setVisibilityGone()
 
             holder.emptyView.setVisible()
