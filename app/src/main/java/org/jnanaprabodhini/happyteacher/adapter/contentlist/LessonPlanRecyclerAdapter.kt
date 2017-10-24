@@ -23,7 +23,15 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
 
     companion object { val LESSON_CARD_VIEW_TYPE = 0; val CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE = 1 }
 
-    override fun getItemCount(): Int = super.getItemCount() + 1 // + 1 for footer view (classroom resources section)
+    override fun getItemCount(): Int {
+        val cardCount = super.getItemCount()
+        if (cardCount > 0) {
+            // Show a footer view if there are cards
+            return cardCount + 1
+        } else {
+            return cardCount
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder? {
         if (viewType == CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE) {
