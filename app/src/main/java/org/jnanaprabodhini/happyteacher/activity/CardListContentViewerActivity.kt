@@ -8,16 +8,16 @@ import android.os.Environment
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
+import kotlinx.android.synthetic.main.view_recycler_horizontal_pager.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.CardListContentRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
-import org.jnanaprabodhini.happyteacher.model.CardListContent
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
-import org.jnanaprabodhini.happyteacher.model.ContentCard
 import java.io.File
 
 abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseDataObserver {
@@ -121,7 +121,7 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
 
     private fun showErrorToastAndFinish() {
         // TODO: Log error to analytics.
-        Toast.makeText(this, R.string.there_was_an_error_loading_the_lesson, Toast.LENGTH_LONG).show()
+        Toast.makeText(this, R.string.there_was_an_error_loading_this_lesson, Toast.LENGTH_LONG).show()
         finish()
     }
 
@@ -138,6 +138,12 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
 
     override fun onDataLoaded() {
         progressBar.setVisibilityGone()
+    }
+
+    override fun onError(e: FirebaseFirestoreException?) {
+        recyclerView.setVisibilityGone()
+        statusTextView.setVisible()
+        statusTextView.setText(R.string.there_was_an_error_loading_this_lesson)
     }
 
 }

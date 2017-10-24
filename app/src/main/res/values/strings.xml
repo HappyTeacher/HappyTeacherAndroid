@@ -15,7 +15,7 @@
     <string name="there_are_no_topics_for_this_subject_yet">There are no topics for this subject yet.</string>
     <string name="there_are_currently_no_lesson_plans_for_this_subject_and_level">There are currently no lesson plans for this subject and level.</string>
     <string name="no_lessons_at_level_yet">There are no lessons for this topic at the Standard %d level yet.</string>
-    <string name="there_was_an_error_loading_the_lesson">There was an error loading the lesson.</string>
+    <string name="there_was_an_error_loading_this_lesson">There was an error loading this lesson.</string>
     <string name="downloading">Downloading…</string>
     <string name="canceling">Canceling…</string>
     <string name="open_x">Open %s</string>
@@ -44,6 +44,7 @@
     <!-- For displaying language names no matter what current language is: -->
     <string name="english_in_english" translatable="false">English</string>
     <string name="marathi_in_marathi" translatable="false">मराठी</string>
+    <string name="there_was_an_error_loading_these_lesson_plans">There was an error loading these lesson plans.</string>
 
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>
