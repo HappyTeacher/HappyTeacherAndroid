@@ -31,8 +31,8 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
     @IntegerRes override val bottomNavigationMenuItemId: Int = R.id.navigation_board
 
     object SavedInstanceStateConstants {
-        val LEVEL_SPINNER_SELECTION = "LEVEL_SPINNER_SELECTION"
-        val SUBJECT_SPINNER_SELECTION = "SUBJECT_SPINNER_SELECTION"
+        const val LEVEL_SPINNER_SELECTION = "LEVEL_SPINNER_SELECTION"
+        const val SUBJECT_SPINNER_SELECTION = "SUBJECT_SPINNER_SELECTION"
     }
 
     private var levelSpinnerSelectionIndex = 0

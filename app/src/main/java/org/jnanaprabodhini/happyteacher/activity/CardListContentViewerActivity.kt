@@ -46,19 +46,19 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
             activity.startActivity(intent)
         }
 
-        val CARD_REF_PATH: String = "CARD_REF_PATH"
+        const val CARD_REF_PATH: String = "CARD_REF_PATH"
         fun Intent.hasCardRefPath(): Boolean = hasExtra(CARD_REF_PATH)
         fun Intent.getCardRefPath(): String = getStringExtra(CARD_REF_PATH)
 
-        val TOPIC_NAME: String = "TOPIC_NAME"
+        const val TOPIC_NAME: String = "TOPIC_NAME"
         fun Intent.hasTopicName(): Boolean = hasExtra(TOPIC_NAME)
         fun Intent.getTopicName(): String = getStringExtra(TOPIC_NAME)
 
-        val HEADER: String = "HEADER"
+        const val HEADER: String = "HEADER"
         fun Intent.hasHeader(): Boolean = hasExtra(HEADER)
         fun Intent.getHeader(): CardListContentHeader = getParcelableExtra(HEADER)
 
-        val SHOW_SUBMISSION_COUNT: String = "SHOW_SUBMISSION_COUNT"
+        const val SHOW_SUBMISSION_COUNT: String = "SHOW_SUBMISSION_COUNT"
         fun Intent.shouldShowSubmissionCount(): Boolean = getBooleanExtra(SHOW_SUBMISSION_COUNT, false)
 
         fun Intent.hasAllExtras(): Boolean = hasCardRefPath() && hasTopicName() && hasHeader()

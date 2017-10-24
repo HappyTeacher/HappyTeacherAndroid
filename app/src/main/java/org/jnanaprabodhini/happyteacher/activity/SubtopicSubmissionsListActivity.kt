@@ -30,15 +30,15 @@ class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObse
             from.startActivity(subtopicSubmissionsIntent)
         }
 
-        val TOPIC_KEY: String = "TOPIC_KEY"
+        const val TOPIC_KEY: String = "TOPIC_KEY"
         fun Intent.hasTopicKey(): Boolean = hasExtra(TOPIC_KEY)
         fun Intent.getTopicKey(): String = getStringExtra(TOPIC_KEY)
 
-        val SUBTOPIC_KEY: String = "SUBTOPIC_KEY"
+        const val SUBTOPIC_KEY: String = "SUBTOPIC_KEY"
         fun Intent.hasSubtopicKey(): Boolean = hasExtra(SUBTOPIC_KEY)
         fun Intent.getSubtopicKey(): String = getStringExtra(SUBTOPIC_KEY)
 
-        val TOPIC_NAME: String = "TOPIC_NAME"
+        const val TOPIC_NAME: String = "TOPIC_NAME"
         fun Intent.hasTopicName(): Boolean = hasExtra(TOPIC_NAME)
         fun Intent.getTopicName(): String = getStringExtra(TOPIC_NAME)
 

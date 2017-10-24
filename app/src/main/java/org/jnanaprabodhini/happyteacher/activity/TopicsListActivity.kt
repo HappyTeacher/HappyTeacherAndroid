@@ -40,19 +40,19 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
             from.startBottomNavigationActivityWithFade(topicsListIntent)
         }
 
-        val SYLLABUS_LESSON_ID: String = "SYLLABUS_LESSON_ID"
+        const val SYLLABUS_LESSON_ID: String = "SYLLABUS_LESSON_ID"
         fun Intent.hasSyllabusLessonId(): Boolean = hasExtra(SYLLABUS_LESSON_ID)
         fun Intent.getSyllabusLessonId(): String = getStringExtra(SYLLABUS_LESSON_ID)
 
-        val SUBJECT_NAME: String = "SUBJECT_NAME"
+        const val SUBJECT_NAME: String = "SUBJECT_NAME"
         fun Intent.hasSubject(): Boolean = hasExtra(SUBJECT_NAME)
         fun Intent.getSubject(): String = getStringExtra(SUBJECT_NAME)
 
-        val LEVEL: String = "LEVEL"
+        const val LEVEL: String = "LEVEL"
         fun Intent.hasLevel(): Boolean = hasExtra(LEVEL)
         fun Intent.getLevel(): Int = getIntExtra(LEVEL, 0)
 
-        val LESSON_TITLE: String = "LESSON_TITLE"
+        const val LESSON_TITLE: String = "LESSON_TITLE"
         fun Intent.hasLessonTitle(): Boolean = hasExtra(LESSON_TITLE)
         fun Intent.getLessonTitle(): String = getStringExtra(LESSON_TITLE)
 
@@ -60,8 +60,8 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
     }
 
     object SavedInstanceStateConstants {
-        val PARENT_SUBJECT_SPINNER_SELECTION = "PARENT_SUBJECT_SPINNER_SELECTION"
-        val CHILD_SUBJECT_SPINNER_SELECTION = "CHILD_SUBJECT_SPINNER_SELECTION"
+        const val PARENT_SUBJECT_SPINNER_SELECTION = "PARENT_SUBJECT_SPINNER_SELECTION"
+        const val CHILD_SUBJECT_SPINNER_SELECTION = "CHILD_SUBJECT_SPINNER_SELECTION"
     }
 
     private var parentSubjectSelectionIndex = 0
