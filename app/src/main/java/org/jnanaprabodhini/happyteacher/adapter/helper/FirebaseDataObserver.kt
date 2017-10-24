@@ -11,4 +11,6 @@ interface FirebaseDataObserver {
     fun onDataEmpty() {}
 
     fun onDataNonEmpty() {}
+
+    fun onError() {}
 }

@@ -41,7 +41,7 @@ data class CardListContentHeader(val name: String = "",
                                  val subtopic: String = "",
                                  val topic: String = "",
                                  val subjectName: String = "",
-                                 val subtopicSubmissionCount: Int = 0): Parcelable // todo: move submission count to subclass?
+                                 val subtopicSubmissionCount: Int = 0): Parcelable
 
 data class CardListContent(val name: String = "",
                            val authorEmail: String = "",

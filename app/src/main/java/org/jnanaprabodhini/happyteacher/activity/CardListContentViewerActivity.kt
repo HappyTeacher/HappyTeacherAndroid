@@ -21,10 +21,9 @@ import org.jnanaprabodhini.happyteacher.model.ContentCard
 import java.io.File
 
 abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseDataObserver {
-    // TODO: Add data observer functions!
 
     companion object Constants {
-        val WRITE_STORAGE_PERMISSION_CODE = 1
+        const val WRITE_STORAGE_PERMISSION_CODE = 1
 
         fun launchLessonViewerActivity(from: Activity, cardRef: CollectionReference, cardListContentHeader: CardListContentHeader, topicName: String, shouldShowSubmissionCount: Boolean) {
             val lessonViewerIntent = Intent(from, LessonViewerActivity::class.java)
@@ -132,5 +131,14 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
             cardRecyclerView.adapter.notifyDataSetChanged()
         }
     }
+
+    override fun onRequestNewData() {
+        progressBar.setVisible()
+    }
+
+    override fun onDataLoaded() {
+        progressBar.setVisibilityGone()
+    }
+
 }
 
