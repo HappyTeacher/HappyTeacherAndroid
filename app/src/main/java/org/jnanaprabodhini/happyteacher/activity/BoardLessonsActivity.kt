@@ -167,7 +167,6 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
     override fun onRequestNewData() {
         statusTextView.setVisibilityGone()
         boardLessonsProgressBar.setVisible()
-        syllabusLessonsRecyclerView.setVisibilityGone()
     }
 
     override fun onDataLoaded() {
@@ -175,9 +174,6 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
     }
 
     override fun onDataEmpty() {
-        syllabusLessonsRecyclerView.setVisibilityGone()
-
-        // Show empty view
         statusTextView.setVisible()
         statusTextView.setText(R.string.there_are_currently_no_lesson_plans_for_this_subject_and_level)
     }
@@ -185,15 +181,12 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
     override fun onDataNonEmpty() {
         statusTextView.setVisibilityGone()
 
-        syllabusLessonsRecyclerView.setVisible()
-
         // Animate layout changes
         syllabusLessonsRecyclerView.scheduleLayoutAnimation()
         syllabusLessonsRecyclerView.invalidate()
     }
 
     override fun onError(e: FirebaseFirestoreException?) {
-        syllabusLessonsRecyclerView.setVisibilityGone()
         boardLessonsProgressBar.setVisibilityGone()
         statusTextView.setVisible()
         statusTextView.setText(R.string.there_was_an_error_loading_these_lesson_plans)
