@@ -134,8 +134,18 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val adapter = object: ArrayAdapter<Int>(this, R.layout.spinner_item, levels) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
                 val view = super.getView(position, convertView, parent)
-                (view as TextView).text = getString(R.string.standard_n, levels[position])
+                setStandardText(view as TextView, position)
                 return view
+            }
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                setStandardText(view as TextView, position)
+                return view
+            }
+
+            fun setStandardText(textView: TextView, position: Int) {
+                textView.text = getString(R.string.standard_n, levels[position])
             }
         }
 
@@ -152,6 +162,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
                 .whereEqualTo(getString(R.string.board), prefs.getBoardKey())
                 .whereEqualTo(getString(R.string.subject), selectedSubjectKey)
                 .whereEqualTo(getString(R.string.level), selectedLevel)
+                .orderBy(getString(R.string.lesson_number))
 
         val adapterOptions = FirestoreRecyclerOptions.Builder<SyllabusLesson>()
                 .setQuery(syllabusLessonQuery, SyllabusLesson::class.java).build()
@@ -167,6 +178,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
     override fun onRequestNewData() {
         statusTextView.setVisibilityGone()
         boardLessonsProgressBar.setVisible()
+        syllabusLessonsRecyclerView.setVisibilityGone()
     }
 
     override fun onDataLoaded() {
@@ -174,11 +186,13 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
     }
 
     override fun onDataEmpty() {
+        syllabusLessonsRecyclerView.setVisibilityGone()
         statusTextView.setVisible()
         statusTextView.setText(R.string.there_are_currently_no_lesson_plans_for_this_subject_and_level)
     }
 
     override fun onDataNonEmpty() {
+        syllabusLessonsRecyclerView.setVisible()
         statusTextView.setVisibilityGone()
 
         // Animate layout changes
@@ -187,6 +201,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
     }
 
     override fun onError(e: FirebaseFirestoreException?) {
+        syllabusLessonsRecyclerView.setVisibilityGone()
         boardLessonsProgressBar.setVisibilityGone()
         statusTextView.setVisible()
         statusTextView.setText(R.string.there_was_an_error_loading_these_lesson_plans)
