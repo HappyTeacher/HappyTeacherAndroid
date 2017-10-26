@@ -54,7 +54,7 @@ abstract class HappyTeacherActivity: AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    fun resetTitle() {
+    private fun resetTitle() {
         try {
             val titleId = packageManager.getActivityInfo(componentName, PackageManager.GET_META_DATA).labelRes
             if (titleId != 0) {

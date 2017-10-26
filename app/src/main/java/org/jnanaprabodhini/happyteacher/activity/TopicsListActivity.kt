@@ -93,7 +93,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         this.childSubjectSelectionIndex = childSubjectStoredSelection
     }
 
-    fun initializeUiFromIntent() {
+    private fun initializeUiFromIntent() {
         if (intent.hasAllExtras()) {
             // Show topics related to the given syllabus lesson plan
             val syllabusLessonId = intent.getSyllabusLessonId()
@@ -108,7 +108,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         }
     }
 
-    fun initializeTopicListForSubject() {
+    private fun initializeTopicListForSubject() {
         hideSyllabusLessonTopicHeader()
         topicsProgressBar.setVisible()
 
@@ -176,7 +176,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
     /**
      *  Display list of topics for the selected subject.
      */
-    fun updateListOfTopicsForSubject(subjectKey: String) {
+    private fun updateListOfTopicsForSubject(subjectKey: String) {
         val topicQuery = firestoreLocalized.collection(getString(R.string.topics))
                 .whereEqualTo(getString(R.string.subject), subjectKey) // todo: ordering
 
