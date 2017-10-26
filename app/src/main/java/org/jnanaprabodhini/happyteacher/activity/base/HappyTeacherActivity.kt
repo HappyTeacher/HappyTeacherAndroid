@@ -1,4 +1,4 @@
-package org.jnanaprabodhini.happyteacher.activity.parent
+package org.jnanaprabodhini.happyteacher.activity.base
 
 import android.content.Context
 import android.content.Intent
@@ -6,11 +6,11 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
-import org.jnanaprabodhini.happyteacher.extension.getBaseReferenceForCurrentLanguage
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
 import org.jnanaprabodhini.happyteacher.extension.withCurrentLocale
+import org.jnanaprabodhini.happyteacher.prefs
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 /**
  * An abstract activity for all activities in the app. Includes access
@@ -18,12 +18,13 @@ import org.jnanaprabodhini.happyteacher.extension.withCurrentLocale
  *  and locale switching.
  */
 abstract class HappyTeacherActivity: AppCompatActivity() {
-    val databaseRoot: FirebaseDatabase by lazy {
-        FirebaseDatabase.getInstance()
+
+    val firestoreRoot: FirebaseFirestore by lazy {
+        FirebaseFirestore.getInstance()
     }
 
-    val databaseReference: DatabaseReference by lazy {
-        databaseRoot.getBaseReferenceForCurrentLanguage()
+    val firestoreLocalized: DocumentReference by lazy {
+        firestoreRoot.collection("localized").document(prefs.getCurrentLanguageCode())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

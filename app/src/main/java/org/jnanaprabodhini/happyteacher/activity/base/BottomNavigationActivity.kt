@@ -1,4 +1,4 @@
-package org.jnanaprabodhini.happyteacher.activity.parent
+package org.jnanaprabodhini.happyteacher.activity.base
 
 import android.content.Intent
 import android.support.design.widget.BottomNavigationView

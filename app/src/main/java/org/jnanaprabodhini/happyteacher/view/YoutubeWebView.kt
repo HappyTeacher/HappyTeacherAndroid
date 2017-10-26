@@ -52,7 +52,6 @@ class YoutubeWebView(context: Context, attrs: AttributeSet): WebView(context, at
 
         webViewClient = object: WebViewClient() {
             override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
-                // TODO: Better error, translated:
                 progressBar.setVisibilityGone()
                 onError(videoId, loadButton)
             }

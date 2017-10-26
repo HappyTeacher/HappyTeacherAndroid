@@ -3,11 +3,14 @@ package org.jnanaprabodhini.happyteacher
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import org.jnanaprabodhini.happyteacher.extension.withCurrentLocale
 import org.jnanaprabodhini.happyteacher.util.LocaleManager
 import org.jnanaprabodhini.happyteacher.util.PreferencesManager
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig
+import com.google.firebase.firestore.FirebaseFirestoreSettings
+
+
 
 val prefs: PreferencesManager by lazy {
     // Package-wide access to PreferencesManager.
@@ -23,12 +26,10 @@ class HappyTeacherApplication: Application() {
     override fun onCreate() {
         super.onCreate()
 
-        // Set Firebase offline persistence to true
-        val databaseInstance = FirebaseDatabase.getInstance()
-        databaseInstance.setPersistenceEnabled(true)
-
-        // TODO: Don't keep entire db synced. Only sync essential items.
-        databaseInstance.reference.keepSynced(true)
+        val settings = FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(true)
+                .build()
+        FirebaseFirestore.getInstance().firestoreSettings = settings
 
         // Set Roboto as default font
         CalligraphyConfig.initDefault(CalligraphyConfig.Builder()

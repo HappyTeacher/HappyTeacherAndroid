@@ -3,10 +3,9 @@ package org.jnanaprabodhini.happyteacher.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_full_screen_gallery_viewer.*
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.activity.parent.HappyTeacherActivity
+import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.GalleryViewPagerAdapter
 
 class FullScreenGalleryViewerActivity : HappyTeacherActivity() {
@@ -23,11 +22,11 @@ class FullScreenGalleryViewerActivity : HappyTeacherActivity() {
             context.startActivity(fullscreenImageIntent)
         }
 
-        val IMAGE_URLS: String = "IMAGE_URLS"
+        const val IMAGE_URLS: String = "IMAGE_URLS"
         fun Intent.hasImageUrls(): Boolean = hasExtra(IMAGE_URLS)
         fun Intent.getImageUrls(): Array<String> = getStringArrayExtra(IMAGE_URLS)
 
-        val SELECTED_IMAGE: String = "SELECTED_IMAGE"
+        const val SELECTED_IMAGE: String = "SELECTED_IMAGE"
         fun Intent.hasSelectedImage(): Boolean = hasExtra(SELECTED_IMAGE)
         fun Intent.getSelectedImage(): Int = getIntExtra(SELECTED_IMAGE, 0)
 

@@ -20,4 +20,12 @@
     <string name="subtopic_lessons" translatable="false">subtopic_lessons</string>
     <string name="classroom_resources_key" translatable="false">classroom_resources</string>
     <string name="classroom_resources_headers" translatable="false">classroom_resources_headers</string>
+    <string name="lessons" translatable="false">lessons</string>
+    <string name="subtopic" translatable="false">subtopic</string>
+    <string name="is_featured" translatable="false">isFeatured</string>
+    <string name="board" translatable="false">board</string>
+    <string name="level" translatable="false">level</string>
+    <string name="order_number" translatable="false">orderNumber</string>
+    <string name="topic" translatable="false">topic</string>
+    <string name="cards" translatable="false">cards</string>
 </resources>

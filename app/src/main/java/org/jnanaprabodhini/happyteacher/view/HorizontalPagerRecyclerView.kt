@@ -37,7 +37,6 @@ class HorizontalPagerRecyclerView(context: Context, attrs: AttributeSet): FrameL
         super.onFinishInflate()
 
         recyclerView.layoutManager = layoutManager
-        recyclerView.setHasFixedSize(true)
 
         backwardPager.setElevation(R.dimen.pager_button_elevation)
         forwardPager.setElevation(R.dimen.pager_button_elevation)

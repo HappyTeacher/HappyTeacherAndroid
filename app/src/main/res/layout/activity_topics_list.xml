@@ -5,7 +5,6 @@
     tools:context="org.jnanaprabodhini.happyteacher.activity.TopicsListActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
     android:background="@color/lightGray">
 
     <android.support.design.widget.CoordinatorLayout
@@ -16,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/topicsListWithHeader"
+        android:animateLayoutChanges="true"
         android:layout_above="@id/bottomNavigation">
 
         <org.jnanaprabodhini.happyteacher.view.ClickableScrollingRecyclerView
@@ -26,7 +26,7 @@
             android:layoutAnimation="@anim/layout_fall_down" />
 
         <TextView
-            android:id="@+id/emptyTopicsTextView"
+            android:id="@+id/statusTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/EmptyListFeedbackText"

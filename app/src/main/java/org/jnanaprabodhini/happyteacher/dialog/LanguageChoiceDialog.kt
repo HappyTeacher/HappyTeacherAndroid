@@ -3,7 +3,7 @@ package org.jnanaprabodhini.happyteacher.dialog
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.activity.parent.BottomNavigationActivity
+import org.jnanaprabodhini.happyteacher.activity.base.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacher.prefs
 
 /**

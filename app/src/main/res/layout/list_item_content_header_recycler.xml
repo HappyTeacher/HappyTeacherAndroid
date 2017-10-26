@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="312dp"
     tools:background="@color/bubbleGumPink"
-    android:animateLayoutChanges="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -20,49 +19,48 @@
 
     <org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
         android:id="@+id/horizontalRecyclerView"
-        android:layout_width="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
-    <FrameLayout
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
-        android:id="@+id/progressBarFrame"
-        android:visibility="visible"
-        android:layout_width="@dimen/width_lesson_header_card"
-        android:layout_height="@dimen/height_lesson_header_card" >
-        <ProgressBar
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </FrameLayout>
-
-    <LinearLayout
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:visibility="gone"
-        android:id="@+id/emptyView"
-        android:orientation="vertical"
-        android:gravity="center_vertical"
-        android:layout_width="@dimen/width_lesson_header_card"
-        android:layout_height="@dimen/height_lesson_header_card">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:id="@+id/emptyTextView"/>
+    <TextView
+        android:id="@+id/statusTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView"
+        app:layout_constraintBottom_toTopOf="@+id/contributeButton"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:layout_margin="16dp"
+        android:paddingRight="64dp"
+        android:paddingEnd="64dp"
+        android:text="@string/there_are_no_classroom_resources_for_this_lesson_yet"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/contributeButton"
-            android:layout_margin="16dp"
-            style="@style/Button"
-            android:text="@string/contribute"/>
-
-    </LinearLayout>
+    <Button
+        android:id="@+id/contributeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/statusTextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="16dp"
+        style="@style/Button"
+        android:text="@string/contribute"/>
 
 </android.support.constraint.ConstraintLayout>

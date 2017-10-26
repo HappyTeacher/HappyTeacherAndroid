@@ -1,14 +1,12 @@
 package org.jnanaprabodhini.happyteacher.dialog
 
-import android.content.Context
 import android.view.View
 import android.widget.CheckedTextView
 import android.widget.ListView
-import com.firebase.ui.database.FirebaseListAdapter
-import com.firebase.ui.database.FirebaseListOptions
-import com.google.firebase.database.FirebaseDatabase
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.extension.getBaseReferenceForCurrentLanguage
+import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
+import org.jnanaprabodhini.happyteacher.adapter.firestore.FirestoreObserverListAdapter
+import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.model.Board
 import org.jnanaprabodhini.happyteacher.prefs
 
@@ -16,26 +14,23 @@ import org.jnanaprabodhini.happyteacher.prefs
  * A dialog for asking the user what Board/Syllabus they
  *  want to set as default.
  */
-class BoardChoiceDialog(context: Context): SettingsChoiceDialog(context, R.string.choose_your_syllabus, R.string.you_can_change_this_in_your_settings_later) {
+class BoardChoiceDialog(val activity: HappyTeacherActivity): SettingsChoiceDialog(activity, R.string.choose_your_syllabus, R.string.you_can_change_this_in_your_settings_later) {
 
     override fun configureOptionsListView(optionsListView: ListView) {
         optionsListView.choiceMode = ListView.CHOICE_MODE_SINGLE
 
-        val databaseReference = FirebaseDatabase.getInstance().getBaseReferenceForCurrentLanguage()
-        val boardQuery = databaseReference.child(context.getString(R.string.boards))
+        val boardQuery = activity.firestoreLocalized.collection(activity.getString(R.string.boards)) // todo: ordering
 
-        val adapterOptions = FirebaseListOptions.Builder<Board>()
-                .setQuery(boardQuery, Board::class.java)
-                .setLayout(R.layout.dialog_option_singlechoice).build()
+        val emptyDataObserver = object: FirebaseDataObserver {}
 
-        val boardChoiceAdapter = object: FirebaseListAdapter<Board>(adapterOptions) {
-            override fun populateView(v: View?, model: Board?, position: Int) {
-                (v as CheckedTextView).text = model?.name
+        val boardChoiceAdapter = object: FirestoreObserverListAdapter<Board>(boardQuery, Board::class.java, R.layout.dialog_option_singlechoice, emptyDataObserver, activity) {
+            override fun populateView(view: View, model: Board) {
+                (view as CheckedTextView).text = model.name
             }
         }
 
         optionsListView.setOnItemClickListener { _, _, position, _ ->
-            val selectedKey = boardChoiceAdapter.getRef(position).key
+            val selectedKey = boardChoiceAdapter.getItemKey(position)
             optionsListView.setItemChecked(position, true)
             prefs.setBoardKey(selectedKey)
             boardChoiceAdapter.stopListening()

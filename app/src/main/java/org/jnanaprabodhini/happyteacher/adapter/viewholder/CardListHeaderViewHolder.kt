@@ -4,6 +4,8 @@ import android.app.Activity
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.list_item_content_header_card.view.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.setDrawableLeft
@@ -22,7 +24,7 @@ abstract class CardListHeaderViewHolder(itemView: View): RecyclerView.ViewHolder
     val dateEditedTextView: TextView = itemView.dateEditedTextView
     val submissionCountTextView: TextView = itemView.submissionCountTextView
 
-    open fun populateView(cardListContentHeaderModel: CardListContentHeader?, topicName: String, activity: Activity, dateFormat: DateFormat) {
+    open fun populateView(cardListContentHeaderModel: CardListContentHeader?, cardRef: CollectionReference, topicName: String, activity: Activity, dateFormat: DateFormat) {
         titleTextView.text = cardListContentHeaderModel?.name
         authorNameTextView.text = cardListContentHeaderModel?.authorName
         institutionTextView.text = cardListContentHeaderModel?.authorInstitution
@@ -38,17 +40,10 @@ abstract class CardListHeaderViewHolder(itemView: View): RecyclerView.ViewHolder
         }
 
         itemView.setOnClickListener {
-            val contentId = cardListContentHeaderModel?.contentKey ?: ""
-            val subtopicId = cardListContentHeaderModel?.subtopic ?: ""
-            val subjectName = cardListContentHeaderModel?.subjectName ?: ""
-            val topicId = cardListContentHeaderModel?.topic ?: ""
-            val subtopicSubmissionCount = cardListContentHeaderModel?.subtopicSubmissionCount ?: 0
-            val subtopicName = cardListContentHeaderModel?.name ?: ""
-
-            launchContentViewerActivity(activity, contentId, subtopicId, subjectName, topicName, topicId, subtopicName, subtopicSubmissionCount)
+            launchContentViewerActivity(activity, cardRef, cardListContentHeaderModel, topicName)
         }
     }
 
-    abstract fun launchContentViewerActivity(activity: Activity, contentId: String, subtopicId: String, subjectName: String, topicName: String, topicId: String, subtopicName: String, subtopicSubmissionCount: Int)
+    abstract fun launchContentViewerActivity(activity: Activity, cardRef: CollectionReference, cardListContentHeaderModel: CardListContentHeader?, topicName: String)
 }
 
