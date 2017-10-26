@@ -57,7 +57,7 @@ abstract class ListTagHandler(val indentationLevel: Int = 0) : Html.TagHandler {
     fun getIndentationString(): String {
         val builder = StringBuilder()
         for (i in 0..indentationLevel) {
-            builder.append("   ")
+            builder.append("  ")
         }
 
         return builder.toString()
