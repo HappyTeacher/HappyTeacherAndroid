@@ -68,6 +68,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
     @IntegerRes override val bottomNavigationMenuItemId: Int = R.id.navigation_topics
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_topics_list)
 
