@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.jnanaprabodhini.happyteacher.activity.TopicsListActivity"
-    android:animateLayoutChanges="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -38,6 +37,7 @@
         android:visibility="gone"
         android:background="@color/deepLightBlue"
         android:layout_width="match_parent"
+        android:animateLayoutChanges="true"
         android:layout_height="wrap_content">
         
         <android.support.constraint.ConstraintLayout
