@@ -12,6 +12,10 @@
         <item name="colorAccent">@android:color/white</item>
     </style>
 
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
     <style name="Theme.Transparent" parent="Theme.AppCompat.NoActionBar">
         <item name="android:background">@android:color/transparent</item> <!-- Or any transparency or color you need -->
         <item name="android:windowNoTitle">true</item>

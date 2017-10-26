@@ -63,7 +63,7 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
         return true
     }
 
-    fun showLanguageChangeDialog() {
+    private fun showLanguageChangeDialog() {
         val dialog = LanguageChoiceDialog(this)
         dialog.show()
     }

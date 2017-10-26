@@ -62,7 +62,7 @@ class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObse
         initializeRecyclerViewForSubtopic()
     }
 
-    fun initializeRecyclerViewForSubtopic() {
+    private fun initializeRecyclerViewForSubtopic() {
 
         val submissionHeadersQuery = firestoreLocalized.collection(getString(R.string.lessons))
                 .whereEqualTo(getString(R.string.subtopic), subtopicKey)
