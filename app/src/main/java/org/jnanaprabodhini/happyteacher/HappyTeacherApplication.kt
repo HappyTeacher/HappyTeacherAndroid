@@ -38,12 +38,6 @@ class HappyTeacherApplication: Application() {
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         )
-
-        // Sign in anonymously if not signed in
-        val auth = FirebaseAuth.getInstance()
-        if (auth.currentUser == null) {
-            auth.signInAnonymously()
-        }
     }
 
     override fun attachBaseContext(base: Context) {
