@@ -1,7 +1,11 @@
 package org.jnanaprabodhini.happyteacher.extension.taghandler
 
 import android.text.Editable
+import android.text.Spannable
+import android.text.style.BulletSpan
+import android.text.style.LeadingMarginSpan
 import android.util.Log
+import org.jnanaprabodhini.happyteacher.extension.toLocaleString
 import org.xml.sax.XMLReader
 
 /**
@@ -10,13 +14,17 @@ import org.xml.sax.XMLReader
 class UnorderedListTagHandler(indentationLevel: Int = 0): ListTagHandler(indentationLevel) {
 
     override val TAG: String = "ul"
+    private var stringStart = 0
+    private val bulletPrefix = "• "
 
     override fun handleListItem(opening: Boolean, tag: String, output: Editable?, xmlReader: XMLReader?) {
         if (opening) {
-            output?.append(getIndentationString())
-            output?.append("• ")
+            stringStart = output?.length ?: 0
+            output?.append(bulletPrefix)
         } else {
-            output?.append("\n")
+            if (output?.get(output.lastIndex) != '\n') output?.append('\n')
+
+            output?.setSpan(getIndentationSpan(), stringStart, output.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
     }
 }
