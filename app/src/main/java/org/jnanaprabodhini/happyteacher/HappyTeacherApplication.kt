@@ -3,13 +3,14 @@ package org.jnanaprabodhini.happyteacher
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
+import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 import org.jnanaprabodhini.happyteacher.extension.withCurrentLocale
 import org.jnanaprabodhini.happyteacher.util.LocaleManager
 import org.jnanaprabodhini.happyteacher.util.PreferencesManager
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig
-import com.google.firebase.firestore.FirebaseFirestoreSettings
-
 
 
 val prefs: PreferencesManager by lazy {
@@ -37,6 +38,12 @@ class HappyTeacherApplication: Application() {
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         )
+
+        // Sign in anonymously if not signed in
+        val auth = FirebaseAuth.getInstance()
+        if (auth.currentUser == null) {
+            auth.signInAnonymously()
+        }
     }
 
     override fun attachBaseContext(base: Context) {
