@@ -30,7 +30,7 @@ abstract class ListTagHandler(val indentationLevel: Int = 0) : Html.TagHandler {
      */
     override fun handleTag(opening: Boolean, tag: String?, output: Editable?, xmlReader: XMLReader?) {
         if (activeListHandler != null && activeListHandler?.activeListHandler == null
-                && !opening && tag == activeListHandler!!.TAG) {
+                && !opening && tag == activeListHandler?.TAG) {
 
             // If we're closing the list tag on the active list handler
             // (and not on its active list handler), remove it.
@@ -38,7 +38,7 @@ abstract class ListTagHandler(val indentationLevel: Int = 0) : Html.TagHandler {
 
         } else if (activeListHandler != null) {
             // Let the <ul> or <ol> list handler handle this tag!
-            activeListHandler!!.handleTag(opening, tag, output, xmlReader)
+            activeListHandler?.handleTag(opening, tag, output, xmlReader)
         } else if (tag == "ul") {
             output?.append("\n")
             // Set <ul> handler as active
