@@ -21,6 +21,7 @@ import android.support.design.widget.Snackbar
 import android.util.Log
 import android.widget.Toast
 import com.firebase.ui.auth.IdpResponse
+import com.google.firebase.firestore.FirebaseFirestore
 import org.jnanaprabodhini.happyteacher.BuildConfig
 
 
@@ -73,10 +74,23 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
         return true
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        val userMenuItem = menu?.findItem(R.id.menu_user)
+        val user = auth.currentUser
+
+        if (user == null) {
+            userMenuItem?.setTitle(R.string.sign_in)
+        } else {
+            userMenuItem?.setTitle(R.string.profile)
+        }
+
+        return super.onPrepareOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_change_language -> showLanguageChangeDialog()
-            R.id.menu_sign_in -> beginSignIn()
+            R.id.menu_user -> if (auth.currentUser == null) launchSignIn() else launchProfile()
         }
         return true
     }
@@ -86,14 +100,10 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
         dialog.show()
     }
 
-    private fun beginSignIn() {
-        val auth = FirebaseAuth.getInstance()
-        if (auth.currentUser != null) {
-            auth.signOut()
-            this.showToast("You've been signed out.")
-        } else {
-            launchSignIn()
-        }
+    private fun launchProfile() {
+        // Activity coming soon
+        auth.signOut()
+        showToast("Signed out.")
     }
 
     private fun launchSignIn() {

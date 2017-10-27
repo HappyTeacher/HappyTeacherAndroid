@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import org.jnanaprabodhini.happyteacher.extension.withCurrentLocale
@@ -25,6 +26,10 @@ abstract class HappyTeacherActivity: AppCompatActivity() {
 
     val firestoreLocalized: DocumentReference by lazy {
         firestoreRoot.collection("localized").document(prefs.getCurrentLanguageCode())
+    }
+
+    val auth: FirebaseAuth by lazy {
+        FirebaseAuth.getInstance()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

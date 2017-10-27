@@ -9,9 +9,9 @@
         android:title="@string/change_language" />
 
     <item
-        android:id="@+id/menu_sign_in"
+        android:id="@+id/menu_user"
         android:icon="@drawable/ic_person_white"
-        app:showAsAction="always"
+        app:showAsAction="withText"
         android:title="@string/sign_in" />
 
 

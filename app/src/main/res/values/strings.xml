@@ -50,6 +50,7 @@
     <string name="there_was_an_error_loading_classroom_resources_for_this_lesson">There was an error loading classroom resources for this lesson.</string>
     <string name="there_was_an_error_loading_lessons_for_this_topic">There was an error loading lessons for this topic.</string>
     <string name="sign_in">Sign in...</string>
+    <string name="profile">Profile</string>
 
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>
