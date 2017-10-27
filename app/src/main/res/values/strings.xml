@@ -51,6 +51,9 @@
     <string name="there_was_an_error_loading_lessons_for_this_topic">There was an error loading lessons for this topic.</string>
     <string name="sign_in">Sign in...</string>
     <string name="profile">Profile</string>
+    <string name="sign_in_canceled">Sign in canceled</string>
+    <string name="sign_in_failed_network_error">Sign in failed due to network error</string>
+    <string name="sign_in_failed">Sign in failed. Try again later</string>
 
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>
