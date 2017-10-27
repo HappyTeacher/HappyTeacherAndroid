@@ -16,23 +16,26 @@ class OrderedListTagHandler(indentationLevel: Int = 0): ListTagHandler(indentati
 
     override val TAG: String = "ol"
     private var listNumber: Int = 1
+    private val numberPrefix: String
+        get() = "${listNumber.toLocaleString()}. "
+
+    private var stringStart = 0
 
     override fun handleListItem(opening: Boolean, tag: String, output: Editable?, xmlReader: XMLReader?) {
         if (opening) {
-            output?.append(getIndentationString())
-
-            val numberPrefix = "${listNumber.toLocaleString()}. "
-
             // Make the number prefix BOLD:
             val spannableStringBuilder = SpannableStringBuilder(numberPrefix)
             val boldStyle = StyleSpan(BOLD)
+
             spannableStringBuilder.setSpan(boldStyle, 0, numberPrefix.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
+            stringStart = output?.length ?: 0
             output?.append(spannableStringBuilder)
-
             listNumber++
         } else {
-            output?.append("\n")
+            if (output?.get(output.lastIndex) != '\n') output?.append('\n')
+
+            output?.setSpan(getIndentationSpan(), stringStart, output.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
     }
 }
