@@ -2,7 +2,6 @@ package org.jnanaprabodhini.happyteacher.extension.taghandler
 
 import android.text.Editable
 import android.text.Html
-import android.util.Log
 import org.xml.sax.XMLReader
 
 /**
