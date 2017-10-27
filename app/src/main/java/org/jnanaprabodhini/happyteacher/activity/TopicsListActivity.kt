@@ -276,6 +276,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
     override fun onError(e: FirebaseFirestoreException?) {
         topicsRecyclerView.setVisibilityGone()
+        topicsProgressBar.setVisibilityGone()
         statusTextView.setVisible()
         statusTextView.setText(R.string.there_was_an_error_loading_topics_for_this_subject)
     }
