@@ -16,6 +16,7 @@ import com.firebase.ui.auth.ErrorCodes
 import android.app.Activity
 import com.firebase.ui.auth.IdpResponse
 import org.jnanaprabodhini.happyteacher.BuildConfig
+import org.jnanaprabodhini.happyteacher.activity.ProfileActivity
 
 
 /**
@@ -94,9 +95,8 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
     }
 
     private fun launchProfile() {
-        // Activity coming soon
-        auth.signOut()
-        showToast("Signed out.")
+        val profileIntent = Intent(this, ProfileActivity::class.java)
+        startActivity(profileIntent)
     }
 
     private fun launchSignIn() {
