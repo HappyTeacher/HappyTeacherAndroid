@@ -35,6 +35,9 @@
         <activity android:name=".activity.SubtopicSubmissionsListActivity"
             android:label="@string/other_lesson_plans"
             android:parentActivityName=".activity.TopicsListActivity"/>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/places_api_key"/>
     </application>
 
 </manifest>
