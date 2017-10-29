@@ -4,19 +4,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="org.jnanaprabodhini.happyteacher.activity.ProfileActivity"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="16dp">
 
-    <fragment
-        android:id="@+id/placeAutocompleteFragment"
+    <EditText
+        android:id="@+id/nameInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
-        />
+        android:hint="Your name"/>
+
+    <EditText
+        android:id="@+id/locationInput"
+        android:text="Your location"
+        android:inputType="none"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/institutionInput"
+        android:text="Your institution"
+        android:inputType="none"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Button"
+        android:text="Save"/>
 
     <Button
         android:id="@+id/signOutButton"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/Button"
         android:text="Sign out"/>
 
 </LinearLayout>

@@ -28,4 +28,6 @@
     <string name="order_number" translatable="false">orderNumber</string>
     <string name="topic" translatable="false">topic</string>
     <string name="cards" translatable="false">cards</string>
+    <string name="localized">localized</string>
+    <string name="users">users</string>
 </resources>

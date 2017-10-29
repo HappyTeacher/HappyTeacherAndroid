@@ -7,8 +7,10 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.withCurrentLocale
 import org.jnanaprabodhini.happyteacher.prefs
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
@@ -25,7 +27,11 @@ abstract class HappyTeacherActivity: AppCompatActivity() {
     }
 
     val firestoreLocalized: DocumentReference by lazy {
-        firestoreRoot.collection("localized").document(prefs.getCurrentLanguageCode())
+        firestoreRoot.collection(getString(R.string.localized)).document(prefs.getCurrentLanguageCode())
+    }
+
+    val firestoreUsersCollection: CollectionReference by lazy {
+        firestoreRoot.collection(getString(R.string.users))
     }
 
     val auth: FirebaseAuth by lazy {
