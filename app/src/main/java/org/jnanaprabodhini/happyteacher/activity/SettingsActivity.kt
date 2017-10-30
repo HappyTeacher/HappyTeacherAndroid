@@ -10,6 +10,7 @@ import android.util.Log
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
+import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.places.AutocompleteFilter
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -117,7 +118,8 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
                 }
                 PlaceAutocomplete.RESULT_ERROR -> {
                     val status = PlaceAutocomplete.getStatus(this, data)
-                    // TODO: Handle the error.
+                    // TODO: Log status to analytics.
+                    showToast(getString(R.string.there_was_an_issue_choosing_a_location))
                 }
                 Activity.RESULT_CANCELED -> {
                     // The user canceled the operation.
