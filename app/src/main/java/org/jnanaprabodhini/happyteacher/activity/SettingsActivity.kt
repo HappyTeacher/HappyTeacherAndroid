@@ -9,14 +9,7 @@ import org.jnanaprabodhini.happyteacher.activity.SettingsActivity.SettingsFragme
 
 
 
-class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
-
-    class SettingsFragment: PreferenceFragment() {
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            addPreferencesFromResource(R.xml.preferences)
-        }
-    }
+class SettingsActivity : HappyTeacherActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,8 +19,27 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
                 .commit()
     }
 
-    override fun onSharedPreferenceChanged(preferences: SharedPreferences?, key: String?) {
+    class SettingsFragment: PreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            addPreferencesFromResource(R.xml.preferences)
+        }
 
+        override fun onResume() {
+            super.onResume()
+            preferenceScreen.sharedPreferences
+                    .registerOnSharedPreferenceChangeListener(this)
+        }
+
+        override fun onPause() {
+            super.onPause()
+            preferenceScreen.sharedPreferences
+                    .unregisterOnSharedPreferenceChangeListener(this)
+        }
+
+        override fun onSharedPreferenceChanged(preferences: SharedPreferences?, key: String?) {
+
+        }
     }
 
 }
