@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="lesson_headers" translatable="false">lesson_headers</string>
-    <string name="name" translatable="false">name</string>
+    <string name="name_key" translatable="false">name</string>
     <string name="topics" translatable="false">topics</string>
     <string name="subjects" translatable="false">subjects</string>
     <string name="subject" translatable="false">subject</string>

@@ -7,7 +7,7 @@
     <string name="title_contribute">Contribute</string>
 
     <string name="standard_n">Standard %d</string>
-    <string name="choose_your_syllabus">Choose your syllabus.</string>
+    <string name="choose_your_syllabus">Choose your board.</string>
     <string name="you_can_change_this_in_your_settings_later">You can change this in your settings later.</string>
     <string name="there_are_no_lessons_for_this_topic_yet">There are no lessons for this topic yet.</string>
     <string name="contribute">Contribute</string>
@@ -50,7 +50,7 @@
     <string name="there_was_an_error_loading_topics_for_this_subject">There was an error loading topics for this subject.</string>
     <string name="there_was_an_error_loading_classroom_resources_for_this_lesson">There was an error loading classroom resources for this lesson.</string>
     <string name="there_was_an_error_loading_lessons_for_this_topic">There was an error loading lessons for this topic.</string>
-    <string name="sign_in">Sign in...</string>
+    <string name="sign_in">Sign in…</string>
     <string name="profile">Profile</string>
     <string name="sign_in_canceled">Sign in canceled</string>
     <string name="sign_in_failed_network_error">Sign in failed due to network error</string>
@@ -59,7 +59,6 @@
     <string name="you_must_have_google_play_service_to_do_this">You must have Google Play Services to do this.</string>
     <string name="there_was_an_issue_choosing_a_location">There was an issue choosing a location</string>
     <string name="sign_out">Sign out</string>
-    <string name="prefs_key_user_settings">USER_SETTINGS</string>
     <string name="contributor_profile">Contributor Profile</string>
     <string name="your_first_and_last_name">Your first and last name</string>
     <string name="name">Name</string>
@@ -67,6 +66,9 @@
     <string name="institution_name">Institution name</string>
     <string name="the_location_of_your_institution">The location of your institution</string>
     <string name="location">Location</string>
+    <string name="general_settings">General Settings</string>
+    <string name="tap_to_select_which_education_board_you_prefer">Tap to select which education board you prefer</string>
+    <string name="preferred_education_board">Preferred education board</string>
 
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>
