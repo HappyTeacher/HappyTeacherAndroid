@@ -55,6 +55,7 @@
     <string name="sign_in_canceled">Sign in canceled</string>
     <string name="sign_in_failed_network_error">Sign in failed due to network error</string>
     <string name="sign_in_failed">Sign in failed. Try again later</string>
+    <string name="settings">Settings</string>
 
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>

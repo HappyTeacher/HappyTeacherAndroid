@@ -17,6 +17,7 @@ import android.app.Activity
 import com.firebase.ui.auth.IdpResponse
 import org.jnanaprabodhini.happyteacher.BuildConfig
 import org.jnanaprabodhini.happyteacher.activity.ProfileActivity
+import org.jnanaprabodhini.happyteacher.activity.SettingsActivity
 
 
 /**
@@ -95,7 +96,7 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
     }
 
     private fun launchProfile() {
-        val profileIntent = Intent(this, ProfileActivity::class.java)
+        val profileIntent = Intent(this, SettingsActivity::class.java)
         startActivity(profileIntent)
     }
 
@@ -123,6 +124,7 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AUTH_REQUEST_CODE) {
             val response = IdpResponse.fromResultIntent(data)
+            // TODO: save values from new user
 
             // Successfully signed in
             if (resultCode == Activity.RESULT_OK) {

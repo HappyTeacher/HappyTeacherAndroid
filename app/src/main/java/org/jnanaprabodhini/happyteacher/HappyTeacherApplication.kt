@@ -3,6 +3,7 @@ package org.jnanaprabodhini.happyteacher
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
+import android.preference.PreferenceManager
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -38,6 +39,9 @@ class HappyTeacherApplication: Application() {
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         )
+
+        // Initialize settings preferences
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
     }
 
     override fun attachBaseContext(base: Context) {

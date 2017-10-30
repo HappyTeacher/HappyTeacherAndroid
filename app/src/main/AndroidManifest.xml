@@ -41,7 +41,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/places_api_key" />
 
-        <activity android:name=".activity.ProfileActivity"></activity>
+        <activity android:name=".activity.ProfileActivity" />
+        <activity android:name=".activity.SettingsActivity"
+            android:label="@string/settings"
+            android:parentActivityName=".activity.TopicsListActivity"/>
     </application>
 
 </manifest>
