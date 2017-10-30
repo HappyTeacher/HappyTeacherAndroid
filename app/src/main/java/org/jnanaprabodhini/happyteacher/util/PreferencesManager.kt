@@ -2,6 +2,7 @@ package org.jnanaprabodhini.happyteacher.util
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import android.support.v4.os.ConfigurationCompat
 import org.jnanaprabodhini.happyteacher.R
 
@@ -10,7 +11,7 @@ import org.jnanaprabodhini.happyteacher.R
  *  It is used for storing preferences data around the app.
  */
 class PreferencesManager(val context: Context) {
-    private val preferences: SharedPreferences = context.getSharedPreferences(context.getString(R.string.prefs_key_default_prefs), Context.MODE_PRIVATE)
+    private val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     fun setCurrentLanguageCode(code: String) {
         val languageCodeKey = context.getString(R.string.prefs_key_current_language_code)
