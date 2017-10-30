@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.preference.PreferenceFragment
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.util.Log
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.places.AutocompleteFilter
@@ -14,6 +15,7 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.google.firebase.auth.UserProfileChangeRequest
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
+import org.jnanaprabodhini.happyteacher.extension.showToast
 import org.jnanaprabodhini.happyteacher.preference.EditTextValueDisplayPreference
 import org.jnanaprabodhini.happyteacher.prefs
 
@@ -100,9 +102,9 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
                     .build(this)
             startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE)
         } catch (e: GooglePlayServicesRepairableException) {
-            // TODO: Handle the error.
+            GoogleApiAvailability.getInstance().getErrorDialog(this, e.connectionStatusCode, 0)
         } catch (e: GooglePlayServicesNotAvailableException) {
-            // TODO: Handle the error.
+            showToast(getString(R.string.you_must_have_google_play_service_to_do_this))
         }
     }
 

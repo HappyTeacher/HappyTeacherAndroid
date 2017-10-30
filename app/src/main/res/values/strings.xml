@@ -56,6 +56,7 @@
     <string name="sign_in_failed_network_error">Sign in failed due to network error</string>
     <string name="sign_in_failed">Sign in failed. Try again later</string>
     <string name="settings">Settings</string>
+    <string name="you_must_have_google_play_service_to_do_this">You must have Google Play Services to do this.</string>
 
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>
