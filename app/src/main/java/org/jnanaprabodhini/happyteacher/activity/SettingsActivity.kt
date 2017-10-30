@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceFragment
 import android.support.v7.preference.PreferenceFragmentCompat
+import android.util.Log
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.places.AutocompleteFilter
@@ -13,6 +14,7 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.google.firebase.auth.UserProfileChangeRequest
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
+import org.jnanaprabodhini.happyteacher.preference.EditTextValueDisplayPreference
 import org.jnanaprabodhini.happyteacher.prefs
 
 
@@ -73,7 +75,17 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
         // todo: save to firestore
     }
 
+    /**
+     * Location is changed from onActivityResult when the Google Places API
+     *  returns a value. We must explicitly set the Preference's text after
+     *  a place is chosen.
+     */
     private fun onLocationChange(newLocation: String?) {
+        // Persist value and refresh the UI:
+        val locationPref = settingsFragment.findPreference(getString(R.string.prefs_key_user_location)) as EditTextValueDisplayPreference
+        locationPref.text = newLocation
+        locationPref.callChangeListener(newLocation)
+
         // todo: save to Firestore
     }
 
@@ -99,7 +111,7 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
             when (resultCode) {
                 Activity.RESULT_OK -> {
                     val place = PlaceAutocomplete.getPlace(this, data)
-                    prefs.setUserLocation(place.name as String)
+                    onLocationChange(place.name as String)
                 }
                 PlaceAutocomplete.RESULT_ERROR -> {
                     val status = PlaceAutocomplete.getStatus(this, data)

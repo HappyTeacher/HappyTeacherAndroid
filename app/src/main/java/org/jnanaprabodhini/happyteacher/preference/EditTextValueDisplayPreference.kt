@@ -4,7 +4,9 @@ import android.content.Context
 import android.support.v7.preference.EditTextPreference
 import android.util.AttributeSet
 import android.content.res.TypedArray
+import android.util.Log
 import org.jnanaprabodhini.happyteacher.R
+import org.jnanaprabodhini.happyteacher.prefs
 
 
 /**
@@ -24,12 +26,11 @@ open class EditTextValueDisplayPreference(context: Context, attrs: AttributeSet)
         } finally {
             attributes.recycle()
         }
-    }
 
-    override fun persistString(value: String?): Boolean {
-        val persisted = super.persistString(value)
-        this.notifyChanged()
-        return persisted
+        setOnPreferenceChangeListener { _, _ ->
+            this.notifyChanged()
+            true
+        }
     }
 
     override fun getSummary(): CharSequence {
