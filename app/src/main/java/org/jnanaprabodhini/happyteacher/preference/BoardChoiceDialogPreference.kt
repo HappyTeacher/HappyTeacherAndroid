@@ -6,7 +6,9 @@ import android.util.AttributeSet
 import org.jnanaprabodhini.happyteacher.dialog.BoardChoiceDialog
 
 /**
- * Created by grahamearley on 10/30/17.
+ * A simple Preference that launches the Dialog for choosing boards.
+ *  This dialog already handles storing its value in SharedPreferences,
+ *  so this Preference doesn't deal with setting or getting values.
  */
 class BoardChoiceDialogPreference(context: Context, attrs: AttributeSet): DialogPreference(context, attrs) {
     override fun onClick() {
