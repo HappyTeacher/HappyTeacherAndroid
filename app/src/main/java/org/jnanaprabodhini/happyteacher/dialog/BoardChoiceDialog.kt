@@ -1,6 +1,9 @@
 package org.jnanaprabodhini.happyteacher.dialog
 
 import android.content.Context
+import android.database.DataSetObservable
+import android.database.DataSetObserver
+import android.util.Log
 import android.view.View
 import android.widget.CheckedTextView
 import android.widget.ListView
@@ -27,10 +30,21 @@ class BoardChoiceDialog(context: Context): SettingsChoiceDialog(context, R.strin
 
         val emptyDataObserver = object: FirebaseDataObserver {}
 
+        var checkedIndex = 0
         val boardChoiceAdapter = object: FirestoreObserverListAdapter<Board>(boardQuery, Board::class.java, R.layout.dialog_option_singlechoice, emptyDataObserver, context) {
-            override fun populateView(view: View, model: Board) {
+            override fun populateView(view: View, model: Board, position: Int) {
                 (view as CheckedTextView).text = model.name
+                val key = getItemKey(position)
+                if (key == prefs.getBoardKey()) {
+                    checkedIndex = position
+                }
             }
+        }
+
+        // Hacky way of setting an item to be checked.
+        //  Calling `setItemChecked` in `populateView` doesn't work :(
+        optionsListView.addOnLayoutChangeListener { view, _, _, _, _, _, _, _, _ ->
+            optionsListView.setItemChecked(checkedIndex, true)
         }
 
         optionsListView.setOnItemClickListener { _, _, position, _ ->

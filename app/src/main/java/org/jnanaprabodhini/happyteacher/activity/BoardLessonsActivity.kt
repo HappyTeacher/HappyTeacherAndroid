@@ -132,7 +132,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
         }
 
         val adapter = object: FirestoreObserverListAdapter<Subject>(subjectQuery, Subject::class.java, R.layout.spinner_item, subjectDataObserver, this) {
-            override fun populateView(view: View, model: Subject) {
+            override fun populateView(view: View, model: Subject, position: Int) {
                 (view as TextView).text = model.name
             }
         }
