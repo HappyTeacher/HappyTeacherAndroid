@@ -32,7 +32,7 @@ class BoardChoiceDialog(val activity: HappyTeacherActivity): SettingsChoiceDialo
         optionsListView.setOnItemClickListener { _, _, position, _ ->
             val selectedKey = boardChoiceAdapter.getItemKey(position)
             optionsListView.setItemChecked(position, true)
-            prefs.setBoardKey(selectedKey)
+            prefs.setBoardId(selectedKey)
             boardChoiceAdapter.stopListening()
             dismiss()
         }

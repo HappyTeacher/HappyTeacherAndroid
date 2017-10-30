@@ -5,17 +5,17 @@
         android:summary="This information is required for contributing to Happy Teacher."
         android:key="pref_key_storage_settings">
         <EditTextPreference
-            android:key="pref_key_user_name"
+            android:key="@string/prefs_key_user_name"
             android:summary="Your first and last name"
             android:title="Name"
             android:defaultValue="" />
         <EditTextPreference
-            android:key="pref_key_user_institution"
+            android:key="@string/prefs_key_user_institution"
             android:summary="The name of the institution you are affiliated with"
             android:title="Institution name"
             android:defaultValue="" />
         <EditTextPreference
-            android:key="pref_key_user_location"
+            android:key="@string/prefs_key_user_location"
             android:summary="The location of your home institution"
             android:title="Location"
             android:defaultValue="" />
