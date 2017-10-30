@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.places.AutocompleteFilter
@@ -34,6 +33,25 @@ class ProfileActivity : HappyTeacherActivity() {
         setupPlacesAutocomplete()
 
         setupSaveButton()
+        fillInFieldsFromFirestore()
+    }
+
+    private fun fillInFieldsFromFirestore() {
+        // Store this info in Preferences, actually. Faster access.
+        //  Route all Firestore saves through Prefs first!
+        val userRef = getUserDocumentRef()
+        userRef?.get()?.addOnSuccessListener { documentSnapshot ->
+            val location = documentSnapshot?.data?.get("location")
+            val institution = documentSnapshot?.data?.get("institution")
+
+            if (location is String) {
+                locationInput.setText(location)
+            }
+
+            if (institution is String) {
+                institutionInput.setText(institution)
+            }
+        }
     }
 
     private fun setupNameInput() {
