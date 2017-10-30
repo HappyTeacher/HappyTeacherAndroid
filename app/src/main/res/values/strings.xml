@@ -59,6 +59,14 @@
     <string name="you_must_have_google_play_service_to_do_this">You must have Google Play Services to do this.</string>
     <string name="there_was_an_issue_choosing_a_location">There was an issue choosing a location</string>
     <string name="sign_out">Sign out</string>
+    <string name="prefs_key_user_settings">USER_SETTINGS</string>
+    <string name="contributor_profile">Contributor Profile</string>
+    <string name="your_first_and_last_name">Your first and last name</string>
+    <string name="name">Name</string>
+    <string name="the_name_of_the_institution_you_are_affiliated_with">The name of the institution you are affiliated with</string>
+    <string name="institution_name">Institution name</string>
+    <string name="the_location_of_your_institution">The location of your institution</string>
+    <string name="location">Location</string>
 
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>

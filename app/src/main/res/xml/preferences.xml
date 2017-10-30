@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-        android:title="Contributor Profile"
-        android:key="pref_key_storage_settings"
+        android:title="@string/contributor_profile"
+        android:key="@string/prefs_key_user_settings"
         xmlns:pref="http://schemas.android.com/apk/res/org.jnanaprabodhini.happyteacher">
         <org.jnanaprabodhini.happyteacher.preference.EditTextValueDisplayPreference
             android:key="@string/prefs_key_user_name"
-            android:summary="Your first and last name"
-            android:title="Name"
+            android:summary="@string/your_first_and_last_name"
+            android:title="@string/name"
             android:defaultValue="" />
         <org.jnanaprabodhini.happyteacher.preference.EditTextValueDisplayPreference
             android:key="@string/prefs_key_user_institution"
-            android:summary="The name of the institution you are affiliated with"
-            android:title="Institution name"
+            android:summary="@string/the_name_of_the_institution_you_are_affiliated_with"
+            android:title="@string/institution_name"
             android:defaultValue="" />
         <org.jnanaprabodhini.happyteacher.preference.EditTextValueDisplayPreference
             android:key="@string/prefs_key_user_location"
-            android:summary="The location of your home institution"
-            android:title="Location"
+            android:summary="@string/the_location_of_your_institution"
+            android:title="@string/location"
             android:defaultValue=""
             pref:showDialogOnClick="false"/>
     </PreferenceCategory>
