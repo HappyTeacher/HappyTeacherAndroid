@@ -69,6 +69,8 @@
     <string name="general_settings">General Settings</string>
     <string name="tap_to_select_which_education_board_you_prefer">Tap to select which education board you prefer</string>
     <string name="preferred_education_board">Preferred education board</string>
+    <string name="there_are_no_lessons_available_for_this_board">There are no lessons available for this board.</string>
+    <string name="there_was_an_error_loading_lessons_for_this_board">There was an error loading lessons for this board.</string>
 
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>

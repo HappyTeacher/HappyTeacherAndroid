@@ -145,6 +145,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
                 topicsProgressBar.setVisibilityGone()
                 spinner.setVisible()
             }
+            // todo: add on empty, error, etc.
         }
 
         val adapter = object: FirestoreObserverListAdapter<Subject>(subjectQuery, Subject::class.java, spinnerLayout, spinnerDataObserver, this) {

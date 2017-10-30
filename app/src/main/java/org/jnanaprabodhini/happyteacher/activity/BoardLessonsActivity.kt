@@ -36,6 +36,8 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
         const val SUBJECT_SPINNER_SELECTION = "SUBJECT_SPINNER_SELECTION"
     }
 
+    private var boardQueried: String? = null
+
     private var levelSpinnerSelectionIndex = 0
     private var subjectSpinnerSelectionIndex = 0
 
@@ -55,6 +57,15 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
             //  to see syllabus lesson plans from.
             showBoardChooser()
         } else {
+            initializeUi()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (boardQueried != prefs.getBoardKey()) {
+            // If the board has changed, re-load data:
+            clearAdapters()
             initializeUi()
         }
     }
@@ -93,6 +104,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
     private fun initializeUi() {
         boardLessonsProgressBar.setVisible()
         setupSubjectSpinner()
+        boardQueried = prefs.getBoardKey()
     }
 
     private fun setupSubjectSpinner() {
@@ -102,6 +114,20 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
             override fun onDataNonEmpty() {
                 setSpinnersVisible()
                 boardLessonsProgressBar.setVisibilityGone()
+            }
+
+            override fun onDataEmpty() {
+                syllabusLessonsRecyclerView.setVisibilityGone()
+                boardLessonsProgressBar.setVisibilityGone()
+                statusTextView.setVisible()
+                statusTextView.setText(R.string.there_are_no_lessons_available_for_this_board)
+            }
+
+            override fun onError(e: FirebaseFirestoreException?) {
+                syllabusLessonsRecyclerView.setVisibilityGone()
+                boardLessonsProgressBar.setVisibilityGone()
+                statusTextView.setVisible()
+                statusTextView.setText(R.string.there_was_an_error_loading_lessons_for_this_board)
             }
         }
 
