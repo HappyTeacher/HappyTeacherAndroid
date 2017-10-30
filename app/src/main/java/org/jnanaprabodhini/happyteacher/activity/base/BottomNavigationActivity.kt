@@ -76,7 +76,7 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
         if (user == null) {
             userMenuItem?.setTitle(R.string.sign_in)
         } else {
-            userMenuItem?.setTitle(R.string.profile)
+            userMenuItem?.setTitle(R.string.sign_out)
         }
 
         return super.onPrepareOptionsMenu(menu)
@@ -85,19 +85,20 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_change_language -> showLanguageChangeDialog()
-            R.id.menu_user -> if (auth.currentUser == null) launchSignIn() else launchProfile()
+            R.id.menu_user -> if (auth.currentUser == null) launchSignIn() else signOut()
+            R.id.menu_settings -> launchSettings()
         }
         return true
+    }
+
+    private fun launchSettings() {
+        val profileIntent = Intent(this, SettingsActivity::class.java)
+        startActivity(profileIntent)
     }
 
     private fun showLanguageChangeDialog() {
         val dialog = LanguageChoiceDialog(this)
         dialog.show()
-    }
-
-    private fun launchProfile() {
-        val profileIntent = Intent(this, SettingsActivity::class.java)
-        startActivity(profileIntent)
     }
 
     private fun launchSignIn() {
@@ -111,6 +112,10 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
                                         AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
                         .build(),
                 AUTH_REQUEST_CODE)
+    }
+
+    private fun signOut() {
+        auth.signOut()
     }
 
     fun changeLocaleAndRefresh(locale: String) {

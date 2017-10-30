@@ -14,5 +14,10 @@
         app:showAsAction="withText"
         android:title="@string/sign_in" />
 
+    <item
+        android:id="@+id/menu_settings"
+        app:showAsAction="never"
+        android:title="@string/settings" />
+
 
 </menu>
