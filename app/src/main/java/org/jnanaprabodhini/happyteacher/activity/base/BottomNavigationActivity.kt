@@ -14,10 +14,8 @@ import org.jnanaprabodhini.happyteacher.extension.showToast
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import android.app.Activity
-import android.util.Log
 import com.firebase.ui.auth.IdpResponse
 import org.jnanaprabodhini.happyteacher.BuildConfig
-import org.jnanaprabodhini.happyteacher.activity.ProfileActivity
 import org.jnanaprabodhini.happyteacher.activity.SettingsActivity
 import org.jnanaprabodhini.happyteacher.model.User
 
