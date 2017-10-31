@@ -133,7 +133,7 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
 
             // Successfully signed in
             if (resultCode == Activity.RESULT_OK) {
-                showToast("Sign in successful. Nice.") // todo: remove.
+                showToast(getString(R.string.you_are_signed_in))
                 return
             } else {
                 // Sign in failed
