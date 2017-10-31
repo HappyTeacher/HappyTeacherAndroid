@@ -28,9 +28,9 @@
     <string name="order_number" translatable="false">orderNumber</string>
     <string name="topic" translatable="false">topic</string>
     <string name="cards" translatable="false">cards</string>
-    <string name="localized">localized</string>
-    <string name="users">users</string>
-    <string name="display_name">displayName</string>
-    <string name="institution_key">institution</string>
-    <string name="location_key">location</string>
+    <string name="localized" translatable="false">localized</string>
+    <string name="users" translatable="false">users</string>
+    <string name="display_name" translatable="false">displayName</string>
+    <string name="institution_key" translatable="false">institution</string>
+    <string name="location_key" translatable="false">location</string>
 </resources>
