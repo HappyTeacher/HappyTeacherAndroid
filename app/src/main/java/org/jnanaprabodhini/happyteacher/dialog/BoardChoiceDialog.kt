@@ -1,15 +1,11 @@
 package org.jnanaprabodhini.happyteacher.dialog
 
 import android.content.Context
-import android.database.DataSetObservable
-import android.database.DataSetObserver
-import android.util.Log
 import android.view.View
 import android.widget.CheckedTextView
 import android.widget.ListView
 import com.google.firebase.firestore.FirebaseFirestore
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.firestore.FirestoreObserverListAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.model.Board
@@ -19,7 +15,7 @@ import org.jnanaprabodhini.happyteacher.prefs
  * A dialog for asking the user what Board/Syllabus they
  *  want to set as default.
  */
-class BoardChoiceDialog(context: Context): SettingsChoiceDialog(context, R.string.choose_your_syllabus, R.string.you_can_change_this_in_your_settings_later) {
+class BoardChoiceDialog(context: Context): SettingsChoiceDialog(context, R.string.choose_your_syllabus, R.string.you_can_change_this_setting_later) {
 
     override fun configureOptionsListView(optionsListView: ListView) {
         optionsListView.choiceMode = ListView.CHOICE_MODE_SINGLE

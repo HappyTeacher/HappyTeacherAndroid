@@ -9,7 +9,7 @@ import org.jnanaprabodhini.happyteacher.prefs
 /**
  * A Dialog for choosing language from a BottomNavigationActivity.
  */
-class LanguageChoiceDialog(val activity: BottomNavigationActivity): SettingsChoiceDialog(activity, R.string.choose_your_language, R.string.you_can_change_this_in_your_settings_later) {
+class LanguageChoiceDialog(val activity: BottomNavigationActivity): SettingsChoiceDialog(activity, R.string.choose_your_language, R.string.you_can_change_this_setting_later) {
 
     override fun configureOptionsListView(optionsListView: ListView) {
 
