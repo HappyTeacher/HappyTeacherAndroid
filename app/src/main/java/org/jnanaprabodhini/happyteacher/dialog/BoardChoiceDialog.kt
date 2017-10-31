@@ -9,7 +9,6 @@ import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.adapter.firestore.FirestoreObserverListAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.model.Board
-import org.jnanaprabodhini.happyteacher.prefs
 
 /**
  * A dialog for asking the user what Board/Syllabus they

@@ -13,17 +13,7 @@ import org.jnanaprabodhini.happyteacher.util.LocaleManager
 import org.jnanaprabodhini.happyteacher.util.PreferencesManager
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig
 
-
-val prefs: PreferencesManager by lazy {
-    // Package-wide access to PreferencesManager.
-    HappyTeacherApplication.preferences!!
-}
-
 class HappyTeacherApplication: Application() {
-
-    companion object {
-        var preferences: PreferencesManager? = null
-    }
 
     override fun onCreate() {
         super.onCreate()
@@ -45,11 +35,7 @@ class HappyTeacherApplication: Application() {
     }
 
     override fun attachBaseContext(base: Context) {
-        // Initialize preferences (package-wide)
-        preferences = PreferencesManager(base)
-
         val localeContext = base.withCurrentLocale()
-
         super.attachBaseContext(localeContext)
     }
 

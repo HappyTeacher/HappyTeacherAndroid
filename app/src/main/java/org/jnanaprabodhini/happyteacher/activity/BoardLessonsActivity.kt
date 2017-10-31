@@ -24,8 +24,6 @@ import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.Subject
 import org.jnanaprabodhini.happyteacher.model.SyllabusLesson
-import org.jnanaprabodhini.happyteacher.prefs
-
 
 class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
@@ -139,7 +137,12 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
         adapter.startListening()
 
         // The level spinner depends on what subject is selected:
-        subjectSpinner.onItemSelected { pos -> setupLevelSpinnerForSubject(adapter.getItem(pos).getLevelsArrayForCurrentBoard(), adapter.getItemKey(pos)) }
+        subjectSpinner.onItemSelected { pos ->
+            val subject = adapter.getItem(pos)
+            val currentBoard = prefs.getBoardKey()
+            val levelsForBoard = subject.boardStandards[currentBoard] ?: ArrayList()
+            setupLevelSpinnerForSubject(levelsForBoard, adapter.getItemKey(pos))
+        }
 
         subjectSpinner.adapter = adapter
         subjectSpinner.selectIndexWhenPopulated(subjectSpinnerSelectionIndex)

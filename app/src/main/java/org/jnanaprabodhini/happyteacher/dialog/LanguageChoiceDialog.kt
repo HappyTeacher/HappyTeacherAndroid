@@ -4,7 +4,7 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.BottomNavigationActivity
-import org.jnanaprabodhini.happyteacher.prefs
+import org.jnanaprabodhini.happyteacher.util.PreferencesManager
 
 /**
  * A Dialog for choosing language from a BottomNavigationActivity.

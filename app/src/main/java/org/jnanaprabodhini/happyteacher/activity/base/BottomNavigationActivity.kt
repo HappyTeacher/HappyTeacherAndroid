@@ -9,7 +9,6 @@ import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.BoardLessonsActivity
 import org.jnanaprabodhini.happyteacher.activity.TopicsListActivity
 import org.jnanaprabodhini.happyteacher.dialog.LanguageChoiceDialog
-import org.jnanaprabodhini.happyteacher.prefs
 import org.jnanaprabodhini.happyteacher.extension.showToast
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
@@ -115,7 +114,7 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
 
     fun changeLocaleAndRefresh(locale: String) {
         if (locale != prefs.getCurrentLanguageCode()) {
-            LocaleManager.changeLocale(locale)
+            LocaleManager.changeLocale(locale, this)
             refreshActivity()
         }
     }

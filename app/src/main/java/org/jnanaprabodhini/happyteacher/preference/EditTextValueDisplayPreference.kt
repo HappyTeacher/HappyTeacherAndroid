@@ -6,7 +6,6 @@ import android.util.AttributeSet
 import android.content.res.TypedArray
 import android.util.Log
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.prefs
 
 
 /**

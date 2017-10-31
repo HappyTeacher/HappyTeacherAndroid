@@ -10,7 +10,12 @@ import org.jnanaprabodhini.happyteacher.R
  * PreferencesManager is a wrapper for the SharedPreferences API.
  *  It is used for storing preferences data around the app.
  */
-class PreferencesManager(val context: Context) {
+class PreferencesManager private constructor(val context: Context) {
+
+    companion object {
+        fun getInstance(context: Context): PreferencesManager = PreferencesManager(context)
+    }
+
     private val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     fun setCurrentLanguageCode(code: String) {

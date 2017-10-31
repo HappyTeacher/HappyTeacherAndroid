@@ -4,7 +4,7 @@ import android.content.Context
 import android.support.v7.preference.DialogPreference
 import android.util.AttributeSet
 import org.jnanaprabodhini.happyteacher.dialog.BoardChoiceDialog
-import org.jnanaprabodhini.happyteacher.prefs
+import org.jnanaprabodhini.happyteacher.util.PreferencesManager
 
 /**
  * A simple Preference that launches the Dialog for choosing boards.
@@ -23,7 +23,7 @@ class BoardChoiceDialogPreference(context: Context, attrs: AttributeSet): Dialog
     }
 
     override fun getSummary(): CharSequence {
-        val boardName = prefs.getBoardName()
+        val boardName = PreferencesManager.getInstance(context).getBoardName()
 
         return if (boardName.isEmpty()) {
             super.getSummary()

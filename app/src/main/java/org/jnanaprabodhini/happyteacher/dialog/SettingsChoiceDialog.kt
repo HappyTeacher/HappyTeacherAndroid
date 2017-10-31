@@ -10,12 +10,17 @@ import kotlinx.android.synthetic.main.dialog_settings_choice.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
+import org.jnanaprabodhini.happyteacher.util.PreferencesManager
 
 /**
  * A dialog that presents a list of options to the user
  *  for changing settings.
  */
 abstract class SettingsChoiceDialog(context: Context, @StringRes val dialogHeaderTextId: Int, @StringRes val dialogSubheaderTextId: Int): Dialog(context) {
+
+    val prefs: PreferencesManager by lazy {
+        PreferencesManager.getInstance(context)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setContentView(R.layout.dialog_settings_choice)

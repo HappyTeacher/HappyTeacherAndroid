@@ -3,7 +3,6 @@ package org.jnanaprabodhini.happyteacher.util
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
-import org.jnanaprabodhini.happyteacher.prefs
 import java.util.*
 
 /**
@@ -15,7 +14,8 @@ import java.util.*
  */
 object LocaleManager {
 
-    fun changeLocale(newLocale: String) {
+    fun changeLocale(newLocale: String, context: Context) {
+        val prefs = PreferencesManager.getInstance(context)
         prefs.setCurrentLanguageCode(newLocale)
 
         // Make user choose a new board (since current
@@ -24,6 +24,7 @@ object LocaleManager {
     }
 
     fun setLocale(context: Context): Context {
+        val prefs = PreferencesManager.getInstance(context)
         val language = prefs.getCurrentLanguageCode()
 
         val locale = Locale(language)

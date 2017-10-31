@@ -16,8 +16,7 @@ import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.extension.showToast
 import org.jnanaprabodhini.happyteacher.preference.EditTextValueDisplayPreference
-import org.jnanaprabodhini.happyteacher.prefs
-
+import org.jnanaprabodhini.happyteacher.util.PreferencesManager
 
 class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -26,6 +25,11 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
     private lateinit var settingsFragment: SettingsFragment
 
     class SettingsFragment: PreferenceFragmentCompat() {
+
+        val prefs: PreferencesManager by lazy {
+            PreferencesManager.getInstance(activity)
+        }
+
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.preferences)
 

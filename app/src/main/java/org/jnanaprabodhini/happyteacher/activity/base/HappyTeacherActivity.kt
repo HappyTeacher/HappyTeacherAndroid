@@ -12,7 +12,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.withCurrentLocale
-import org.jnanaprabodhini.happyteacher.prefs
+import org.jnanaprabodhini.happyteacher.util.PreferencesManager
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 /**
@@ -36,6 +36,10 @@ abstract class HappyTeacherActivity: AppCompatActivity() {
 
     val auth: FirebaseAuth by lazy {
         FirebaseAuth.getInstance()
+    }
+
+    val prefs: PreferencesManager by lazy {
+        PreferencesManager.getInstance(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
