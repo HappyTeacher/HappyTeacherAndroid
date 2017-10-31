@@ -22,7 +22,7 @@ class ClassroomResourceViewerActivity : CardListContentViewerActivity() {
 
     override fun getCardRecyclerAdapter(cardRef: CollectionReference, attachmentDestinationDirectory: File): CardListContentRecyclerAdapter {
         val options = FirestoreRecyclerOptions.Builder<ContentCard>()
-                .setQuery(cardRef, ContentCard::class.java).build()
+                .setQuery(cardRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
         return ClassroomResourcesRecyclerAdapter(options, attachmentDestinationDirectory, topicName, header.topic, header.subtopic, this, this)
     }
 }
