@@ -43,7 +43,7 @@ class BoardChoiceDialog(context: Context): SettingsChoiceDialog(context, R.strin
 
         // Hacky way of setting an item to be checked.
         //  Calling `setItemChecked` in `populateView` doesn't work :(
-        optionsListView.addOnLayoutChangeListener { view, _, _, _, _, _, _, _, _ ->
+        optionsListView.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
             optionsListView.setItemChecked(checkedIndex, true)
         }
 
