@@ -30,4 +30,7 @@
     <string name="cards" translatable="false">cards</string>
     <string name="localized">localized</string>
     <string name="users">users</string>
+    <string name="display_name">displayName</string>
+    <string name="institution_key">institution</string>
+    <string name="location_key">location</string>
 </resources>

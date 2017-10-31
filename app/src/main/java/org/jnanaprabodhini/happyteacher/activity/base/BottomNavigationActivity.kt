@@ -14,10 +14,12 @@ import org.jnanaprabodhini.happyteacher.extension.showToast
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import android.app.Activity
+import android.util.Log
 import com.firebase.ui.auth.IdpResponse
 import org.jnanaprabodhini.happyteacher.BuildConfig
 import org.jnanaprabodhini.happyteacher.activity.ProfileActivity
 import org.jnanaprabodhini.happyteacher.activity.SettingsActivity
+import org.jnanaprabodhini.happyteacher.model.User
 
 
 /**
@@ -129,10 +131,10 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AUTH_REQUEST_CODE) {
             val response = IdpResponse.fromResultIntent(data)
-            // TODO: save values from new user
 
             // Successfully signed in
             if (resultCode == Activity.RESULT_OK) {
+                persistUserInfo()
                 showToast(getString(R.string.you_are_signed_in))
                 return
             } else {
@@ -154,6 +156,16 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
                     return
                 }
             }
+        }
+    }
+
+    private fun persistUserInfo() {
+        getUserReference()?.get()?.addOnSuccessListener { snapshot ->
+            val userModel = snapshot.toObject(User::class.java)
+
+            prefs.setUserLocation(userModel.location)
+            prefs.setUserInstitution(userModel.institution)
+            prefs.setUserName(userModel.displayName)
         }
     }
 

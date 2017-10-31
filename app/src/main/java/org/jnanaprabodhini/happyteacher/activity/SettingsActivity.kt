@@ -44,6 +44,33 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
                 preferenceScreen.removePreference(userPreferences)
             }
         }
+
+        /**
+         * User data is updated in preferences after sign-in. If the user enters Settings before
+         *  this completes, the Settings page needs to refresh if the Preference values change (from
+         *  outside the Settings page).
+         *
+         *  This function checks that the summary UI displays the correct values, and if it doesn't,
+         *   it refreshes the UI.
+         */
+        fun ensureUserInfoDisplayIsCurrent() {
+            val namePref = findPreference(getString(R.string.prefs_key_user_name))
+            val institutionNamePref = findPreference(getString(R.string.prefs_key_user_institution))
+            val locationPref = findPreference(getString(R.string.prefs_key_user_location))
+
+            val name = prefs.getUserName()
+            val institution = prefs.getUserInstitution()
+            val location = prefs.getUserLocation()
+
+            if (namePref.summary != name || institutionNamePref.summary != institution || locationPref.summary != location) {
+                refreshPreferenceList()
+            }
+        }
+
+        private fun refreshPreferenceList() {
+            preferenceScreen = null
+            addPreferencesFromResource(R.xml.preferences)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,17 +100,18 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
             getString(R.string.prefs_key_user_institution) -> onInstitutionChange(preferences?.getString(key, ""))
             getString(R.string.prefs_key_user_location) -> onLocationChange(preferences?.getString(key, ""))
         }
+        settingsFragment.ensureUserInfoDisplayIsCurrent()
     }
 
     private fun onNameChange(newName: String?) {
         val nameChangeRequest = UserProfileChangeRequest.Builder().setDisplayName(newName).build()
         auth.currentUser?.updateProfile(nameChangeRequest)
 
-        // TODO: save to firestore
+        getUserReference()?.update(getString(R.string.display_name), newName)
     }
 
     private fun onInstitutionChange(newInstitution: String?) {
-        // todo: save to firestore
+        getUserReference()?.update(getString(R.string.institution_key), newInstitution)
     }
 
     /**
@@ -97,7 +125,7 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
         locationPref.text = newLocation
         locationPref.callChangeListener(newLocation)
 
-        // todo: save to Firestore
+        getUserReference()?.update(getString(R.string.location_key), newLocation)
     }
 
     private fun launchPlacesAutocompleteOverlay() {

@@ -75,4 +75,13 @@ abstract class HappyTeacherActivity: AppCompatActivity() {
             // Then we will show the title as it is set in top-level resources.
         }
     }
+
+    fun getUserReference(): DocumentReference? {
+        auth.currentUser?.let { user ->
+            val id = user.uid
+            return firestoreUsersCollection.document(id)
+        }
+
+        return null
+    }
 }
