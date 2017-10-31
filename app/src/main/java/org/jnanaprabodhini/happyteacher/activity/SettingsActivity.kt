@@ -4,14 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.preference.PreferenceCategory
-import android.preference.PreferenceFragment
 import android.support.v7.preference.PreferenceFragmentCompat
-import android.util.Log
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
-import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.places.AutocompleteFilter
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.google.firebase.auth.FirebaseAuth
@@ -38,11 +34,23 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
 
             locationPref.setOnPreferenceClickListener { parentActivity.launchPlacesAutocompleteOverlay(); true }
 
-            // Remove user info prefs if user is not signed in
-            if (FirebaseAuth.getInstance().currentUser == null) {
-                val userPreferences = findPreference(getString(R.string.prefs_key_user_settings))
-                preferenceScreen.removePreference(userPreferences)
+            // Remove user info prefs if user is not signed in. If signed in, setup sign out button
+            val auth = FirebaseAuth.getInstance()
+            if (auth.currentUser == null) {
+                removeUserPreferences()
+            } else {
+                val signOutPref = findPreference(getString(R.string.prefs_key_user_sign_out))
+                signOutPref.setOnPreferenceClickListener {
+                    auth.signOut()
+                    removeUserPreferences()
+                    true
+                }
             }
+        }
+
+        private fun removeUserPreferences() {
+            val userPreferences = findPreference(getString(R.string.prefs_key_user_settings))
+            preferenceScreen.removePreference(userPreferences)
         }
 
         /**

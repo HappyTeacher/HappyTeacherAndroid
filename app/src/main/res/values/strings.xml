@@ -72,6 +72,7 @@
     <string name="there_are_no_lessons_available_for_this_board">There are no lessons available for this board.</string>
     <string name="there_was_an_error_loading_lessons_for_this_board">There was an error loading lessons for this board.</string>
     <string name="you_are_signed_in">You are signed in</string>
+    <string name="prefs_key_user_sign_out">USER_SIGN_OUT</string>
 
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>
