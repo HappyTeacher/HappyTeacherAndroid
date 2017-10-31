@@ -81,7 +81,7 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
 
         val classroomResourceQuery = activity.firestoreLocalized.collection(activity.getString(R.string.classroom_resources_key))
                 .whereEqualTo(activity.getString(R.string.subtopic), subtopicId)
-                .orderBy(activity.getString(R.string.name))
+                .orderBy(activity.getString(R.string.name_key))
 
         val adapterOptions = FirestoreRecyclerOptions.Builder<CardListContentHeader>()
                 .setQuery(classroomResourceQuery, CardListContentHeader::class.java)

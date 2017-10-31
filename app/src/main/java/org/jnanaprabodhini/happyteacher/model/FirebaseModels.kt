@@ -66,3 +66,9 @@ data class AttachmentMetadata(val contentType: String = "",
     fun isEmpty() = contentType.isEmpty() && size == 0L && timeCreated == 0L
     fun isNotEmpty() = !isEmpty()
 }
+
+data class User(val displayName: String = "",
+                val email: String = "",
+                val phoneNumber: String = "",
+                val location: String = "",
+                val institution: String = "")

@@ -9,6 +9,10 @@ import org.jnanaprabodhini.happyteacher.util.LocaleManager
  * Extension functions for Activities and Context.
  */
 
+fun Context.showToast(text: String, length: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(this, text, length).show()
+}
+
 fun Context.showToast(@StringRes stringId: Int, length: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, stringId, length).show()
 }

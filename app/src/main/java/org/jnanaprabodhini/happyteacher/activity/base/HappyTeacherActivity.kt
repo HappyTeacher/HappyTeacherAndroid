@@ -6,8 +6,11 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.withCurrentLocale
 import org.jnanaprabodhini.happyteacher.prefs
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
@@ -24,7 +27,15 @@ abstract class HappyTeacherActivity: AppCompatActivity() {
     }
 
     val firestoreLocalized: DocumentReference by lazy {
-        firestoreRoot.collection("localized").document(prefs.getCurrentLanguageCode())
+        firestoreRoot.collection(getString(R.string.localized)).document(prefs.getCurrentLanguageCode())
+    }
+
+    val firestoreUsersCollection: CollectionReference by lazy {
+        firestoreRoot.collection(getString(R.string.users))
+    }
+
+    val auth: FirebaseAuth by lazy {
+        FirebaseAuth.getInstance()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,5 +74,14 @@ abstract class HappyTeacherActivity: AppCompatActivity() {
         } catch (e: PackageManager.NameNotFoundException) {
             // Then we will show the title as it is set in top-level resources.
         }
+    }
+
+    fun getUserReference(): DocumentReference? {
+        auth.currentUser?.let { user ->
+            val id = user.uid
+            return firestoreUsersCollection.document(id)
+        }
+
+        return null
     }
 }

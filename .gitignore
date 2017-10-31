@@ -9,3 +9,4 @@
 .externalNativeBuild
 app/google-services.json
 app/src/main/java/org/jnanaprabodhini/happyteacher/SECRETS.kt
+app/src/main/res/values/secrets.xml

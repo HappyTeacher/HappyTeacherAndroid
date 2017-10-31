@@ -145,10 +145,11 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
                 topicsProgressBar.setVisibilityGone()
                 spinner.setVisible()
             }
+            // todo: add on empty, error, etc.
         }
 
         val adapter = object: FirestoreObserverListAdapter<Subject>(subjectQuery, Subject::class.java, spinnerLayout, spinnerDataObserver, this) {
-            override fun populateView(view: View, model: Subject) {
+            override fun populateView(view: View, model: Subject, position: Int) {
                 (view as TextView).text = model.name
             }
         }
@@ -276,6 +277,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
     override fun onError(e: FirebaseFirestoreException?) {
         topicsRecyclerView.setVisibilityGone()
+        topicsProgressBar.setVisibilityGone()
         statusTextView.setVisible()
         statusTextView.setText(R.string.there_was_an_error_loading_topics_for_this_subject)
     }
