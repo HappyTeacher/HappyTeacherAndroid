@@ -24,10 +24,24 @@ class PreferencesManager(val context: Context) {
         return preferences.getString(languageCodeKey, primaryLanguageCode)
     }
 
-    fun setBoardId(boardId: String) {
-        val boardPrefsKey = context.getString(R.string.prefs_key_board)
+    fun setBoard(boardName: String, boardId: String) {
+        setBoardName(boardName)
+        setBoardId(boardId)
+        setBoardChosen()
+    }
+
+    private fun setBoardName(boardName: String) {
+        val boardNamePrefsKey = context.getString(R.string.prefs_key_board_name)
+        preferences.edit().putString(boardNamePrefsKey, boardName).apply()
+    }
+
+    private fun setBoardId(boardId: String) {
+        val boardIdPrefsKey = context.getString(R.string.prefs_key_board_id)
+        preferences.edit().putString(boardIdPrefsKey, boardId).apply()
+    }
+
+    private fun setBoardChosen() {
         val hasChosenBoardPrefsKey = context.getString(R.string.prefs_key_has_chosen_board)
-        preferences.edit().putString(boardPrefsKey, boardId).apply()
         preferences.edit().putBoolean(hasChosenBoardPrefsKey, true).apply()
     }
 
@@ -37,7 +51,9 @@ class PreferencesManager(val context: Context) {
     }
 
     // TODO: what should default board be?
-    fun getBoardKey(): String = preferences.getString(context.getString(R.string.prefs_key_board), context.getString(R.string.maharashtra_state_board_key))
+    fun getBoardKey(): String = preferences.getString(context.getString(R.string.prefs_key_board_id), context.getString(R.string.maharashtra_state_board_key))
+
+    fun getBoardName(): String = preferences.getString(context.getString(R.string.prefs_key_board_name), "")
 
     fun hasChosenBoard(): Boolean = preferences.getBoolean(context.getString(R.string.prefs_key_has_chosen_board), false)
 

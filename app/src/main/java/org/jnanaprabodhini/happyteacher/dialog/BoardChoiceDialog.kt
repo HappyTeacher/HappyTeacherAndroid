@@ -48,9 +48,10 @@ class BoardChoiceDialog(context: Context): SettingsChoiceDialog(context, R.strin
         }
 
         optionsListView.setOnItemClickListener { _, _, position, _ ->
-            val selectedKey = boardChoiceAdapter.getItemKey(position)
+            val boardKey = boardChoiceAdapter.getItemKey(position)
+            val boardName = boardChoiceAdapter.getItem(position).name
             optionsListView.setItemChecked(position, true)
-            prefs.setBoardId(selectedKey)
+            prefs.setBoard(boardName, boardKey)
             boardChoiceAdapter.stopListening()
             dismiss()
         }
