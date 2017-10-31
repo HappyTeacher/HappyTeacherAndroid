@@ -72,14 +72,9 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        val userMenuItem = menu?.findItem(R.id.menu_user)
-        val user = auth.currentUser
-
-        if (user == null) {
-            userMenuItem?.setTitle(R.string.sign_in)
-        } else {
-            userMenuItem?.setTitle(R.string.sign_out)
-        }
+        val signInMenuItem = menu?.findItem(R.id.menu_sign_in)
+        val isUserSignedIn = auth.currentUser != null
+        signInMenuItem?.isVisible = !isUserSignedIn
 
         return super.onPrepareOptionsMenu(menu)
     }
@@ -87,7 +82,7 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_change_language -> showLanguageChangeDialog()
-            R.id.menu_user -> if (auth.currentUser == null) launchSignIn() else signOut()
+            R.id.menu_sign_in -> if (auth.currentUser == null) launchSignIn() else signOut()
             R.id.menu_settings -> launchSettings()
         }
         return true
