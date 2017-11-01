@@ -132,7 +132,6 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
                 // Sign in failed
                 if (response == null) {
                     // User pressed back button
-                    showToast(R.string.sign_in_canceled)
                     return
                 } else if (response.errorCode == ErrorCodes.NO_NETWORK) {
                     showToast(R.string.sign_in_failed_network_error)
