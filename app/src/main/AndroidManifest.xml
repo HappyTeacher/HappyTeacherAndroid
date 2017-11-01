@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.BoardLessonsActivity" />
+        <activity android:name=".activity.ContributeActivity" />
         <activity
             android:name=".activity.LessonViewerActivity"
             android:parentActivityName=".activity.TopicsListActivity" />
@@ -41,9 +42,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/places_api_key" />
 
-        <activity android:name=".activity.SettingsActivity"
+        <activity
+            android:name=".activity.SettingsActivity"
             android:label="@string/settings"
-            android:parentActivityName=".activity.TopicsListActivity"/>
+            android:parentActivityName=".activity.TopicsListActivity" />
     </application>
 
 </manifest>

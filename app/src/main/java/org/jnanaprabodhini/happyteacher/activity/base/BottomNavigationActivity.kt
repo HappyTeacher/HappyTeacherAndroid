@@ -16,6 +16,7 @@ import android.app.Activity
 import com.crashlytics.android.Crashlytics
 import com.firebase.ui.auth.IdpResponse
 import org.jnanaprabodhini.happyteacher.BuildConfig
+import org.jnanaprabodhini.happyteacher.activity.ContributeActivity
 import org.jnanaprabodhini.happyteacher.activity.SettingsActivity
 import org.jnanaprabodhini.happyteacher.model.User
 
@@ -50,7 +51,8 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_contribute -> {
-                // TODO
+                val contributeActivityIntent = Intent(this, ContributeActivity::class.java)
+                startBottomNavigationActivityWithFade(contributeActivityIntent)
                 return@OnNavigationItemSelectedListener true
             }
         }
