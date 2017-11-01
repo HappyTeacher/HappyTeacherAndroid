@@ -41,7 +41,7 @@ class ContributeActivity : BottomNavigationActivity(), FirebaseAuth.AuthStateLis
         when {
             user == null -> showUiForSignedOutUser()
             user.hasCompleteContributorProfile(this) -> initializeUiForSignedInUser()
-            else -> initializeUiForIncompleteProfile()
+            else -> showUiForIncompleteProfile()
         }
     }
 
@@ -51,7 +51,7 @@ class ContributeActivity : BottomNavigationActivity(), FirebaseAuth.AuthStateLis
         showStatusActionButton(getString(R.string.sign_in), { launchSignIn() })
     }
 
-    private fun initializeUiForIncompleteProfile() {
+    private fun showUiForIncompleteProfile() {
         hideFab()
         showStatusText(getString(R.string.you_need_to_complete_your_contributor_profile_before_you_can_contribute))
         showStatusActionButton(getString(R.string.update_profile), { launchSettings() })
