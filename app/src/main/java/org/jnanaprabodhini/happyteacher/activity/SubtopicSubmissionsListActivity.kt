@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import com.crashlytics.android.Crashlytics
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.android.synthetic.main.activity_subtopic_submissions_list.*
@@ -54,8 +55,8 @@ class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObse
         setContentView(R.layout.activity_subtopic_submissions_list)
 
         if (!intent.hasAllExtras()) {
-            // todo: log error
             showToast(R.string.error_loading_other_lessons)
+            Crashlytics.log("SubtopicSubmissionListActivity was launched without all extras.")
             finish()
         }
 

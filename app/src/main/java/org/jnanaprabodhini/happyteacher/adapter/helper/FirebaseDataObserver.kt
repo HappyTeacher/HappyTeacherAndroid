@@ -1,5 +1,6 @@
 package org.jnanaprabodhini.happyteacher.adapter.helper
 
+import com.crashlytics.android.Crashlytics
 import com.google.firebase.firestore.FirebaseFirestoreException
 
 /**
@@ -14,5 +15,7 @@ interface FirebaseDataObserver {
 
     fun onDataNonEmpty() {}
 
-    fun onError(e: FirebaseFirestoreException?) {}
+    fun onError(e: FirebaseFirestoreException?) {
+        Crashlytics.logException(e)
+    }
 }

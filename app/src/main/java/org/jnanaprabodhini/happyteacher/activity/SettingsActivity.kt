@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.preference.PreferenceFragmentCompat
+import com.crashlytics.android.Crashlytics
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
@@ -152,8 +153,10 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
             startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE)
         } catch (e: GooglePlayServicesRepairableException) {
             GoogleApiAvailability.getInstance().getErrorDialog(this, e.connectionStatusCode, 0)
+            Crashlytics.logException(e)
         } catch (e: GooglePlayServicesNotAvailableException) {
             showToast(getString(R.string.you_must_have_google_play_service_to_do_this))
+            Crashlytics.logException(e)
         }
     }
 
@@ -166,8 +169,8 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
                 }
                 PlaceAutocomplete.RESULT_ERROR -> {
                     val status = PlaceAutocomplete.getStatus(this, data)
-                    // TODO: Log status to analytics.
                     showToast(getString(R.string.there_was_an_issue_choosing_a_location))
+                    Crashlytics.log("PlaceAutocomplete returned an error. Status message: ${status.statusMessage}")
                 }
                 Activity.RESULT_CANCELED -> {
                     // The user canceled the operation.

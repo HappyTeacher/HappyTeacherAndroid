@@ -1,6 +1,7 @@
 package org.jnanaprabodhini.happyteacher.adapter.firestore
 
 import android.support.v7.widget.RecyclerView
+import com.crashlytics.android.Crashlytics
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -37,7 +38,7 @@ abstract class FirestoreObserverRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(
     override fun onError(e: FirebaseFirestoreException?) {
         super.onError(e)
         dataObserver.onError(e)
-        // todo: log error
+        Crashlytics.logException(e)
     }
 }
 

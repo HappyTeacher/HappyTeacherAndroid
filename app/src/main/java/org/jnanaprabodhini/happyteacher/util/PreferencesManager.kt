@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.support.v4.os.ConfigurationCompat
+import com.crashlytics.android.Crashlytics
 import org.jnanaprabodhini.happyteacher.R
 
 /**
@@ -21,6 +22,7 @@ class PreferencesManager private constructor(val context: Context) {
     fun setCurrentLanguageCode(code: String) {
         val languageCodeKey = context.getString(R.string.prefs_key_current_language_code)
         preferences.edit().putString(languageCodeKey, code).apply()
+        Crashlytics.setString("current_language_code", code)
     }
 
     fun getCurrentLanguageCode(): String {

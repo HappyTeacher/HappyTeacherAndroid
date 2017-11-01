@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import com.crashlytics.android.Crashlytics
 import com.firebase.ui.common.ChangeEventType
 import com.firebase.ui.firestore.ChangeEventListener
 import com.firebase.ui.firestore.ClassSnapshotParser
@@ -79,8 +80,7 @@ abstract class FirestoreObserverListAdapter<T>(query: Query, modelClass: Class<T
     }
 
     override fun onError(e: FirebaseFirestoreException?) {
-        e?.printStackTrace()
         dataObserver.onError(e)
-        // todo: log error
+        Crashlytics.logException(e)
     }
 }
