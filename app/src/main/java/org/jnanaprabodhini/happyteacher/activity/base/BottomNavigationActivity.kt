@@ -88,7 +88,7 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
         return true
     }
 
-    private fun launchSettings() {
+    protected fun launchSettings() {
         val profileIntent = Intent(this, SettingsActivity::class.java)
         startActivity(profileIntent)
     }
@@ -98,7 +98,7 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
         dialog.show()
     }
 
-    private fun launchSignIn() {
+    protected fun launchSignIn() {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()

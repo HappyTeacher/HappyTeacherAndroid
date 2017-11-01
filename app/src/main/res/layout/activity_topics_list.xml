@@ -29,7 +29,7 @@
             android:id="@+id/statusTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/EmptyListFeedbackText"
+            style="@style/StatusText"
             android:visibility="gone"
             android:text="@string/there_are_no_topics_for_this_subject_yet"
             android:layout_gravity="center"/>

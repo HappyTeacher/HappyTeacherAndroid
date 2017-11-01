@@ -50,7 +50,7 @@
     <string name="there_was_an_error_loading_topics_for_this_subject">There was an error loading topics for this subject.</string>
     <string name="there_was_an_error_loading_classroom_resources_for_this_lesson">There was an error loading classroom resources for this lesson.</string>
     <string name="there_was_an_error_loading_lessons_for_this_topic">There was an error loading lessons for this topic.</string>
-    <string name="sign_in">Sign in…</string>
+    <string name="sign_in">Sign in</string>
     <string name="profile">Profile</string>
     <string name="sign_in_canceled">Sign in canceled</string>
     <string name="sign_in_failed_network_error">Sign in failed due to network error</string>
@@ -73,6 +73,9 @@
     <string name="there_was_an_error_loading_lessons_for_this_board">There was an error loading lessons for this board.</string>
     <string name="you_are_signed_in">You are signed in</string>
     <string name="prefs_key_user_sign_out">USER_SIGN_OUT</string>
+    <string name="you_must_be_signed_in_to_contribute">You must be signed in to contribute.</string>
+    <string name="update_profile">Update profile</string>
+    <string name="you_need_to_complete_your_contributor_profile_before_you_can_contribute">You need to complete your Contributor Profile before you can contribute.</string>
 
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>
