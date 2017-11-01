@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import com.crashlytics.android.Crashlytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
@@ -77,6 +78,7 @@ abstract class HappyTeacherActivity: AppCompatActivity() {
             }
         } catch (e: PackageManager.NameNotFoundException) {
             // Then we will show the title as it is set in top-level resources.
+            Crashlytics.logException(e)
         }
     }
 

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
+import com.crashlytics.android.Crashlytics
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
@@ -73,7 +74,7 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
         setContentView(R.layout.activity_card_list_content_viewer)
 
         if (!intent.hasAllExtras()) {
-            showErrorToastAndFinish()
+            showErrorToastForNoExtrasAndFinish()
         }
 
         setHeaderView()
@@ -119,9 +120,9 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
 
     abstract fun getCardRecyclerAdapter(cardRef: CollectionReference, attachmentDestinationDirectory: File): CardListContentRecyclerAdapter
 
-    private fun showErrorToastAndFinish() {
-        // TODO: Log error to analytics.
+    private fun showErrorToastForNoExtrasAndFinish() {
         Toast.makeText(this, R.string.there_was_an_error_loading_this_lesson, Toast.LENGTH_LONG).show()
+        Crashlytics.log("CardListContentViewer was launched without all extras.")
         finish()
     }
 

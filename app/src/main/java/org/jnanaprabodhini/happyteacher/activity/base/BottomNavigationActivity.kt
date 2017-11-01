@@ -13,6 +13,7 @@ import org.jnanaprabodhini.happyteacher.extension.showToast
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import android.app.Activity
+import com.crashlytics.android.Crashlytics
 import com.firebase.ui.auth.IdpResponse
 import org.jnanaprabodhini.happyteacher.BuildConfig
 import org.jnanaprabodhini.happyteacher.activity.SettingsActivity
@@ -127,6 +128,7 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
             // Successfully signed in
             if (resultCode == Activity.RESULT_OK) {
                 persistUserInfo()
+                Crashlytics.setUserIdentifier(auth.currentUser?.uid)
                 return
             } else {
                 // Sign in failed
@@ -138,11 +140,11 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
                     return
                 } else if (response.errorCode == ErrorCodes.UNKNOWN_ERROR) {
                     showToast(R.string.sign_in_failed)
-                    // todo: Log
+                    Crashlytics.log("Sign in failed due to unknown error.")
                     return
                 } else {
                     showToast(R.string.sign_in_failed)
-                    // todo: Log.
+                    Crashlytics.log("Sign in failed due to unknown error with unknown error code.")
                     return
                 }
             }
