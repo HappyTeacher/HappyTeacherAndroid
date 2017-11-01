@@ -155,11 +155,24 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
 
     private fun persistUserInfo() {
         getUserReference()?.get()?.addOnSuccessListener { snapshot ->
-            val userModel = snapshot.toObject(User::class.java)
+            if (snapshot.exists()) {
+                val userModel = snapshot.toObject(User::class.java)
 
-            prefs.setUserLocation(userModel.location)
-            prefs.setUserInstitution(userModel.institution)
-            prefs.setUserName(userModel.displayName)
+                prefs.setUserLocation(userModel.location)
+                prefs.setUserInstitution(userModel.institution)
+                prefs.setUserName(userModel.displayName)
+            } else {
+                // If Cloud Functions haven't created the user fast enough,
+                //  it's possible for the user Document to not exist yet.
+                //  In this case, fail silently. The user will have to re-enter
+                //  their info. :(
+                Crashlytics.log("User object does not exist in Firestore upon registration.")
+
+                prefs.clearUserProfileData()
+
+                // Recover name if possible
+                prefs.setUserName(auth.currentUser?.displayName.orEmpty())
+            }
         }
     }
 

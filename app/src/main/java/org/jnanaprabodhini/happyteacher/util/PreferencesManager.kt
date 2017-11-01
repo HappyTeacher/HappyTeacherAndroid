@@ -69,19 +69,25 @@ class PreferencesManager private constructor(val context: Context) {
         preferences.edit().putString(userNamePrefsKey, name).apply()
     }
 
-    fun getUserName() = preferences.getString(context.getString(R.string.prefs_key_user_name), "")
+    fun getUserName(): String = preferences.getString(context.getString(R.string.prefs_key_user_name), "")
 
     fun setUserLocation(location: String) {
         val locationPrefsKey = context.getString(R.string.prefs_key_user_location)
         preferences.edit().putString(locationPrefsKey, location).apply()
     }
 
-    fun getUserLocation() = preferences.getString(context.getString(R.string.prefs_key_user_location), "")
+    fun getUserLocation(): String = preferences.getString(context.getString(R.string.prefs_key_user_location), "")
 
     fun setUserInstitution(institution: String) {
         val institutionPrefsKey = context.getString(R.string.prefs_key_user_institution)
         preferences.edit().putString(institutionPrefsKey, institution).apply()
     }
 
-    fun getUserInstitution() = preferences.getString(context.getString(R.string.prefs_key_user_institution), "")
+    fun getUserInstitution(): String = preferences.getString(context.getString(R.string.prefs_key_user_institution), "")
+
+    fun clearUserProfileData() {
+        setUserLocation("")
+        setUserName("")
+        setUserInstitution("")
+    }
 }
