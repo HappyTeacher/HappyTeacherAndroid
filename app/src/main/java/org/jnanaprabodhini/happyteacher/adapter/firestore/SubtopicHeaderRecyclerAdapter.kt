@@ -18,7 +18,7 @@ class SubtopicHeaderRecyclerAdapter(options: FirestoreRecyclerOptions<Subtopic>,
 
     private fun inflateView(parent: ViewGroup?): View {
         return LayoutInflater.from(parent?.context)
-                .inflate(R.layout.list_item_subtopic_choice_header_recycler, parent, false)
+                .inflate(R.layout.list_item_subtopic_header_card, parent, false)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SubtopicViewHolder {
