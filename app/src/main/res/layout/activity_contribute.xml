@@ -11,6 +11,17 @@
         tools:context="org.jnanaprabodhini.happyteacher.activity.ContributeActivity"
         android:layout_above="@id/bottomNavigation" >
 
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </android.support.design.widget.AppBarLayout>
+
         <include layout="@layout/content_contribute" />
 
         <android.support.design.widget.FloatingActionButton

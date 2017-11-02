@@ -18,4 +18,6 @@
 
     <dimen name="classroom_resources_list_top_padding">42dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="actionbar_default_elevation">8dp</dimen>
 </resources>
