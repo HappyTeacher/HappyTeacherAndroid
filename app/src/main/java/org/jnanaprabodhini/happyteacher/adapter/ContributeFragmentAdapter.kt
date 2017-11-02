@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.fragment.ContributeDraftsFragment
 import org.jnanaprabodhini.happyteacher.fragment.RecyclerFragment
 
 /**
