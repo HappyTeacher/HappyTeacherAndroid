@@ -20,7 +20,7 @@ import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
  */
 abstract class TopicLessonsRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOptions<Topic>,
                                            topicsDataObserver: FirebaseDataObserver,
-                                           activity: Activity): TopicsRecyclerAdapter<CardListContentHeader, ContentHeaderRecyclerViewHolder>(topicsAdapterOptions, topicsDataObserver, activity) {
+                                           activity: Activity): TopicsRecyclerAdapter<ContentHeaderRecyclerViewHolder>(topicsAdapterOptions, topicsDataObserver, activity) {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ContentHeaderRecyclerViewHolder {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_content_header_recycler, parent, false)
@@ -78,4 +78,6 @@ abstract class TopicLessonsRecyclerAdapter(topicsAdapterOptions: FirestoreRecycl
             viewHolder?.statusTextView?.setText(R.string.there_was_an_error_loading_lessons_for_this_topic)
         }
     }
+
+    abstract fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<CardListContentHeader>
 }

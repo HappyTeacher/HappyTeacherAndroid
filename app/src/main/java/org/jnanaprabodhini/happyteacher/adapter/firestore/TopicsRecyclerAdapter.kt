@@ -21,7 +21,7 @@ import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
  * @param C the type of the data model of the Topic's child object to be displayed.
  * @param VH the type of the ViewHolder for the views in the RecyclerView.
  */
-abstract class TopicsRecyclerAdapter<C, VH: RecyclerView.ViewHolder>(topicsAdapterOptions: FirestoreRecyclerOptions<Topic>,
+abstract class TopicsRecyclerAdapter<VH: RecyclerView.ViewHolder>(topicsAdapterOptions: FirestoreRecyclerOptions<Topic>,
                                      topicsDataObserver: FirebaseDataObserver,
                                      val activity: Activity):
         FirestoreObserverRecyclerAdapter<Topic, VH>(topicsAdapterOptions, topicsDataObserver) {
@@ -35,8 +35,6 @@ abstract class TopicsRecyclerAdapter<C, VH: RecyclerView.ViewHolder>(topicsAdapt
             3 -> view?.setBackgroundResource(R.color.dreamsicleOrange)
         }
     }
-
-    abstract fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<C>
 
     abstract fun getSubtopicDataObserverForViewHolder(viewHolder: VH?, level: Int? = null): FirebaseDataObserver
 }
