@@ -74,6 +74,7 @@ abstract class TopicLessonsRecyclerAdapter(topicsAdapterOptions: FirestoreRecycl
             viewHolder?.horizontalRecyclerView?.setVisibilityGone()
             viewHolder?.contributeButton?.setInvisible()
             viewHolder?.statusTextView?.setVisible()
+            viewHolder?.progressBar?.setVisibilityGone()
             viewHolder?.statusTextView?.setText(R.string.there_was_an_error_loading_lessons_for_this_topic)
         }
     }
