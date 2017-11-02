@@ -23,6 +23,11 @@ import org.jnanaprabodhini.happyteacher.model.Subject
  */
 class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
 
+    companion object SavedInstanceStateConstants {
+        const val PARENT_SUBJECT_SPINNER_SELECTION = "PARENT_SUBJECT_SPINNER_SELECTION"
+        const val CHILD_SUBJECT_SPINNER_SELECTION = "CHILD_SUBJECT_SPINNER_SELECTION"
+    }
+
     var parentSpinnerSelectionIndex = 0
     var childSpinnerSelectionIndex = 0
 
@@ -52,6 +57,13 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
         parentSpinner?.selectIndexWhenPopulated(parentSpinnerSelectionIndex)
 
         parentSpinner?.onItemSelected { position ->
+
+            if (position != parentSpinnerSelectionIndex) {
+                // If a new item is selected (different from saved instance state value),
+                //  then reset child spinner stored selection.
+                childSpinnerSelectionIndex = 0
+            }
+
             parentSpinnerSelectionIndex = position
 
             val subject = parentAdapter.getItem(position)

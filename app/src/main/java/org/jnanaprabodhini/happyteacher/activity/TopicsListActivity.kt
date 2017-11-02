@@ -53,15 +53,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         fun Intent.hasAllExtras(): Boolean = hasSyllabusLessonId() && hasSubject() && hasLevel() && hasLessonTitle()
     }
 
-    object SavedInstanceStateConstants {
-        const val PARENT_SUBJECT_SPINNER_SELECTION = "PARENT_SUBJECT_SPINNER_SELECTION"
-        const val CHILD_SUBJECT_SPINNER_SELECTION = "CHILD_SUBJECT_SPINNER_SELECTION"
-    }
-
     private val subjectSpinnerManager = SubjectSpinnerManager(this)
-
-    private var parentSubjectSelectionIndex = 0
-    private var childSubjectSelectionIndex = 0
 
     @IntegerRes override val bottomNavigationMenuItemId: Int = R.id.navigation_topics
 
@@ -84,11 +76,11 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
      *   These properties will be used to select the stored selection when the spinners are populated.
      */
     private fun setSpinnerSelectionIndicesFromSavedInstanceState(savedInstanceState: Bundle) {
-        val parentSubjectStoredSelection = savedInstanceState.getInt(SavedInstanceStateConstants.PARENT_SUBJECT_SPINNER_SELECTION, 0)
-        val childSubjectStoredSelection = savedInstanceState.getInt(SavedInstanceStateConstants.CHILD_SUBJECT_SPINNER_SELECTION, 0)
+        val parentSubjectStoredSelection = savedInstanceState.getInt(SubjectSpinnerManager.PARENT_SUBJECT_SPINNER_SELECTION, 0)
+        val childSubjectStoredSelection = savedInstanceState.getInt(SubjectSpinnerManager.CHILD_SUBJECT_SPINNER_SELECTION, 0)
 
-        this.parentSubjectSelectionIndex = parentSubjectStoredSelection
-        this.childSubjectSelectionIndex = childSubjectStoredSelection
+        subjectSpinnerManager.parentSpinnerSelectionIndex = parentSubjectStoredSelection
+        subjectSpinnerManager.childSpinnerSelectionIndex = childSubjectStoredSelection
     }
 
     private fun initializeUiFromIntent() {
@@ -109,9 +101,6 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
     private fun initializeTopicListForSubject() {
         hideSyllabusLessonTopicHeader()
         topicsProgressBar.setVisible()
-
-        subjectSpinnerManager.parentSpinnerSelectionIndex = parentSubjectSelectionIndex
-        subjectSpinnerManager.childSpinnerSelectionIndex = childSubjectSelectionIndex
 
         subjectSpinnerManager.initializeSpinners(parentSubjectSpinner, childSubjectSpinner, topicsProgressBar,
                 onSpinnerSelectionsComplete = {subjectKey -> updateListOfTopicsForSubject(subjectKey)})
@@ -251,8 +240,8 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val parentSubjectSpinnerSelectionIndex = parentSubjectSpinner.selectedItemPosition
         val childSubjectSpinnerSelectionIndex = childSubjectSpinner.selectedItemPosition
 
-        savedInstanceState.putInt(SavedInstanceStateConstants.PARENT_SUBJECT_SPINNER_SELECTION, parentSubjectSpinnerSelectionIndex)
-        savedInstanceState.putInt(SavedInstanceStateConstants.CHILD_SUBJECT_SPINNER_SELECTION, childSubjectSpinnerSelectionIndex)
+        savedInstanceState.putInt(SubjectSpinnerManager.PARENT_SUBJECT_SPINNER_SELECTION, parentSubjectSpinnerSelectionIndex)
+        savedInstanceState.putInt(SubjectSpinnerManager.CHILD_SUBJECT_SPINNER_SELECTION, childSubjectSpinnerSelectionIndex)
 
         super.onSaveInstanceState(savedInstanceState)
     }
