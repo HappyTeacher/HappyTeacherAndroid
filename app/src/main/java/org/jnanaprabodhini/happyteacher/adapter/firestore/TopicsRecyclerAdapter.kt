@@ -2,6 +2,7 @@ package org.jnanaprabodhini.happyteacher.adapter.firestore
 
 import android.app.Activity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -31,16 +32,20 @@ abstract class TopicsRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOpti
     override fun onBindViewHolder(holder: ContentHeaderRecyclerViewHolder?, position: Int, model: Topic?) {
         holder?.titleTextView?.text = model?.name
 
-        // Alternate between these four colors:
-        when (position % 4) {
-            0 -> holder?.itemView?.setBackgroundResource(R.color.seaTeal)
-            1 -> holder?.itemView?.setBackgroundResource(R.color.grassGreen)
-            2 -> holder?.itemView?.setBackgroundResource(R.color.bubbleGumPink)
-            3 -> holder?.itemView?.setBackgroundResource(R.color.dreamsicleOrange)
-        }
+        setBackgroundColor(holder?.itemView, position)
 
         val topicId = snapshots.getSnapshot(position).reference.id
         initializeChildRecyclerView(holder?.horizontalRecyclerView, topicId, model, holder)
+    }
+
+    private fun setBackgroundColor(view: View?, position: Int) {
+        // Alternate between these four colors:
+        when (position % 4) {
+            0 -> view?.setBackgroundResource(R.color.seaTeal)
+            1 -> view?.setBackgroundResource(R.color.grassGreen)
+            2 -> view?.setBackgroundResource(R.color.bubbleGumPink)
+            3 -> view?.setBackgroundResource(R.color.dreamsicleOrange)
+        }
     }
 
     private fun initializeChildRecyclerView(recyclerView: HorizontalPagerRecyclerView?, topicId: String, model: Topic?, holder: ContentHeaderRecyclerViewHolder?) {
