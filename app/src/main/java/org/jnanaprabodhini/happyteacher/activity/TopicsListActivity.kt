@@ -9,6 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_topics_list.*
 import kotlinx.android.synthetic.main.header_syllabus_lesson_topic.*
+import kotlinx.android.synthetic.main.stacked_subject_spinners.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacher.adapter.firestore.TopicsRecyclerAdapter
@@ -16,7 +17,7 @@ import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 import org.jnanaprabodhini.happyteacher.model.Topic
-import org.jnanaprabodhini.happyteacher.view.SubjectSpinnerTopicListManager
+import org.jnanaprabodhini.happyteacher.view.SubjectSpinnerManager
 
 class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
@@ -56,6 +57,8 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         const val PARENT_SUBJECT_SPINNER_SELECTION = "PARENT_SUBJECT_SPINNER_SELECTION"
         const val CHILD_SUBJECT_SPINNER_SELECTION = "CHILD_SUBJECT_SPINNER_SELECTION"
     }
+
+    private val subjectSpinnerManager = SubjectSpinnerManager(this)
 
     private var parentSubjectSelectionIndex = 0
     private var childSubjectSelectionIndex = 0
@@ -107,16 +110,11 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         hideSyllabusLessonTopicHeader()
         topicsProgressBar.setVisible()
 
-        // Create a SubjectSpinnerTopicListManager to control the subject spinners
-        //  and recycler view.
-        val spinnerListManager = SubjectSpinnerTopicListManager(parentSubjectSpinner, childSubjectSpinner,
-                topicsProgressBar, this,
-                {subjectKey -> updateListOfTopicsForSubject(subjectKey)})
+        subjectSpinnerManager.parentSpinnerSelectionIndex = parentSubjectSelectionIndex
+        subjectSpinnerManager.childSpinnerSelectionIndex = childSubjectSelectionIndex
 
-        spinnerListManager.parentSpinnerSelectionIndex = parentSubjectSelectionIndex
-        spinnerListManager.childSpinnerSelectionIndex = childSubjectSelectionIndex
-
-        spinnerListManager.initializeSpinners()
+        subjectSpinnerManager.initializeSpinners(parentSubjectSpinner, childSubjectSpinner, topicsProgressBar,
+                onSpinnerSelectionsComplete = {subjectKey -> updateListOfTopicsForSubject(subjectKey)})
     }
 
     override fun onBottomNavigationItemReselected() {

@@ -56,20 +56,7 @@
 
                 <include layout="@layout/header_syllabus_lesson_topic"/>
 
-                <Spinner
-                    android:id="@+id/parentSubjectSpinner"
-                    style="@style/PurpleSpinner"
-                    android:visibility="gone" />
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/lightGrayShadow">
-                    <Spinner
-                        android:id="@+id/childSubjectSpinner"
-                        style="@style/ChildSpinner"
-                        android:visibility="gone" />
-                </FrameLayout>
+                <include layout="@layout/stacked_subject_spinners" />
             </LinearLayout>
 
         </android.support.design.widget.AppBarLayout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:showIn="@layout/activity_topics_list">
+
+    <Spinner
+        android:id="@+id/parentSubjectSpinner"
+        style="@style/PurpleSpinner"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightGrayShadow">
+
+        <Spinner
+            android:id="@+id/childSubjectSpinner"
+            style="@style/ChildSpinner"
+            android:visibility="gone" />
+    </FrameLayout>
+</merge>
