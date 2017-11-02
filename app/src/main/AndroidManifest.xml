@@ -47,6 +47,7 @@
             android:label="@string/settings"
             android:parentActivityName=".activity.TopicsListActivity" />
         <activity android:name=".activity.SubtopicChoiceActivity"
+            android:label="@string/create_a_lesson_plan"
             android:parentActivityName=".activity.ContributeActivity"/>
     </application>
 

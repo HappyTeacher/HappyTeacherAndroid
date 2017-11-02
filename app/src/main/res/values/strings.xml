@@ -85,5 +85,6 @@
     <string name="drafts">Drafts</string>
     <string name="submitted">Submitted</string>
     <string name="published">Published</string>
+    <string name="create_a_lesson_plan">Create a lesson plan</string>
 
 </resources>
