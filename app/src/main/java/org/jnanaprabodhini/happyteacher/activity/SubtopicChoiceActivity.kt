@@ -10,10 +10,12 @@ import kotlinx.android.synthetic.main.stacked_subject_spinners.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.firestore.TopicLessonsRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.firestore.TopicSubtopicsRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
+import org.jnanaprabodhini.happyteacher.model.Subtopic
 import org.jnanaprabodhini.happyteacher.model.Topic
 import org.jnanaprabodhini.happyteacher.view.SubjectSpinnerManager
 
@@ -44,15 +46,7 @@ class SubtopicChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver {
         val topicAdapterOptions = FirestoreRecyclerOptions.Builder<Topic>()
                 .setQuery(topicQuery, Topic::class.java).build()
 
-        val topicAdapter = object: TopicLessonsRecyclerAdapter(topicAdapterOptions, this, this) {
-            override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<CardListContentHeader> {
-                val query: Query = firestoreLocalized.collection(getString(R.string.lessons))
-                        .whereEqualTo(getString(R.string.topic), topicId)
-                        .whereEqualTo(getString(R.string.is_featured), true)
-
-                return FirestoreRecyclerOptions.Builder<CardListContentHeader>().setQuery(query, CardListContentHeader::class.java).build()
-            }
-        }
+        val topicAdapter = TopicSubtopicsRecyclerAdapter(topicAdapterOptions, this, this)
 
         topicAdapter.startListening()
         topicsRecyclerView.adapter = topicAdapter
