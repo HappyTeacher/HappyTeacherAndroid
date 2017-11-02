@@ -26,10 +26,6 @@ class TopicSubtopicsRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOptio
                                     topicsDataObserver: FirebaseDataObserver,
                                     activity: Activity): TopicsRecyclerAdapter<TopicSubtopicChoiceRecyclerViewHolder>(topicsAdapterOptions, topicsDataObserver, activity) {
 
-    private val prefs: PreferencesManager by lazy {
-        PreferencesManager.getInstance(activity)
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): TopicSubtopicChoiceRecyclerViewHolder {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_subtopic_choice_header_recycler, parent, false)
         return TopicSubtopicChoiceRecyclerViewHolder(view)
