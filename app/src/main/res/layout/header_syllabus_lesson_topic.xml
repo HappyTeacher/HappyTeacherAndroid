@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorAccent"
     android:id="@+id/syllabusLessonTopicsHeaderView"
+    app:layout_scrollFlags="scroll|enterAlways"
     android:paddingRight="16dp"
     android:layout_width="match_parent"
     android:layout_height="@dimen/spinner_item_height">

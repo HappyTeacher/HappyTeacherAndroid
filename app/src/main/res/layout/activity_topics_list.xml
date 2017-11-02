@@ -45,18 +45,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:id="@+id/topicsHeaderView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                app:layout_scrollFlags="scroll|enterAlways"
-                android:orientation="vertical">
+            <include layout="@layout/header_syllabus_lesson_topic"/>
 
-                <include layout="@layout/header_syllabus_lesson_topic"/>
-
-                <include layout="@layout/stacked_subject_spinners" />
-            </LinearLayout>
+            <include layout="@layout/stacked_subject_spinners" />
 
         </android.support.design.widget.AppBarLayout>
     </android.support.design.widget.CoordinatorLayout>

@@ -33,27 +33,19 @@
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/deepLightBlue"
+        app:layout_scrollFlags="scroll|enterAlways">
 
-        <LinearLayout
-            android:id="@+id/spinnersLayout"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:background="@color/deepLightBlue"
-            app:layout_scrollFlags="scroll|enterAlways"
-            android:orientation="vertical">
+            android:text="Choose what your lesson will be about."
+            android:textColor="@android:color/white"
+            android:padding="16dp"
+            android:textSize="14sp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Choose a subtopic for your lesson plan contribution."
-                android:textColor="@android:color/white"
-                android:padding="16dp"
-                android:textSize="14sp"/>
-
-            <include layout="@layout/stacked_subject_spinners" />
-        </LinearLayout>
+        <include layout="@layout/stacked_subject_spinners" />
 
     </android.support.design.widget.AppBarLayout>
 </android.support.design.widget.CoordinatorLayout>
