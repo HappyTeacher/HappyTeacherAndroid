@@ -2,7 +2,6 @@ package org.jnanaprabodhini.happyteacher.activity
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
@@ -10,7 +9,7 @@ import kotlinx.android.synthetic.main.activity_subtopic_choice.*
 import kotlinx.android.synthetic.main.stacked_subject_spinners.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
-import org.jnanaprabodhini.happyteacher.adapter.firestore.TopicsRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.firestore.TopicLessonsRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
@@ -45,7 +44,7 @@ class SubtopicChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver {
         val topicAdapterOptions = FirestoreRecyclerOptions.Builder<Topic>()
                 .setQuery(topicQuery, Topic::class.java).build()
 
-        val topicAdapter = object: TopicsRecyclerAdapter(topicAdapterOptions, this, this) {
+        val topicAdapter = object: TopicLessonsRecyclerAdapter(topicAdapterOptions, this, this) {
             override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<CardListContentHeader> {
                 val query: Query = firestoreLocalized.collection(getString(R.string.lessons))
                         .whereEqualTo(getString(R.string.topic), topicId)

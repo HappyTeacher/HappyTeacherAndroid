@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.header_syllabus_lesson_topic.*
 import kotlinx.android.synthetic.main.stacked_subject_spinners.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.BottomNavigationActivity
-import org.jnanaprabodhini.happyteacher.adapter.firestore.TopicsRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.firestore.TopicLessonsRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
@@ -126,7 +126,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val topicAdapterOptions = FirestoreRecyclerOptions.Builder<Topic>()
                 .setQuery(topicQuery, Topic::class.java).build()
 
-        val topicAdapter = object: TopicsRecyclerAdapter(topicAdapterOptions, this, this) {
+        val topicAdapter = object: TopicLessonsRecyclerAdapter(topicAdapterOptions, this, this) {
             override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<CardListContentHeader> {
                 val query: Query = firestoreLocalized.collection(getString(R.string.lessons))
                         .whereEqualTo(getString(R.string.topic), topicId)
@@ -148,7 +148,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val topicsAdapterOptions = FirestoreRecyclerOptions.Builder<Topic>()
                 .setQuery(topicsQuery, Topic::class.java).build()
 
-        val adapter = object: TopicsRecyclerAdapter(topicsAdapterOptions, this, this) {
+        val adapter = object: TopicLessonsRecyclerAdapter(topicsAdapterOptions, this, this) {
             override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<CardListContentHeader> {
                 val subtopicQuery = firestoreLocalized.collection(getString(R.string.lessons))
                         .whereEqualTo(getString(R.string.topic), topicId)
