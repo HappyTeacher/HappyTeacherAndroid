@@ -77,9 +77,11 @@ class ContributeActivity : BottomNavigationActivity(), FirebaseAuth.AuthStateLis
         // Blend action bar and tab layout by removing elevation
         supportActionBar?.elevation = 0f
         fragmentPager.setVisible()
+        tabBar.setVisible()
     }
 
     private fun hidePager() {
+        tabBar.setVisibilityGone()
         fragmentPager.setVisibilityGone()
         supportActionBar?.elevation = resources.getDimensionPixelSize(R.dimen.actionbar_default_elevation).toFloat()
     }
