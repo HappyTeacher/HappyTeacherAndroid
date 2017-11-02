@@ -38,7 +38,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Choose what your lesson will be about."
+            android:text="@string/choose_what_your_lesson_will_be_about"
             app:layout_scrollFlags="scroll|enterAlways"
             android:textColor="@android:color/white"
             android:padding="16dp"
