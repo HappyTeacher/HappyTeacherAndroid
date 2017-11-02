@@ -15,9 +15,13 @@ import org.jnanaprabodhini.happyteacher.model.Topic
 import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
 
 /**
- * An abstract base adapter for adapters that display lists of Topics (with alternating colors).
+ * An abstract base adapter for adapters that display lists of Topics (with alternating colors)
+ *  with nested lists of child objects related to the Topic.
+ *
+ * @param C the type of the data model of the Topic's child object to be displayed.
+ * @param VH the type of the ViewHolder for the views in the RecyclerView.
  */
-abstract class TopicsRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(topicsAdapterOptions: FirestoreRecyclerOptions<Topic>,
+abstract class TopicsRecyclerAdapter<C, VH: RecyclerView.ViewHolder>(topicsAdapterOptions: FirestoreRecyclerOptions<Topic>,
                                      topicsDataObserver: FirebaseDataObserver,
                                      val activity: Activity):
         FirestoreObserverRecyclerAdapter<Topic, VH>(topicsAdapterOptions, topicsDataObserver) {
@@ -32,7 +36,7 @@ abstract class TopicsRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(topicsAdapt
         }
     }
 
-    abstract fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<T>
+    abstract fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<C>
 
     abstract fun getSubtopicDataObserverForViewHolder(viewHolder: VH?, level: Int? = null): FirebaseDataObserver
 }
