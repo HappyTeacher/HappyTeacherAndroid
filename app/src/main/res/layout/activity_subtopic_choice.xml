@@ -5,15 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.jnanaprabodhini.happyteacher.activity.TopicsListActivity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/subtopicChoiceHeader"
-    android:animateLayoutChanges="true">
+    android:layout_height="match_parent">
 
     <org.jnanaprabodhini.happyteacher.view.ClickableScrollingRecyclerView
         android:id="@+id/topicsRecyclerView"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/deepLightBlue"
         android:layoutAnimation="@anim/layout_fall_down" />
 
     <TextView
@@ -34,13 +33,13 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/deepLightBlue"
-        app:layout_scrollFlags="scroll|enterAlways">
+        android:background="@color/deepLightBlue">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Choose what your lesson will be about."
+            app:layout_scrollFlags="scroll|enterAlways"
             android:textColor="@android:color/white"
             android:padding="16dp"
             android:textSize="14sp"/>
