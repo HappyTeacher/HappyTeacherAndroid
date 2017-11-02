@@ -82,4 +82,8 @@
         <item quantity="other">%d topics</item>
     </plurals>
 
+    <string name="drafts">Drafts</string>
+    <string name="submitted">Submitted</string>
+    <string name="published">Published</string>
+
 </resources>
