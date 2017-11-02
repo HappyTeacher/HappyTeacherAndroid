@@ -154,8 +154,8 @@
         <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="Button.Dark" parent="Button">
-        <item name="android:background">@drawable/dark_ripple_pill</item>
+    <style name="Button.Accent" parent="Button">
+        <item name="android:background">@drawable/accent_ripple_pill</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 
