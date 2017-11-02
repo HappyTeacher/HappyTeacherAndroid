@@ -16,7 +16,7 @@ import org.jnanaprabodhini.happyteacher.model.Topic
 import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
 
 /**
- * Created by grahamearley on 10/11/17.
+ * An adapter for displaying Topics and the lessons for those topics.
  */
 abstract class TopicLessonsRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOptions<Topic>,
                                            topicsDataObserver: FirebaseDataObserver,

@@ -15,7 +15,7 @@ import org.jnanaprabodhini.happyteacher.model.Topic
 import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
 
 /**
- * Created by grahamearley on 10/11/17.
+ * An abstract base adapter for adapters that display lists of Topics (with alternating colors).
  */
 abstract class TopicsRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(topicsAdapterOptions: FirestoreRecyclerOptions<Topic>,
                                      topicsDataObserver: FirebaseDataObserver,
