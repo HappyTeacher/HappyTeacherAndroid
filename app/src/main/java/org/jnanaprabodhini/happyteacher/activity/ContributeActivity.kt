@@ -1,5 +1,6 @@
 package org.jnanaprabodhini.happyteacher.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.IntegerRes
 import android.support.design.widget.Snackbar
@@ -99,9 +100,9 @@ class ContributeActivity : BottomNavigationActivity(), FirebaseAuth.AuthStateLis
 
     private fun showFab() {
         fab.setVisible()
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+        fab.setOnClickListener {
+            val subtopicChoiceIntent = Intent(this, SubtopicChoiceActivity::class.java)
+            startActivity(subtopicChoiceIntent)
         }
     }
 

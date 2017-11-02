@@ -1,9 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.jnanaprabodhini.happyteacher.activity.TopicsListActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.jnanaprabodhini.happyteacher.activity.SubtopicChoiceActivity">
+    android:id="@+id/subtopicChoiceHeader"
+    android:animateLayoutChanges="true">
 
-</android.support.constraint.ConstraintLayout>
+    <org.jnanaprabodhini.happyteacher.view.ClickableScrollingRecyclerView
+        android:id="@+id/topicsRecyclerView"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layoutAnimation="@anim/layout_fall_down" />
+
+    <TextView
+        android:id="@+id/statusTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/StatusText"
+        android:visibility="gone"
+        android:layout_gravity="center"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"/>
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/spinnersLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="@color/deepLightBlue"
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choose a subtopic for your lesson plan contribution."
+                android:textColor="@android:color/white"
+                android:padding="16dp"
+                android:textSize="14sp"/>
+
+            <include layout="@layout/stacked_subject_spinners" />
+        </LinearLayout>
+
+    </android.support.design.widget.AppBarLayout>
+</android.support.design.widget.CoordinatorLayout>
