@@ -2,9 +2,7 @@ package org.jnanaprabodhini.happyteacher.adapter.contentlist
 
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
-import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.firestore.CollectionReference
 import org.jnanaprabodhini.happyteacher.activity.FullScreenGalleryViewerActivity
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.ImageGalleryRecyclerAdapter
@@ -12,9 +10,11 @@ import org.jnanaprabodhini.happyteacher.adapter.firestore.FirestoreObserverRecyc
 import org.jnanaprabodhini.happyteacher.adapter.helper.AttachmentDownloadManager
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentCardViewHolder
-import org.jnanaprabodhini.happyteacher.extension.*
+import org.jnanaprabodhini.happyteacher.extension.loadImageToFit
+import org.jnanaprabodhini.happyteacher.extension.setHtmlText
+import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
+import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.AttachmentMetadata
-import org.jnanaprabodhini.happyteacher.model.CardListContent
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 import java.io.File
 
