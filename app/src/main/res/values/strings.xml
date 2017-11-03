@@ -88,5 +88,7 @@
     <string name="create_a_lesson_plan">Create a lesson plan</string>
     <string name="choose_what_your_lesson_will_be_about">Choose what your lesson will be about.</string>
     <string name="write_lesson">Write lesson</string>
+    <string name="lesson_editor">Lesson Editor</string>
+    <string name="edit">Edit</string>
 
 </resources>

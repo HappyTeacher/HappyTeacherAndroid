@@ -2,11 +2,10 @@ package org.jnanaprabodhini.happyteacher.adapter.viewholder
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import kotlinx.android.synthetic.main.list_item_content_card.view.*
+import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
+import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.view.DownloadBarView
 import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
 import org.jnanaprabodhini.happyteacher.view.YoutubeWebView
@@ -27,4 +26,14 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
     val imageGalleryRecyclerView: HorizontalPagerRecyclerView = itemView.imageGalleryRecyclerView
 
     val attachmentDownloadButton: DownloadBarView = itemView.attachmentDownloadBar
+
+    val editButton: ImageButton = itemView.editButton
+
+    fun showEditButtons() {
+        editButton.setVisible()
+    }
+
+    fun hideEditButtons() {
+        editButton.setVisibilityGone()
+    }
 }

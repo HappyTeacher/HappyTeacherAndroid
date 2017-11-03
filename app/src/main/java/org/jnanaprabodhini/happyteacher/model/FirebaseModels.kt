@@ -54,6 +54,7 @@ data class ContentCard(val header: String = "",
                        val youtubeId: String = "",
                        val attachmentPath: String = "",
                        val attachmentMetadata: AttachmentMetadata = AttachmentMetadata(),
+                       val orderNumber: Int = 0,
                        val type: String = "",
                        val number: Int = 0)
 
