@@ -51,15 +51,15 @@ data class CardListContent(val name: String = "",
                            val dateEdited: Long = 0,
                            val cards: Map<String, ContentCard> = emptyMap())
 
-data class ContentCard(val header: String = "",
-                       val body: String = "",
-                       val imageUrls: List<String> = emptyList(),
-                       val youtubeId: String = "",
-                       val attachmentPath: String = "",
-                       val attachmentMetadata: AttachmentMetadata = AttachmentMetadata(),
-                       val orderNumber: Int = 0,
-                       val type: String = "",
-                       val number: Int = 0)
+data class ContentCard(var header: String = "",
+                       var body: String = "",
+                       var imageUrls: List<String> = emptyList(),
+                       var youtubeId: String = "",
+                       var attachmentPath: String = "",
+                       var attachmentMetadata: AttachmentMetadata = AttachmentMetadata(),
+                       var orderNumber: Int = 0,
+                       var type: String = "",
+                       var number: Int = 0)
 
 data class AttachmentMetadata(val contentType: String = "",
                               val size: Long = 0,

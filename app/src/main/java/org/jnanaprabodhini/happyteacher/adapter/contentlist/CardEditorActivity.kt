@@ -28,23 +28,24 @@ class CardEditorActivity : HappyTeacherActivity() {
 
     private val cardRef by lazy { firestoreRoot.document(intent.getCardRefPath()) }
 
+    private var card: ContentCard = ContentCard()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card_editor)
 
         // TODO: Add progress bar
         cardRef.get().addOnSuccessListener { snapshot ->
+
             if (snapshot.exists()) {
-                val card = snapshot.toObject(ContentCard::class.java)
-                initializeUiForCard(card)
-            } else {
-                // Start with a new card
-                initializeUiForCard(ContentCard())
+                card = snapshot.toObject(ContentCard::class.java)
             }
+
+            initializeUi()
         }
     }
 
-    private fun initializeUiForCard(card: ContentCard) {
+    private fun initializeUi() {
         populateFieldsFromCard(card)
 
         saveButton.setOnClickListener {
@@ -58,12 +59,13 @@ class CardEditorActivity : HappyTeacherActivity() {
         bodyEditText.setText(card.body)
     }
 
-    private fun createCardFromFields() = ContentCard(
-        header = headerEditText.text.toString(),
-        body = bodyEditText.text.toString()
-    )
+    private fun updateCardFromFields() {
+        card.header = headerEditText.text.toString()
+        card.body = bodyEditText.text.toString()
+    }
 
     private fun saveValuesToCard() {
-        cardRef.set(createCardFromFields())
+        updateCardFromFields()
+        cardRef.set(card)
     }
 }
