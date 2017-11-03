@@ -50,7 +50,15 @@ class LessonEditorActivity: CardListContentViewerActivity() {
 
         fab.setOnClickListener {
             val newCardRef = cardsRef.document()
-            CardEditorActivity.launch(this, newCardRef)
+
+            val cardCount = cardRecyclerAdapter.itemCount
+            if (cardCount > 0) {
+                val lastCard = cardRecyclerAdapter.getItem(cardRecyclerAdapter.itemCount - 1)
+                val newCardNumber = lastCard.orderNumber + 1
+                CardEditorActivity.launch(this, newCardRef, newCardNumber)
+            } else {
+                CardEditorActivity.launch(this, newCardRef)
+            }
         }
     }
 }
