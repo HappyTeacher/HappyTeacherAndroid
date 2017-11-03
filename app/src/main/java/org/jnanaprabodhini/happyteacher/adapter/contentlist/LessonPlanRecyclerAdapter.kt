@@ -26,16 +26,16 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
 
     override fun getItemCount(): Int {
         val cardCount = super.getItemCount()
-        if (cardCount > 0) {
+        return if (cardCount > 0) {
             // Show a footer view if there are cards
-            return cardCount + 1
+            cardCount + 1
         } else {
-            return cardCount
+            cardCount
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder? {
-        if (viewType == CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE) {
+        return if (viewType == CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE) {
             val classroomResourcesView = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_content_header_recycler, parent, false)
 
             // Add margin to top of view:
@@ -43,18 +43,18 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
             margins.topMargin = activity.resources.getDimensionPixelSize(R.dimen.classroom_resources_list_top_padding)
             classroomResourcesView.layoutParams = margins
 
-            return ContentHeaderRecyclerViewHolder(classroomResourcesView)
+            ContentHeaderRecyclerViewHolder(classroomResourcesView)
         } else {
             val cardView = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_content_card, parent, false)
-            return ContentCardViewHolder(cardView)
+            ContentCardViewHolder(cardView)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (position == itemCount - 1) {
-            return CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE
+        return if (position == itemCount - 1) {
+            CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE
         } else {
-            return LESSON_CARD_VIEW_TYPE
+            LESSON_CARD_VIEW_TYPE
         }
     }
 
