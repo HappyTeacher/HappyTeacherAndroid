@@ -77,9 +77,8 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
 
     private fun initializeRecyclerView() {
         cardRecyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = cardRecyclerAdapter
-        adapter.startListening()
-        cardRecyclerView?.adapter = adapter
+        cardRecyclerAdapter.startListening()
+        cardRecyclerView?.adapter = cardRecyclerAdapter
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
