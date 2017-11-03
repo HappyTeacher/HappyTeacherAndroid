@@ -1,7 +1,6 @@
 package org.jnanaprabodhini.happyteacher.adapter.firestore
 
 import android.app.Activity
-import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -43,7 +42,7 @@ class TopicSubtopicsRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOptio
         val query: Query = topicRef.collection(activity.getString(R.string.subtopics))
 
         val adapterOptions = FirestoreRecyclerOptions.Builder<Subtopic>().setQuery(query, Subtopic::class.java).build()
-        val adapter = SubtopicHeaderRecyclerAdapter(adapterOptions, getSubtopicDataObserverForViewHolder(holder))
+        val adapter = SubtopicHeaderRecyclerAdapter(adapterOptions, getSubtopicDataObserverForViewHolder(holder), activity)
 
         adapter.startListening()
         horizontalRecyclerView?.setAdapter(adapter)

@@ -8,17 +8,21 @@ import kotlinx.android.parcel.Parcelize
  * Data models for Firebase objects.
  */
 
-data class Subject(var name: String = "",
-                   var parentSubject: String? = null,
-                   var boardStandards: Map<String, @JvmSuppressWildcards ArrayList<Int>> = emptyMap(),
-                   var hasChildren: Boolean = false)
+data class Subject(val name: String = "",
+                   val parentSubject: String? = null,
+                   val boardStandards: Map<String, @JvmSuppressWildcards ArrayList<Int>> = emptyMap(),
+                   val hasChildren: Boolean = false)
 
-data class Topic(var name: String = "",
-                 var subject: String = "")
+data class Topic(val name: String = "",
+                 val subject: String = "")
 
-data class Board(var name: String = "")
+data class Board(val name: String = "")
 
-data class Subtopic(var name: String = "")
+data class Subtopic(val name: String = "",
+                    val topic: String = "",
+                    val subject: String = "",
+                    val subjectName: String = "",
+                    val topicName: String = "")
 
 data class SyllabusLesson(val board: String = "",
                           val lessonNumber: Int = 0,
@@ -27,14 +31,13 @@ data class SyllabusLesson(val board: String = "",
                           val subject: String = "",
                           val topicCount: Int = 0)
 
-@Parcelize
+@Parcelize // TODO: Remove dateEdited, use @ServerTimestamp
 data class CardListContentHeader(val name: String = "",
-                                 val authorEmail: String = "",
+                                 val authorId: String = "",
                                  val authorInstitution: String = "",
                                  val authorLocation: String = "",
                                  val authorName: String = "",
                                  val dateEdited: Long = 0,
-                                 val contentKey: String = "",
                                  val subtopic: String = "",
                                  val topic: String = "",
                                  val subjectName: String = "",

@@ -2,6 +2,7 @@ package org.jnanaprabodhini.happyteacher.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Bundle
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.CollectionReference
 import org.jnanaprabodhini.happyteacher.R
@@ -27,6 +28,11 @@ class LessonEditorActivity: CardListContentViewerActivity() {
             }
             from.startActivity(lessonEditorIntent)
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        supportActionBar?.setSubtitle(R.string.lesson_editor)
     }
 
     override fun getCardRecyclerAdapter(cardRef: CollectionReference, attachmentDestinationDirectory: File): CardListContentRecyclerAdapter {
