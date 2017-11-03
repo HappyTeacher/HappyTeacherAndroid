@@ -34,8 +34,13 @@ class CardEditorActivity : HappyTeacherActivity() {
 
         // TODO: Add progress bar
         cardRef.get().addOnSuccessListener { snapshot ->
-            val card = snapshot.toObject(ContentCard::class.java)
-            initializeUiForCard(card)
+            if (snapshot.exists()) {
+                val card = snapshot.toObject(ContentCard::class.java)
+                initializeUiForCard(card)
+            } else {
+                // Start with a new card
+                initializeUiForCard(ContentCard())
+            }
         }
     }
 
