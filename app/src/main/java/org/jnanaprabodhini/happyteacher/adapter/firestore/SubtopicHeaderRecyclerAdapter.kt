@@ -34,10 +34,7 @@ class SubtopicHeaderRecyclerAdapter(options: FirestoreRecyclerOptions<Subtopic>,
                     .collection(activity.getString(R.string.drafts_key))
                     .document()
 
-            // Write lesson info in batch operation to ensure offline writes
-            val batch = activity.firestoreRoot.batch()
-            batch.set(draftRef, lessonHeader)
-            batch.commit()
+            draftRef.set(lessonHeader)
 
             val cardRef = draftRef.collection(activity.getString(R.string.cards))
             LessonEditorActivity.launch(activity, cardRef, lessonHeader, model?.topicName.orEmpty())
