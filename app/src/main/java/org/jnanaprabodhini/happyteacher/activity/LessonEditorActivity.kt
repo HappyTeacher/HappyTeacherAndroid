@@ -18,14 +18,14 @@ class LessonEditorActivity: CardListContentViewerActivity() {
 
     companion object {
         fun launch(from: Activity, cardRef: CollectionReference, cardListContentHeader: CardListContentHeader, topicName: String) {
-            val lessonViewerIntent = Intent(from, LessonViewerActivity::class.java)
+            val lessonEditorIntent = Intent(from, LessonEditorActivity::class.java)
 
-            lessonViewerIntent.apply {
+            lessonEditorIntent.apply {
                 putExtra(CARD_REF_PATH, cardRef.path)
                 putExtra(HEADER, cardListContentHeader)
                 putExtra(TOPIC_NAME, topicName)
             }
-            from.startActivity(lessonViewerIntent)
+            from.startActivity(lessonEditorIntent)
         }
     }
 
