@@ -49,11 +49,11 @@
         </FrameLayout>
 
         <TextView
-            android:id="@+id/headerTextView"
+            android:id="@+id/headerEditText"
             style="@style/LessonCardText.Header"/>
 
         <TextView
-            android:id="@+id/bodyTextView"
+            android:id="@+id/bodyEditText"
             style="@style/LessonCardText.Body"/>
 
         <org.jnanaprabodhini.happyteacher.view.DownloadBarView

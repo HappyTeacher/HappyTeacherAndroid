@@ -14,8 +14,8 @@ import org.jnanaprabodhini.happyteacher.view.YoutubeWebView
  * Created by grahamearley on 9/25/17.
  */
 open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-    val headerTextView: TextView = itemView.headerTextView
-    val bodyTextView: TextView = itemView.bodyTextView
+    val headerTextView: TextView = itemView.headerEditText
+    val bodyTextView: TextView = itemView.bodyEditText
 
     val headerMediaFrame: FrameLayout = itemView.headerMediaFrame
     val headerImageView: ImageView = itemView.headerImageView

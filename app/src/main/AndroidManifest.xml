@@ -49,9 +49,12 @@
             android:name=".activity.SettingsActivity"
             android:label="@string/settings"
             android:parentActivityName=".activity.TopicsListActivity" />
-        <activity android:name=".activity.SubtopicChoiceActivity"
+        <activity
+            android:name=".activity.SubtopicChoiceActivity"
             android:label="@string/create_a_lesson_plan"
-            android:parentActivityName=".activity.ContributeActivity"/>
+            android:parentActivityName=".activity.ContributeActivity" />
+        <activity android:name=".adapter.contentlist.CardEditorActivity"
+            android:parentActivityName=".activity.LessonEditorActivity"/>
     </application>
 
 </manifest>

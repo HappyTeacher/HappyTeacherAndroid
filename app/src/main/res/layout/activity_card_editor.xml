@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="org.jnanaprabodhini.happyteacher.adapter.contentlist.CardEditorActivity">
+
+    <EditText
+        android:id="@+id/headerEditText"
+        android:padding="18dp"
+        android:hint="Header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/bodyEditText"
+        android:padding="18dp"
+        android:hint="Body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:text="Save"
+        android:padding="18dp"
+        style="@style/Button.Accent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
