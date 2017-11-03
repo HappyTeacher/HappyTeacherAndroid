@@ -36,7 +36,7 @@ class ClassroomResourceViewerActivity : CardListContentViewerActivity() {
         icon.setDrawableResource(R.drawable.ic_tv_video_white_24dp)
     }
 
-    override fun getCardRecyclerAdapter(cardRef: CollectionReference, attachmentDestinationDirectory: File): CardListContentRecyclerAdapter {
+    override fun getCardRecyclerAdapter(): CardListContentRecyclerAdapter {
         val options = FirestoreRecyclerOptions.Builder<ContentCard>()
                 .setQuery(cardRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
         return ClassroomResourcesRecyclerAdapter(options, attachmentDestinationDirectory, header.subtopic, this, this)

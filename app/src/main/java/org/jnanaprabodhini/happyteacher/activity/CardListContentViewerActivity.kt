@@ -38,7 +38,16 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
 
     protected val topicName by lazy { intent.getTopicName() }
     protected val header by lazy { intent.getHeader() }
-    private val cardRefPath by lazy { intent.getCardRefPath() }
+    protected val cardRef by lazy { firestoreRoot.collection(intent.getCardRefPath()) }
+
+    protected val attachmentDestinationDirectory by lazy {
+        // This directory will be used to store any attachments downloaded from this contentKey.
+        File(Environment.getExternalStorageDirectory().path
+                + File.separator
+                + getString(R.string.app_name)
+                + File.separator
+                + header.subjectName + File.separator + topicName + File.separator + header.name)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,22 +59,12 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
 
     private fun initializeUiForContentFromDatabase() {
         progressBar.setVisible()
-
-        // This directory will be used to store any attachments downloaded from this contentKey.
-        val attachmentDestinationDirectory = File(Environment.getExternalStorageDirectory().path
-                                                        + File.separator
-                                                        + getString(R.string.app_name)
-                                                        + File.separator
-                                                        + header.subjectName + File.separator + topicName + File.separator + header.name)
-
-        val cardRef = firestoreRoot.collection(cardRefPath)
-
-        initializeUiForContent(cardRef, attachmentDestinationDirectory)
+        initializeUiForContent()
     }
 
-    private fun initializeUiForContent(cardRef: CollectionReference, attachmentDestinationDirectory: File) {
+    private fun initializeUiForContent() {
         progressBar.setVisibilityGone()
-        initializeRecyclerView(cardRef, attachmentDestinationDirectory)
+        initializeRecyclerView()
     }
 
     open fun setHeaderView() {
@@ -78,14 +77,14 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
         locationTextView.text = header.authorLocation
     }
 
-    private fun initializeRecyclerView(cardRef: CollectionReference, attachmentDestinationDirectory: File) {
+    private fun initializeRecyclerView() {
         cardRecyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = getCardRecyclerAdapter(cardRef, attachmentDestinationDirectory)
+        val adapter = getCardRecyclerAdapter()
         adapter.startListening()
         cardRecyclerView?.adapter = adapter
     }
 
-    abstract fun getCardRecyclerAdapter(cardRef: CollectionReference, attachmentDestinationDirectory: File): CardListContentRecyclerAdapter
+    abstract fun getCardRecyclerAdapter(): CardListContentRecyclerAdapter
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == WRITE_STORAGE_PERMISSION_CODE && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {

@@ -12,7 +12,6 @@ import org.jnanaprabodhini.happyteacher.adapter.contentlist.EditableLessonRecycl
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 import org.jnanaprabodhini.happyteacher.model.ContentCard
-import java.io.File
 
 /**
  * Created by grahamearley on 11/3/17.
@@ -40,10 +39,14 @@ class LessonEditorActivity: CardListContentViewerActivity() {
 
     private fun setupFab() {
         fab.setVisible()
+
+        fab.setOnClickListener {
+
+        }
         // todo: onclick -> Card Editor for new card
     }
 
-    override fun getCardRecyclerAdapter(cardRef: CollectionReference, attachmentDestinationDirectory: File): CardListContentRecyclerAdapter {
+    override fun getCardRecyclerAdapter(): CardListContentRecyclerAdapter {
         val options = FirestoreRecyclerOptions.Builder<ContentCard>()
                 .setQuery(cardRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
         return EditableLessonRecyclerAdapter(options, attachmentDestinationDirectory, header.subtopic, this, this)

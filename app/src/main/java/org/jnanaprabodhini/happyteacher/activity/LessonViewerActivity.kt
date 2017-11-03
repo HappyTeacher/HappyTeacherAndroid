@@ -54,7 +54,7 @@ class LessonViewerActivity : CardListContentViewerActivity(){
         }
     }
 
-    override fun getCardRecyclerAdapter(cardRef: CollectionReference, attachmentDestinationDirectory: File): CardListContentRecyclerAdapter {
+    override fun getCardRecyclerAdapter(): CardListContentRecyclerAdapter {
         val options = FirestoreRecyclerOptions.Builder<ContentCard>()
                 .setQuery(cardRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
 
