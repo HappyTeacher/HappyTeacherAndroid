@@ -27,16 +27,17 @@ class ClassroomResourceViewerActivity : CardListContentViewerActivity() {
         }
     }
 
+    override val cardRecyclerAdapter: CardListContentRecyclerAdapter by lazy {
+        val options = FirestoreRecyclerOptions.Builder<ContentCard>()
+                .setQuery(cardsRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
+
+        ClassroomResourcesRecyclerAdapter(options, attachmentDestinationDirectory, header.subtopic, this, this)
+    }
+
     override fun setHeaderView() {
         super.setHeaderView()
 
         headerView.setBackgroundResource(R.color.deepGrassGreen)
         icon.setDrawableResource(R.drawable.ic_tv_video_white_24dp)
-    }
-
-    override fun getCardRecyclerAdapter(): CardListContentRecyclerAdapter {
-        val options = FirestoreRecyclerOptions.Builder<ContentCard>()
-                .setQuery(cardsRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
-        return ClassroomResourcesRecyclerAdapter(options, attachmentDestinationDirectory, header.subtopic, this, this)
     }
 }

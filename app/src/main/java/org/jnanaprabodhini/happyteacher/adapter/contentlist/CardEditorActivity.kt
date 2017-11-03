@@ -27,7 +27,6 @@ class CardEditorActivity : HappyTeacherActivity() {
     }
 
     private val cardRef by lazy { firestoreRoot.document(intent.getCardRefPath()) }
-
     private var card: ContentCard = ContentCard()
 
     override fun onCreate(savedInstanceState: Bundle?) {

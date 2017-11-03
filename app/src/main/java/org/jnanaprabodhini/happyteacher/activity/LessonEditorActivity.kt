@@ -32,6 +32,13 @@ class LessonEditorActivity: CardListContentViewerActivity() {
         }
     }
 
+    override val cardRecyclerAdapter: CardListContentRecyclerAdapter by lazy {
+        val options = FirestoreRecyclerOptions.Builder<ContentCard>()
+                .setQuery(cardsRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
+
+        EditableLessonRecyclerAdapter(options, attachmentDestinationDirectory, header.subtopic, this, this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.setSubtitle(R.string.lesson_editor)
@@ -46,12 +53,5 @@ class LessonEditorActivity: CardListContentViewerActivity() {
             CardEditorActivity.launch(this, newCardRef)
         }
     }
-
-    override fun getCardRecyclerAdapter(): CardListContentRecyclerAdapter {
-        val options = FirestoreRecyclerOptions.Builder<ContentCard>()
-                .setQuery(cardsRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
-        return EditableLessonRecyclerAdapter(options, attachmentDestinationDirectory, header.subtopic, this, this)
-    }
-
 }
 

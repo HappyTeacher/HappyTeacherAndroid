@@ -35,6 +35,13 @@ class LessonViewerActivity : CardListContentViewerActivity(){
 
     private val shouldShowSubmissionCount by lazy { intent.shouldShowSubmissionCount() }
 
+    override val cardRecyclerAdapter: CardListContentRecyclerAdapter by lazy {
+        val options = FirestoreRecyclerOptions.Builder<ContentCard>()
+                .setQuery(cardsRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
+
+        LessonPlanRecyclerAdapter(options, attachmentDestinationDirectory, topicName, header.subtopic, this, this)
+    }
+
     override fun setHeaderView() {
         super.setHeaderView()
 
@@ -48,12 +55,5 @@ class LessonViewerActivity : CardListContentViewerActivity(){
         } else {
             otherSubmissionsTextView.setVisibilityGone()
         }
-    }
-
-    override fun getCardRecyclerAdapter(): CardListContentRecyclerAdapter {
-        val options = FirestoreRecyclerOptions.Builder<ContentCard>()
-                .setQuery(cardsRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
-
-        return LessonPlanRecyclerAdapter(options, attachmentDestinationDirectory, topicName, header.subtopic, this, this)
     }
 }

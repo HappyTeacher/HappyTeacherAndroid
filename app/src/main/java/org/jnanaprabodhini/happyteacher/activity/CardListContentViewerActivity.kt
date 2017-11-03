@@ -36,6 +36,8 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
     protected val header by lazy { intent.getHeader() }
     protected val cardsRef by lazy { firestoreRoot.collection(intent.getCardsRefPath()) }
 
+    abstract val cardRecyclerAdapter: CardListContentRecyclerAdapter
+
     protected val attachmentDestinationDirectory by lazy {
         // This directory will be used to store any attachments downloaded from this contentKey.
         File(Environment.getExternalStorageDirectory().path
@@ -75,12 +77,10 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
 
     private fun initializeRecyclerView() {
         cardRecyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = getCardRecyclerAdapter()
+        val adapter = cardRecyclerAdapter
         adapter.startListening()
         cardRecyclerView?.adapter = adapter
     }
-
-    abstract fun getCardRecyclerAdapter(): CardListContentRecyclerAdapter
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == WRITE_STORAGE_PERMISSION_CODE && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
