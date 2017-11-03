@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestoreException
 import org.jnanaprabodhini.happyteacher.R
+import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentHeaderRecyclerViewHolder
 import org.jnanaprabodhini.happyteacher.extension.setInvisible
@@ -20,7 +21,7 @@ import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
  */
 abstract class TopicLessonsRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOptions<Topic>,
                                            topicsDataObserver: FirebaseDataObserver,
-                                           activity: Activity): TopicsRecyclerAdapter<ContentHeaderRecyclerViewHolder>(topicsAdapterOptions, topicsDataObserver, activity) {
+                                           activity: HappyTeacherActivity): TopicsRecyclerAdapter<ContentHeaderRecyclerViewHolder>(topicsAdapterOptions, topicsDataObserver, activity) {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ContentHeaderRecyclerViewHolder {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_content_header_recycler, parent, false)

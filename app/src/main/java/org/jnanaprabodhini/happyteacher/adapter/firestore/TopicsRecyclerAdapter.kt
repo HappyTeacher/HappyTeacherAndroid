@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestoreException
 import org.jnanaprabodhini.happyteacher.R
+import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentHeaderRecyclerViewHolder
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
@@ -23,7 +24,7 @@ import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
  */
 abstract class TopicsRecyclerAdapter<VH: RecyclerView.ViewHolder>(topicsAdapterOptions: FirestoreRecyclerOptions<Topic>,
                                      topicsDataObserver: FirebaseDataObserver,
-                                     val activity: Activity):
+                                     val activity: HappyTeacherActivity):
         FirestoreObserverRecyclerAdapter<Topic, VH>(topicsAdapterOptions, topicsDataObserver) {
 
     protected fun setBackgroundColor(view: View?, position: Int) {

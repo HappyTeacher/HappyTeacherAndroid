@@ -9,6 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import org.jnanaprabodhini.happyteacher.R
+import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.TopicSubtopicChoiceRecyclerViewHolder
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
@@ -23,7 +24,7 @@ import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
  */
 class TopicSubtopicsRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOptions<Topic>,
                                     topicsDataObserver: FirebaseDataObserver,
-                                    activity: Activity): TopicsRecyclerAdapter<TopicSubtopicChoiceRecyclerViewHolder>(topicsAdapterOptions, topicsDataObserver, activity) {
+                                    activity: HappyTeacherActivity): TopicsRecyclerAdapter<TopicSubtopicChoiceRecyclerViewHolder>(topicsAdapterOptions, topicsDataObserver, activity) {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): TopicSubtopicChoiceRecyclerViewHolder {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_subtopic_choice_header_recycler, parent, false)
