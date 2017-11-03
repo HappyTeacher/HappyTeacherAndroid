@@ -9,10 +9,8 @@ import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.CardListContentRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.ClassroomResourcesRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.extension.setDrawableResource
-import org.jnanaprabodhini.happyteacher.model.CardListContent
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 import org.jnanaprabodhini.happyteacher.model.ContentCard
-import java.io.File
 
 class ClassroomResourceViewerActivity : CardListContentViewerActivity() {
 
@@ -21,7 +19,7 @@ class ClassroomResourceViewerActivity : CardListContentViewerActivity() {
             val classroomResourcesViewerIntent = Intent(from, ClassroomResourceViewerActivity::class.java)
 
             classroomResourcesViewerIntent.apply {
-                putExtra(CARD_REF_PATH, cardRef.path)
+                putExtra(CARDS_REF_PATH, cardRef.path)
                 putExtra(HEADER, cardListContentHeader)
                 putExtra(TOPIC_NAME, topicName)
             }
@@ -38,7 +36,7 @@ class ClassroomResourceViewerActivity : CardListContentViewerActivity() {
 
     override fun getCardRecyclerAdapter(): CardListContentRecyclerAdapter {
         val options = FirestoreRecyclerOptions.Builder<ContentCard>()
-                .setQuery(cardRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
+                .setQuery(cardsRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
         return ClassroomResourcesRecyclerAdapter(options, attachmentDestinationDirectory, header.subtopic, this, this)
     }
 }

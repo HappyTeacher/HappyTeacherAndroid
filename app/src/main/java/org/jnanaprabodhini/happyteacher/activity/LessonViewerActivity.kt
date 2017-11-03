@@ -2,21 +2,17 @@ package org.jnanaprabodhini.happyteacher.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.util.Log
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.CollectionReference
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.CardListContentRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.LessonPlanRecyclerAdapter
-import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.setDrawableRight
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
-import org.jnanaprabodhini.happyteacher.model.CardListContent
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 import org.jnanaprabodhini.happyteacher.model.ContentCard
-import java.io.File
 
 class LessonViewerActivity : CardListContentViewerActivity(){
 
@@ -25,7 +21,7 @@ class LessonViewerActivity : CardListContentViewerActivity(){
             val lessonViewerIntent = Intent(from, LessonViewerActivity::class.java)
 
             lessonViewerIntent.apply {
-                putExtra(CARD_REF_PATH, cardRef.path)
+                putExtra(CARDS_REF_PATH, cardRef.path)
                 putExtra(HEADER, cardListContentHeader)
                 putExtra(TOPIC_NAME, topicName)
                 putExtra(SHOW_SUBMISSION_COUNT, shouldShowSubmissionCount)
@@ -56,7 +52,7 @@ class LessonViewerActivity : CardListContentViewerActivity(){
 
     override fun getCardRecyclerAdapter(): CardListContentRecyclerAdapter {
         val options = FirestoreRecyclerOptions.Builder<ContentCard>()
-                .setQuery(cardRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
+                .setQuery(cardsRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
 
         return LessonPlanRecyclerAdapter(options, attachmentDestinationDirectory, topicName, header.subtopic, this, this)
     }

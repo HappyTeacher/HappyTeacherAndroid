@@ -1,14 +1,10 @@
 package org.jnanaprabodhini.happyteacher.activity
 
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
 import android.support.v7.widget.LinearLayoutManager
-import android.widget.Toast
-import com.crashlytics.android.Crashlytics
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import kotlinx.android.synthetic.main.view_recycler_horizontal_pager.*
@@ -26,8 +22,8 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
     companion object {
         const val WRITE_STORAGE_PERMISSION_CODE = 1
 
-        const val CARD_REF_PATH: String = "CARD_REF_PATH"
-        fun Intent.getCardRefPath(): String = getStringExtra(CARD_REF_PATH)
+        const val CARDS_REF_PATH: String = "CARDS_REF_PATH"
+        fun Intent.getCardsRefPath(): String = getStringExtra(CARDS_REF_PATH)
 
         const val HEADER: String = "HEADER"
         fun Intent.getHeader(): CardListContentHeader = getParcelableExtra(HEADER)
@@ -38,7 +34,7 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
 
     protected val topicName by lazy { intent.getTopicName() }
     protected val header by lazy { intent.getHeader() }
-    protected val cardRef by lazy { firestoreRoot.collection(intent.getCardRefPath()) }
+    protected val cardsRef by lazy { firestoreRoot.collection(intent.getCardsRefPath()) }
 
     protected val attachmentDestinationDirectory by lazy {
         // This directory will be used to store any attachments downloaded from this contentKey.
