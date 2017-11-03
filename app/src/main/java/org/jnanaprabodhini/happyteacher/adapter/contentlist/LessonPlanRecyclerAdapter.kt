@@ -1,6 +1,7 @@
 package org.jnanaprabodhini.happyteacher.adapter.contentlist
 
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.crashlytics.android.Crashlytics
@@ -19,8 +20,8 @@ import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 import java.io.File
 
-class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, attachmentDestinationDirectory: File, val topicName: String, topicId: String, subtopicId: String, activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
-        CardListContentRecyclerAdapter(options, attachmentDestinationDirectory, topicId, subtopicId, activity, dataObserver) {
+class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, attachmentDestinationDirectory: File, val topicName: String, subtopicId: String, activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
+        CardListContentRecyclerAdapter(options, attachmentDestinationDirectory, subtopicId, activity, dataObserver) {
 
     companion object { val LESSON_CARD_VIEW_TYPE = 0; val CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE = 1 }
 

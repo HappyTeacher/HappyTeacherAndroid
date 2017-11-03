@@ -21,7 +21,7 @@ import java.io.File
 /**
  * Created by grahamearley on 9/25/17.
  */
-abstract class CardListContentRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, val attachmentDestinationDirectory: File, val topicId: String, val subtopicId: String, val activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
+abstract class CardListContentRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, val attachmentDestinationDirectory: File, val subtopicId: String, val activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
         FirestoreObserverRecyclerAdapter<ContentCard, RecyclerView.ViewHolder>(options, dataObserver) {
 
     protected fun onBindContentCardViewHolder(holder: ContentCardViewHolder, model: ContentCard?) {

@@ -58,6 +58,6 @@ class LessonViewerActivity : CardListContentViewerActivity(){
         val options = FirestoreRecyclerOptions.Builder<ContentCard>()
                 .setQuery(cardRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
 
-        return LessonPlanRecyclerAdapter(options, attachmentDestinationDirectory, topicName, header.topic, header.subtopic, this, this)
+        return LessonPlanRecyclerAdapter(options, attachmentDestinationDirectory, topicName, header.subtopic, this, this)
     }
 }
