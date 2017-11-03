@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
-import org.jnanaprabodhini.happyteacher.adapter.contentlist.CardListContentRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentCardViewHolder
 import org.jnanaprabodhini.happyteacher.model.ContentCard
@@ -17,7 +16,9 @@ class EditableLessonRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCar
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, model: ContentCard?) {
         if (holder is ContentCardViewHolder) {
             onBindContentCardViewHolder(holder, model)
-            holder.showEditButtons()
+
+            val cardRef = snapshots.getSnapshot(position).reference
+            holder.setupEditButtons(activity, cardRef)
         }
     }
 

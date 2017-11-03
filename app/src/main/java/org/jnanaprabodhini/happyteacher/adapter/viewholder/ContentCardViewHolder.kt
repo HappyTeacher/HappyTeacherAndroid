@@ -1,9 +1,12 @@
 package org.jnanaprabodhini.happyteacher.adapter.viewholder
 
+import android.app.Activity
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.*
+import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.list_item_content_card.view.*
+import org.jnanaprabodhini.happyteacher.adapter.contentlist.CardEditorActivity
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.view.DownloadBarView
@@ -27,10 +30,14 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
 
     val attachmentDownloadButton: DownloadBarView = itemView.attachmentDownloadBar
 
-    val editButton: ImageButton = itemView.editButton
+    private val editButton: ImageButton = itemView.editButton
 
-    fun showEditButtons() {
+    fun setupEditButtons(activity: Activity, cardRef: DocumentReference) {
         editButton.setVisible()
+
+        editButton.setOnClickListener {
+            CardEditorActivity.launch(activity, cardRef)
+        }
     }
 
     fun hideEditButtons() {
