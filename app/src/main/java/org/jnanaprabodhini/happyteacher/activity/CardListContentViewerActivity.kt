@@ -23,59 +23,26 @@ import java.io.File
 
 abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseDataObserver {
 
-    companion object Constants {
+    companion object {
         const val WRITE_STORAGE_PERMISSION_CODE = 1
 
-        fun launchLessonViewerActivity(from: Activity, cardRef: CollectionReference, cardListContentHeader: CardListContentHeader, topicName: String, shouldShowSubmissionCount: Boolean) {
-            val lessonViewerIntent = Intent(from, LessonViewerActivity::class.java)
-            launchIntentWithExtras(lessonViewerIntent, from, cardRef, cardListContentHeader, topicName, shouldShowSubmissionCount)
-        }
-
-        fun launchClassroomResourcesActivity(from: Activity, cardRef: CollectionReference, cardListContentHeader: CardListContentHeader, topicName: String) {
-            val classroomResourcesViewerIntent = Intent(from, ClassroomResourceViewerActivity::class.java)
-            launchIntentWithExtras(classroomResourcesViewerIntent, from, cardRef, cardListContentHeader, topicName)
-        }
-
-        private fun launchIntentWithExtras(intent: Intent, activity: Activity, cardRef: CollectionReference, cardListContentHeader: CardListContentHeader, topicName: String, shouldShowSubmissionCount: Boolean = false) {
-            intent.apply {
-                putExtra(CARD_REF_PATH, cardRef.path)
-                putExtra(TOPIC_NAME, topicName)
-                putExtra(HEADER, cardListContentHeader)
-                putExtra(SHOW_SUBMISSION_COUNT, shouldShowSubmissionCount)
-            }
-            activity.startActivity(intent)
-        }
-
         const val CARD_REF_PATH: String = "CARD_REF_PATH"
-        fun Intent.hasCardRefPath(): Boolean = hasExtra(CARD_REF_PATH)
         fun Intent.getCardRefPath(): String = getStringExtra(CARD_REF_PATH)
 
-        const val TOPIC_NAME: String = "TOPIC_NAME"
-        fun Intent.hasTopicName(): Boolean = hasExtra(TOPIC_NAME)
-        fun Intent.getTopicName(): String = getStringExtra(TOPIC_NAME)
-
         const val HEADER: String = "HEADER"
-        fun Intent.hasHeader(): Boolean = hasExtra(HEADER)
         fun Intent.getHeader(): CardListContentHeader = getParcelableExtra(HEADER)
 
-        const val SHOW_SUBMISSION_COUNT: String = "SHOW_SUBMISSION_COUNT"
-        fun Intent.shouldShowSubmissionCount(): Boolean = getBooleanExtra(SHOW_SUBMISSION_COUNT, false)
-
-        fun Intent.hasAllExtras(): Boolean = hasCardRefPath() && hasTopicName() && hasHeader()
+        const val TOPIC_NAME: String = "TOPIC_NAME"
+        fun Intent.getTopicName(): String = getStringExtra(TOPIC_NAME).orEmpty()
     }
 
-    val cardRefPath by lazy { intent.getCardRefPath() }
-    val topicName by lazy { intent.getTopicName() }
-    val header by lazy { intent.getHeader() }
-    val shouldShowSubmissionCount by lazy { intent.shouldShowSubmissionCount() }
+    protected val topicName by lazy { intent.getTopicName() }
+    protected val header by lazy { intent.getHeader() }
+    private val cardRefPath by lazy { intent.getCardRefPath() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card_list_content_viewer)
-
-        if (!intent.hasAllExtras()) {
-            showErrorToastForNoExtrasAndFinish()
-        }
 
         setHeaderView()
         initializeUiForContentFromDatabase()
@@ -119,12 +86,6 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
     }
 
     abstract fun getCardRecyclerAdapter(cardRef: CollectionReference, attachmentDestinationDirectory: File): CardListContentRecyclerAdapter
-
-    private fun showErrorToastForNoExtrasAndFinish() {
-        Toast.makeText(this, R.string.there_was_an_error_loading_this_lesson, Toast.LENGTH_LONG).show()
-        Crashlytics.log("CardListContentViewer was launched without all extras.")
-        finish()
-    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == WRITE_STORAGE_PERMISSION_CODE && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {

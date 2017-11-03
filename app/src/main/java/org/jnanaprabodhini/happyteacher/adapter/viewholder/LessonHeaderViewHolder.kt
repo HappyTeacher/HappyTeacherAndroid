@@ -5,6 +5,7 @@ import android.view.View
 import com.google.firebase.firestore.CollectionReference
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.CardListContentViewerActivity
+import org.jnanaprabodhini.happyteacher.activity.LessonViewerActivity
 import org.jnanaprabodhini.happyteacher.activity.SubtopicSubmissionsListActivity
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
@@ -13,7 +14,7 @@ import java.text.DateFormat
 
 class LessonHeaderViewHolder(itemView: View, val shouldShowSubmissionCount: Boolean): CardListHeaderViewHolder(itemView) {
     override fun launchContentViewerActivity(activity: Activity, cardRef: CollectionReference, cardListContentHeaderModel: CardListContentHeader?, topicName: String) {
-        CardListContentViewerActivity.launchLessonViewerActivity(activity, cardRef, cardListContentHeaderModel ?: CardListContentHeader(), topicName, shouldShowSubmissionCount)
+        LessonViewerActivity.launch(activity, cardRef, cardListContentHeaderModel ?: CardListContentHeader(), topicName, shouldShowSubmissionCount)
     }
 
     override fun populateView(cardListContentHeaderModel: CardListContentHeader?, cardRef: CollectionReference, topicName: String, activity: Activity, dateFormat: DateFormat) {
