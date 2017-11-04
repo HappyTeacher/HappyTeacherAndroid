@@ -52,6 +52,7 @@
         <activity
             android:name=".activity.SubtopicChoiceActivity"
             android:label="@string/create_a_lesson_plan"
+            android:noHistory="true"
             android:parentActivityName=".activity.ContributeActivity" />
         <activity android:name=".activity.CardEditorActivity"
             android:parentActivityName=".activity.LessonEditorActivity"/>
