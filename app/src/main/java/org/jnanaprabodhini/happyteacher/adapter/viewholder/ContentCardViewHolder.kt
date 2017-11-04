@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.*
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.list_item_content_card.view.*
-import org.jnanaprabodhini.happyteacher.adapter.contentlist.CardEditorActivity
+import org.jnanaprabodhini.happyteacher.activity.CardEditorActivity
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.view.DownloadBarView

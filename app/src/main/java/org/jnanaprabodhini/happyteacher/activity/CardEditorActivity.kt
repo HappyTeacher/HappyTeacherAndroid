@@ -1,9 +1,8 @@
-package org.jnanaprabodhini.happyteacher.adapter.contentlist
+package org.jnanaprabodhini.happyteacher.activity
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.activity_card_editor.*
 import org.jnanaprabodhini.happyteacher.R

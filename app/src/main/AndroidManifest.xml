@@ -53,7 +53,7 @@
             android:name=".activity.SubtopicChoiceActivity"
             android:label="@string/create_a_lesson_plan"
             android:parentActivityName=".activity.ContributeActivity" />
-        <activity android:name=".adapter.contentlist.CardEditorActivity"
+        <activity android:name=".activity.CardEditorActivity"
             android:parentActivityName=".activity.LessonEditorActivity"/>
     </application>
 

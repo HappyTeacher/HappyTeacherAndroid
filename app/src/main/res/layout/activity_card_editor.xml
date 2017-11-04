@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="org.jnanaprabodhini.happyteacher.adapter.contentlist.CardEditorActivity">
+    tools:context="org.jnanaprabodhini.happyteacher.activity.CardEditorActivity">
 
     <EditText
         android:id="@+id/headerEditText"
