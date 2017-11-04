@@ -10,6 +10,7 @@
         android:id="@+id/headerEditText"
         android:padding="18dp"
         android:hint="Header"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -17,6 +18,7 @@
         android:id="@+id/bodyEditText"
         android:padding="18dp"
         android:hint="Body"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -24,6 +26,7 @@
         android:id="@+id/saveButton"
         android:text="Save"
         android:padding="18dp"
+        android:visibility="gone"
         style="@style/Button.Accent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
