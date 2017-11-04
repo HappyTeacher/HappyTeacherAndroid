@@ -36,7 +36,7 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
         editButton.setVisible()
 
         editButton.setOnClickListener {
-            CardEditorActivity.launch(activity, cardRef)
+            CardEditorActivity.launch(activity, cardRef, isNewCard = false)
         }
     }
 

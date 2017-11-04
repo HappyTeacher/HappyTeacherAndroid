@@ -54,9 +54,9 @@ class LessonEditorActivity: CardListContentViewerActivity() {
             if (cardCount > 0) {
                 val lastCard = cardRecyclerAdapter.getItem(cardRecyclerAdapter.itemCount - 1)
                 val newCardNumber = lastCard.orderNumber + 1
-                CardEditorActivity.launch(this, newCardRef, newCardNumber)
+                CardEditorActivity.launch(this, newCardRef, newCardNumber, isNewCard = true)
             } else {
-                CardEditorActivity.launch(this, newCardRef)
+                CardEditorActivity.launch(this, newCardRef, isNewCard = true)
             }
         }
     }
