@@ -35,12 +35,13 @@ class TopicSubtopicsRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOptio
         holder?.titleTextView?.text = model?.name
         setBackgroundColor(holder?.itemView, position)
 
-        val topicRef = snapshots.getSnapshot(position).reference
-        initializeSubtopicRecycler(holder?.horizontalRecyclerView, topicRef, holder)
+        val topicId = snapshots.getSnapshot(position).reference.id
+        initializeSubtopicRecycler(holder?.horizontalRecyclerView, topicId, holder)
     }
 
-    private fun initializeSubtopicRecycler(horizontalRecyclerView: HorizontalPagerRecyclerView?, topicRef: DocumentReference, holder: TopicSubtopicChoiceRecyclerViewHolder?) {
-        val query: Query = topicRef.collection(activity.getString(R.string.subtopics))
+    private fun initializeSubtopicRecycler(horizontalRecyclerView: HorizontalPagerRecyclerView?, topicId: String, holder: TopicSubtopicChoiceRecyclerViewHolder?) {
+        val query: Query = activity.firestoreLocalized.collection(activity.getString(R.string.subtopics))
+                .whereEqualTo(activity.getString(R.string.topic), topicId)
 
         val adapterOptions = FirestoreRecyclerOptions.Builder<Subtopic>().setQuery(query, Subtopic::class.java).build()
         val adapter = SubtopicHeaderRecyclerAdapter(adapterOptions, getSubtopicDataObserverForViewHolder(holder), activity)
