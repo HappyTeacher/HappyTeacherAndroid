@@ -8,16 +8,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_recycler.*
 
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.adapter.firestore.LessonHeaderRecyclerAdapter
-import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
-import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 
 open class RecyclerFragment : Fragment() {
 
@@ -35,39 +28,3 @@ open class RecyclerFragment : Fragment() {
 
 }
 
-class DraftsRecyclerFragment: RecyclerFragment() {
-
-    val firestoreRoot: FirebaseFirestore by lazy {
-        FirebaseFirestore.getInstance()
-    }
-
-    val firestoreUsersCollection: CollectionReference by lazy {
-        firestoreRoot.collection(getString(R.string.users))
-    }
-
-    val auth: FirebaseAuth by lazy {
-        FirebaseAuth.getInstance()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        recyclerView.layoutManager = LinearLayoutManager(context)
-
-        setupAdapter()
-    }
-
-    private fun setupAdapter() {
-        val draftQuery = firestoreUsersCollection.document(auth.currentUser!!.uid)
-                .collection(activity.getString(R.string.drafts_key))
-
-        val adapterOptions = FirestoreRecyclerOptions.Builder<CardListContentHeader>()
-                .setQuery(draftQuery, CardListContentHeader::class.java).build()
-
-        val shouldShowSubmissionsCount = false
-        val dummyObserver = object: FirebaseDataObserver {}
-        val adapter = LessonHeaderRecyclerAdapter("TODO: make real adapter..", shouldShowSubmissionsCount, adapterOptions, activity, dummyObserver)
-        adapter.startListening()
-
-        recyclerView.adapter = adapter
-    }
-}
