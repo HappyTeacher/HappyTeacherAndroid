@@ -21,10 +21,5 @@ open class RecyclerFragment : Fragment() {
         return inflater?.inflate(R.layout.fragment_recycler, container, false)
     }
 
-    fun <VH: RecyclerView.ViewHolder> initializeRecycler(adapter: RecyclerView.Adapter<VH>) {
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = adapter
-    }
-
 }
 
