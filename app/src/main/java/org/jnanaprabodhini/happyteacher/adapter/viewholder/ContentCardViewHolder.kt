@@ -6,9 +6,11 @@ import android.view.View
 import android.widget.*
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.list_item_content_card.view.*
+import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.CardEditorActivity
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
+import org.jnanaprabodhini.happyteacher.extension.showSnackbar
 import org.jnanaprabodhini.happyteacher.view.DownloadBarView
 import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
 import org.jnanaprabodhini.happyteacher.view.YoutubeWebView
@@ -31,16 +33,26 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
     val attachmentDownloadButton: DownloadBarView = itemView.attachmentDownloadBar
 
     private val editButton: ImageButton = itemView.editButton
+    private val deleteButton: ImageButton = itemView.deleteButton
 
     fun setupEditButtons(activity: Activity, cardRef: DocumentReference) {
         editButton.setVisible()
+        deleteButton.setVisible()
 
         editButton.setOnClickListener {
             CardEditorActivity.launch(activity, cardRef, isNewCard = false)
+        }
+
+        deleteButton.setOnClickListener {
+            cardRef.delete().addOnSuccessListener {
+                deleteButton.showSnackbar(activity.getString(R.string.card_deleted))
+                // todo: add UNDO
+            }
         }
     }
 
     fun hideEditButtons() {
         editButton.setVisibilityGone()
+        deleteButton.setVisibilityGone()
     }
 }
