@@ -40,6 +40,7 @@ data class CardListContentHeader(val name: String = "",
                                  val dateEdited: Long = 0,
                                  val subtopic: String = "",
                                  val topic: String = "",
+                                 val topicName: String = "",
                                  val subjectName: String = "",
                                  val subtopicSubmissionCount: Int = 0): Parcelable
 

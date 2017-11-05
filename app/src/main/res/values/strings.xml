@@ -91,5 +91,6 @@
     <string name="lesson_editor">Lesson Editor</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="draft_deleted">Draft deleted.</string>
 
 </resources>

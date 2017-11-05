@@ -41,7 +41,7 @@ class DraftsRecyclerFragment: RecyclerFragment() {
                 .setQuery(draftQuery, CardListContentHeader::class.java).build()
 
         val dummyObserver = object: FirebaseDataObserver {} // todo: fragment -> observer
-        val adapter = DraftHeaderRecyclerAdapter(adapterOptions, dummyObserver, context)
+        val adapter = DraftHeaderRecyclerAdapter(adapterOptions, dummyObserver, activity)
         adapter.startListening()
 
         recyclerView.adapter = adapter
