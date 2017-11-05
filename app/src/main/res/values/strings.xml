@@ -90,5 +90,6 @@
     <string name="write_lesson">Write lesson</string>
     <string name="lesson_editor">Lesson Editor</string>
     <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 
 </resources>

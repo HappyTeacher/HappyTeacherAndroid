@@ -7,6 +7,7 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_recycler.*
 import org.jnanaprabodhini.happyteacher.R
+import org.jnanaprabodhini.happyteacher.adapter.firestore.DraftHeaderRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.firestore.LessonHeaderRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
@@ -39,9 +40,8 @@ class DraftsRecyclerFragment: RecyclerFragment() {
         val adapterOptions = FirestoreRecyclerOptions.Builder<CardListContentHeader>()
                 .setQuery(draftQuery, CardListContentHeader::class.java).build()
 
-        val shouldShowSubmissionsCount = false
-        val dummyObserver = object: FirebaseDataObserver {}
-        val adapter = LessonHeaderRecyclerAdapter("TODO: make real adapter..", shouldShowSubmissionsCount, adapterOptions, activity, dummyObserver)
+        val dummyObserver = object: FirebaseDataObserver {} // todo: fragment -> observer
+        val adapter = DraftHeaderRecyclerAdapter(adapterOptions, dummyObserver, context)
         adapter.startListening()
 
         recyclerView.adapter = adapter
