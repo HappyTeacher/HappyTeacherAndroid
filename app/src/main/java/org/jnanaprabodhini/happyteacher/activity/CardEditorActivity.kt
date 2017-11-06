@@ -97,18 +97,15 @@ class CardEditorActivity : HappyTeacherActivity() {
     }
 
     private fun initializeYoutubeUrlValidation() {
-        youtubeUrlInputLayout.isErrorEnabled = true
-
         youtubeUrlTextInput.onTextChanged { text ->
-
             if (text?.getYoutubeUrlId() == null) {
+                youtubeUrlInputLayout.isErrorEnabled = true
                 youtubeUrlInputLayout.error = getString(R.string.youtube_url_not_recognized)
                 saveButton.isEnabled = false
             } else {
-                youtubeUrlInputLayout.error = null
+                youtubeUrlInputLayout.isErrorEnabled = false
                 saveButton.isEnabled = true
             }
-
         }
     }
 
