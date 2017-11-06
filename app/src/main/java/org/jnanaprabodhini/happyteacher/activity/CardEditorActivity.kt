@@ -116,12 +116,17 @@ class CardEditorActivity : HappyTeacherActivity() {
 
     private fun showVideoInput() {
         addVideoButton.isEnabled = false
+
+        // Cards don't have images AND videos
+        addImageButton.isEnabled = false
+
         youtubeUrlTextInput.setVisible()
         removeVideoButton.setVisible()
     }
 
     private fun hideVideoInput() {
         addVideoButton.isEnabled = true
+        addImageButton.isEnabled = true
         youtubeUrlTextInput.setVisibilityGone()
         removeVideoButton.setVisibilityGone()
     }
