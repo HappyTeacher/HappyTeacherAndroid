@@ -71,7 +71,7 @@ class LessonEditorActivity: CardListContentViewerActivity() {
                     .setTitle("Delete empty lesson?")
                     .setMessage("There are no cards in this lesson. Would you like to delete it?")
                     .setPositiveButton("Yes", {_, _ ->
-                        showToast("DELETE HERE")
+                        contentRef.delete()
                         super.finish()
                     })
                     .setNegativeButton("No", {_, _ -> super.finish()})
