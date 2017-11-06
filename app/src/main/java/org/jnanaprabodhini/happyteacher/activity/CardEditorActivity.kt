@@ -197,6 +197,8 @@ class CardEditorActivity : HappyTeacherActivity() {
         if (!bodyText.isNullOrEmpty()) {
             bodyEditText.setText(bodyText)
         }
+
+        // todo: other fields and their visibility
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
