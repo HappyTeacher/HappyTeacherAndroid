@@ -68,13 +68,13 @@ class LessonEditorActivity: CardListContentViewerActivity() {
         if (cardRecyclerAdapter.itemCount == 0) {
             // Ask if user wants to delete empty lesson
             AlertDialog.Builder(this)
-                    .setTitle(getString(R.string.delete_empty_lesson_question))
-                    .setMessage(getString(R.string.there_are_no_cards_in_this_lesson_would_you_like_to_delete_it))
-                    .setPositiveButton(getString(R.string.yes), { _, _ ->
+                    .setTitle(R.string.delete_empty_lesson_question)
+                    .setMessage(R.string.there_are_no_cards_in_this_lesson_would_you_like_to_delete_it)
+                    .setPositiveButton(R.string.yes, { _, _ ->
                         contentRef.delete()
                         super.finish()
                     })
-                    .setNegativeButton(getString(R.string.no), { _, _ -> super.finish()})
+                    .setNegativeButton(R.string.no, { _, _ -> super.finish()})
                     .show()
         } else {
             super.finish()
