@@ -7,6 +7,7 @@ import android.os.PersistableBundle
 import android.util.Log
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.activity_card_editor.*
+import kotlinx.android.synthetic.main.attachment_buttons_layout.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
@@ -56,6 +57,11 @@ class CardEditorActivity : HappyTeacherActivity() {
             restoreInstanceState(savedInstanceState)
             initializeUi()
             return
+        }
+
+        addImageButton.setOnClickListener {
+            // todo: make this do something
+            addImageButton.isEnabled = !addImageButton.isEnabled
         }
 
         if (isNewCard) {
