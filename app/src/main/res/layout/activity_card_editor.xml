@@ -6,21 +6,33 @@
     android:orientation="vertical"
     tools:context="org.jnanaprabodhini.happyteacher.activity.CardEditorActivity">
 
-    <EditText
-        android:id="@+id/headerEditText"
-        android:padding="18dp"
-        android:hint="Header"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <android.support.design.widget.TextInputLayout
+        android:layout_margin="18dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/bodyEditText"
-        android:padding="18dp"
-        android:hint="Body"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/headerEditText"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/card_header"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_margin="18dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/bodyEditText"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/card_body"/>
+
+    </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/saveButton"
@@ -28,6 +40,7 @@
         android:padding="18dp"
         android:visibility="gone"
         style="@style/Button.Accent"
+        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
