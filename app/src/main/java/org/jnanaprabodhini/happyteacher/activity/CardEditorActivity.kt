@@ -3,19 +3,14 @@ package org.jnanaprabodhini.happyteacher.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.activity_card_editor.*
 import kotlinx.android.synthetic.main.attachment_buttons_layout.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
-import org.jnanaprabodhini.happyteacher.extension.getYoutubeUrlId
-import org.jnanaprabodhini.happyteacher.extension.onTextChanged
-import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
-import org.jnanaprabodhini.happyteacher.extension.setVisible
+import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 
 class CardEditorActivity : HappyTeacherActivity() {
@@ -91,13 +86,13 @@ class CardEditorActivity : HappyTeacherActivity() {
             youtubeUrlTextInput.setText("")
         }
 
-        initializeYoutubeUrlValidation()
-
         initializeAttachmentButtons()
     }
 
-    private fun initializeYoutubeUrlValidation() {
-        youtubeUrlTextInput.onTextChanged { text ->
+    private val youtubeValidationTextWatcher = object: TextWatcher {
+        override fun afterTextChanged(editable: Editable?) {}
+        override fun beforeTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {}
+        override fun onTextChanged(text: CharSequence?, star: Int, before: Int, count: Int) {
             if (text?.getYoutubeUrlId() == null) {
                 youtubeUrlInputLayout.isErrorEnabled = true
                 youtubeUrlInputLayout.error = getString(R.string.youtube_url_not_recognized)
@@ -110,8 +105,8 @@ class CardEditorActivity : HappyTeacherActivity() {
     }
 
     private fun updateFieldInputVisibility() {
-        headerEditText.setVisible()
-        bodyEditText.setVisible()
+        headerTextInputLayout.setVisible()
+        bodyTextInputLayout.setVisible()
 
         if (card.youtubeId.isNotEmpty()) {
             showVideoInput()
@@ -139,26 +134,40 @@ class CardEditorActivity : HappyTeacherActivity() {
         // Cards don't have images AND videos
         addImageButton.isEnabled = false
 
-        youtubeUrlTextInput.setVisible()
+        youtubeUrlInputLayout.setVisible()
+        youtubeUrlTextInput.addTextChangedListener(youtubeValidationTextWatcher)
+
         removeVideoButton.setVisible()
     }
 
     private fun hideVideoInput() {
         addVideoButton.isEnabled = true
         addImageButton.isEnabled = true
-        youtubeUrlTextInput.setVisibilityGone()
+        youtubeUrlInputLayout.isErrorEnabled = false
+
+        youtubeUrlInputLayout.setVisibilityGone()
         removeVideoButton.setVisibilityGone()
+
+        youtubeUrlTextInput.removeTextChangedListener(youtubeValidationTextWatcher)
+        saveButton.isEnabled = true
     }
 
     private fun populateFieldsFromCard() {
         headerEditText.setText(card.header)
         bodyEditText.setText(card.body)
+
+        if (card.youtubeId.isNotEmpty()) {
+            youtubeUrlTextInput.setText(card.youtubeId.asIdInYoutubeUrl())
+        }
+
     }
 
     private fun updateCardFromFields() {
         card.header = headerEditText.text.toString()
         card.body = bodyEditText.text.toString()
-        card.youtubeId = youtubeUrlTextInput.text.toString() // todo: extract ID
+
+        val youtubeId = youtubeUrlTextInput.text.toString().getYoutubeUrlId()
+        if (youtubeId?.isNotEmpty() == true) card.youtubeId = youtubeId
     }
 
     private fun saveValuesToCard() {

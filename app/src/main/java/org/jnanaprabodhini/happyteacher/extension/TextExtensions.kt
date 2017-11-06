@@ -6,10 +6,7 @@ fun CharSequence.getYoutubeUrlId(): String? {
     val result = Regex(youtubeIdPattern).find(this)
     val id = result?.groupValues?.firstOrNull()
 
-    if (id?.length != 12) {
-        // Youtube IDs are 12 characters long
-        return null
-    }
-
     return id
 }
+
+fun String.asIdInYoutubeUrl() = "https://www.youtube.com/watch?v=$this"

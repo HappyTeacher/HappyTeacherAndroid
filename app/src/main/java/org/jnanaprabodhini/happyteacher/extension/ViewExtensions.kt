@@ -187,13 +187,3 @@ fun LinearLayoutManager.isLastVisiblePositionCompletelyVisible(): Boolean {
 
     return lastVisiblePosition == lastCompletelyVisiblePosition
 }
-
-fun EditText.onTextChanged(onTextChanged: (CharSequence?) -> Unit) {
-    addTextChangedListener(object: TextWatcher {
-        override fun afterTextChanged(editable: Editable?) {}
-        override fun beforeTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {}
-        override fun onTextChanged(text: CharSequence?, star: Int, before: Int, count: Int) {
-            onTextChanged(text)
-        }
-    })
-}
