@@ -1,6 +1,7 @@
 package org.jnanaprabodhini.happyteacher.activity
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -10,6 +11,7 @@ import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.CardListContentRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.EditableLessonRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.extension.setVisible
+import org.jnanaprabodhini.happyteacher.extension.showToast
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 
@@ -58,6 +60,23 @@ class LessonEditorActivity: CardListContentViewerActivity() {
             } else {
                 CardEditorActivity.launch(this, newCardRef, isNewCard = true)
             }
+        }
+    }
+
+    override fun finish() {
+        if (cardRecyclerAdapter.itemCount == 0) {
+            // Ask if user wants to delete empty lesson
+            AlertDialog.Builder(this)
+                    .setTitle("Delete empty lesson?")
+                    .setMessage("There are no cards in this lesson. Would you like to delete it?")
+                    .setPositiveButton("Yes", {_, _ ->
+                        showToast("DELETE HERE")
+                        super.finish()
+                    })
+                    .setNegativeButton("No", {_, _ -> super.finish()})
+                    .show()
+        } else {
+            super.finish()
         }
     }
 }
