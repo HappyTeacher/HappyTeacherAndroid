@@ -3,6 +3,7 @@ package org.jnanaprabodhini.happyteacher.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.activity_card_editor.*
@@ -36,6 +37,11 @@ class CardEditorActivity : HappyTeacherActivity() {
         fun Intent.isNewCard(): Boolean = getBooleanExtra(IS_NEW_CARD, true)
     }
 
+    object Constants {
+        const val HEADER_TEXT = "HEADER_TEXT"
+        const val BODY_TEXT = "BODY_TEXT"
+    }
+
     private val cardRef by lazy { firestoreRoot.document(intent.getCardRefPath()) }
     private val newCardNumber by lazy { intent.getNewCardNumber() }
     private val isNewCard by lazy { intent.isNewCard() }
@@ -53,6 +59,7 @@ class CardEditorActivity : HappyTeacherActivity() {
             cardRef.get().addOnSuccessListener { snapshot ->
                 card = snapshot.toObject(ContentCard::class.java)
                 initializeUi()
+                restoreFromInstanceState(savedInstanceState)
             }
         }
     }
@@ -83,5 +90,25 @@ class CardEditorActivity : HappyTeacherActivity() {
     private fun saveValuesToCard() {
         updateCardFromFields()
         cardRef.set(card)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        outState?.putString(Constants.HEADER_TEXT, headerEditText.text.toString())
+        outState?.putString(Constants.BODY_TEXT, bodyEditText.text.toString())
+
+        super.onSaveInstanceState(outState)
+    }
+
+    private fun restoreFromInstanceState(savedInstanceState: Bundle?) {
+        val headerText = savedInstanceState?.getString(Constants.HEADER_TEXT)
+        val bodyText = savedInstanceState?.getString(Constants.BODY_TEXT)
+
+        if (!headerText.isNullOrEmpty()) {
+            headerEditText.setText(headerText)
+        }
+
+        if (!bodyText.isNullOrEmpty()) {
+            bodyEditText.setText(bodyText)
+        }
     }
 }
