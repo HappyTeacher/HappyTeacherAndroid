@@ -103,5 +103,6 @@
     <string name="there_was_an_error_loading_your_published_contributions">There was an error loading your published contributions</string>
     <string name="card_header">Card header</string>
     <string name="card_body">Card body</string>
+    <string name="card_editor">Card Editor</string>
 
 </resources>
