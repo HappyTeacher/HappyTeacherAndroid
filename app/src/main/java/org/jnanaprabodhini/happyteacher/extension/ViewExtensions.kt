@@ -24,6 +24,9 @@ import android.support.annotation.DimenRes
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.text.Editable
+import android.text.TextWatcher
+import kotlinx.android.synthetic.main.activity_card_editor.*
 
 
 /**
@@ -183,4 +186,14 @@ fun LinearLayoutManager.isLastVisiblePositionCompletelyVisible(): Boolean {
     val lastCompletelyVisiblePosition = findLastCompletelyVisibleItemPosition()
 
     return lastVisiblePosition == lastCompletelyVisiblePosition
+}
+
+fun EditText.onTextChanged(onTextChanged: (CharSequence?) -> Unit) {
+    addTextChangedListener(object: TextWatcher {
+        override fun afterTextChanged(editable: Editable?) {}
+        override fun beforeTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {}
+        override fun onTextChanged(text: CharSequence?, star: Int, before: Int, count: Int) {
+            onTextChanged(text)
+        }
+    })
 }

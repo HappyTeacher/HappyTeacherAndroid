@@ -110,5 +110,6 @@
     <string name="add_file">Add File</string>
     <string name="youtube_url">Youtube URL</string>
     <string name="remove_video">Remove video</string>
+    <string name="youtube_url_not_recognized">Youtube URL not recognized.</string>
 
 </resources>

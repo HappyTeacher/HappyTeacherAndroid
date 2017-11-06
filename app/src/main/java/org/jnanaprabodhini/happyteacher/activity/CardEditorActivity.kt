@@ -4,12 +4,16 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.activity_card_editor.*
 import kotlinx.android.synthetic.main.attachment_buttons_layout.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
+import org.jnanaprabodhini.happyteacher.extension.getYoutubeUrlId
+import org.jnanaprabodhini.happyteacher.extension.onTextChanged
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.ContentCard
@@ -87,7 +91,25 @@ class CardEditorActivity : HappyTeacherActivity() {
             youtubeUrlTextInput.setText("")
         }
 
+        initializeYoutubeUrlValidation()
+
         initializeAttachmentButtons()
+    }
+
+    private fun initializeYoutubeUrlValidation() {
+        youtubeUrlInputLayout.isErrorEnabled = true
+
+        youtubeUrlTextInput.onTextChanged { text ->
+
+            if (text?.getYoutubeUrlId() == null) {
+                youtubeUrlInputLayout.error = getString(R.string.youtube_url_not_recognized)
+                saveButton.isEnabled = false
+            } else {
+                youtubeUrlInputLayout.error = null
+                saveButton.isEnabled = true
+            }
+
+        }
     }
 
     private fun updateFieldInputVisibility() {
