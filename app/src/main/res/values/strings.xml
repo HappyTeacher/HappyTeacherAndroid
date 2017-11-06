@@ -108,5 +108,7 @@
     <string name="add_image">Add Image</string>
     <string name="add_video">Add Video</string>
     <string name="add_file">Add File</string>
+    <string name="youtube_url">Youtube URL</string>
+    <string name="remove_video">Remove video</string>
 
 </resources>

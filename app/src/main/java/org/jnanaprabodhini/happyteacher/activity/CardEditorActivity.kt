@@ -74,8 +74,7 @@ class CardEditorActivity : HappyTeacherActivity() {
     }
 
     private fun initializeUi() {
-        headerEditText.setVisible()
-        bodyEditText.setVisible()
+        updateFieldInputVisibility()
         saveButton.setVisible()
 
         saveButton.setOnClickListener {
@@ -83,7 +82,26 @@ class CardEditorActivity : HappyTeacherActivity() {
             finish()
         }
 
+        removeVideoButton.setOnClickListener {
+            hideVideoInput()
+            youtubeUrlTextInput.setText("")
+        }
+
         initializeAttachmentButtons()
+    }
+
+    private fun updateFieldInputVisibility() {
+        headerEditText.setVisible()
+        bodyEditText.setVisible()
+
+        if (card.youtubeId.isNotEmpty()) {
+            showVideoInput()
+        } else {
+            hideVideoInput()
+        }
+
+        // Todo: Image visibility
+        // Todo: attachment visibility
     }
 
     private fun initializeAttachmentButtons() {
@@ -92,8 +110,20 @@ class CardEditorActivity : HappyTeacherActivity() {
         addFileButton.isEnabled = false
 
         addVideoButton.setOnClickListener {
-            addVideoButton.isEnabled = false
+            showVideoInput()
         }
+    }
+
+    private fun showVideoInput() {
+        addVideoButton.isEnabled = false
+        youtubeUrlTextInput.setVisible()
+        removeVideoButton.setVisible()
+    }
+
+    private fun hideVideoInput() {
+        addVideoButton.isEnabled = true
+        youtubeUrlTextInput.setVisibilityGone()
+        removeVideoButton.setVisibilityGone()
     }
 
     private fun populateFieldsFromCard() {
@@ -104,6 +134,7 @@ class CardEditorActivity : HappyTeacherActivity() {
     private fun updateCardFromFields() {
         card.header = headerEditText.text.toString()
         card.body = bodyEditText.text.toString()
+        card.youtubeId = youtubeUrlTextInput.text.toString() // todo: extract ID
     }
 
     private fun saveValuesToCard() {
