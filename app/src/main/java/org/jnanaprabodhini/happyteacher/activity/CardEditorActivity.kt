@@ -59,11 +59,6 @@ class CardEditorActivity : HappyTeacherActivity() {
             return
         }
 
-        addImageButton.setOnClickListener {
-            // todo: make this do something
-            addImageButton.isEnabled = !addImageButton.isEnabled
-        }
-
         if (isNewCard) {
             card.orderNumber = newCardNumber
             initializeUi()
@@ -86,6 +81,18 @@ class CardEditorActivity : HappyTeacherActivity() {
         saveButton.setOnClickListener {
             saveValuesToCard()
             finish()
+        }
+
+        initializeAttachmentButtons()
+    }
+
+    private fun initializeAttachmentButtons() {
+        attachmentButtonsLayout.setVisible()
+        addImageButton.isEnabled = false
+        addFileButton.isEnabled = false
+
+        addVideoButton.setOnClickListener {
+            addVideoButton.isEnabled = false
         }
     }
 
