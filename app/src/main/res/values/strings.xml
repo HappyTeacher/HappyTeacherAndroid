@@ -93,5 +93,9 @@
     <string name="delete">Delete</string>
     <string name="draft_deleted">Draft deleted.</string>
     <string name="card_deleted">Card deleted.</string>
+    <string name="delete_empty_lesson_question">Delete empty lesson?</string>
+    <string name="there_are_no_cards_in_this_lesson_would_you_like_to_delete_it">There are no cards in this lesson. Would you like to delete it?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 </resources>
