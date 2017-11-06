@@ -12,7 +12,10 @@ import org.jnanaprabodhini.happyteacher.adapter.firestore.LessonHeaderRecyclerAd
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 
-class DraftsRecyclerFragment: RecyclerFragment() {
+class DraftsFragment : RecyclerFragment() {
+
+    override val emptyRecyclerText: String by lazy { getString(R.string.you_have_no_drafts_yet) }
+    override val errorText: String by lazy { getString(R.string.there_was_an_error_loading_your_drafts) }
 
     val firestoreRoot: FirebaseFirestore by lazy {
         FirebaseFirestore.getInstance()
@@ -40,8 +43,7 @@ class DraftsRecyclerFragment: RecyclerFragment() {
         val adapterOptions = FirestoreRecyclerOptions.Builder<CardListContentHeader>()
                 .setQuery(draftQuery, CardListContentHeader::class.java).build()
 
-        val dummyObserver = object: FirebaseDataObserver {} // todo: fragment -> observer
-        val adapter = DraftHeaderRecyclerAdapter(adapterOptions, dummyObserver, activity)
+        val adapter = DraftHeaderRecyclerAdapter(adapterOptions, this, activity)
         adapter.startListening()
 
         recyclerView.adapter = adapter

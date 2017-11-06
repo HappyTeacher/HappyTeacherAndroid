@@ -95,7 +95,11 @@
     <string name="card_deleted">Card deleted.</string>
     <string name="delete_empty_lesson_question">Delete empty lesson?</string>
     <string name="there_are_no_cards_in_this_lesson_would_you_like_to_delete_it">There are no cards in this lesson. Would you like to delete it?</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
+    <string name="you_have_no_drafts_yet">You don\'t have any drafts yet. Create one!</string>
+    <string name="there_was_an_error_loading_your_drafts">There was an error loading your drafts</string>
+    <string name="you_have_no_submitted_contributions">You don\'t have any submitted contributions yet</string>
+    <string name="there_was_an_error_loading_your_submissions">There was an error loading your submissions</string>
+    <string name="you_have_no_published_contributions">You don\'t have any published contributions yet</string>
+    <string name="there_was_an_error_loading_your_published_contributions">There was an error loading your published contributions</string>
 
 </resources>
