@@ -104,5 +104,6 @@
     <string name="card_header">Card header</string>
     <string name="card_body">Card body</string>
     <string name="card_editor">Card Editor</string>
+    <string name="Save">Save</string>
 
 </resources>
