@@ -51,6 +51,12 @@ class CardEditorActivity : HappyTeacherActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card_editor)
 
+        if (savedInstanceState?.isEmpty == false) {
+            restoreInstanceState(savedInstanceState)
+            initializeUi()
+            return
+        }
+
         if (isNewCard) {
             card.orderNumber = newCardNumber
             initializeUi()
@@ -58,15 +64,13 @@ class CardEditorActivity : HappyTeacherActivity() {
             // TODO: Add progress bar
             cardRef.get().addOnSuccessListener { snapshot ->
                 card = snapshot.toObject(ContentCard::class.java)
+                populateFieldsFromCard()
                 initializeUi()
-                restoreFromInstanceState(savedInstanceState)
             }
         }
     }
 
     private fun initializeUi() {
-        populateFieldsFromCard(card)
-
         headerEditText.setVisible()
         bodyEditText.setVisible()
         saveButton.setVisible()
@@ -77,7 +81,7 @@ class CardEditorActivity : HappyTeacherActivity() {
         }
     }
 
-    private fun populateFieldsFromCard(card: ContentCard) {
+    private fun populateFieldsFromCard() {
         headerEditText.setText(card.header)
         bodyEditText.setText(card.body)
     }
@@ -99,7 +103,7 @@ class CardEditorActivity : HappyTeacherActivity() {
         super.onSaveInstanceState(outState)
     }
 
-    private fun restoreFromInstanceState(savedInstanceState: Bundle?) {
+    private fun restoreInstanceState(savedInstanceState: Bundle?) {
         val headerText = savedInstanceState?.getString(Constants.HEADER_TEXT)
         val bodyText = savedInstanceState?.getString(Constants.BODY_TEXT)
 
