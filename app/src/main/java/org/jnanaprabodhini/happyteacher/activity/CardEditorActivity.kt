@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Menu
+import android.view.MenuItem
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.activity_card_editor.*
 import kotlinx.android.synthetic.main.attachment_buttons_layout.*
@@ -48,6 +50,8 @@ class CardEditorActivity : HappyTeacherActivity() {
     private val isNewCard by lazy { intent.isNewCard() }
     private var card = ContentCard()
 
+    private var saveMenuItem: MenuItem? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card_editor)
@@ -74,12 +78,7 @@ class CardEditorActivity : HappyTeacherActivity() {
 
     private fun initializeUi() {
         updateFieldInputVisibility()
-        saveButton.setVisible()
-
-        saveButton.setOnClickListener {
-            saveValuesToCard()
-            finish()
-        }
+        saveMenuItem?.isVisible = true
 
         removeVideoButton.setOnClickListener {
             hideVideoInput()
@@ -96,10 +95,10 @@ class CardEditorActivity : HappyTeacherActivity() {
             if (text?.getYoutubeUrlId() == null) {
                 youtubeUrlInputLayout.isErrorEnabled = true
                 youtubeUrlInputLayout.error = getString(R.string.youtube_url_not_recognized)
-                saveButton.isEnabled = false
+                saveMenuItem?.isEnabled = false
             } else {
                 youtubeUrlInputLayout.isErrorEnabled = false
-                saveButton.isEnabled = true
+                saveMenuItem?.isEnabled = true
             }
         }
     }
@@ -149,7 +148,7 @@ class CardEditorActivity : HappyTeacherActivity() {
         removeVideoButton.setVisibilityGone()
 
         youtubeUrlTextInput.removeTextChangedListener(youtubeValidationTextWatcher)
-        saveButton.isEnabled = true
+        saveMenuItem?.isEnabled = true
     }
 
     private fun populateFieldsFromCard() {
@@ -160,6 +159,11 @@ class CardEditorActivity : HappyTeacherActivity() {
             youtubeUrlTextInput.setText(card.youtubeId.asIdInYoutubeUrl())
         }
 
+    }
+
+    private fun saveAndFinish() {
+        saveValuesToCard()
+        finish()
     }
 
     private fun updateCardFromFields() {
@@ -193,5 +197,19 @@ class CardEditorActivity : HappyTeacherActivity() {
         if (!bodyText.isNullOrEmpty()) {
             bodyEditText.setText(bodyText)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_card_editor, menu)
+        saveMenuItem = menu?.findItem(R.id.menu_save_card)
+        saveMenuItem?.isVisible = false
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_save_card -> saveAndFinish()
+        }
+        return true
     }
 }

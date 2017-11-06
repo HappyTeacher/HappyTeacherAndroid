@@ -96,18 +96,6 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <Button
-            android:id="@+id/saveButton"
-            android:text="@string/Save"
-            android:padding="18dp"
-            android:visibility="gone"
-            style="@style/Button.Accent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/bodyTextInputLayout"/>
-
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
