@@ -9,6 +9,7 @@ import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.activity_card_editor.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
+import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 
@@ -61,8 +62,9 @@ class CardEditorActivity : HappyTeacherActivity() {
             card.orderNumber = newCardNumber
             initializeUi()
         } else {
-            // TODO: Add progress bar
+            progressBar.setVisible()
             cardRef.get().addOnSuccessListener { snapshot ->
+                progressBar.setVisibilityGone()
                 card = snapshot.toObject(ContentCard::class.java)
                 populateFieldsFromCard()
                 initializeUi()
