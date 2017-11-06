@@ -35,9 +35,7 @@ class SubtopicHeaderRecyclerAdapter(options: FirestoreRecyclerOptions<Subtopic>,
                     .document()
 
             draftRef.set(lessonHeader)
-
-            val cardRef = draftRef.collection(activity.getString(R.string.cards))
-            LessonEditorActivity.launch(activity, cardRef, lessonHeader, model?.topicName.orEmpty())
+            LessonEditorActivity.launch(activity, draftRef, lessonHeader, model?.topicName.orEmpty())
         }
     }
 

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.CardListContentRecyclerAdapter
@@ -17,11 +18,11 @@ import org.jnanaprabodhini.happyteacher.model.ContentCard
 class LessonViewerActivity : CardListContentViewerActivity(){
 
     companion object {
-        fun launch(from: Activity, cardRef: CollectionReference, cardListContentHeader: CardListContentHeader, topicName: String, shouldShowSubmissionCount: Boolean) {
+        fun launch(from: Activity, lessonRef: DocumentReference, cardListContentHeader: CardListContentHeader, topicName: String, shouldShowSubmissionCount: Boolean) {
             val lessonViewerIntent = Intent(from, LessonViewerActivity::class.java)
 
             lessonViewerIntent.apply {
-                putExtra(CARDS_REF_PATH, cardRef.path)
+                putExtra(CONTENT_REF_PATH, lessonRef.path)
                 putExtra(HEADER, cardListContentHeader)
                 putExtra(TOPIC_NAME, topicName)
                 putExtra(SHOW_SUBMISSION_COUNT, shouldShowSubmissionCount)

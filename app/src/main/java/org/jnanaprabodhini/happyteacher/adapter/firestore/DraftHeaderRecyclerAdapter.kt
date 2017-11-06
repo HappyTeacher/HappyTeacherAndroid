@@ -46,9 +46,8 @@ class DraftHeaderRecyclerAdapter(adapterOptions: FirestoreRecyclerOptions<CardLi
             }
 
             itemView.setOnClickListener {
-                val cardsRef = draftDocumentRef.collection(activity.getString(R.string.cards))
                 val modelOrEmpty = model ?: CardListContentHeader()
-                LessonEditorActivity.launch(activity, cardsRef, modelOrEmpty, model?.topicName.orEmpty())
+                LessonEditorActivity.launch(activity, draftDocumentRef, modelOrEmpty, model?.topicName.orEmpty())
             }
         }
     }

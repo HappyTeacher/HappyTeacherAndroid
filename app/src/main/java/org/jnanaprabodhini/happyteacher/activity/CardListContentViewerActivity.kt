@@ -22,8 +22,8 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
     companion object {
         const val WRITE_STORAGE_PERMISSION_CODE = 1
 
-        const val CARDS_REF_PATH: String = "CARDS_REF_PATH"
-        fun Intent.getCardsRefPath(): String = getStringExtra(CARDS_REF_PATH)
+        const val CONTENT_REF_PATH: String = "CONTENT_REF_PATH"
+        fun Intent.getContentRefPath(): String = getStringExtra(CONTENT_REF_PATH)
 
         const val HEADER: String = "HEADER"
         fun Intent.getHeader(): CardListContentHeader = getParcelableExtra(HEADER)
@@ -34,7 +34,8 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
 
     protected val topicName by lazy { intent.getTopicName() }
     protected val header by lazy { intent.getHeader() }
-    protected val cardsRef by lazy { firestoreRoot.collection(intent.getCardsRefPath()) }
+    protected val contentRef by lazy { firestoreRoot.document(intent.getContentRefPath()) }
+    protected val cardsRef by lazy { contentRef.collection(getString(R.string.cards)) }
 
     abstract val cardRecyclerAdapter: CardListContentRecyclerAdapter
 
