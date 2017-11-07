@@ -33,7 +33,7 @@
             app:layout_constraintTop_toBottomOf="@+id/attachmentButtonsLayout"
             android:layoutAnimation="@anim/layout_fade_in"
             android:layout_width="0dp"
-            android:layout_height="200dp"/>
+            android:layout_height="wrap_content"/>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/youtubeUrlInputLayout"

@@ -92,9 +92,6 @@ class CardEditorActivity : HappyTeacherActivity() {
             showAddImageDialog()
         }
 
-        imageRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        imageRecycler.adapter = imageAdapter
-
         initializeAttachmentButtons()
     }
 
@@ -104,11 +101,13 @@ class CardEditorActivity : HappyTeacherActivity() {
 
         if (editedCard.youtubeId.isNotEmpty()) {
             showVideoInput()
-        } else {
-            hideVideoInput()
         }
 
-        // Todo: Image visibility
+        if (editedCard.imageUrls.isNotEmpty()) {
+            imageRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            imageRecycler.adapter = imageAdapter
+        }
+
         // Todo: attachment visibility
     }
 
