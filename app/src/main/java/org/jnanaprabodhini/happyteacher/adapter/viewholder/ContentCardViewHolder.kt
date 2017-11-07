@@ -45,10 +45,7 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
         }
 
         deleteButton.setOnClickListener {
-            cardRef.delete().addOnSuccessListener {
-                deleteButton.showSnackbar(activity.getString(R.string.card_deleted))
-                // todo: add UNDO
-            }
+            cardRef.delete()
         }
     }
 
