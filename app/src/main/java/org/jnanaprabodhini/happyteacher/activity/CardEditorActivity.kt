@@ -149,19 +149,19 @@ class CardEditorActivity : HappyTeacherActivity() {
 
     private fun showImageFromUrlDialog() {
         val urlTextEdit = EditText(this)
-        urlTextEdit.hint = "Image URL..."
+        urlTextEdit.hint = getString(R.string.image_url)
 
         AlertDialog.Builder(this)
-                .setTitle("Add image by URL")
+                .setTitle(R.string.add_image_by_url)
                 .setView(urlTextEdit)
-                .setPositiveButton("Add") { dialog, _ ->
+                .setPositiveButton(R.string.add, { dialog, _ ->
                     val url = urlTextEdit.text.toString()
                     addImageFromUrl(url)
                     dialog.dismiss()
-                }
-                .setNegativeButton("Cancel") { dialog, _ ->
+                })
+                .setNegativeButton(R.string.cancel, { dialog, _ ->
                     dialog.dismiss()
-                }
+                })
                 .show()
     }
 
