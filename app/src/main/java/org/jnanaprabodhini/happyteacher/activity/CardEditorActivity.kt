@@ -231,7 +231,7 @@ class CardEditorActivity : HappyTeacherActivity() {
                     .setTitle(R.string.unsaved_changes)
                     .setMessage(R.string.you_have_changed_this_card_would_you_like_to_save_your_changes)
                     .setPositiveButton(R.string.save, {_,_ -> saveAndFinish()})
-                    .setNegativeButton(R.string.discard_changes, { _, _ -> super.finish()})
+                    .setNegativeButton(R.string.discard_changes, {_, _ -> super.finish()})
                     .show()
         } else {
             super.finish()
