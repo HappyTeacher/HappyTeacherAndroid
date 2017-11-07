@@ -117,5 +117,10 @@
     <string name="add_image_by_url">Add image by URL</string>
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
+    <string name="uploading_image">Uploading image...</string>
+    <string name="image_added_to_card">Image added to card</string>
+    <string name="image_upload_failed">Image upload failed</string>
+    <string name="choose_a_picture">Choose a picture</string>
+    <string name="add_an_image">Add an image</string>
 
 </resources>

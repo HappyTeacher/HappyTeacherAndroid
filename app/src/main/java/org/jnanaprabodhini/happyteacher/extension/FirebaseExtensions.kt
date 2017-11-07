@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FileDownloadTask
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.OnProgressListener
 import com.google.firebase.storage.StorageTask
 import org.jnanaprabodhini.happyteacher.util.PreferencesManager
@@ -45,4 +46,12 @@ fun FirebaseUser.hasCompleteContributorProfile(context: Context): Boolean {
     val hasLocation = !prefs.getUserLocation().isNullOrEmpty()
 
     return hasName && hasInstitution && hasLocation
+}
+
+fun FirebaseStorage.deleteIfAvailable(fileUrl: String) {
+    try {
+        getReferenceFromUrl(fileUrl).delete()
+    } catch (e: IllegalArgumentException) {
+        // File was not in our Firebase storage; do nothing.
+    }
 }

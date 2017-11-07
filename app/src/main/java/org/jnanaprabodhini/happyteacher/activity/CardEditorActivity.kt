@@ -17,9 +17,13 @@ import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 import android.content.DialogInterface
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.widget.EditText
+import com.google.firebase.storage.FirebaseStorage
 import org.jnanaprabodhini.happyteacher.adapter.EditableCardImageAdapter
 import org.jnanaprabodhini.happyteacher.adapter.ImageGalleryRecyclerAdapter
+import java.io.InputStream
+import java.util.*
 
 
 class CardEditorActivity : HappyTeacherActivity() {
@@ -44,12 +48,22 @@ class CardEditorActivity : HappyTeacherActivity() {
     }
 
     object Constants {
+        const val IMAGE_REQUEST_CODE = 0
+
         const val ORIGINAL_CARD = "ORIGINAL_CARD"
         const val EDITED_CARD = "EDITED_CARD"
 
         const val IMAGE_FROM_URL = "From URL"
         const val IMAGE_FROM_GALLERY = "From Gallery"
         val IMAGE_OPTIONS = arrayOf(IMAGE_FROM_URL, IMAGE_FROM_GALLERY)
+    }
+
+    private val storageRef by lazy {
+        FirebaseStorage.getInstance()
+    }
+
+    private val userStorageRef by lazy {
+        storageRef.getReference("user_uploads/${auth.currentUser!!.uid}")
     }
 
     private val cardRef by lazy { firestoreRoot.document(intent.getCardRefPath()) }
@@ -133,16 +147,50 @@ class CardEditorActivity : HappyTeacherActivity() {
     }
 
     private fun showAddImageDialog() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Add an image")
-        builder.setItems(Constants.IMAGE_OPTIONS, { dialog, which ->
-            when (Constants.IMAGE_OPTIONS[which]) {
-                Constants.IMAGE_FROM_GALLERY -> "TODO"
-                Constants.IMAGE_FROM_URL -> showImageFromUrlDialog()
+        AlertDialog.Builder(this).apply {
+            setTitle(R.string.add_an_image)
+            setItems(Constants.IMAGE_OPTIONS, { dialog, which ->
+                when (Constants.IMAGE_OPTIONS[which]) {
+                    Constants.IMAGE_FROM_GALLERY -> getImageFromGallery()
+                    Constants.IMAGE_FROM_URL -> showImageFromUrlDialog()
+                }
+                dialog.dismiss()
+            })
+            show()
+        }
+    }
+
+    private fun getImageFromGallery() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.choose_a_picture)), Constants.IMAGE_REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == Constants.IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val stream = contentResolver.openInputStream(data?.data)
+            uploadImageFromStream(stream)
+        }
+
+    }
+
+    private fun uploadImageFromStream(stream: InputStream?) {
+        showToast(R.string.uploading_image)
+        stream?.let {
+            val fileRef = userStorageRef.child(Date().time.toString())
+            fileRef.putStream(stream).addOnSuccessListener { snapshot ->
+                val url = snapshot.downloadUrl.toString()
+                addImageFromUrl(url)
+                showToast(R.string.image_added_to_card)
+                stream.close()
+            }.addOnFailureListener {
+                showToast(R.string.image_upload_failed)
+                stream.close()
             }
-            dialog.dismiss()
-        })
-        builder.show()
+        }
     }
 
     private fun showImageFromUrlDialog() {
@@ -257,13 +305,23 @@ class CardEditorActivity : HappyTeacherActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun discardChangesAndFinish() {
+        val originalImages = originalCard.imageUrls
+        val newImages = editedCard.imageUrls
+        val imagesToDiscard = newImages.minus(originalImages)
+
+        imagesToDiscard.forEach { storageRef.deleteIfAvailable(it) }
+
+        super.finish()
+    }
+
     override fun finish() {
         if (hasChanges()) {
             AlertDialog.Builder(this)
                     .setTitle(R.string.unsaved_changes)
                     .setMessage(R.string.you_have_changed_this_card_would_you_like_to_save_your_changes)
                     .setPositiveButton(R.string.save, {_,_ -> saveAndFinish()})
-                    .setNegativeButton(R.string.discard_changes, {_, _ -> super.finish()})
+                    .setNegativeButton(R.string.discard_changes, {_, _ -> discardChangesAndFinish()})
                     .show()
         } else {
             super.finish()

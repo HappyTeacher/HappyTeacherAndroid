@@ -4,9 +4,12 @@ import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.FullScreenGalleryViewerActivity
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.EditableImageItemViewHolder
+import org.jnanaprabodhini.happyteacher.extension.deleteIfAvailable
 import org.jnanaprabodhini.happyteacher.extension.loadImageToFit
 import org.jnanaprabodhini.happyteacher.extension.setOneTimeOnClickListener
 import org.jnanaprabodhini.happyteacher.model.ContentCard
@@ -16,6 +19,9 @@ import org.jnanaprabodhini.happyteacher.model.ContentCard
  *  the user to edit the list of images.
  */
 class EditableCardImageAdapter(val card: ContentCard, val context: Context) : RecyclerView.Adapter<EditableImageItemViewHolder>() {
+
+    val storageRef by lazy { FirebaseStorage.getInstance() }
+
     override fun getItemCount(): Int = card.imageUrls.size
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): EditableImageItemViewHolder {
@@ -36,6 +42,8 @@ class EditableCardImageAdapter(val card: ContentCard, val context: Context) : Re
             newImageUrls.removeAt(holder.adapterPosition)
             card.imageUrls = newImageUrls
             notifyItemRemoved(holder.adapterPosition)
+
+            storageRef.deleteIfAvailable(imageUrl)
         }
     }
 }
