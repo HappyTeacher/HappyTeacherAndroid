@@ -8,6 +8,7 @@ import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.FullScreenGalleryViewerActivity
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.EditableImageItemViewHolder
 import org.jnanaprabodhini.happyteacher.extension.loadImageToFit
+import org.jnanaprabodhini.happyteacher.extension.setOneTimeOnClickListener
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 
 /**
@@ -30,11 +31,11 @@ class EditableCardImageAdapter(val card: ContentCard, val context: Context) : Re
             FullScreenGalleryViewerActivity.launch(context, card.imageUrls.toTypedArray(), position)
         }
 
-        holder?.deleteButton?.setOnClickListener{
+        holder?.deleteButton?.setOneTimeOnClickListener {
             val newImageUrls = card.imageUrls.toMutableList()
-            newImageUrls.removeAt(position)
+            newImageUrls.removeAt(holder.adapterPosition)
             card.imageUrls = newImageUrls
-            notifyItemRemoved(position)
+            notifyItemRemoved(holder.adapterPosition)
         }
     }
 }
