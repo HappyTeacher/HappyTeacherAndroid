@@ -1,10 +1,12 @@
 package org.jnanaprabodhini.happyteacher.activity
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.google.firebase.firestore.DocumentReference
@@ -78,7 +80,6 @@ class CardEditorActivity : HappyTeacherActivity() {
 
     private fun initializeUi() {
         updateFieldInputVisibility()
-        saveMenuItem?.isVisible = true
 
         removeVideoButton.setOnClickListener {
             hideVideoInput()
@@ -161,22 +162,32 @@ class CardEditorActivity : HappyTeacherActivity() {
 
     }
 
-    private fun saveAndFinish() {
-        saveValuesToCard()
-        finish()
-    }
-
     private fun updateCardFromFields() {
         card.header = headerEditText.text.toString()
         card.body = bodyEditText.text.toString()
 
         val youtubeId = youtubeUrlTextInput.text.toString().getYoutubeUrlId()
-        if (youtubeId?.isNotEmpty() == true) card.youtubeId = youtubeId
+        card.youtubeId = youtubeId.orEmpty()
     }
 
     private fun saveValuesToCard() {
         updateCardFromFields()
         cardRef.set(card)
+    }
+
+    private fun saveAndFinish() {
+        saveValuesToCard()
+        finish()
+    }
+
+    private fun hasChanges(): Boolean {
+        val isHeaderChanged = headerEditText.text.toString() != card.header
+        val isBodyChanged = bodyEditText.text.toString() != card.body
+        val isYoutubeIdChanged = youtubeUrlTextInput.text.toString().getYoutubeUrlId().orEmpty() != card.youtubeId
+
+        // TODO: check for other changes!
+
+        return isHeaderChanged || isBodyChanged || isYoutubeIdChanged
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -204,7 +215,6 @@ class CardEditorActivity : HappyTeacherActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_card_editor, menu)
         saveMenuItem = menu?.findItem(R.id.menu_save_card)
-        saveMenuItem?.isVisible = false
         return true
     }
 
@@ -212,6 +222,19 @@ class CardEditorActivity : HappyTeacherActivity() {
         when (item.itemId) {
             R.id.menu_save_card -> saveAndFinish()
         }
-        return true
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun finish() {
+        if (hasChanges()) {
+            AlertDialog.Builder(this)
+                    .setTitle(R.string.unsaved_changes)
+                    .setMessage(R.string.you_have_changed_this_card_would_you_like_to_save_your_changes)
+                    .setPositiveButton(R.string.save, {_,_ -> saveAndFinish()})
+                    .setNegativeButton(R.string.discard_changes, { _, _ -> super.finish()})
+                    .show()
+        } else {
+            super.finish()
+        }
     }
 }
