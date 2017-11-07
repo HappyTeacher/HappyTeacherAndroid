@@ -15,15 +15,14 @@ import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.ContentCard
-import android.content.DialogInterface
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.widget.EditText
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
 import org.jnanaprabodhini.happyteacher.adapter.EditableCardImageAdapter
-import org.jnanaprabodhini.happyteacher.adapter.ImageGalleryRecyclerAdapter
 import java.io.InputStream
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class CardEditorActivity : HappyTeacherActivity() {
@@ -52,6 +51,7 @@ class CardEditorActivity : HappyTeacherActivity() {
 
         const val ORIGINAL_CARD = "ORIGINAL_CARD"
         const val EDITED_CARD = "EDITED_CARD"
+        const val IMAGE_UPLOAD_REFS = "IMAGE_UPLOAD_REFS"
 
         const val IMAGE_FROM_URL = "From URL"
         const val IMAGE_FROM_GALLERY = "From Gallery"
@@ -68,6 +68,7 @@ class CardEditorActivity : HappyTeacherActivity() {
 
     private val cardRef by lazy { firestoreRoot.document(intent.getCardRefPath()) }
     private val imageAdapter by lazy { EditableCardImageAdapter(editedCard, this) }
+    private val imageUploadRefs = ArrayList<String>()
 
     private lateinit var originalCard: ContentCard
     private lateinit var editedCard: ContentCard
@@ -180,17 +181,25 @@ class CardEditorActivity : HappyTeacherActivity() {
     private fun uploadImageFromStream(stream: InputStream?) {
         showToast(R.string.uploading_image)
         stream?.let {
+            // TODO: Image size limit enforcing
+            // TODO: Better progress indicator
             val fileRef = userStorageRef.child(Date().time.toString())
-            fileRef.putStream(stream).addOnSuccessListener { snapshot ->
-                val url = snapshot.downloadUrl.toString()
-                addImageFromUrl(url)
-                showToast(R.string.image_added_to_card)
-                stream.close()
-            }.addOnFailureListener {
-                showToast(R.string.image_upload_failed)
-                stream.close()
-            }
+            val fileUploadTask = fileRef.putStream(stream)
+
+            imageUploadRefs.add(fileRef.toString())
+
+            fileUploadTask.addOnSuccessListener(this, {snapshot ->
+                onImageUploadSuccess(snapshot)
+            })
         }
+    }
+
+    private fun onImageUploadSuccess(snapshot: UploadTask.TaskSnapshot) {
+        val url = snapshot.downloadUrl.toString()
+        addImageFromUrl(url)
+        showToast(R.string.image_added_to_card)
+        val fileRef = storageRef.getReferenceFromUrl(url)
+        imageUploadRefs.remove(fileRef.toString())
     }
 
     private fun showImageFromUrlDialog() {
@@ -280,6 +289,7 @@ class CardEditorActivity : HappyTeacherActivity() {
         updateEditedCardFromFields()
         outState?.putParcelable(Constants.ORIGINAL_CARD, originalCard)
         outState?.putParcelable(Constants.EDITED_CARD, editedCard)
+        outState?.putStringArrayList(Constants.IMAGE_UPLOAD_REFS, imageUploadRefs)
 
         super.onSaveInstanceState(outState)
     }
@@ -287,9 +297,24 @@ class CardEditorActivity : HappyTeacherActivity() {
     private fun restoreInstanceState(savedInstanceState: Bundle?) {
         val savedOriginalCard: ContentCard? = savedInstanceState?.getParcelable(Constants.ORIGINAL_CARD)
         val savedEditedCard: ContentCard? = savedInstanceState?.getParcelable(Constants.EDITED_CARD)
+        val savedImageUploadRefs: ArrayList<String>? = savedInstanceState?.getStringArrayList(Constants.IMAGE_UPLOAD_REFS)
 
         savedOriginalCard?.let{ originalCard = savedOriginalCard }
         savedEditedCard?.let{ editedCard = savedEditedCard }
+        savedImageUploadRefs?.let { restoreImageUploads(it) }
+    }
+
+    private fun restoreImageUploads(uploadRefs: ArrayList<String>) {
+        this.imageUploadRefs.addAll(uploadRefs)
+        uploadRefs.map { storageRef.getReferenceFromUrl(it) }
+                .flatMap { it.activeUploadTasks }
+                .forEach { task ->
+
+                    task.addOnSuccessListener(this, { snapshot ->
+                        onImageUploadSuccess(snapshot)
+                    })
+
+                }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -315,15 +340,28 @@ class CardEditorActivity : HappyTeacherActivity() {
         super.finish()
     }
 
+    private fun cancelUploads() {
+        imageUploadRefs.map { storageRef.getReferenceFromUrl(it) }
+                .flatMap { it.activeUploadTasks }
+                .forEach { it.cancel() }
+    }
+
     override fun finish() {
-        if (hasChanges()) {
+        if (hasChanges() || imageUploadRefs.size > 0) {
             AlertDialog.Builder(this)
                     .setTitle(R.string.unsaved_changes)
                     .setMessage(R.string.you_have_changed_this_card_would_you_like_to_save_your_changes)
-                    .setPositiveButton(R.string.save, {_,_ -> saveAndFinish()})
-                    .setNegativeButton(R.string.discard_changes, {_, _ -> discardChangesAndFinish()})
+                    .setPositiveButton(R.string.save, {_,_ ->
+                        cancelUploads()
+                        saveAndFinish()
+                    })
+                    .setNegativeButton(R.string.discard_changes, {_, _ ->
+                        cancelUploads()
+                        discardChangesAndFinish()
+                    })
                     .show()
         } else {
+            cancelUploads()
             super.finish()
         }
     }
