@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.google.firebase.firestore.DocumentReference
@@ -39,13 +38,14 @@ class CardEditorActivity : HappyTeacherActivity() {
     }
 
     object Constants {
-        const val HEADER_TEXT = "HEADER_TEXT"
-        const val BODY_TEXT = "BODY_TEXT"
-        const val YOUTUBE_URL = "YOUTUBE_URL"
+        const val ORIGINAL_CARD = "ORIGINAL_CARD"
+        const val EDITED_CARD = "EDITED_CARD"
     }
 
     private val cardRef by lazy { firestoreRoot.document(intent.getCardRefPath()) }
-    private val card by lazy { intent.getCardModel() }
+
+    private lateinit var originalCard: ContentCard
+    private lateinit var editedCard: ContentCard
 
     private var saveMenuItem: MenuItem? = null
 
@@ -53,10 +53,12 @@ class CardEditorActivity : HappyTeacherActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card_editor)
 
-        if (savedInstanceState?.isEmpty == false) {
+        originalCard = intent.getCardModel()
+        editedCard = originalCard.copy()
+
+        if (savedInstanceState?.containsKey(Constants.ORIGINAL_CARD) == true
+                && savedInstanceState.containsKey(Constants.EDITED_CARD)) {
             restoreInstanceState(savedInstanceState)
-            initializeUi()
-            return
         }
 
         populateFieldsFromCard()
@@ -74,26 +76,11 @@ class CardEditorActivity : HappyTeacherActivity() {
         initializeAttachmentButtons()
     }
 
-    private val youtubeValidationTextWatcher = object: TextWatcher {
-        override fun afterTextChanged(editable: Editable?) {}
-        override fun beforeTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {}
-        override fun onTextChanged(text: CharSequence?, star: Int, before: Int, count: Int) {
-            if (text?.getYoutubeUrlId() == null) {
-                youtubeUrlInputLayout.isErrorEnabled = true
-                youtubeUrlInputLayout.error = getString(R.string.youtube_url_not_recognized)
-                saveMenuItem?.isEnabled = false
-            } else {
-                youtubeUrlInputLayout.isErrorEnabled = false
-                saveMenuItem?.isEnabled = true
-            }
-        }
-    }
-
     private fun updateFieldInputVisibility() {
         headerTextInputLayout.setVisible()
         bodyTextInputLayout.setVisible()
 
-        if (card.youtubeId.isNotEmpty()) {
+        if (editedCard.youtubeId.isNotEmpty()) {
             showVideoInput()
         } else {
             hideVideoInput()
@@ -110,6 +97,21 @@ class CardEditorActivity : HappyTeacherActivity() {
 
         addVideoButton.setOnClickListener {
             showVideoInput()
+        }
+    }
+
+    private val youtubeValidationTextWatcher = object: TextWatcher {
+        override fun afterTextChanged(editable: Editable?) {}
+        override fun beforeTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {}
+        override fun onTextChanged(text: CharSequence?, star: Int, before: Int, count: Int) {
+            if (text?.getYoutubeUrlId() == null) {
+                youtubeUrlInputLayout.isErrorEnabled = true
+                youtubeUrlInputLayout.error = getString(R.string.youtube_url_not_recognized)
+                saveMenuItem?.isEnabled = false
+            } else {
+                youtubeUrlInputLayout.isErrorEnabled = false
+                saveMenuItem?.isEnabled = true
+            }
         }
     }
 
@@ -138,64 +140,53 @@ class CardEditorActivity : HappyTeacherActivity() {
     }
 
     private fun populateFieldsFromCard() {
-        headerEditText.setText(card.header)
-        bodyEditText.setText(card.body)
+        headerEditText.setText(editedCard.header)
+        bodyEditText.setText(editedCard.body)
 
-        if (card.youtubeId.isNotEmpty()) {
-            youtubeUrlEditText.setText(card.youtubeId.asIdInYoutubeUrl())
+        if (editedCard.youtubeId.isNotEmpty()) {
+            youtubeUrlEditText.setText(editedCard.youtubeId.asIdInYoutubeUrl())
         }
 
     }
 
-    private fun updateCardFromFields() {
-        card.header = headerEditText.text.toString()
-        card.body = bodyEditText.text.toString()
+    private fun updateEditedCardFromFields() {
+        editedCard.header = headerEditText.text.toString()
+        editedCard.body = bodyEditText.text.toString()
 
         val youtubeId = youtubeUrlEditText.text.toString().getYoutubeUrlId()
-        card.youtubeId = youtubeId.orEmpty()
+        editedCard.youtubeId = youtubeId.orEmpty()
     }
 
-    private fun saveValuesToCard() {
-        updateCardFromFields()
-        cardRef.set(card)
+    private fun saveEditsToOriginalCard() {
+        updateEditedCardFromFields()
+        originalCard = editedCard
+        cardRef.set(originalCard)
     }
 
     private fun saveAndFinish() {
-        saveValuesToCard()
+        saveEditsToOriginalCard()
         finish()
     }
 
     private fun hasChanges(): Boolean {
-        val isHeaderChanged = headerEditText.text.toString() != card.header
-        val isBodyChanged = bodyEditText.text.toString() != card.body
-        val isYoutubeIdChanged = youtubeUrlEditText.text.toString().getYoutubeUrlId().orEmpty() != card.youtubeId
-
-        // TODO: check for other changes!
-
-        return isHeaderChanged || isBodyChanged || isYoutubeIdChanged
+        updateEditedCardFromFields()
+        return editedCard != originalCard
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
-        outState?.putString(Constants.HEADER_TEXT, headerEditText.text.toString())
-        outState?.putString(Constants.BODY_TEXT, bodyEditText.text.toString())
-        outState?.putString(Constants.YOUTUBE_URL, youtubeUrlEditText.text.toString())
+        updateEditedCardFromFields()
+        outState?.putParcelable(Constants.ORIGINAL_CARD, originalCard)
+        outState?.putParcelable(Constants.EDITED_CARD, editedCard)
 
         super.onSaveInstanceState(outState)
     }
 
     private fun restoreInstanceState(savedInstanceState: Bundle?) {
-        val headerText = savedInstanceState?.getString(Constants.HEADER_TEXT)
-        val bodyText = savedInstanceState?.getString(Constants.BODY_TEXT)
+        val savedOriginalCard: ContentCard? = savedInstanceState?.getParcelable(Constants.ORIGINAL_CARD)
+        val savedEditedCard: ContentCard? = savedInstanceState?.getParcelable(Constants.EDITED_CARD)
 
-        if (!headerText.isNullOrEmpty()) {
-            headerEditText.setText(headerText)
-        }
-
-        if (!bodyText.isNullOrEmpty()) {
-            bodyEditText.setText(bodyText)
-        }
-
-        // todo: other fields and their visibility
+        savedOriginalCard?.let{ originalCard = savedOriginalCard }
+        savedEditedCard?.let{ editedCard = savedEditedCard }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
