@@ -103,10 +103,8 @@ class CardEditorActivity : HappyTeacherActivity() {
             showVideoInput()
         }
 
-        if (editedCard.imageUrls.isNotEmpty()) {
-            imageRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-            imageRecycler.adapter = imageAdapter
-        }
+        imageRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        imageRecycler.adapter = imageAdapter
 
         // Todo: attachment visibility
     }
