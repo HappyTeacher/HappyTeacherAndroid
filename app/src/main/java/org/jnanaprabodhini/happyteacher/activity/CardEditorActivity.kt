@@ -18,6 +18,7 @@ import org.jnanaprabodhini.happyteacher.model.ContentCard
 import android.content.DialogInterface
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.EditText
+import org.jnanaprabodhini.happyteacher.adapter.EditableCardImageAdapter
 import org.jnanaprabodhini.happyteacher.adapter.ImageGalleryRecyclerAdapter
 
 
@@ -52,7 +53,7 @@ class CardEditorActivity : HappyTeacherActivity() {
     }
 
     private val cardRef by lazy { firestoreRoot.document(intent.getCardRefPath()) }
-    private val imageAdapter by lazy { ImageGalleryRecyclerAdapter(editedCard.imageUrls, this) }
+    private val imageAdapter by lazy { EditableCardImageAdapter(editedCard, this) }
 
     private lateinit var originalCard: ContentCard
     private lateinit var editedCard: ContentCard
@@ -169,8 +170,6 @@ class CardEditorActivity : HappyTeacherActivity() {
         val newImageUrls = editedCard.imageUrls.toMutableList()
         newImageUrls.add(url)
         editedCard.imageUrls = newImageUrls
-
-        //todo: refresh adapter data here.
         imageAdapter.notifyDataSetChanged()
     }
 

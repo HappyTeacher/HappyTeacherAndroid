@@ -11,7 +11,7 @@ import org.jnanaprabodhini.happyteacher.adapter.GalleryViewPagerAdapter
 class FullScreenGalleryViewerActivity : HappyTeacherActivity() {
 
     companion object IntentExtraHelper {
-        fun launchActivity(context: Context, imageUrls: Array<String>, position: Int) {
+        fun launch(context: Context, imageUrls: Array<String>, position: Int) {
             val fullscreenImageIntent = Intent(context, FullScreenGalleryViewerActivity::class.java)
 
             fullscreenImageIntent.apply {
