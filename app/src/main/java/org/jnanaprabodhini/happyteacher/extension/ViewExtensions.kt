@@ -153,6 +153,15 @@ fun ImageView.loadImageToFit(imageUrl: String) {
             .into(this)
 }
 
+fun ImageView.loadImageToFitWithNoPlaceholder(imageUrl: String) {
+    Picasso.with(context)
+            .load(imageUrl)
+            .error(R.drawable.ic_error_gray_32dp)
+            .fit()
+            .centerCrop()
+            .into(this)
+}
+
 fun ImageView.loadFullImageWithNoPlaceholder(imageUrl: String) {
     Picasso.with(context)
             .load(imageUrl)
