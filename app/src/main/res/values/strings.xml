@@ -72,7 +72,6 @@
     <string name="there_are_no_lessons_available_for_this_board">There are no lessons available for this board.</string>
     <string name="there_was_an_error_loading_lessons_for_this_board">There was an error loading lessons for this board.</string>
     <string name="you_are_signed_in">You are signed in</string>
-    <string name="prefs_key_user_sign_out">USER_SIGN_OUT</string>
     <string name="you_must_be_signed_in_to_contribute">You must be signed in to contribute.</string>
     <string name="update_profile">Update profile</string>
     <string name="you_need_to_complete_your_contributor_profile_before_you_can_contribute">You need to complete your Contributor Profile before you can contribute.</string>

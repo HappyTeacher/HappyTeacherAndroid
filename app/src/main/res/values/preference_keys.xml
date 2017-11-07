@@ -10,4 +10,5 @@
     <string name="prefs_key_has_chosen_board" translatable="false">HAS_CHOSEN_BOARD</string>
     <string name="prefs_key_general_settings" translatable="false">GENERAL_SETTINGS</string>
     <string name="prefs_key_user_settings" translatable="false">USER_SETTINGS</string>
+    <string name="prefs_key_user_sign_out" translatable="false">USER_SIGN_OUT</string>
 </resources>
