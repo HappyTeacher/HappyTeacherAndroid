@@ -15,6 +15,11 @@ import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.ContentCard
+import android.content.DialogInterface
+import android.support.v7.widget.LinearLayoutManager
+import android.widget.EditText
+import org.jnanaprabodhini.happyteacher.adapter.ImageGalleryRecyclerAdapter
+
 
 class CardEditorActivity : HappyTeacherActivity() {
 
@@ -40,9 +45,14 @@ class CardEditorActivity : HappyTeacherActivity() {
     object Constants {
         const val ORIGINAL_CARD = "ORIGINAL_CARD"
         const val EDITED_CARD = "EDITED_CARD"
+
+        const val IMAGE_FROM_URL = "From URL"
+        const val IMAGE_FROM_GALLERY = "From Gallery"
+        val IMAGE_OPTIONS = arrayOf(IMAGE_FROM_URL, IMAGE_FROM_GALLERY)
     }
 
     private val cardRef by lazy { firestoreRoot.document(intent.getCardRefPath()) }
+    private val imageAdapter by lazy { ImageGalleryRecyclerAdapter(editedCard.imageUrls, this) }
 
     private lateinit var originalCard: ContentCard
     private lateinit var editedCard: ContentCard
@@ -73,6 +83,17 @@ class CardEditorActivity : HappyTeacherActivity() {
             youtubeUrlEditText.setText("")
         }
 
+        if (editedCard.imageUrls.size >= 10) {
+            addImageButton.isEnabled = false // todo: this will be undone by youtube button..
+        }
+
+        addImageButton.setOnClickListener {
+            showAddImageDialog()
+        }
+
+        imageRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        imageRecycler.adapter = imageAdapter
+
         initializeAttachmentButtons()
     }
 
@@ -92,8 +113,6 @@ class CardEditorActivity : HappyTeacherActivity() {
 
     private fun initializeAttachmentButtons() {
         attachmentButtonsLayout.setVisible()
-        addImageButton.isEnabled = false
-        addFileButton.isEnabled = false
 
         addVideoButton.setOnClickListener {
             showVideoInput()
@@ -113,6 +132,46 @@ class CardEditorActivity : HappyTeacherActivity() {
                 saveMenuItem?.isEnabled = true
             }
         }
+    }
+
+    private fun showAddImageDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Add an image")
+        builder.setItems(Constants.IMAGE_OPTIONS, { dialog, which ->
+            when (Constants.IMAGE_OPTIONS[which]) {
+                Constants.IMAGE_FROM_GALLERY -> "TODO"
+                Constants.IMAGE_FROM_URL -> showImageFromUrlDialog()
+            }
+            dialog.dismiss()
+        })
+        builder.show()
+    }
+
+    private fun showImageFromUrlDialog() {
+        val urlTextEdit = EditText(this)
+        urlTextEdit.hint = "Image URL..."
+
+        AlertDialog.Builder(this)
+                .setTitle("Add image by URL")
+                .setView(urlTextEdit)
+                .setPositiveButton("Add") { dialog, _ ->
+                    val url = urlTextEdit.text.toString()
+                    addImageFromUrl(url)
+                    dialog.dismiss()
+                }
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+    }
+
+    private fun addImageFromUrl(url: String) {
+        val newImageUrls = editedCard.imageUrls.toMutableList()
+        newImageUrls.add(url)
+        editedCard.imageUrls = newImageUrls
+
+        //todo: refresh adapter data here.
+        imageAdapter.notifyDataSetChanged()
     }
 
     private fun showVideoInput() {
