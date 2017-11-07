@@ -11,6 +11,7 @@ import org.jnanaprabodhini.happyteacher.activity.CardEditorActivity
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.extension.showSnackbar
+import org.jnanaprabodhini.happyteacher.model.ContentCard
 import org.jnanaprabodhini.happyteacher.view.DownloadBarView
 import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
 import org.jnanaprabodhini.happyteacher.view.YoutubeWebView
@@ -35,12 +36,12 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
     private val editButton: ImageButton = itemView.editButton
     private val deleteButton: ImageButton = itemView.deleteButton
 
-    fun setupEditButtons(activity: Activity, cardRef: DocumentReference) {
+    fun setupEditButtons(activity: Activity, cardRef: DocumentReference, cardModel: ContentCard) {
         editButton.setVisible()
         deleteButton.setVisible()
 
         editButton.setOnClickListener {
-            CardEditorActivity.launch(activity, cardRef, isNewCard = false)
+            CardEditorActivity.launch(activity, cardRef, cardModel)
         }
 
         deleteButton.setOnClickListener {

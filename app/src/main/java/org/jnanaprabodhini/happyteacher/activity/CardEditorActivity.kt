@@ -20,13 +20,12 @@ import org.jnanaprabodhini.happyteacher.model.ContentCard
 class CardEditorActivity : HappyTeacherActivity() {
 
     companion object {
-        fun launch(from: Activity, cardRef: DocumentReference, newCardNumber: Int = 0, isNewCard: Boolean = true) {
+        fun launch(from: Activity, cardRef: DocumentReference, cardModel: ContentCard) {
             val lessonEditorIntent = Intent(from, CardEditorActivity::class.java)
 
             lessonEditorIntent.apply {
                 putExtra(CARD_REF_PATH, cardRef.path)
-                putExtra(NEW_CARD_NUMBER, newCardNumber)
-                putExtra(IS_NEW_CARD, isNewCard)
+                putExtra(CARD_MODEL, cardModel)
             }
 
             from.startActivity(lessonEditorIntent)
@@ -35,22 +34,18 @@ class CardEditorActivity : HappyTeacherActivity() {
         private const val CARD_REF_PATH: String = "CARDS_REF_PATH"
         fun Intent.getCardRefPath(): String = getStringExtra(CARD_REF_PATH)
 
-        private const val NEW_CARD_NUMBER: String = "NEW_CARD_NUMBER"
-        fun Intent.getNewCardNumber(): Int = getIntExtra(NEW_CARD_NUMBER, 0)
-
-        private const val IS_NEW_CARD: String = "IS_NEW_CARD"
-        fun Intent.isNewCard(): Boolean = getBooleanExtra(IS_NEW_CARD, true)
+        private const val CARD_MODEL: String = "CARD_MODEL"
+        fun Intent.getCardModel(): ContentCard = getParcelableExtra(CARD_MODEL)
     }
 
     object Constants {
         const val HEADER_TEXT = "HEADER_TEXT"
         const val BODY_TEXT = "BODY_TEXT"
+        const val YOUTUBE_URL = "YOUTUBE_URL"
     }
 
     private val cardRef by lazy { firestoreRoot.document(intent.getCardRefPath()) }
-    private val newCardNumber by lazy { intent.getNewCardNumber() }
-    private val isNewCard by lazy { intent.isNewCard() }
-    private var card = ContentCard()
+    private val card by lazy { intent.getCardModel() }
 
     private var saveMenuItem: MenuItem? = null
 
@@ -64,18 +59,8 @@ class CardEditorActivity : HappyTeacherActivity() {
             return
         }
 
-        if (isNewCard) {
-            card.orderNumber = newCardNumber
-            initializeUi()
-        } else {
-            progressBar.setVisible()
-            cardRef.get().addOnSuccessListener { snapshot ->
-                progressBar.setVisibilityGone()
-                card = snapshot.toObject(ContentCard::class.java)
-                populateFieldsFromCard()
-                initializeUi()
-            }
-        }
+        populateFieldsFromCard()
+        initializeUi()
     }
 
     private fun initializeUi() {
@@ -193,6 +178,7 @@ class CardEditorActivity : HappyTeacherActivity() {
     override fun onSaveInstanceState(outState: Bundle?) {
         outState?.putString(Constants.HEADER_TEXT, headerEditText.text.toString())
         outState?.putString(Constants.BODY_TEXT, bodyEditText.text.toString())
+        outState?.putString(Constants.YOUTUBE_URL, youtubeUrlEditText.text.toString())
 
         super.onSaveInstanceState(outState)
     }

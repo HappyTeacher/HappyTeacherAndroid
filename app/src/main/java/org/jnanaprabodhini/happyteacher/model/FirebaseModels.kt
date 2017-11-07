@@ -52,6 +52,7 @@ data class CardListContent(val name: String = "",
                            val dateEdited: Long = 0,
                            val cards: Map<String, ContentCard> = emptyMap())
 
+@Parcelize
 data class ContentCard(var header: String = "",
                        var body: String = "",
                        var imageUrls: List<String> = emptyList(),
@@ -60,11 +61,12 @@ data class ContentCard(var header: String = "",
                        var attachmentMetadata: AttachmentMetadata = AttachmentMetadata(),
                        var orderNumber: Int = 0,
                        var type: String = "",
-                       var number: Int = 0)
+                       var number: Int = 0): Parcelable
 
+@Parcelize
 data class AttachmentMetadata(val contentType: String = "",
                               val size: Long = 0,
-                              val timeCreated: Long = 0) {
+                              val timeCreated: Long = 0): Parcelable {
     fun isEmpty() = contentType.isEmpty() && size == 0L && timeCreated == 0L
     fun isNotEmpty() = !isEmpty()
 }
