@@ -83,7 +83,7 @@ class CardEditorActivity : HappyTeacherActivity() {
 
         removeVideoButton.setOnClickListener {
             hideVideoInput()
-            youtubeUrlTextInput.setText("")
+            youtubeUrlEditText.setText("")
         }
 
         initializeAttachmentButtons()
@@ -135,7 +135,7 @@ class CardEditorActivity : HappyTeacherActivity() {
         addImageButton.isEnabled = false
 
         youtubeUrlInputLayout.setVisible()
-        youtubeUrlTextInput.addTextChangedListener(youtubeValidationTextWatcher)
+        youtubeUrlEditText.addTextChangedListener(youtubeValidationTextWatcher)
 
         removeVideoButton.setVisible()
     }
@@ -148,7 +148,7 @@ class CardEditorActivity : HappyTeacherActivity() {
         youtubeUrlInputLayout.setVisibilityGone()
         removeVideoButton.setVisibilityGone()
 
-        youtubeUrlTextInput.removeTextChangedListener(youtubeValidationTextWatcher)
+        youtubeUrlEditText.removeTextChangedListener(youtubeValidationTextWatcher)
         saveMenuItem?.isEnabled = true
     }
 
@@ -157,7 +157,7 @@ class CardEditorActivity : HappyTeacherActivity() {
         bodyEditText.setText(card.body)
 
         if (card.youtubeId.isNotEmpty()) {
-            youtubeUrlTextInput.setText(card.youtubeId.asIdInYoutubeUrl())
+            youtubeUrlEditText.setText(card.youtubeId.asIdInYoutubeUrl())
         }
 
     }
@@ -166,7 +166,7 @@ class CardEditorActivity : HappyTeacherActivity() {
         card.header = headerEditText.text.toString()
         card.body = bodyEditText.text.toString()
 
-        val youtubeId = youtubeUrlTextInput.text.toString().getYoutubeUrlId()
+        val youtubeId = youtubeUrlEditText.text.toString().getYoutubeUrlId()
         card.youtubeId = youtubeId.orEmpty()
     }
 
@@ -183,7 +183,7 @@ class CardEditorActivity : HappyTeacherActivity() {
     private fun hasChanges(): Boolean {
         val isHeaderChanged = headerEditText.text.toString() != card.header
         val isBodyChanged = bodyEditText.text.toString() != card.body
-        val isYoutubeIdChanged = youtubeUrlTextInput.text.toString().getYoutubeUrlId().orEmpty() != card.youtubeId
+        val isYoutubeIdChanged = youtubeUrlEditText.text.toString().getYoutubeUrlId().orEmpty() != card.youtubeId
 
         // TODO: check for other changes!
 
