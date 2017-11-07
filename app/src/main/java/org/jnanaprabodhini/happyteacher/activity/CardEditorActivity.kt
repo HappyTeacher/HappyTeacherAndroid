@@ -170,7 +170,7 @@ class CardEditorActivity : HappyTeacherActivity() {
         val newImageUrls = editedCard.imageUrls.toMutableList()
         newImageUrls.add(url)
         editedCard.imageUrls = newImageUrls
-        imageAdapter.notifyDataSetChanged()
+        imageAdapter.notifyItemInserted(newImageUrls.lastIndex)
     }
 
     private fun showVideoInput() {

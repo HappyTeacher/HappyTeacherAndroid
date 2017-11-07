@@ -34,7 +34,7 @@ class EditableCardImageAdapter(val card: ContentCard, val context: Context) : Re
             val newImageUrls = card.imageUrls.toMutableList()
             newImageUrls.removeAt(position)
             card.imageUrls = newImageUrls
-            notifyDataSetChanged()
+            notifyItemRemoved(position)
         }
     }
 }
