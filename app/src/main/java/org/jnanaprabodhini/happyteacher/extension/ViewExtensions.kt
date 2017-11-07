@@ -146,17 +146,17 @@ fun TextView.setHtmlText(htmlString: String) {
 fun ImageView.loadImageToFit(imageUrl: String) {
     Picasso.with(context)
             .load(imageUrl)
-            .placeholder(R.drawable.ripple_accent_gray)
-            .error(R.drawable.white_ripple_pill)
+            .placeholder(R.drawable.ic_image_primary_32dp)
+            .error(R.drawable.ic_error_gray_32dp)
             .fit()
             .centerCrop()
             .into(this)
 }
 
-fun ImageView.loadImageWithNoPlaceholder(imageUrl: String) {
+fun ImageView.loadFullImageWithNoPlaceholder(imageUrl: String) {
     Picasso.with(context)
             .load(imageUrl)
-            .error(R.drawable.white_ripple_pill)
+            .error(R.drawable.ic_error_gray_32dp)
             .fit()
             .centerInside()
             .into(this)
