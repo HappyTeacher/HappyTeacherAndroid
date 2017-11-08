@@ -26,11 +26,22 @@
 
         </HorizontalScrollView>
 
+        <ProgressBar
+            android:id="@+id/imageUploadProgressBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/attachmentButtonsLayout"/>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/imageRecycler"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/attachmentButtonsLayout"
+            app:layout_constraintTop_toBottomOf="@+id/imageUploadProgressBar"
             android:layoutAnimation="@anim/layout_fade_in"
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
@@ -104,15 +115,5 @@
                 android:inputType="textCapSentences|textLongMessage|textMultiLine"/>
 
         </android.support.design.widget.TextInputLayout>
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:visibility="gone" />
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>

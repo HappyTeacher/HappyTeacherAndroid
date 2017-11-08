@@ -16,6 +16,7 @@ import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.widget.EditText
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
@@ -186,8 +187,9 @@ class CardEditorActivity : HappyTeacherActivity() {
             val fileRef = userStorageRef.child(Date().time.toString())
             val fileUploadTask = fileRef.putStream(stream)
 
+            // TODO: observable list. add listeners in one place when list is modified.
             imageUploadRefs.add(fileRef.toString())
-
+            imageUploadProgressBar.setVisible()
             fileUploadTask.addOnSuccessListener(this, {snapshot ->
                 onImageUploadSuccess(snapshot)
             })
@@ -199,7 +201,12 @@ class CardEditorActivity : HappyTeacherActivity() {
         addImageFromUrl(url)
         showToast(R.string.image_added_to_card)
         val fileRef = storageRef.getReferenceFromUrl(url)
+
         imageUploadRefs.remove(fileRef.toString())
+
+        if (imageUploadRefs.isEmpty()) {
+            imageUploadProgressBar.setVisibilityGone()
+        }
     }
 
     private fun showImageFromUrlDialog() {
