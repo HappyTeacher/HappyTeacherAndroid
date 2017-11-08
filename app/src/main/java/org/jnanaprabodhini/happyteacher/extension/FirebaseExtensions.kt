@@ -41,9 +41,9 @@ fun FileDownloadTask.addOnProgressListenerIfNotNull(activity: Activity, onProgre
 fun FirebaseUser.hasCompleteContributorProfile(context: Context): Boolean {
     val prefs = PreferencesManager.getInstance(context)
 
-    val hasName = !prefs.getUserName().isNullOrEmpty()
-    val hasInstitution = !prefs.getUserInstitution().isNullOrEmpty()
-    val hasLocation = !prefs.getUserLocation().isNullOrEmpty()
+    val hasName = !prefs.getUserName().isEmpty()
+    val hasInstitution = !prefs.getUserInstitution().isEmpty()
+    val hasLocation = !prefs.getUserLocation().isEmpty()
 
     return hasName && hasInstitution && hasLocation
 }
@@ -53,5 +53,15 @@ fun FirebaseStorage.deleteIfAvailable(fileUrl: String) {
         getReferenceFromUrl(fileUrl).delete()
     } catch (e: IllegalArgumentException) {
         // File was not in our Firebase storage; do nothing.
+    }
+}
+
+fun DocumentReference.deleteAlongWithSubcollection(collectionId: String) {
+    val collectionRef = this.collection(collectionId)
+    this.delete()
+    collectionRef.get().addOnSuccessListener { querySnapshot ->
+        querySnapshot.documents.forEach {
+            it.reference.delete()
+        }
     }
 }
