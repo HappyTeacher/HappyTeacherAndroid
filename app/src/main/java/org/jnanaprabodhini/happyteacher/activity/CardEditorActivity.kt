@@ -16,7 +16,6 @@ import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.widget.EditText
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.storage.FirebaseStorage
@@ -71,12 +70,16 @@ class CardEditorActivity : HappyTeacherActivity() {
         FirebaseStorage.getInstance()
     }
 
-    private val userStorageRef by lazy {
-        storageRef.getReference("user_uploads/${auth.currentUser!!.uid}/$subtopicId")
+    private val cardStorageRef by lazy {
+        storageRef.getReference("user_uploads/${auth.currentUser!!.uid}/$subtopicId/${cardRef.id}")
     }
 
-    private val userImageStorageRef by lazy {
-        userStorageRef.child("images")
+    private val cardImageStorageRef by lazy {
+        cardStorageRef.child("images")
+    }
+
+    private val cardFileStorageRef by lazy {
+        cardStorageRef.child("files")
     }
 
     private val cardRef by lazy { firestoreRoot.document(intent.getCardRefPath()) }
@@ -224,7 +227,7 @@ class CardEditorActivity : HappyTeacherActivity() {
         showToast(R.string.uploading_image)
         stream?.let {
             // TODO: Image size limit enforcing
-            val fileRef = userImageStorageRef.child(Date().time.toString())
+            val fileRef = cardImageStorageRef.child(Date().time.toString())
             fileRef.putStream(stream)
             activeImageUploadRefUrls.add(fileRef.toString())
         }
