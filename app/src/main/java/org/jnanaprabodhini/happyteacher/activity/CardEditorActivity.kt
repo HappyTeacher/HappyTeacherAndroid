@@ -70,7 +70,10 @@ class CardEditorActivity : HappyTeacherActivity() {
 
     private val cardRef by lazy { firestoreRoot.document(intent.getCardRefPath()) }
     private val imageAdapter by lazy { EditableCardImageAdapter(editedCard, this) }
-    private val activeImageUploadRefUrls = ObservableArrayList<String>(onAdd = { refUrl -> onImageUploadRefAdded(refUrl) })
+    private val activeImageUploadRefUrls = ObservableArrayList<String>(
+            onPreAdd = { refUrl -> onImageUploadRefAdded(refUrl) },
+            onPreClear = { refUrls -> onPreClearUploads(refUrls) }
+    )
 
     private lateinit var originalCard: ContentCard
     private lateinit var editedCard: ContentCard
@@ -343,11 +346,13 @@ class CardEditorActivity : HappyTeacherActivity() {
     }
 
     private fun cancelUploads() {
-        // TODO: have list react to removals
-        activeImageUploadRefUrls.map { storageRef.getReferenceFromUrl(it) }
+        activeImageUploadRefUrls.clear()
+    }
+
+    private fun onPreClearUploads(refUrls: List<String>) {
+        refUrls.map { storageRef.getReferenceFromUrl(it) }
                 .flatMap { it.activeUploadTasks }
                 .forEach { it.cancel() }
-        activeImageUploadRefUrls.clear()
     }
 
     override fun finish() {
