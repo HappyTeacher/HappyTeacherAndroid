@@ -111,7 +111,7 @@
     <string name="remove_video">Remove video</string>
     <string name="youtube_url_not_recognized">Youtube URL not recognized.</string>
     <string name="unsaved_changes">Unsaved changes</string>
-    <string name="you_have_changed_this_card_would_you_like_to_save_your_changes">You have changed this card. Would you like to save your changes? Any in-progress uploads will be cancelled.</string>
+    <string name="you_have_changed_this_card_would_you_like_to_save_your_changes">You have changed this card. Would you like to save your changes? \n\nAny in-progress uploads will be cancelled.</string>
     <string name="discard_changes">Discard changes</string>
     <string name="image_url">Image URL…</string>
     <string name="add_image_by_url">Add image by URL</string>
