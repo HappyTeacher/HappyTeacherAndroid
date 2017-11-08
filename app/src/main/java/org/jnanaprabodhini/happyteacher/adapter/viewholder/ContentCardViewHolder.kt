@@ -36,12 +36,12 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
     private val editButton: ImageButton = itemView.editButton
     private val deleteButton: ImageButton = itemView.deleteButton
 
-    fun setupEditButtons(activity: Activity, cardRef: DocumentReference, cardModel: ContentCard) {
+    fun setupEditButtons(activity: Activity, cardRef: DocumentReference, cardModel: ContentCard, subtopicId: String) {
         editButton.setVisible()
         deleteButton.setVisible()
 
         editButton.setOnClickListener {
-            CardEditorActivity.launch(activity, cardRef, cardModel)
+            CardEditorActivity.launch(activity, cardRef, cardModel, subtopicId)
         }
 
         deleteButton.setOnClickListener {

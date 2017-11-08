@@ -31,12 +31,13 @@ import kotlin.collections.ArrayList
 class CardEditorActivity : HappyTeacherActivity() {
 
     companion object {
-        fun launch(from: Activity, cardRef: DocumentReference, cardModel: ContentCard) {
+        fun launch(from: Activity, cardRef: DocumentReference, cardModel: ContentCard, subtopicId: String) {
             val lessonEditorIntent = Intent(from, CardEditorActivity::class.java)
 
             lessonEditorIntent.apply {
                 putExtra(CARD_REF_PATH, cardRef.path)
                 putExtra(CARD_MODEL, cardModel)
+                putExtra(SUBTOPIC_ID, subtopicId)
             }
 
             from.startActivity(lessonEditorIntent)
@@ -47,6 +48,9 @@ class CardEditorActivity : HappyTeacherActivity() {
 
         private const val CARD_MODEL: String = "CARD_MODEL"
         fun Intent.getCardModel(): ContentCard = getParcelableExtra(CARD_MODEL)
+
+        private const val SUBTOPIC_ID: String = "SUBTOPIC_ID"
+        fun Intent.getSubtopicId(): String = getStringExtra(SUBTOPIC_ID)
     }
 
     object Constants {
@@ -58,7 +62,7 @@ class CardEditorActivity : HappyTeacherActivity() {
         const val EDITED_CARD = "EDITED_CARD"
         const val IMAGE_UPLOAD_REFS = "IMAGE_UPLOAD_REFS"
 
-        const val IMAGE_FROM_URL = "From URL"
+        const val IMAGE_FROM_URL = "From URL" // todo: localize.
         const val IMAGE_FROM_GALLERY = "From Gallery"
         val IMAGE_OPTIONS = arrayOf(IMAGE_FROM_URL, IMAGE_FROM_GALLERY)
     }
@@ -68,10 +72,15 @@ class CardEditorActivity : HappyTeacherActivity() {
     }
 
     private val userStorageRef by lazy {
-        storageRef.getReference("user_uploads/${auth.currentUser!!.uid}")
+        storageRef.getReference("user_uploads/${auth.currentUser!!.uid}/$subtopicId")
+    }
+
+    private val userImageStorageRef by lazy {
+        userStorageRef.child("images")
     }
 
     private val cardRef by lazy { firestoreRoot.document(intent.getCardRefPath()) }
+    private val subtopicId by lazy { intent.getSubtopicId() }
     private val imageAdapter by lazy { EditableCardImageAdapter(editedCard, this) }
     private val activeImageUploadRefUrls = ObservableArrayList<String>(
             onPreAdd = { refUrl -> onImageUploadRefAdded(refUrl) },
@@ -215,7 +224,7 @@ class CardEditorActivity : HappyTeacherActivity() {
         showToast(R.string.uploading_image)
         stream?.let {
             // TODO: Image size limit enforcing
-            val fileRef = userStorageRef.child(Date().time.toString())
+            val fileRef = userImageStorageRef.child(Date().time.toString())
             fileRef.putStream(stream)
             activeImageUploadRefUrls.add(fileRef.toString())
         }
@@ -223,7 +232,8 @@ class CardEditorActivity : HappyTeacherActivity() {
 
     private fun onImageUploadRefAdded(refUrl: String) {
         imageUploadProgressBar.setVisible()
-        val ref = storageRef.getReferenceFromUrl(refUrl)
+        val decodedUrl = refUrl.decode()
+        val ref = storageRef.getReferenceFromUrl(decodedUrl)
 
         ref.activeUploadTasks.forEach { task ->
             task.addOnSuccessListener(this, imageUploadSuccessListener)
@@ -296,7 +306,7 @@ class CardEditorActivity : HappyTeacherActivity() {
 
     private fun saveEditsToOriginalCard() {
         updateEditedCardFromFields()
-        cardRef.set(originalCard)
+        cardRef.set(editedCard)
     }
 
     private fun saveAndFinish() {

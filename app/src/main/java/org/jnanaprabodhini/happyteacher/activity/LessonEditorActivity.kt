@@ -5,14 +5,12 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.CardListContentRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.EditableLessonRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.extension.setVisible
-import org.jnanaprabodhini.happyteacher.extension.showToast
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 
@@ -28,7 +26,7 @@ class LessonEditorActivity: CardListContentViewerActivity() {
             lessonEditorIntent.apply {
                 putExtra(CONTENT_REF_PATH, lessonRef.path)
                 putExtra(HEADER, cardListContentHeader)
-                putExtra(TOPIC_NAME, topicName)
+                putExtra(TOPIC_NAME, topicName) // todo: this is in header. remove redundancy.
             }
             from.startActivity(lessonEditorIntent)
         }
@@ -59,9 +57,9 @@ class LessonEditorActivity: CardListContentViewerActivity() {
                 val lastCard = cardRecyclerAdapter.getItem(cardRecyclerAdapter.itemCount - 1)
                 val newCardNumber = lastCard.orderNumber + 1
                 newCard.orderNumber = newCardNumber
-                CardEditorActivity.launch(this, newCardRef, newCard)
+                CardEditorActivity.launch(this, newCardRef, newCard, header.subtopic)
             } else {
-                CardEditorActivity.launch(this, newCardRef, newCard)
+                CardEditorActivity.launch(this, newCardRef, newCard, header.subtopic)
             }
         }
     }
