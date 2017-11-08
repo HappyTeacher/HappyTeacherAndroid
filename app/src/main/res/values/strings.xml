@@ -122,5 +122,8 @@
     <string name="image_upload_failed">Image upload failed</string>
     <string name="choose_a_picture">Choose a picture</string>
     <string name="add_an_image">Add an image</string>
+    <string name="a_card_cannot_have_images_and_a_video">A card cannot have images and a video.</string>
+    <string name="a_card_cannot_have_images_and_a_video_remove_your_images_before_adding_a_video">A card cannot have images and a video. Remove your images before adding a video.</string>
+    <string name="you_can_only_have_n_images_per_card">You can only have %d images per card</string>
 
 </resources>

@@ -76,6 +76,8 @@ class CardEditorActivity : HappyTeacherActivity() {
             onPreAdd = { refUrl -> onImageUploadRefAdded(refUrl) },
             onPreClear = { refUrls -> onPreClearUploads(refUrls) }
     )
+    private var cardTotalImageCount: Int = 0
+        get() = editedCard.imageUrls.size + activeImageUploadRefUrls.size
 
     private lateinit var originalCard: ContentCard
     private lateinit var editedCard: ContentCard
@@ -94,22 +96,22 @@ class CardEditorActivity : HappyTeacherActivity() {
             restoreInstanceState(savedInstanceState)
         }
 
-        populateFieldsFromCard()
         initializeUi()
     }
 
-    private fun populateFieldsFromCard() {
+    private fun initializeUi() {
+        headerTextInputLayout.setVisible()
+        bodyTextInputLayout.setVisible()
         headerEditText.setText(editedCard.header)
         bodyEditText.setText(editedCard.body)
 
+        imageRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        imageRecycler.adapter = imageAdapter
+
         if (editedCard.youtubeId.isNotEmpty()) {
+            showVideoInput()
             youtubeUrlEditText.setText(editedCard.youtubeId.asIdInYoutubeUrl())
         }
-
-    }
-
-    private fun initializeUi() {
-        updateFieldInputVisibility()
 
         removeVideoButton.setOnClickListener {
             removeVideo()
@@ -123,20 +125,6 @@ class CardEditorActivity : HappyTeacherActivity() {
         youtubeUrlEditText.setText("")
     }
 
-    private fun updateFieldInputVisibility() {
-        headerTextInputLayout.setVisible()
-        bodyTextInputLayout.setVisible()
-
-        if (editedCard.youtubeId.isNotEmpty()) {
-            showVideoInput()
-        }
-
-        imageRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        imageRecycler.adapter = imageAdapter
-
-        // Todo: file attachment visibility
-    }
-
     private fun initializeAttachmentButtons() {
         attachmentButtonsLayout.setVisible()
 
@@ -145,14 +133,14 @@ class CardEditorActivity : HappyTeacherActivity() {
                 youtubeUrlInputLayout.isVisible() -> {
                     addImageButton.jiggle()
                     parentConstraintLayout.showSnackbarWithAction(
-                            message = "A card cannot have images and a video.",
-                            actionName = "Remove video",
+                            message = getString(R.string.a_card_cannot_have_images_and_a_video),
+                            actionName = getString(R.string.remove_video),
                             action = { _ -> removeVideo() }
                     )
                 }
-                editedCard.imageUrls.size > Constants.MAX_IMAGES_PER_CARD -> {
+                cardTotalImageCount >= Constants.MAX_IMAGES_PER_CARD -> {
                     addImageButton.jiggle()
-                    parentConstraintLayout.showSnackbar("You can only have ${Constants.MAX_IMAGES_PER_CARD} images per card")
+                    parentConstraintLayout.showSnackbar(getString(R.string.you_can_only_have_n_images_per_card, Constants.MAX_IMAGES_PER_CARD))
                 }
                 else -> showAddImageDialog()
             }
@@ -162,14 +150,15 @@ class CardEditorActivity : HappyTeacherActivity() {
             when {
                 editedCard.imageUrls.isNotEmpty() -> {
                     addVideoButton.jiggle()
-                    parentConstraintLayout.showSnackbar("A card cannot have images and a video. Remove your images before adding a video.")
+                    parentConstraintLayout.showSnackbar(getString(R.string.a_card_cannot_have_images_and_a_video_remove_your_images_before_adding_a_video))
                 }
                 youtubeUrlInputLayout.isVisible() -> addVideoButton.jiggle()
                 else -> showVideoInput()
             }
         }
 
-        addFileButton.setOnClickListener{
+        addFileButton.setOnClickListener {
+            addFileButton.jiggle()
             showToast("Not yet!")
         }
 
