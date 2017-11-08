@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
         android:layout_marginBottom="16dp"
+        android:id="@+id/parentConstraintLayout"
         tools:context="org.jnanaprabodhini.happyteacher.activity.CardEditorActivity">
 
         <HorizontalScrollView

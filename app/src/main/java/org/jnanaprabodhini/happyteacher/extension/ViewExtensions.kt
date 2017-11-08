@@ -62,6 +62,10 @@ fun View.showSnackbar(message: String) {
     Snackbar.make(this, message, Snackbar.LENGTH_LONG).show()
 }
 
+fun View.showSnackbarWithAction(message: String, actionName: String, action: (View) -> Unit) {
+    Snackbar.make(this, message, Snackbar.LENGTH_LONG).setAction(actionName, action).show()
+}
+
 fun View.setOneTimeOnClickListener(l: View.OnClickListener) {
     this.setOnClickListener{ view ->
         setOnClickListener(null)
