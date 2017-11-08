@@ -18,7 +18,8 @@ class EditableLessonRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCar
             onBindContentCardViewHolder(holder, model)
 
             val cardRef = snapshots.getSnapshot(position).reference
-            holder.setupEditButtons(activity, cardRef, model ?: ContentCard(), subtopicId)
+            val parentContentId = cardRef.parent.parent.id
+            holder.setupEditButtons(activity, cardRef, model ?: ContentCard(), parentContentId)
         }
     }
 

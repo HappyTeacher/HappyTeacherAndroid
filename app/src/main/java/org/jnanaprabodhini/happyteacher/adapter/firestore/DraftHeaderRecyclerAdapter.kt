@@ -9,7 +9,6 @@ import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.LessonEditorActivity
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.DraftHeaderViewHolder
-import org.jnanaprabodhini.happyteacher.extension.deleteAlongWithSubcollection
 import org.jnanaprabodhini.happyteacher.extension.setDrawableLeft
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
@@ -38,7 +37,7 @@ class DraftHeaderRecyclerAdapter(adapterOptions: FirestoreRecyclerOptions<CardLi
             } ?: dateEditedTextView.setVisibilityGone()
 
             deleteButton.setOnClickListener {
-                draftDocumentRef.deleteAlongWithSubcollection(activity.getString(R.string.cards))
+                draftDocumentRef.delete()
                 notifyItemRemoved(holder.adapterPosition)
             }
 

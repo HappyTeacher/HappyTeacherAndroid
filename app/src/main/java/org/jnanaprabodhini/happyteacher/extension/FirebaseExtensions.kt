@@ -55,13 +55,3 @@ fun FirebaseStorage.deleteIfAvailable(fileUrl: String) {
         // File was not in our Firebase storage; do nothing.
     }
 }
-
-fun DocumentReference.deleteAlongWithSubcollection(collectionId: String) {
-    val collectionRef = this.collection(collectionId)
-    this.delete()
-    collectionRef.get().addOnSuccessListener { querySnapshot ->
-        querySnapshot.documents.forEach {
-            it.reference.delete()
-        }
-    }
-}

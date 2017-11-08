@@ -30,13 +30,13 @@ import kotlin.collections.ArrayList
 class CardEditorActivity : HappyTeacherActivity() {
 
     companion object {
-        fun launch(from: Activity, cardRef: DocumentReference, cardModel: ContentCard, subtopicId: String) {
+        fun launch(from: Activity, cardRef: DocumentReference, cardModel: ContentCard, parentContentId: String) {
             val lessonEditorIntent = Intent(from, CardEditorActivity::class.java)
 
             lessonEditorIntent.apply {
                 putExtra(CARD_REF_PATH, cardRef.path)
                 putExtra(CARD_MODEL, cardModel)
-                putExtra(SUBTOPIC_ID, subtopicId)
+                putExtra(PARENT_CONTENT_ID, parentContentId)
             }
 
             from.startActivity(lessonEditorIntent)
@@ -48,8 +48,8 @@ class CardEditorActivity : HappyTeacherActivity() {
         private const val CARD_MODEL: String = "CARD_MODEL"
         fun Intent.getCardModel(): ContentCard = getParcelableExtra(CARD_MODEL)
 
-        private const val SUBTOPIC_ID: String = "SUBTOPIC_ID"
-        fun Intent.getSubtopicId(): String = getStringExtra(SUBTOPIC_ID)
+        private const val PARENT_CONTENT_ID: String = "PARENT_CONTENT_ID"
+        fun Intent.getParentContentId(): String = getStringExtra(PARENT_CONTENT_ID)
     }
 
     object Constants {
@@ -71,7 +71,7 @@ class CardEditorActivity : HappyTeacherActivity() {
     }
 
     private val cardStorageRef by lazy {
-        storageRef.getReference("user_uploads/${auth.currentUser!!.uid}/$subtopicId/${cardRef.id}")
+        storageRef.getReference("user_uploads/${auth.currentUser!!.uid}/$parentContentId/${cardRef.id}")
     }
 
     private val cardImageStorageRef by lazy {
@@ -83,7 +83,7 @@ class CardEditorActivity : HappyTeacherActivity() {
     }
 
     private val cardRef by lazy { firestoreRoot.document(intent.getCardRefPath()) }
-    private val subtopicId by lazy { intent.getSubtopicId() }
+    private val parentContentId by lazy { intent.getParentContentId() }
     private val imageAdapter by lazy { EditableCardImageAdapter(editedCard, this) }
     private val activeImageUploadRefUrls = ObservableArrayList<String>(
             onPreAdd = { refUrl -> onImageUploadRefAdded(refUrl) },

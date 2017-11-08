@@ -10,7 +10,6 @@ import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.CardListContentRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.EditableLessonRecyclerAdapter
-import org.jnanaprabodhini.happyteacher.extension.deleteAlongWithSubcollection
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 import org.jnanaprabodhini.happyteacher.model.ContentCard
@@ -57,10 +56,9 @@ class LessonEditorActivity: CardListContentViewerActivity() {
                 val lastCard = cardRecyclerAdapter.getItem(cardRecyclerAdapter.itemCount - 1)
                 val newCardNumber = lastCard.orderNumber + 1
                 newCard.orderNumber = newCardNumber
-                CardEditorActivity.launch(this, newCardRef, newCard, header.subtopic)
-            } else {
-                CardEditorActivity.launch(this, newCardRef, newCard, header.subtopic)
             }
+
+            CardEditorActivity.launch(this, newCardRef, newCard, contentRef.id)
         }
     }
 
@@ -71,7 +69,7 @@ class LessonEditorActivity: CardListContentViewerActivity() {
                     .setTitle(R.string.delete_empty_lesson_question)
                     .setMessage(R.string.there_are_no_cards_in_this_lesson_would_you_like_to_delete_it)
                     .setPositiveButton(R.string.yes, { _, _ ->
-                        contentRef.deleteAlongWithSubcollection(getString(R.string.cards))
+                        contentRef.delete()
                         super.finish()
                     })
                     .setNegativeButton(R.string.no, { _, _ -> super.finish()})
