@@ -26,7 +26,6 @@ class LessonEditorActivity: CardListContentViewerActivity() {
             lessonEditorIntent.apply {
                 putExtra(CONTENT_REF_PATH, lessonRef.path)
                 putExtra(HEADER, cardListContentHeader)
-                putExtra(TOPIC_NAME, topicName) // todo: this is in header. remove redundancy.
             }
             from.startActivity(lessonEditorIntent)
         }

@@ -27,12 +27,8 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
 
         const val HEADER: String = "HEADER"
         fun Intent.getHeader(): CardListContentHeader = getParcelableExtra(HEADER)
-
-        const val TOPIC_NAME: String = "TOPIC_NAME"
-        fun Intent.getTopicName(): String = getStringExtra(TOPIC_NAME).orEmpty()
     }
 
-    protected val topicName by lazy { intent.getTopicName() }
     protected val header by lazy { intent.getHeader() }
     protected val contentRef by lazy { firestoreRoot.document(intent.getContentRefPath()) }
     protected val cardsRef by lazy { contentRef.collection(getString(R.string.cards)) }
@@ -45,7 +41,7 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
                 + File.separator
                 + getString(R.string.app_name)
                 + File.separator
-                + header.subjectName + File.separator + topicName + File.separator + header.name)
+                + header.subjectName + File.separator + header.topicName + File.separator + header.name)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

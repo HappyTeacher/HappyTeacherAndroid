@@ -16,13 +16,12 @@ import org.jnanaprabodhini.happyteacher.model.ContentCard
 class ClassroomResourceViewerActivity : CardListContentViewerActivity() {
 
     companion object {
-        fun launch(from: Activity, classroomResourceRef: DocumentReference, cardListContentHeader: CardListContentHeader, topicName: String) {
+        fun launch(from: Activity, classroomResourceRef: DocumentReference, cardListContentHeader: CardListContentHeader) {
             val classroomResourcesViewerIntent = Intent(from, ClassroomResourceViewerActivity::class.java)
 
             classroomResourcesViewerIntent.apply {
                 putExtra(CONTENT_REF_PATH, classroomResourceRef.path)
                 putExtra(HEADER, cardListContentHeader)
-                putExtra(TOPIC_NAME, topicName)
             }
             from.startActivity(classroomResourcesViewerIntent)
         }

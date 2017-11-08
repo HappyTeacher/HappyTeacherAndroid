@@ -24,7 +24,7 @@ abstract class CardListHeaderViewHolder(itemView: View): RecyclerView.ViewHolder
     val dateEditedTextView: TextView = itemView.dateEditedTextView
     val submissionCountTextView: TextView = itemView.submissionCountTextView
 
-    open fun populateView(cardListContentHeaderModel: CardListContentHeader?, contentDocumentRef: DocumentReference, topicName: String, activity: Activity, dateFormat: DateFormat) {
+    open fun populateView(cardListContentHeaderModel: CardListContentHeader?, contentDocumentRef: DocumentReference, activity: Activity, dateFormat: DateFormat) {
         titleTextView.text = cardListContentHeaderModel?.name
         authorNameTextView.text = cardListContentHeaderModel?.authorName
         institutionTextView.text = cardListContentHeaderModel?.authorInstitution
@@ -40,10 +40,10 @@ abstract class CardListHeaderViewHolder(itemView: View): RecyclerView.ViewHolder
         }
 
         itemView.setOnClickListener {
-            launchContentViewerActivity(activity, contentDocumentRef, cardListContentHeaderModel, topicName)
+            launchContentViewerActivity(activity, contentDocumentRef, cardListContentHeaderModel)
         }
     }
 
-    abstract fun launchContentViewerActivity(activity: Activity, contentDocumentRef: DocumentReference, cardListContentHeaderModel: CardListContentHeader?, topicName: String)
+    abstract fun launchContentViewerActivity(activity: Activity, contentDocumentRef: DocumentReference, cardListContentHeaderModel: CardListContentHeader?)
 }
 

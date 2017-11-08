@@ -17,7 +17,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 /**
  * An abstract adapter for a list of cards showing header information for content lists.
  */
-abstract class CardListContentHeaderRecyclerAdapter<VH: CardListHeaderViewHolder>(options: FirestoreRecyclerOptions<CardListContentHeader>, val activity: Activity, val topicName: String, firebaseDataObserver: FirebaseDataObserver):
+abstract class CardListContentHeaderRecyclerAdapter<VH: CardListHeaderViewHolder>(options: FirestoreRecyclerOptions<CardListContentHeader>, val activity: Activity, firebaseDataObserver: FirebaseDataObserver):
         FirestoreObserverRecyclerAdapter<CardListContentHeader, VH>(options, firebaseDataObserver) {
 
     private val dateFormat by lazy {
@@ -26,7 +26,7 @@ abstract class CardListContentHeaderRecyclerAdapter<VH: CardListHeaderViewHolder
 
     override fun onBindViewHolder(holder: VH, position: Int, model: CardListContentHeader?) {
         val contentRef = snapshots.getSnapshot(position).reference
-        holder.populateView(model, contentRef, topicName, activity, dateFormat)
+        holder.populateView(model, contentRef, activity, dateFormat)
     }
 
     fun inflateView(parent: ViewGroup?): View {
@@ -39,8 +39,8 @@ abstract class CardListContentHeaderRecyclerAdapter<VH: CardListHeaderViewHolder
 /**
  * A CardListContentHeaderRecyclerAdapter implementation for Lesson headers.
  */
-class LessonHeaderRecyclerAdapter(topicName: String, val shouldShowSubmissionCount: Boolean, options: FirestoreRecyclerOptions<CardListContentHeader>, activity: Activity, firebaseDataObserver: FirebaseDataObserver):
-        CardListContentHeaderRecyclerAdapter<LessonHeaderViewHolder>(options, activity, topicName, firebaseDataObserver) {
+class LessonHeaderRecyclerAdapter(private val shouldShowSubmissionCount: Boolean, options: FirestoreRecyclerOptions<CardListContentHeader>, activity: Activity, firebaseDataObserver: FirebaseDataObserver):
+        CardListContentHeaderRecyclerAdapter<LessonHeaderViewHolder>(options, activity, firebaseDataObserver) {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): LessonHeaderViewHolder {
         return LessonHeaderViewHolder(inflateView(parent), shouldShowSubmissionCount)
@@ -50,8 +50,8 @@ class LessonHeaderRecyclerAdapter(topicName: String, val shouldShowSubmissionCou
 /**
  * A CardListContentHeaderRecyclerAdapter implementation for classroom resources.
  */
-class ClassroomResourcesHeaderRecyclerAdapter(topicName: String, options: FirestoreRecyclerOptions<CardListContentHeader>, activity: Activity, firebaseDataObserver: FirebaseDataObserver):
-        CardListContentHeaderRecyclerAdapter<ClassroomResourcesHeaderViewHolder>(options, activity, topicName, firebaseDataObserver) {
+class ClassroomResourcesHeaderRecyclerAdapter(options: FirestoreRecyclerOptions<CardListContentHeader>, activity: Activity, firebaseDataObserver: FirebaseDataObserver):
+        CardListContentHeaderRecyclerAdapter<ClassroomResourcesHeaderViewHolder>(options, activity, firebaseDataObserver) {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ClassroomResourcesHeaderViewHolder {
         return ClassroomResourcesHeaderViewHolder(inflateView(parent))

@@ -20,45 +20,27 @@ import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObserver {
 
     companion object IntentExtraHelper {
-        fun launchActivity(from: Activity, topicName: String, subtopicId: String) {
+        fun launch(from: Activity, subtopicId: String) {
             val subtopicSubmissionsIntent = Intent(from, SubtopicSubmissionsListActivity::class.java)
 
             subtopicSubmissionsIntent.apply {
-                putExtra(SubtopicSubmissionsListActivity.TOPIC_NAME, topicName)
                 putExtra(SubtopicSubmissionsListActivity.SUBTOPIC_KEY, subtopicId)
             }
 
             from.startActivity(subtopicSubmissionsIntent)
         }
 
-        const val SUBTOPIC_KEY: String = "SUBTOPIC_KEY"
-        fun Intent.hasSubtopicKey(): Boolean = hasExtra(SUBTOPIC_KEY)
+        private const val SUBTOPIC_KEY: String = "SUBTOPIC_KEY"
         fun Intent.getSubtopicKey(): String = getStringExtra(SUBTOPIC_KEY)
-
-        const val TOPIC_NAME: String = "TOPIC_NAME"
-        fun Intent.hasTopicName(): Boolean = hasExtra(TOPIC_NAME)
-        fun Intent.getTopicName(): String = getStringExtra(TOPIC_NAME)
-
-        fun Intent.hasAllExtras(): Boolean = hasSubtopicKey() && hasTopicName()
     }
 
-    val subtopicKey: String by lazy {
+    private val subtopicKey: String by lazy {
         intent.getSubtopicKey()
-    }
-
-    val topicName: String by lazy {
-        intent.getTopicName()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_subtopic_submissions_list)
-
-        if (!intent.hasAllExtras()) {
-            showToast(R.string.error_loading_other_lessons)
-            Crashlytics.log("SubtopicSubmissionListActivity was launched without all extras.")
-            finish()
-        }
 
         initializeRecyclerViewForSubtopic()
     }
@@ -73,7 +55,7 @@ class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObse
                 .setQuery(submissionHeadersQuery, CardListContentHeader::class.java).build()
 
         val shouldShowSubmissionsCount = false
-        val adapter = LessonHeaderRecyclerAdapter(topicName, shouldShowSubmissionsCount, adapterOptions, this, this)
+        val adapter = LessonHeaderRecyclerAdapter(shouldShowSubmissionsCount, adapterOptions, this, this)
         adapter.startListening()
 
         submissionRecyclerView.layoutManager = LinearLayoutManager(this)

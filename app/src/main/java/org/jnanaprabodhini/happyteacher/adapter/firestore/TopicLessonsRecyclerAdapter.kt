@@ -1,6 +1,5 @@
 package org.jnanaprabodhini.happyteacher.adapter.firestore
 
-import android.app.Activity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -41,7 +40,7 @@ abstract class TopicLessonsRecyclerAdapter(topicsAdapterOptions: FirestoreRecycl
         val adapterOptions = getSubtopicAdapterOptions(topicId)
 
         val shouldShowSubmissionsCount = true
-        val adapter = LessonHeaderRecyclerAdapter(model?.name ?: "", shouldShowSubmissionsCount, adapterOptions, activity, getSubtopicDataObserverForViewHolder(holder))
+        val adapter = LessonHeaderRecyclerAdapter(shouldShowSubmissionsCount, adapterOptions, activity, getSubtopicDataObserverForViewHolder(holder))
 
         adapter.startListening()
         recyclerView?.setAdapter(adapter)

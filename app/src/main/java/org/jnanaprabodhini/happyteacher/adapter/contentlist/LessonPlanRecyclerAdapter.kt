@@ -89,7 +89,7 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
                 .setQuery(classroomResourceQuery, CardListContentHeader::class.java)
                 .build()
 
-        val adapter = ClassroomResourcesHeaderRecyclerAdapter(topicName, adapterOptions, activity, getClassroomResourcesDataObserver(holder))
+        val adapter = ClassroomResourcesHeaderRecyclerAdapter(adapterOptions, activity, getClassroomResourcesDataObserver(holder))
         adapter.startListening()
 
         holder.horizontalRecyclerView.setAdapter(adapter)

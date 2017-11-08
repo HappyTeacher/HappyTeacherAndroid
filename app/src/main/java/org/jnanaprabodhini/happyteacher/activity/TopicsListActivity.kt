@@ -22,7 +22,7 @@ import org.jnanaprabodhini.happyteacher.view.SubjectSpinnerManager
 class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
     companion object IntentExtraHelper {
-        fun launchActivity(from: BottomNavigationActivity, syllabusLessonId: String, subjectName: String, lessonTitle: String, level: Int) {
+        fun launch(from: BottomNavigationActivity, syllabusLessonId: String, subjectName: String, lessonTitle: String, level: Int) {
             val topicsListIntent = Intent(from, TopicsListActivity::class.java)
             topicsListIntent.apply{
                 putExtra(SYLLABUS_LESSON_ID, syllabusLessonId)
