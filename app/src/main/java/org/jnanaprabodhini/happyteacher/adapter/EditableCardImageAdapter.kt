@@ -20,8 +20,6 @@ import org.jnanaprabodhini.happyteacher.model.ContentCard
  */
 class EditableCardImageAdapter(val card: ContentCard, val context: Context) : RecyclerView.Adapter<EditableImageItemViewHolder>() {
 
-    val storageRef by lazy { FirebaseStorage.getInstance() }
-
     override fun getItemCount(): Int = card.imageUrls.size
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): EditableImageItemViewHolder {
@@ -42,8 +40,6 @@ class EditableCardImageAdapter(val card: ContentCard, val context: Context) : Re
             newImageUrls.removeAt(holder.adapterPosition)
             card.imageUrls = newImageUrls
             notifyItemRemoved(holder.adapterPosition)
-
-            storageRef.deleteIfAvailable(imageUrl)
         }
     }
 }

@@ -16,6 +16,7 @@ import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.widget.EditText
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.storage.FirebaseStorage
@@ -295,41 +296,18 @@ class CardEditorActivity : HappyTeacherActivity() {
 
     private fun saveEditsToOriginalCard() {
         updateEditedCardFromFields()
-        originalCard = editedCard
         cardRef.set(originalCard)
     }
 
     private fun saveAndFinish() {
+        deleteRemovedImagesFromFirebase()
         saveEditsToOriginalCard()
-        finish()
+        super.finish()
     }
 
     private fun hasChanges(): Boolean {
         updateEditedCardFromFields()
         return editedCard != originalCard
-    }
-
-    override fun onSaveInstanceState(outState: Bundle?) {
-        updateEditedCardFromFields()
-        outState?.putParcelable(Constants.ORIGINAL_CARD, originalCard)
-        outState?.putParcelable(Constants.EDITED_CARD, editedCard)
-        outState?.putStringArrayList(Constants.IMAGE_UPLOAD_REFS, activeImageUploadRefUrls)
-
-        super.onSaveInstanceState(outState)
-    }
-
-    private fun restoreInstanceState(savedInstanceState: Bundle?) {
-        val savedOriginalCard: ContentCard? = savedInstanceState?.getParcelable(Constants.ORIGINAL_CARD)
-        val savedEditedCard: ContentCard? = savedInstanceState?.getParcelable(Constants.EDITED_CARD)
-        val savedImageUploadRefs: ArrayList<String>? = savedInstanceState?.getStringArrayList(Constants.IMAGE_UPLOAD_REFS)
-
-        savedOriginalCard?.let{ originalCard = savedOriginalCard }
-        savedEditedCard?.let{ editedCard = savedEditedCard }
-        savedImageUploadRefs?.let { restoreImageUploads(it) }
-    }
-
-    private fun restoreImageUploads(uploadRefs: ArrayList<String>) {
-        this.activeImageUploadRefUrls.addAll(uploadRefs)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -345,6 +323,10 @@ class CardEditorActivity : HappyTeacherActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    /**
+     * Check for any photos that were added to the card and remove them
+     *  from Firebase storage.
+     */
     private fun discardChangesAndFinish() {
         val originalImages = originalCard.imageUrls
         val newImages = editedCard.imageUrls
@@ -353,6 +335,18 @@ class CardEditorActivity : HappyTeacherActivity() {
         imagesToDiscard.forEach { storageRef.deleteIfAvailable(it) }
 
         super.finish()
+    }
+
+    /**
+     * Check for any photos that were in the original card that
+     *  are no longer in the card and remove them from Firebase storage.
+     */
+    private fun deleteRemovedImagesFromFirebase() {
+        val originalImages = originalCard.imageUrls
+        val newImages = editedCard.imageUrls
+        val imagesToDiscard = originalImages.minus(newImages)
+
+        imagesToDiscard.forEach { storageRef.deleteIfAvailable(it) }
     }
 
     private fun cancelUploads() {
@@ -384,4 +378,28 @@ class CardEditorActivity : HappyTeacherActivity() {
             super.finish()
         }
     }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        updateEditedCardFromFields()
+        outState?.putParcelable(Constants.ORIGINAL_CARD, originalCard)
+        outState?.putParcelable(Constants.EDITED_CARD, editedCard)
+        outState?.putStringArrayList(Constants.IMAGE_UPLOAD_REFS, activeImageUploadRefUrls)
+
+        super.onSaveInstanceState(outState)
+    }
+
+    private fun restoreInstanceState(savedInstanceState: Bundle?) {
+        val savedOriginalCard: ContentCard? = savedInstanceState?.getParcelable(Constants.ORIGINAL_CARD)
+        val savedEditedCard: ContentCard? = savedInstanceState?.getParcelable(Constants.EDITED_CARD)
+        val savedImageUploadRefs: ArrayList<String>? = savedInstanceState?.getStringArrayList(Constants.IMAGE_UPLOAD_REFS)
+
+        savedOriginalCard?.let{ originalCard = savedOriginalCard }
+        savedEditedCard?.let{ editedCard = savedEditedCard }
+        savedImageUploadRefs?.let { restoreImageUploads(it) }
+    }
+
+    private fun restoreImageUploads(uploadRefs: ArrayList<String>) {
+        this.activeImageUploadRefUrls.addAll(uploadRefs)
+    }
+
 }
