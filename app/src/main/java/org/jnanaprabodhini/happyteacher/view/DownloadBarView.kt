@@ -62,7 +62,7 @@ class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout
     fun setErrorWithText(errorText: String) {
         setIconDrawable(R.drawable.ic_error_white_24dp)
         setText(errorText)
-        rootFrame.setBackgroundColor(R.color.lightGray)
+        rootFrame.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.errorRed, null))
     }
 
     fun setProgress(percent: Double) {

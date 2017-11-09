@@ -185,8 +185,13 @@ class CardEditorActivity : HappyTeacherActivity() {
         }
 
         addFileButton.setOnClickListener {
-            addFileButton.jiggle()
-            showToast("Not yet!")
+            if (fileAttachmentView.isVisible()) {
+                addFileButton.jiggle()
+                showToast(R.string.you_can_only_have_one_file_attachment_per_card)
+            } else {
+                // Todo: ask for file
+                showFileAttachmentUi()
+            }
         }
 
     }
@@ -312,6 +317,15 @@ class CardEditorActivity : HappyTeacherActivity() {
 
         youtubeUrlEditText.removeTextChangedListener(youtubeValidationTextWatcher)
         saveMenuItem?.isEnabled = true
+    }
+
+    private fun showFileAttachmentUi() {
+        fileAttachmentView.setVisible()
+        fileAttachmentView.setFolderIconWithText("Dingus.pdf")
+    }
+
+    private fun hideFileAttachmentUi() {
+        fileAttachmentView.setVisibilityGone()
     }
 
     private fun updateEditedCardFromFields() {

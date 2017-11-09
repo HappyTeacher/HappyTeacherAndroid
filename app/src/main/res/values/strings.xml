@@ -131,6 +131,8 @@
     <string name="delete_card">Delete card</string>
     <string name="save_empty_card">Save empty card</string>
     <string name="cancel_uploads">Cancel uploads</string>
+    <string name="remove_attachment">Remove attachment</string>
+    <string name="you_can_only_have_one_file_attachment_per_card">You can only have one file attachment per card</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>

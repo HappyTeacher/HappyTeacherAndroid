@@ -116,5 +116,16 @@
                 android:inputType="textCapSentences|textLongMessage|textMultiLine"/>
 
         </android.support.design.widget.TextInputLayout>
+
+        <org.jnanaprabodhini.happyteacher.view.DownloadBarView
+            android:id="@+id/fileAttachmentView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/bodyTextInputLayout"/>
+
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>
