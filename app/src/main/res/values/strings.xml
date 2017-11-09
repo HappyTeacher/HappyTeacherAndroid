@@ -133,6 +133,8 @@
     <string name="cancel_uploads">Cancel uploads</string>
     <string name="remove_attachment">Remove attachment</string>
     <string name="you_can_only_have_one_file_attachment_per_card">You can only have one file attachment per card</string>
+    <string name="attach_a_file">Attach a file</string>
+    <string name="click_and_hold_to_cancel_upload">Click and hold to cancel upload</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>

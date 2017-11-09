@@ -119,6 +119,7 @@
 
         <org.jnanaprabodhini.happyteacher.view.DownloadBarView
             android:id="@+id/fileAttachmentView"
+            android:longClickable="true"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="18dp"

@@ -104,7 +104,7 @@ class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout
         icon.setImageDrawable(ResourcesCompat.getDrawable(context.resources, drawable, null))
     }
 
-    private fun resetView() {
+    fun resetView() {
         resetBackgroundColor()
         setText("")
         indeterminateProgressBar.setVisibilityGone()

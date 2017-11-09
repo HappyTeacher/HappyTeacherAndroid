@@ -16,6 +16,7 @@ import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.widget.EditText
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.storage.FirebaseStorage
@@ -25,6 +26,7 @@ import org.jnanaprabodhini.happyteacher.util.ObservableArrayList
 import java.io.InputStream
 import java.util.*
 import kotlin.collections.ArrayList
+import org.jnanaprabodhini.happyteacher.model.AttachmentMetadata
 
 
 class CardEditorActivity : HappyTeacherActivity() {
@@ -56,10 +58,12 @@ class CardEditorActivity : HappyTeacherActivity() {
         const val MAX_IMAGES_PER_CARD = 10
 
         const val IMAGE_REQUEST_CODE = 0
+        const val ATTACHMENT_REQUEST_CODE = 1
 
         const val ORIGINAL_CARD = "ORIGINAL_CARD"
         const val EDITED_CARD = "EDITED_CARD"
         const val IMAGE_UPLOAD_REFS = "IMAGE_UPLOAD_REFS"
+        const val ATTACHMENT_FILE_NAME = "ATTACHMENT_FILE_NAME"
 
         const val IMAGE_FROM_URL = "From URL" // todo: localize.
         const val IMAGE_FROM_GALLERY = "From Gallery"
@@ -89,15 +93,28 @@ class CardEditorActivity : HappyTeacherActivity() {
             onPreAdd = { refUrl -> onImageUploadRefAdded(refUrl) },
             onPreClear = { refUrls -> onPreClearUploads(refUrls) }
     )
+    private var attachmentFileName: String? = null
+        set(value) {
+            field = value
+            onSetFileUploadTask()
+        }
     private val uploadedImageUrls = mutableListOf<String>()
     private var cardTotalImageCount: Int = 0
         get() = editedCard.imageUrls.size + activeImageUploadRefUrls.size
     private var pendingUploadCount: Int = 0
-        get() = activeImageUploadRefUrls.size // todo: add attachment upload count
+        get() = activeImageUploadRefUrls.size + if (isUploadingAttachmentFile) 1 else 0
     private var hasPendingUploads: Boolean = pendingUploadCount > 0
         get() = pendingUploadCount > 0
     private var hasChanges: Boolean = false
         get() = editedCard != originalCard
+    private var isUploadingAttachmentFile: Boolean = false
+        get() {
+            attachmentFileName?.let {
+                val tasks = cardFileStorageRef.child(it).activeUploadTasks
+                return tasks.isNotEmpty() && !tasks.first().isCanceled
+            }
+            return false
+        }
 
     private lateinit var originalCard: ContentCard
     private lateinit var editedCard: ContentCard
@@ -131,6 +148,14 @@ class CardEditorActivity : HappyTeacherActivity() {
         if (editedCard.youtubeId.isNotEmpty()) {
             showVideoInput()
             youtubeUrlEditText.setText(editedCard.youtubeId.asIdInYoutubeUrl())
+        }
+
+        if (editedCard.attachmentPath.isNotEmpty()) {
+            val ref = storageRef.getReference(editedCard.attachmentPath)
+            attachmentFileName = ref.name
+            showFileAttachmentView()
+        } else if (!attachmentFileName.isNullOrEmpty()) {
+            showFileAttachmentView()
         }
 
         removeVideoButton.setOnClickListener {
@@ -189,8 +214,7 @@ class CardEditorActivity : HappyTeacherActivity() {
                 addFileButton.jiggle()
                 showToast(R.string.you_can_only_have_one_file_attachment_per_card)
             } else {
-                // Todo: ask for file
-                showFileAttachmentUi()
+                getFileFromDevice()
             }
         }
 
@@ -232,12 +256,27 @@ class CardEditorActivity : HappyTeacherActivity() {
         startActivityForResult(Intent.createChooser(intent, getString(R.string.choose_a_picture)), Constants.IMAGE_REQUEST_CODE)
     }
 
+    private fun getFileFromDevice() {
+        val intent = Intent()
+        intent.action = Intent.ACTION_GET_CONTENT
+        intent.type = "*/*"
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.attach_a_file)), Constants.ATTACHMENT_REQUEST_CODE)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == Constants.IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val stream = contentResolver.openInputStream(data?.data)
             uploadImageFromStream(stream)
+        } else if (requestCode == Constants.ATTACHMENT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val fileUri = data?.data
+
+            // If file name is not available, use current time
+            val fileName = fileUri?.getFileName(this) ?: Date().time.toString()
+
+            val stream = contentResolver.openInputStream(fileUri)
+            uploadFileFromStream(fileName, stream)
         }
 
     }
@@ -249,6 +288,67 @@ class CardEditorActivity : HappyTeacherActivity() {
             val fileRef = cardImageStorageRef.child(Date().time.toString())
             fileRef.putStream(stream)
             activeImageUploadRefUrls.add(fileRef.toString())
+        }
+    }
+
+    private fun uploadFileFromStream(fileName: String, stream: InputStream?) {
+        stream?.let {
+            fileAttachmentView.setVisible()
+
+            // TODO: size limit enforcing
+            val fileRef = cardFileStorageRef.child(fileName)
+            fileRef.putStream(stream)
+            this.attachmentFileName = fileName
+        }
+    }
+
+    private fun onSetFileUploadTask() = attachmentFileName?.let { fileName ->
+        val fileRef = cardFileStorageRef.child(fileName)
+
+        if (fileRef.activeUploadTasks.isEmpty()) {
+            onAttachmentUploadComplete(editedCard.attachmentMetadata)
+        } else {
+            val uploadTask = fileRef.activeUploadTasks.first()
+
+            fileAttachmentView.setLoadingWithText(fileName)
+
+            fileAttachmentView.setOnClickListener {
+                showToast(R.string.click_and_hold_to_cancel_upload)
+            }
+
+            fileAttachmentView.setOneTimeOnLongClickListener {
+                cancelAttachmentUpload()
+            }
+
+            uploadTask.addOnSuccessListener(this, { snapshot ->
+                val attachmentMetadata = AttachmentMetadata(
+                        contentType = snapshot.metadata?.contentType.orEmpty(),
+                        size = snapshot.metadata?.sizeBytes ?: 0,
+                        timeCreated = snapshot.metadata?.creationTimeMillis ?: 0
+                )
+                onAttachmentUploadComplete(attachmentMetadata)
+            })
+        }
+    }
+
+    private fun onAttachmentUploadComplete(metadata: AttachmentMetadata) {
+        fileAttachmentView.setFolderIconWithText(attachmentFileName.orEmpty())
+        fileAttachmentView.setProgressComplete()
+
+        fileAttachmentView.setOnClickListener {
+            showToast("Long press to remove attachment")
+        }
+
+        // TODO: delete by pressing X icon on download bar.
+
+        fileAttachmentView.setOneTimeOnLongClickListener {
+            deleteAttachment()
+            hideFileAttachmentView()
+        }
+
+        attachmentFileName?.let { name ->
+            editedCard.attachmentPath = cardFileStorageRef.child(name).path
+            editedCard.attachmentMetadata = metadata
         }
     }
 
@@ -319,13 +419,13 @@ class CardEditorActivity : HappyTeacherActivity() {
         saveMenuItem?.isEnabled = true
     }
 
-    private fun showFileAttachmentUi() {
+    private fun showFileAttachmentView() {
         fileAttachmentView.setVisible()
-        fileAttachmentView.setFolderIconWithText("Dingus.pdf")
     }
 
-    private fun hideFileAttachmentUi() {
+    private fun hideFileAttachmentView() {
         fileAttachmentView.setVisibilityGone()
+        fileAttachmentView.resetView()
     }
 
     private fun updateEditedCardFromFields() {
@@ -395,9 +495,27 @@ class CardEditorActivity : HappyTeacherActivity() {
         activeImageUploadRefUrls.clear()
     }
 
+    private fun cancelAttachmentUpload() {
+        attachmentFileName?.let { name ->
+            cardFileStorageRef.child(name).activeUploadTasks
+                    .forEach { task -> task.cancel() }
+        }
+        attachmentFileName = null
+        hideFileAttachmentView()
+    }
+
     private fun cancelUploads() {
         cancelImageUploads()
-        // todo: file attachment
+        cancelAttachmentUpload()
+    }
+
+    private fun deleteAttachment() {
+        attachmentFileName?.let { name ->
+            cardFileStorageRef.child(name).delete()
+        }
+        attachmentFileName = null
+        editedCard.attachmentPath = ""
+        editedCard.attachmentMetadata = AttachmentMetadata()
     }
 
     private fun onPreClearUploads(refUrls: List<String>) {
@@ -479,6 +597,7 @@ class CardEditorActivity : HappyTeacherActivity() {
         outState?.putParcelable(Constants.ORIGINAL_CARD, originalCard)
         outState?.putParcelable(Constants.EDITED_CARD, editedCard)
         outState?.putStringArrayList(Constants.IMAGE_UPLOAD_REFS, activeImageUploadRefUrls)
+        outState?.putString(Constants.ATTACHMENT_FILE_NAME, attachmentFileName)
 
         super.onSaveInstanceState(outState)
     }
@@ -487,10 +606,12 @@ class CardEditorActivity : HappyTeacherActivity() {
         val savedOriginalCard: ContentCard? = savedInstanceState?.getParcelable(Constants.ORIGINAL_CARD)
         val savedEditedCard: ContentCard? = savedInstanceState?.getParcelable(Constants.EDITED_CARD)
         val savedImageUploadRefs: ArrayList<String>? = savedInstanceState?.getStringArrayList(Constants.IMAGE_UPLOAD_REFS)
+        val savedAttachmentFileName: String? = savedInstanceState?.getString(Constants.ATTACHMENT_FILE_NAME)
 
         savedOriginalCard?.let{ originalCard = savedOriginalCard }
         savedEditedCard?.let{ editedCard = savedEditedCard }
         savedImageUploadRefs?.let { restoreImageUploads(it) }
+        savedAttachmentFileName?.let { attachmentFileName = it }
     }
 
     private fun restoreImageUploads(uploadRefs: ArrayList<String>) {
