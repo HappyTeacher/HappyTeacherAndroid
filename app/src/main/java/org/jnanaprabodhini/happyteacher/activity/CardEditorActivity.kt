@@ -16,6 +16,7 @@ import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.widget.EditText
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.storage.FirebaseStorage
@@ -89,6 +90,7 @@ class CardEditorActivity : HappyTeacherActivity() {
             onPreAdd = { refUrl -> onImageUploadRefAdded(refUrl) },
             onPreClear = { refUrls -> onPreClearUploads(refUrls) }
     )
+    private val uploadedImageUrls = mutableListOf<String>()
     private var cardTotalImageCount: Int = 0
         get() = editedCard.imageUrls.size + activeImageUploadRefUrls.size
     private var pendingUploadCount: Int = 0
@@ -251,6 +253,7 @@ class CardEditorActivity : HappyTeacherActivity() {
 
     private val imageUploadSuccessListener = OnSuccessListener<UploadTask.TaskSnapshot> { snapshot ->
         val url = snapshot.downloadUrl.toString()
+        uploadedImageUrls.add(url)
         addImageFromUrl(url)
 
         showToast(R.string.image_added_to_card)
@@ -313,14 +316,10 @@ class CardEditorActivity : HappyTeacherActivity() {
         editedCard.youtubeId = youtubeId.orEmpty()
     }
 
-    private fun saveEditsToOriginalCard() {
+    private fun saveAndFinish() {
         updateEditedCardFromFields()
         cardRef.set(editedCard)
-    }
-
-    private fun saveAndFinish() {
         deleteRemovedImagesFromFirebase()
-        saveEditsToOriginalCard()
         super.finish()
     }
 
@@ -342,24 +341,24 @@ class CardEditorActivity : HappyTeacherActivity() {
      *  from Firebase storage.
      */
     private fun discardChangesAndFinish() {
-        val originalImages = originalCard.imageUrls
-        val newImages = editedCard.imageUrls
-        val imagesToDiscard = newImages.minus(originalImages)
-
-        imagesToDiscard.forEach { storageRef.deleteIfAvailable(it) }
-
+        uploadedImageUrls.forEach { storageRef.deleteIfAvailable(it) }
         super.finish()
     }
 
     /**
-     * Check for any photos that were in the original card that
+     * Check for any photos that were in the card that
      *  are no longer in the card and remove them from Firebase storage.
      */
     private fun deleteRemovedImagesFromFirebase() {
+        // Create a set of all images originally in the card AND
+        //  added (and perhaps removed) from the card in this editing session
         val originalImages = originalCard.imageUrls
-        val newImages = editedCard.imageUrls
-        val imagesToDiscard = originalImages.minus(newImages)
+        val imagesPreviouslyInCard = originalImages.union(uploadedImageUrls)
 
+        val finalImages = editedCard.imageUrls
+
+        val imagesToDiscard = imagesPreviouslyInCard.minus(finalImages)
+        
         imagesToDiscard.forEach { storageRef.deleteIfAvailable(it) }
     }
 
