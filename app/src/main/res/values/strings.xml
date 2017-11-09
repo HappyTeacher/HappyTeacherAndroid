@@ -146,6 +146,11 @@
         <item quantity="other">Save and cancel uploads</item>
     </plurals>
 
+    <plurals name="discard_changes_and_cancel_uploads">
+        <item quantity="one">Discard changes and cancel upload</item>
+        <item quantity="other">Discard changes and cancel uploads</item>
+    </plurals>
+
     <plurals name="pending_uploads">
         <item quantity="one">Pending upload</item>
         <item quantity="other">Pending uploads</item>

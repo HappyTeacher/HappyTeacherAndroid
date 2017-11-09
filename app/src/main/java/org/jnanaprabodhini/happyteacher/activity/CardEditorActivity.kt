@@ -378,7 +378,7 @@ class CardEditorActivity : HappyTeacherActivity() {
         val dialogBuilder = AlertDialog.Builder(this)
 
         if (hasChanges && hasPendingUploads) {
-            // Changes AND pending uploads => discard + cancel or don't close
+            // Changes AND pending uploads => save + cancel or discard + cancel
             dialogBuilder.apply {
                 setTitle(resources.getQuantityString(R.plurals.unsaved_changes_and_pending_uploads, pendingUploadCount))
                 setMessage(resources.getQuantityString(R.plurals.you_have_unsaved_changes_and_n_pending_uploads, pendingUploadCount, pendingUploadCount))
@@ -386,13 +386,14 @@ class CardEditorActivity : HappyTeacherActivity() {
                     cancelUploads()
                     saveAndFinish()
                 })
-                setNegativeButton(R.string.dont_close, {dialog, _ ->
-                    dialog.dismiss()
+                setNegativeButton(resources.getQuantityString(R.plurals.discard_changes_and_cancel_uploads, pendingUploadCount), {_,_ ->
+                    cancelUploads()
+                    discardChangesAndFinish()
                 })
                 show()
             }
         } else if (hasChanges) {
-            // Changes, no pending uploads => discard changes or save
+            // Changes, no pending uploads => save or discard changes
             dialogBuilder.apply {
                 setTitle(R.string.unsaved_changes)
                 setMessage(R.string.you_have_changed_this_card_would_you_like_to_save_your_changes)
