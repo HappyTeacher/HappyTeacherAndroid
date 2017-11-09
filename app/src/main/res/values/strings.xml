@@ -130,6 +130,7 @@
     <string name="this_card_is_empty_would_you_like_to_delete_it">This card is empty. Would you like to delete it?</string>
     <string name="delete_card">Delete card</string>
     <string name="save_empty_card">Save empty card</string>
+    <string name="cancel_uploads">Cancel uploads</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>

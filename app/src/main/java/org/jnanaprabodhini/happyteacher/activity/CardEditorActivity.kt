@@ -16,7 +16,6 @@ import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.widget.EditText
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.storage.FirebaseStorage
@@ -156,7 +155,7 @@ class CardEditorActivity : HappyTeacherActivity() {
                     parentConstraintLayout.showSnackbarWithAction(
                             message = getString(R.string.a_card_cannot_have_images_and_a_video),
                             actionName = getString(R.string.remove_video),
-                            action = { _ -> removeVideo() }
+                            action = { removeVideo() }
                     )
                 }
                 cardTotalImageCount >= Constants.MAX_IMAGES_PER_CARD -> {
@@ -171,7 +170,14 @@ class CardEditorActivity : HappyTeacherActivity() {
             when {
                 editedCard.imageUrls.isNotEmpty() -> {
                     addVideoButton.jiggle()
-                    parentConstraintLayout.showSnackbar(getString(R.string.a_card_cannot_have_images_and_a_video_remove_your_images_before_adding_a_video))
+                    parentConstraintLayout.showSnackbar(R.string.a_card_cannot_have_images_and_a_video_remove_your_images_before_adding_a_video)
+                }
+                activeImageUploadRefUrls.isNotEmpty() -> {
+                    addVideoButton.jiggle()
+                    parentConstraintLayout.showSnackbarWithAction(
+                            message = getString(R.string.a_card_cannot_have_images_and_a_video),
+                            actionName = getString(R.string.cancel_uploads),
+                            action = { cancelImageUploads() })
                 }
                 youtubeUrlInputLayout.isVisible() -> addVideoButton.jiggle()
                 else -> showVideoInput()
@@ -371,14 +377,20 @@ class CardEditorActivity : HappyTeacherActivity() {
         imagesToDiscard.forEach { storageRef.deleteIfAvailable(it) }
     }
 
-    private fun cancelUploads() {
+    private fun cancelImageUploads() {
         activeImageUploadRefUrls.clear()
+    }
+
+    private fun cancelUploads() {
+        cancelImageUploads()
+        // todo: file attachment
     }
 
     private fun onPreClearUploads(refUrls: List<String>) {
         refUrls.map { storageRef.getReferenceFromUrl(it) }
                 .flatMap { it.activeUploadTasks }
                 .forEach { it.cancel() }
+        imageUploadProgressBar.setVisibilityGone()
     }
 
     override fun finish() {
