@@ -316,9 +316,18 @@ class CardEditorActivity : HappyTeacherActivity() {
         editedCard.youtubeId = youtubeId.orEmpty()
     }
 
-    private fun saveAndFinish() {
+    private fun save() {
         updateEditedCardFromFields()
         cardRef.set(editedCard)
+    }
+
+    private fun saveAndFinishWithAlert() {
+        save()
+        finish()
+    }
+
+    private fun saveAndFinish() {
+        save()
         deleteRemovedImagesFromFirebase()
         super.finish()
     }
@@ -331,7 +340,7 @@ class CardEditorActivity : HappyTeacherActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_save_card -> saveAndFinish()
+            R.id.menu_save_card -> saveAndFinishWithAlert()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -358,7 +367,7 @@ class CardEditorActivity : HappyTeacherActivity() {
         val finalImages = editedCard.imageUrls
 
         val imagesToDiscard = imagesPreviouslyInCard.minus(finalImages)
-        
+
         imagesToDiscard.forEach { storageRef.deleteIfAvailable(it) }
     }
 
@@ -413,7 +422,7 @@ class CardEditorActivity : HappyTeacherActivity() {
                 setMessage(resources.getQuantityString(R.plurals.you_have_n_pending_uploads, pendingUploadCount, pendingUploadCount))
                 setPositiveButton(resources.getQuantityString(R.plurals.cancel_uploads, pendingUploadCount), {_,_ ->
                     cancelUploads()
-                    super.finish()
+                    discardChangesAndFinish()
                 })
                 setNegativeButton(R.string.dont_close, {dialog, _ ->
                     dialog.dismiss()
@@ -427,7 +436,7 @@ class CardEditorActivity : HappyTeacherActivity() {
                 setMessage(R.string.this_card_is_empty_would_you_like_to_delete_it)
                 setPositiveButton(R.string.delete_card, {_,_ ->
                     cardRef.delete()
-                    super.finish()
+                    discardChangesAndFinish()
                 })
                 setNegativeButton(R.string.save_empty_card, {_, _ ->
                     saveAndFinish()
