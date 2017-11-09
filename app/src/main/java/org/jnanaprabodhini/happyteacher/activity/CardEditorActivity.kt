@@ -91,6 +91,12 @@ class CardEditorActivity : HappyTeacherActivity() {
     )
     private var cardTotalImageCount: Int = 0
         get() = editedCard.imageUrls.size + activeImageUploadRefUrls.size
+    private var pendingUploadCount: Int = 0
+        get() = activeImageUploadRefUrls.size // todo: add attachment upload count
+    private var hasPendingUploads: Boolean = pendingUploadCount > 0
+        get() = pendingUploadCount > 0
+    private var hasChanges: Boolean = false
+        get() = editedCard != originalCard
 
     private lateinit var originalCard: ContentCard
     private lateinit var editedCard: ContentCard
@@ -318,11 +324,6 @@ class CardEditorActivity : HappyTeacherActivity() {
         super.finish()
     }
 
-    private fun hasChanges(): Boolean {
-        updateEditedCardFromFields()
-        return editedCard != originalCard
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_card_editor, menu)
         saveMenuItem = menu?.findItem(R.id.menu_save_card)
@@ -373,21 +374,67 @@ class CardEditorActivity : HappyTeacherActivity() {
     }
 
     override fun finish() {
-        if (hasChanges() || activeImageUploadRefUrls.size > 0) {
-            AlertDialog.Builder(this)
-                    .setTitle(R.string.unsaved_changes)
-                    .setMessage(R.string.you_have_changed_this_card_would_you_like_to_save_your_changes)
-                    .setPositiveButton(R.string.save, {_,_ ->
-                        cancelUploads()
-                        saveAndFinish()
-                    })
-                    .setNegativeButton(R.string.discard_changes, {_, _ ->
-                        cancelUploads()
-                        discardChangesAndFinish()
-                    })
-                    .show()
+        updateEditedCardFromFields()
+        val dialogBuilder = AlertDialog.Builder(this)
+
+        if (hasChanges && hasPendingUploads) {
+            // Changes AND pending uploads => discard + cancel or don't close
+            dialogBuilder.apply {
+                setTitle(resources.getQuantityString(R.plurals.unsaved_changes_and_pending_uploads, pendingUploadCount))
+                setMessage(resources.getQuantityString(R.plurals.you_have_unsaved_changes_and_n_pending_uploads, pendingUploadCount, pendingUploadCount))
+                setPositiveButton(resources.getQuantityString(R.plurals.save_and_cancel_uploads, pendingUploadCount), {_,_ ->
+                    cancelUploads()
+                    saveAndFinish()
+                })
+                setNegativeButton(R.string.dont_close, {dialog, _ ->
+                    dialog.dismiss()
+                })
+                show()
+            }
+        } else if (hasChanges) {
+            // Changes, no pending uploads => discard changes or save
+            dialogBuilder.apply {
+                setTitle(R.string.unsaved_changes)
+                setMessage(R.string.you_have_changed_this_card_would_you_like_to_save_your_changes)
+                setPositiveButton(R.string.save, {_,_ ->
+                    cancelUploads()
+                    saveAndFinish()
+                })
+                setNegativeButton(R.string.discard_changes, {_, _ ->
+                    cancelUploads()
+                    discardChangesAndFinish()
+                })
+                show()
+            }
+        } else if (hasPendingUploads) {
+            //  Uploads in progress => cancel uploads or don't close
+            dialogBuilder.apply {
+                setTitle(resources.getQuantityString(R.plurals.pending_uploads, pendingUploadCount))
+                setMessage(resources.getQuantityString(R.plurals.you_have_n_pending_uploads, pendingUploadCount, pendingUploadCount))
+                setPositiveButton(resources.getQuantityString(R.plurals.cancel_uploads, pendingUploadCount), {_,_ ->
+                    cancelUploads()
+                    super.finish()
+                })
+                setNegativeButton(R.string.dont_close, {dialog, _ ->
+                    dialog.dismiss()
+                })
+                show()
+            }
+        } else if (editedCard.isEmpty()) {
+            //  Card is empty => delete card or save empty card
+            dialogBuilder.apply {
+                setTitle(R.string.empty_card)
+                setMessage(R.string.this_card_is_empty_would_you_like_to_delete_it)
+                setPositiveButton(R.string.delete_card, {_,_ ->
+                    cardRef.delete()
+                    super.finish()
+                })
+                setNegativeButton(R.string.save_empty_card, {_, _ ->
+                    saveAndFinish()
+                })
+                show()
+            }
         } else {
-            cancelUploads()
             super.finish()
         }
     }

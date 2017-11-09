@@ -61,7 +61,12 @@ data class ContentCard(var header: String = "",
                        var attachmentMetadata: AttachmentMetadata = AttachmentMetadata(),
                        var orderNumber: Int = 0,
                        var type: String = "",
-                       var number: Int = 0): Parcelable
+                       var number: Int = 0): Parcelable {
+    fun isEmpty(): Boolean {
+        val emptyCard = ContentCard()
+        return this == emptyCard
+    }
+}
 
 @Parcelize
 data class AttachmentMetadata(val contentType: String = "",
