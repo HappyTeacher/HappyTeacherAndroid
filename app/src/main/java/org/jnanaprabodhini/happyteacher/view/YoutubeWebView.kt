@@ -10,7 +10,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.extension.loadImageToFitWithNoPlaceholder
+import org.jnanaprabodhini.happyteacher.extension.loadImageToFitWithNoPlaceholders
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.extension.showToast
@@ -34,7 +34,7 @@ class YoutubeWebView(context: Context, attrs: AttributeSet): WebView(context, at
         loadButton.setVisible()
         loadButton.setText(R.string.load_Video)
 
-        thumbnailView.loadImageToFitWithNoPlaceholder("https://img.youtube.com/vi/$videoId/hqdefault.jpg")
+        thumbnailView.loadImageToFitWithNoPlaceholders("https://img.youtube.com/vi/$videoId/hqdefault.jpg")
 
         this.setVisibilityGone()
 
