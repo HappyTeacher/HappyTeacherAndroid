@@ -5,11 +5,15 @@ import android.content.Intent
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
+import kotlinx.android.synthetic.main.view_recycler_horizontal_pager.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.CardListContentRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.ClassroomResourcesRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.extension.setDrawableResource
+import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
+import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 
@@ -39,5 +43,11 @@ class ClassroomResourceViewerActivity : CardListContentViewerActivity() {
 
         headerView.setBackgroundResource(R.color.deepGrassGreen)
         icon.setDrawableResource(R.drawable.ic_tv_video_white_24dp)
+    }
+
+    override fun onError(e: FirebaseFirestoreException?) {
+        recyclerView.setVisibilityGone()
+        statusTextView.setVisible()
+        statusTextView.setText(R.string.there_was_an_error_loading_this_classroom_resource)
     }
 }

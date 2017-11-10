@@ -16,6 +16,7 @@
     <string name="there_are_currently_no_lesson_plans_for_this_subject_and_level">There are currently no lesson plans for this subject and level.</string>
     <string name="no_lessons_at_level_yet">There are no lessons for this topic at the Standard %d level yet.</string>
     <string name="there_was_an_error_loading_this_lesson">There was an error loading this lesson.</string>
+    <string name="there_was_an_error_loading_this_classroom_resource">There was an error loading this classroom resource.</string>
     <string name="downloading">Downloading…</string>
     <string name="canceling">Canceling…</string>
     <string name="open_x">Open %s</string>

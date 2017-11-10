@@ -93,11 +93,5 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
         progressBar.setVisibilityGone()
     }
 
-    override fun onError(e: FirebaseFirestoreException?) {
-        recyclerView.setVisibilityGone()
-        statusTextView.setVisible()
-        statusTextView.setText(R.string.there_was_an_error_loading_this_lesson)
-    }
-
 }
 
