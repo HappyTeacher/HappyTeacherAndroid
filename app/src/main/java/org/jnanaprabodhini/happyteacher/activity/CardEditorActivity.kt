@@ -10,7 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.activity_card_editor.*
-import kotlinx.android.synthetic.main.attachment_buttons_layout.*
+import kotlinx.android.synthetic.main.attachment_toolbar_layout.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.extension.*
@@ -22,7 +22,6 @@ import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import org.jnanaprabodhini.happyteacher.adapter.EditableCardImageAdapter
-import org.jnanaprabodhini.happyteacher.adapter.helper.RecyclerDragHelperCallback
 import org.jnanaprabodhini.happyteacher.adapter.helper.RecyclerHorizontalDragHelperCallback
 import org.jnanaprabodhini.happyteacher.util.ObservableArrayList
 import java.io.InputStream
@@ -272,7 +271,7 @@ class CardEditorActivity : HappyTeacherActivity() {
             removeVideo()
         }
 
-        initializeAttachmentButtons()
+        initializeAttachmentToolbar()
     }
 
     private fun removeVideo() {
@@ -280,8 +279,8 @@ class CardEditorActivity : HappyTeacherActivity() {
         youtubeUrlEditText.setText("")
     }
 
-    private fun initializeAttachmentButtons() {
-        attachmentButtonsLayout.setVisible()
+    private fun initializeAttachmentToolbar() {
+        attachmentToolbarLayout.setVisible()
 
         addImageButton.setOnClickListener {
             when {
@@ -361,40 +360,39 @@ class CardEditorActivity : HappyTeacherActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == Constants.IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            val stream = contentResolver.openInputStream(data?.data)
-            uploadImageFromStream(stream)
-        } else if (requestCode == Constants.ATTACHMENT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
             val fileUri = data?.data
+            val stream = contentResolver.openInputStream(fileUri)
 
             // If file name is not available, use current time
             val fileName = fileUri?.getFileName(this) ?: Date().time.toString()
 
-            val stream = contentResolver.openInputStream(fileUri)
-            uploadFileFromStream(fileName, stream)
-        }
+            when (requestCode) {
+                Constants.IMAGE_REQUEST_CODE ->
+                    stream?.let { uploadImageFromStream(fileName, stream) }
+                Constants.ATTACHMENT_REQUEST_CODE ->
+                    stream?.let { uploadFileFromStream(fileName, stream) }
+            }
 
+        }
     }
 
-    private fun uploadImageFromStream(stream: InputStream?) {
+    private fun uploadImageFromStream(fileName: String, stream: InputStream) {
         showToast(R.string.uploading_image)
-        stream?.let {
-            // TODO: Image size limit enforcing
-            val fileRef = cardImageStorageRef.child(Date().time.toString())
-            fileRef.putStream(stream)
-            activeImageUploadRefUrls.add(fileRef.toString())
-        }
+
+        // TODO: Image size limit enforcing
+        val fileRef = cardImageStorageRef.child(fileName)
+        fileRef.putStream(stream)
+        activeImageUploadRefUrls.add(fileRef.toString())
     }
 
-    private fun uploadFileFromStream(fileName: String, stream: InputStream?) {
-        stream?.let {
-            fileAttachmentView.setVisible()
+    private fun uploadFileFromStream(fileName: String, stream: InputStream) {
+        fileAttachmentView.setVisible()
 
-            // TODO: size limit enforcing
-            val fileRef = cardFileStorageRef.child(fileName)
-            fileRef.putStream(stream)
-            this.attachmentFileName = fileName
-        }
+        // TODO: size limit enforcing
+        val fileRef = cardFileStorageRef.child(fileName)
+        fileRef.putStream(stream)
+        this.attachmentFileName = fileName
     }
 
     private fun onSetFileUploadTask() = attachmentFileName?.let { fileName ->
@@ -430,11 +428,10 @@ class CardEditorActivity : HappyTeacherActivity() {
         fileAttachmentView.setFolderIconWithText(attachmentFileName.orEmpty())
         fileAttachmentView.setProgressComplete()
 
+        // TODO: delete by pressing X icon on download bar.
         fileAttachmentView.setOnClickListener {
             showToast("Long press to remove attachment")
         }
-
-        // TODO: delete by pressing X icon on download bar.
 
         fileAttachmentView.setOneTimeOnLongClickListener {
             deleteAttachment()
@@ -447,6 +444,11 @@ class CardEditorActivity : HappyTeacherActivity() {
         }
     }
 
+    /**
+     * When an upload ref (in Firebase Storage) for an image
+     *  is added, get its active upload task(s) and add
+     *  a success listener.
+     */
     private fun onImageUploadRefAdded(refUrl: String) {
         imageUploadProgressBar.setVisible()
         val decodedUrl = refUrl.decode()
@@ -479,6 +481,7 @@ class CardEditorActivity : HappyTeacherActivity() {
         val newImageUrls = editedCard.imageUrls.toMutableList()
         newImageUrls.add(url)
         editedCard.imageUrls = newImageUrls
+
         imageAdapter.notifyItemInserted(newImageUrls.lastIndex)
     }
 
@@ -642,21 +645,18 @@ class CardEditorActivity : HappyTeacherActivity() {
     override fun finish() {
         updateEditedCardFromFields()
 
+        // If there are any unsaved changes or pending uploads,
+        //  or if the card is empty, show a warning dialog.
         if (hasChanges && hasPendingUploads) {
-            // Changes AND pending uploads => save + cancel or discard + cancel
             unsavedChangesAndPendingUploadsWarningDialog.show()
         } else if (hasChanges) {
-            // Changes, no pending uploads => save or discard changes
             unsavedChangesWarningDialog.show()
         } else if (hasPendingUploads) {
-            //  Uploads in progress => cancel uploads or don't close
             pendingUploadsWarningDialog.show()
         } else if (editedCard.isEmpty()) {
-            //  Card is empty => delete card or save empty card
             emptyCardWarningDialog.show()
         } else {
             super.finish()
         }
     }
-
 }

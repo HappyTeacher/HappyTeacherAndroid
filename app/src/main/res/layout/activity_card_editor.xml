@@ -14,7 +14,7 @@
         tools:context="org.jnanaprabodhini.happyteacher.activity.CardEditorActivity">
 
         <HorizontalScrollView
-            android:id="@+id/attachmentButtonsLayout"
+            android:id="@+id/attachmentToolbarLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:visibility="gone"
@@ -23,7 +23,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <include layout="@layout/attachment_buttons_layout" />
+            <include layout="@layout/attachment_toolbar_layout" />
 
         </HorizontalScrollView>
 
@@ -36,7 +36,7 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/attachmentButtonsLayout"/>
+            app:layout_constraintTop_toBottomOf="@id/attachmentToolbarLayout"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/imageRecycler"
