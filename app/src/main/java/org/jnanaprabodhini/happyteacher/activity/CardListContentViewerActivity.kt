@@ -72,7 +72,7 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
         locationTextView.text = header.authorLocation
     }
 
-    private fun initializeRecyclerView() {
+    open fun initializeRecyclerView() {
         cardRecyclerView.layoutManager = LinearLayoutManager(this)
         cardRecyclerAdapter.startListening()
         cardRecyclerView?.adapter = cardRecyclerAdapter
