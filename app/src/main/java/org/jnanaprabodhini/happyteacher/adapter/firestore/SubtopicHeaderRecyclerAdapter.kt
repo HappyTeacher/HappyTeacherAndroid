@@ -35,7 +35,7 @@ class SubtopicHeaderRecyclerAdapter(options: FirestoreRecyclerOptions<Subtopic>,
                     .document()
 
             draftRef.set(lessonHeader)
-            LessonEditorActivity.launch(activity, draftRef, lessonHeader, model?.topicName.orEmpty())
+            LessonEditorActivity.launch(activity, draftRef, lessonHeader)
         }
     }
 

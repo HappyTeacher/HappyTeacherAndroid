@@ -20,7 +20,7 @@ import org.jnanaprabodhini.happyteacher.model.ContentCard
 class LessonEditorActivity: CardListContentViewerActivity() {
 
     companion object {
-        fun launch(from: Activity, lessonRef: DocumentReference, cardListContentHeader: CardListContentHeader, topicName: String) {
+        fun launch(from: Activity, lessonRef: DocumentReference, cardListContentHeader: CardListContentHeader) {
             val lessonEditorIntent = Intent(from, LessonEditorActivity::class.java)
 
             lessonEditorIntent.apply {
