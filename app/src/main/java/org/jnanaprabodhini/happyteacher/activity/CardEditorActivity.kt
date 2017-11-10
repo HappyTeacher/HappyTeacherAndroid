@@ -16,7 +16,6 @@ import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.widget.EditText
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.storage.FirebaseStorage
@@ -63,6 +62,7 @@ class CardEditorActivity : HappyTeacherActivity() {
         const val ORIGINAL_CARD = "ORIGINAL_CARD"
         const val EDITED_CARD = "EDITED_CARD"
         const val IMAGE_UPLOAD_REFS = "IMAGE_UPLOAD_REFS"
+        const val COMPLETE_IMAGE_UPLOADS = "COMPLETE_IMAGE_UPLOADS"
         const val ATTACHMENT_FILE_NAME = "ATTACHMENT_FILE_NAME"
 
         const val IMAGE_FROM_URL = "From URL" // todo: localize.
@@ -98,7 +98,7 @@ class CardEditorActivity : HappyTeacherActivity() {
             field = value
             onSetFileUploadTask()
         }
-    private val uploadedImageUrls = mutableListOf<String>()
+    private var uploadedImageUrls = mutableListOf<String>()
     private var cardTotalImageCount: Int = 0
         get() = editedCard.imageUrls.size + activeImageUploadRefUrls.size
     private var pendingUploadCount: Int = 0
@@ -120,6 +120,111 @@ class CardEditorActivity : HappyTeacherActivity() {
     private lateinit var editedCard: ContentCard
 
     private var saveMenuItem: MenuItem? = null
+
+
+    /**
+     * Dialog for warning a user about unsaved changes and pending uploads,
+     *  displayed before closing the activity
+     */
+    private val unsavedChangesAndPendingUploadsWarningDialog by lazy {
+        AlertDialog.Builder(this).apply {
+            setTitle(resources.getQuantityString(R.plurals.unsaved_changes_and_pending_uploads, pendingUploadCount))
+            setMessage(resources.getQuantityString(R.plurals.you_have_unsaved_changes_and_n_pending_uploads, pendingUploadCount, pendingUploadCount))
+            setPositiveButton(resources.getQuantityString(R.plurals.save_and_cancel_uploads, pendingUploadCount), {_,_ ->
+                cancelUploads()
+                saveAndFinish()
+            })
+            setNegativeButton(resources.getQuantityString(R.plurals.discard_changes_and_cancel_uploads, pendingUploadCount), {_,_ ->
+                cancelUploads()
+                discardChangesAndFinish()
+            })
+        }
+    }
+
+    /**
+     * Dialog for warning a user about unsaved changes,
+     *  displayed before closing the activity
+     */
+    private val unsavedChangesWarningDialog by lazy {
+        AlertDialog.Builder(this).apply {
+            setTitle(R.string.unsaved_changes)
+            setMessage(R.string.you_have_changed_this_card_would_you_like_to_save_your_changes)
+            setPositiveButton(R.string.save, {_,_ ->
+                cancelUploads()
+                saveAndFinish()
+            })
+            setNegativeButton(R.string.discard_changes, {_, _ ->
+                cancelUploads()
+                discardChangesAndFinish()
+            })
+        }
+    }
+
+    /**
+     * Dialog for warning a user about pending uploads,
+     *  displayed before closing the activity
+     */
+    private val pendingUploadsWarningDialog by lazy {
+        AlertDialog.Builder(this).apply {
+            setTitle(resources.getQuantityString(R.plurals.pending_uploads, pendingUploadCount))
+            setMessage(resources.getQuantityString(R.plurals.you_have_n_pending_uploads, pendingUploadCount, pendingUploadCount))
+            setPositiveButton(resources.getQuantityString(R.plurals.cancel_uploads, pendingUploadCount), {_,_ ->
+                cancelUploads()
+                discardChangesAndFinish()
+            })
+            setNegativeButton(R.string.dont_close, {dialog, _ ->
+                dialog.dismiss()
+            })
+        }
+    }
+
+    /**
+     * Dialog for warning a user about saving an empty card and asking
+     *  if they want to delete it instead
+     */
+    private val emptyCardWarningDialog by lazy {
+        AlertDialog.Builder(this).apply {
+            setTitle(R.string.empty_card)
+            setMessage(R.string.this_card_is_empty_would_you_like_to_delete_it)
+            setPositiveButton(R.string.delete_card, {_,_ ->
+                cardRef.delete()
+                discardChangesAndFinish()
+            })
+            setNegativeButton(R.string.save_empty_card, {_, _ ->
+                saveAndFinish()
+            })
+        }
+    }
+
+    private val youtubeValidationTextWatcher = object: TextWatcher {
+        override fun afterTextChanged(editable: Editable?) {}
+        override fun beforeTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {}
+        override fun onTextChanged(text: CharSequence?, star: Int, before: Int, count: Int) {
+            if (text?.getYoutubeUrlId() == null) {
+                youtubeUrlInputLayout.isErrorEnabled = true
+                youtubeUrlInputLayout.error = getString(R.string.youtube_url_not_recognized)
+                saveMenuItem?.isEnabled = false
+            } else {
+                youtubeUrlInputLayout.isErrorEnabled = false
+                saveMenuItem?.isEnabled = true
+            }
+        }
+    }
+
+    private val imageUploadSuccessListener = OnSuccessListener<UploadTask.TaskSnapshot> { snapshot ->
+        val url = snapshot.downloadUrl.toString()
+        uploadedImageUrls.add(url)
+        addImageFromUrl(url)
+
+        showToast(R.string.image_added_to_card)
+
+        val fileRef = storageRef.getReferenceFromUrl(url)
+        activeImageUploadRefUrls.remove(fileRef.toString())
+
+        if (activeImageUploadRefUrls.isEmpty()) {
+            imageUploadProgressBar.setVisibilityGone()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -218,21 +323,6 @@ class CardEditorActivity : HappyTeacherActivity() {
             }
         }
 
-    }
-
-    private val youtubeValidationTextWatcher = object: TextWatcher {
-        override fun afterTextChanged(editable: Editable?) {}
-        override fun beforeTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {}
-        override fun onTextChanged(text: CharSequence?, star: Int, before: Int, count: Int) {
-            if (text?.getYoutubeUrlId() == null) {
-                youtubeUrlInputLayout.isErrorEnabled = true
-                youtubeUrlInputLayout.error = getString(R.string.youtube_url_not_recognized)
-                saveMenuItem?.isEnabled = false
-            } else {
-                youtubeUrlInputLayout.isErrorEnabled = false
-                saveMenuItem?.isEnabled = true
-            }
-        }
     }
 
     private fun showAddImageDialog() {
@@ -362,21 +452,6 @@ class CardEditorActivity : HappyTeacherActivity() {
         }
     }
 
-    private val imageUploadSuccessListener = OnSuccessListener<UploadTask.TaskSnapshot> { snapshot ->
-        val url = snapshot.downloadUrl.toString()
-        uploadedImageUrls.add(url)
-        addImageFromUrl(url)
-
-        showToast(R.string.image_added_to_card)
-
-        val fileRef = storageRef.getReferenceFromUrl(url)
-        activeImageUploadRefUrls.remove(fileRef.toString())
-
-        if (activeImageUploadRefUrls.isEmpty()) {
-            imageUploadProgressBar.setVisibilityGone()
-        }
-    }
-
     private fun showAddImageUrlDialog() {
         val urlTextEdit = EditText(this)
         urlTextEdit.hint = getString(R.string.image_url)
@@ -443,7 +518,12 @@ class CardEditorActivity : HappyTeacherActivity() {
 
     private fun saveAndFinishWithAlert() {
         save()
-        finish()
+
+        if (hasPendingUploads) {
+            pendingUploadsWarningDialog.show()
+        } else {
+            super.finish()
+        }
     }
 
     private fun saveAndFinish() {
@@ -525,78 +605,12 @@ class CardEditorActivity : HappyTeacherActivity() {
         imageUploadProgressBar.setVisibilityGone()
     }
 
-    override fun finish() {
-        updateEditedCardFromFields()
-        val dialogBuilder = AlertDialog.Builder(this)
-
-        if (hasChanges && hasPendingUploads) {
-            // Changes AND pending uploads => save + cancel or discard + cancel
-            dialogBuilder.apply {
-                setTitle(resources.getQuantityString(R.plurals.unsaved_changes_and_pending_uploads, pendingUploadCount))
-                setMessage(resources.getQuantityString(R.plurals.you_have_unsaved_changes_and_n_pending_uploads, pendingUploadCount, pendingUploadCount))
-                setPositiveButton(resources.getQuantityString(R.plurals.save_and_cancel_uploads, pendingUploadCount), {_,_ ->
-                    cancelUploads()
-                    saveAndFinish()
-                })
-                setNegativeButton(resources.getQuantityString(R.plurals.discard_changes_and_cancel_uploads, pendingUploadCount), {_,_ ->
-                    cancelUploads()
-                    discardChangesAndFinish()
-                })
-                show()
-            }
-        } else if (hasChanges) {
-            // Changes, no pending uploads => save or discard changes
-            dialogBuilder.apply {
-                setTitle(R.string.unsaved_changes)
-                setMessage(R.string.you_have_changed_this_card_would_you_like_to_save_your_changes)
-                setPositiveButton(R.string.save, {_,_ ->
-                    cancelUploads()
-                    saveAndFinish()
-                })
-                setNegativeButton(R.string.discard_changes, {_, _ ->
-                    cancelUploads()
-                    discardChangesAndFinish()
-                })
-                show()
-            }
-        } else if (hasPendingUploads) {
-            //  Uploads in progress => cancel uploads or don't close
-            dialogBuilder.apply {
-                setTitle(resources.getQuantityString(R.plurals.pending_uploads, pendingUploadCount))
-                setMessage(resources.getQuantityString(R.plurals.you_have_n_pending_uploads, pendingUploadCount, pendingUploadCount))
-                setPositiveButton(resources.getQuantityString(R.plurals.cancel_uploads, pendingUploadCount), {_,_ ->
-                    cancelUploads()
-                    discardChangesAndFinish()
-                })
-                setNegativeButton(R.string.dont_close, {dialog, _ ->
-                    dialog.dismiss()
-                })
-                show()
-            }
-        } else if (editedCard.isEmpty()) {
-            //  Card is empty => delete card or save empty card
-            dialogBuilder.apply {
-                setTitle(R.string.empty_card)
-                setMessage(R.string.this_card_is_empty_would_you_like_to_delete_it)
-                setPositiveButton(R.string.delete_card, {_,_ ->
-                    cardRef.delete()
-                    discardChangesAndFinish()
-                })
-                setNegativeButton(R.string.save_empty_card, {_, _ ->
-                    saveAndFinish()
-                })
-                show()
-            }
-        } else {
-            super.finish()
-        }
-    }
-
     override fun onSaveInstanceState(outState: Bundle?) {
         updateEditedCardFromFields()
         outState?.putParcelable(Constants.ORIGINAL_CARD, originalCard)
         outState?.putParcelable(Constants.EDITED_CARD, editedCard)
         outState?.putStringArrayList(Constants.IMAGE_UPLOAD_REFS, activeImageUploadRefUrls)
+        outState?.putStringArray(Constants.COMPLETE_IMAGE_UPLOADS, uploadedImageUrls.toTypedArray())
         outState?.putString(Constants.ATTACHMENT_FILE_NAME, attachmentFileName)
 
         super.onSaveInstanceState(outState)
@@ -607,15 +621,37 @@ class CardEditorActivity : HappyTeacherActivity() {
         val savedEditedCard: ContentCard? = savedInstanceState?.getParcelable(Constants.EDITED_CARD)
         val savedImageUploadRefs: ArrayList<String>? = savedInstanceState?.getStringArrayList(Constants.IMAGE_UPLOAD_REFS)
         val savedAttachmentFileName: String? = savedInstanceState?.getString(Constants.ATTACHMENT_FILE_NAME)
+        val savedCompleteImageUploads: Array<String>? = savedInstanceState?.getStringArray(Constants.COMPLETE_IMAGE_UPLOADS)
 
         savedOriginalCard?.let{ originalCard = savedOriginalCard }
         savedEditedCard?.let{ editedCard = savedEditedCard }
         savedImageUploadRefs?.let { restoreImageUploads(it) }
         savedAttachmentFileName?.let { attachmentFileName = it }
+        savedCompleteImageUploads?.let { uploadedImageUrls = it.toMutableList() }
     }
 
     private fun restoreImageUploads(uploadRefs: ArrayList<String>) {
         this.activeImageUploadRefUrls.addAll(uploadRefs)
+    }
+
+    override fun finish() {
+        updateEditedCardFromFields()
+
+        if (hasChanges && hasPendingUploads) {
+            // Changes AND pending uploads => save + cancel or discard + cancel
+            unsavedChangesAndPendingUploadsWarningDialog.show()
+        } else if (hasChanges) {
+            // Changes, no pending uploads => save or discard changes
+            unsavedChangesWarningDialog.show()
+        } else if (hasPendingUploads) {
+            //  Uploads in progress => cancel uploads or don't close
+            pendingUploadsWarningDialog.show()
+        } else if (editedCard.isEmpty()) {
+            //  Card is empty => delete card or save empty card
+            emptyCardWarningDialog.show()
+        } else {
+            super.finish()
+        }
     }
 
 }
