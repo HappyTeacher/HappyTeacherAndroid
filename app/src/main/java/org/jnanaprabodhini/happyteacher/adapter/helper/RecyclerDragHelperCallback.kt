@@ -4,22 +4,17 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 
 /**
- * A callback for ItemTouchHelper that allows for views to be moved up and down.
+ * A callback for ItemTouchHelper that allows for views to be dragged. Implementations
+ *  of this abstract class determine the directions in which views can be dragged.
  *
  *  This callback alerts a MovableViewContainer (e.g. an adapter) when a view is
  *  moved, and when a view is "set down" -- after the move is complete.
  *
  */
-class RecyclerDragHelperCallback(private val movableViewContainer: MovableViewContainer) : ItemTouchHelper.Callback() {
+abstract class RecyclerDragHelperCallback(private val movableViewContainer: MovableViewContainer) : ItemTouchHelper.Callback() {
 
     private var dragItemInitialPosition: Int? = null
     private var targetItemPosition: Int? = null
-
-    override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {
-        val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
-        val swipeFlags = 0 // no swiping
-        return makeMovementFlags(dragFlags, swipeFlags)
-    }
 
     override fun onMove(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?, target: RecyclerView.ViewHolder?): Boolean {
         val oldPosition = viewHolder?.adapterPosition
@@ -70,3 +65,4 @@ class RecyclerDragHelperCallback(private val movableViewContainer: MovableViewCo
     }
 
 }
+

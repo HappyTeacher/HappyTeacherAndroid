@@ -16,11 +16,14 @@ import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.widget.EditText
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import org.jnanaprabodhini.happyteacher.adapter.EditableCardImageAdapter
+import org.jnanaprabodhini.happyteacher.adapter.helper.RecyclerDragHelperCallback
+import org.jnanaprabodhini.happyteacher.adapter.helper.RecyclerHorizontalDragHelperCallback
 import org.jnanaprabodhini.happyteacher.util.ObservableArrayList
 import java.io.InputStream
 import java.util.*
@@ -249,6 +252,8 @@ class CardEditorActivity : HappyTeacherActivity() {
 
         imageRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         imageRecycler.adapter = imageAdapter
+        val dragHelper = ItemTouchHelper(RecyclerHorizontalDragHelperCallback(imageAdapter))
+        dragHelper.attachToRecyclerView(imageRecycler)
 
         if (editedCard.youtubeId.isNotEmpty()) {
             showVideoInput()

@@ -12,7 +12,7 @@ import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.CardListContentRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.EditableLessonRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.MovableViewContainer
-import org.jnanaprabodhini.happyteacher.adapter.helper.RecyclerDragHelperCallback
+import org.jnanaprabodhini.happyteacher.adapter.helper.RecyclerVerticalDragHelperCallback
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 import org.jnanaprabodhini.happyteacher.model.ContentCard
@@ -49,7 +49,7 @@ class LessonEditorActivity: CardListContentViewerActivity() {
 
     override fun initializeRecyclerView() {
         super.initializeRecyclerView()
-        val dragCallback = RecyclerDragHelperCallback(cardRecyclerAdapter as MovableViewContainer)
+        val dragCallback = RecyclerVerticalDragHelperCallback(cardRecyclerAdapter as MovableViewContainer)
         val itemTouchHelper = ItemTouchHelper(dragCallback)
         itemTouchHelper.attachToRecyclerView(cardRecyclerView)
     }
