@@ -3,6 +3,7 @@ package org.jnanaprabodhini.happyteacher.model
 import android.annotation.SuppressLint
 import android.os.Parcelable
 import android.util.Log
+import com.google.firebase.firestore.Exclude
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -61,6 +62,7 @@ data class ContentCard(var header: String = "",
                        var attachmentPath: String = "",
                        var attachmentMetadata: AttachmentMetadata = AttachmentMetadata(),
                        var orderNumber: Int = 0): Parcelable {
+    @Exclude
     fun isEmpty(): Boolean {
         // Ignore order number when checking for emptiness:
         val emptyCard = ContentCard( orderNumber = orderNumber )
@@ -72,7 +74,10 @@ data class ContentCard(var header: String = "",
 data class AttachmentMetadata(val contentType: String = "",
                               val size: Long = 0,
                               val timeCreated: Long = 0): Parcelable {
+    @Exclude
     fun isEmpty() = contentType.isEmpty() && size == 0L && timeCreated == 0L
+
+    @Exclude
     fun isNotEmpty() = !isEmpty()
 }
 
