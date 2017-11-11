@@ -66,10 +66,6 @@ class CardEditorActivity : HappyTeacherActivity() {
         const val IMAGE_UPLOAD_REFS = "IMAGE_UPLOAD_REFS"
         const val COMPLETE_IMAGE_UPLOADS = "COMPLETE_IMAGE_UPLOADS"
         const val ATTACHMENT_FILE_NAME = "ATTACHMENT_FILE_NAME"
-
-        const val IMAGE_FROM_URL = "From URL" // todo: localize.
-        const val IMAGE_FROM_GALLERY = "From Gallery"
-        val IMAGE_OPTIONS = arrayOf(IMAGE_FROM_URL, IMAGE_FROM_GALLERY)
     }
 
     private val storageRef by lazy {
@@ -330,12 +326,16 @@ class CardEditorActivity : HappyTeacherActivity() {
     }
 
     private fun showAddImageDialog() {
+        val fromGalleryOptionName = getString(R.string.image_from_gallery)
+        val fromUrlOptionName = getString(R.string.image_from_url)
+        val options = arrayOf(fromGalleryOptionName, fromUrlOptionName)
+
         AlertDialog.Builder(this).apply {
             setTitle(R.string.add_an_image)
-            setItems(Constants.IMAGE_OPTIONS, { dialog, which ->
-                when (Constants.IMAGE_OPTIONS[which]) {
-                    Constants.IMAGE_FROM_GALLERY -> getImageFromGallery()
-                    Constants.IMAGE_FROM_URL -> showAddImageUrlDialog()
+            setItems(options, { dialog, which ->
+                when (options[which]) {
+                    fromGalleryOptionName -> getImageFromGallery()
+                    fromUrlOptionName -> showAddImageUrlDialog()
                 }
                 dialog.dismiss()
             })
