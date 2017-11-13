@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
@@ -99,7 +100,7 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
         val editLessonButton = menu?.findItem(R.id.menu_admin_edit_card_list_content)
         editLessonButton?.isVisible = false
 
-        // Only show to admins
+        // Only show edit button to admins!
         //  (Our Firestore security rules also
         //   only allow writes from admins)
         auth.currentUser?.uid?.let { uid ->
