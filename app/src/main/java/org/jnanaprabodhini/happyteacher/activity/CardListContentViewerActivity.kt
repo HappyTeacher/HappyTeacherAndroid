@@ -5,9 +5,9 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
 import android.support.v7.widget.LinearLayoutManager
-import com.google.firebase.firestore.FirebaseFirestoreException
+import android.view.Menu
+import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
-import kotlinx.android.synthetic.main.view_recycler_horizontal_pager.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.CardListContentRecyclerAdapter
@@ -15,6 +15,7 @@ import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
+import org.jnanaprabodhini.happyteacher.model.User
 import java.io.File
 
 abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseDataObserver {
@@ -91,6 +92,39 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
 
     override fun onDataLoaded() {
         progressBar.setVisibilityGone()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_cards_viewer, menu)
+        val editLessonButton = menu?.findItem(R.id.menu_admin_edit_card_list_content)
+        editLessonButton?.isVisible = false
+
+        // Only show to admins
+        //  (Our Firestore security rules also
+        //   only allow writes from admins)
+        auth.currentUser?.uid?.let { uid ->
+            firestoreUsersCollection.document(uid).get().addOnSuccessListener { snapshot ->
+                val user = snapshot.toObject(User::class.java)
+                if (user.role == User.Roles.ADMIN) {
+                    editLessonButton?.isVisible = true
+                }
+            }
+        }
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.menu_admin_edit_card_list_content -> openInEditor()
+        }
+        return true
+    }
+
+    private fun openInEditor() {
+        // TODO: make this abstract -- launch separate editors for Lessons, Classroom Resources
+        LessonEditorActivity.launch(this, contentRef, header)
     }
 
 }

@@ -85,4 +85,10 @@ data class User(val displayName: String = "",
                 val email: String = "",
                 val phoneNumber: String = "",
                 val location: String = "",
-                val institution: String = "")
+                val institution: String = "",
+                val role: String = "") {
+    companion object Roles {
+        const val ADMIN = "admin"
+        const val MODERATOR = "moderator"
+    }
+}
