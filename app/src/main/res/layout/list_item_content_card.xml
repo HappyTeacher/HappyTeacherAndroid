@@ -10,73 +10,136 @@
     app:cardCornerRadius="4dp"
     app:cardElevation="4dp">
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/topPlaceholder"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/headerMediaFrame"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread_inside" />
 
         <FrameLayout
             android:id="@+id/headerMediaFrame"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/lesson_card_media_frame_height"
             android:animateLayoutChanges="true"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/lesson_card_media_frame_height">
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/headerTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/topPlaceholder">
+
             <ImageView
                 android:id="@+id/headerImageView"
                 android:layout_width="match_parent"
-                android:scaleType="fitCenter"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter" />
+
             <Button
                 android:id="@+id/loadButton"
+                style="@style/Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                style="@style/Button"
-                android:visibility="gone"/>
+                android:visibility="gone" />
+
             <org.jnanaprabodhini.happyteacher.view.YoutubeWebView
                 android:id="@+id/youtubePlayerWebView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
+
             <org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
                 android:id="@+id/imageGalleryRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
+
             <ProgressBar
                 android:id="@+id/headerProgressBar"
-                android:visibility="gone"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
         </FrameLayout>
 
         <TextView
-            android:id="@+id/headerEditText"
-            style="@style/LessonCardText.Header"/>
+            android:id="@+id/headerTextView"
+            style="@style/LessonCardText.Header"
+            app:layout_constraintBottom_toTopOf="@id/bodyTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerMediaFrame"
+            app:layout_goneMarginBottom="18dp" />
 
         <TextView
-            android:id="@+id/bodyEditText"
-            style="@style/LessonCardText.Body"/>
+            android:id="@+id/bodyTextView"
+            style="@style/LessonCardText.Body"
+            app:layout_constraintBottom_toTopOf="@id/attachmentDownloadBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerTextView"
+            app:layout_goneMarginTop="18dp" />
 
         <org.jnanaprabodhini.happyteacher.view.DownloadBarView
             android:id="@+id/attachmentDownloadBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bodyTextView" />
 
-        <ImageButton
+        <TextView
             android:id="@+id/editButton"
-            android:visibility="gone"
-            app:srcCompat="@drawable/ic_pencil_black_24dp"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/edit" />
+            android:layout_margin="0dp"
+            android:background="@color/mediumGray"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/edit"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@id/bottomPlaceholder"
+            app:layout_constraintEnd_toStartOf="@+id/deleteButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/attachmentDownloadBar" />
 
-        <ImageButton
+        <TextView
             android:id="@+id/deleteButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="0dp"
+            android:background="@color/errorRed"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/delete"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@id/editButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/editButton"
+            app:layout_constraintTop_toTopOf="@id/editButton"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/ic_delete_gray_24dp" />
+
+        <View
+            android:id="@+id/bottomPlaceholder"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editButton" />
+
+        <android.support.constraint.Group
+            android:id="@+id/editButtonGroup"
             android:visibility="gone"
-            app:srcCompat="@drawable/ic_delete_gray_24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/delete" />
+            app:constraint_referenced_ids="deleteButton,editButton" />
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.v7.widget.CardView>
