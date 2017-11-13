@@ -33,10 +33,10 @@ abstract class TopicLessonsRecyclerAdapter(topicsAdapterOptions: FirestoreRecycl
         setBackgroundColor(holder?.itemView, position)
 
         val topicId = snapshots.getSnapshot(position).reference.id
-        initializeLessonRecyclerView(holder?.horizontalRecyclerView, topicId, model, holder)
+        initializeLessonRecyclerView(holder?.horizontalRecyclerView, topicId, holder)
     }
 
-    private fun initializeLessonRecyclerView(recyclerView: HorizontalPagerRecyclerView?, topicId: String, model: Topic?, holder: ContentHeaderRecyclerViewHolder?) {
+    private fun initializeLessonRecyclerView(recyclerView: HorizontalPagerRecyclerView?, topicId: String, holder: ContentHeaderRecyclerViewHolder?) {
         val adapterOptions = getSubtopicAdapterOptions(topicId)
 
         val shouldShowSubmissionsCount = true
