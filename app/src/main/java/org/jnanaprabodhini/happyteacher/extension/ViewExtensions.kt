@@ -1,32 +1,27 @@
 package org.jnanaprabodhini.happyteacher.extension
 
 import android.database.DataSetObserver
-import android.graphics.Bitmap
 import android.os.Build
+import android.support.annotation.DimenRes
 import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
+import android.support.v4.content.res.ResourcesCompat
+import android.support.v4.view.ViewCompat
 import android.support.v7.content.res.AppCompatResources
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.webkit.*
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ImageView
+import android.widget.Spinner
+import android.widget.TextView
 import com.squareup.picasso.Picasso
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.taghandler.RootListTagHandler
-import android.content.Intent
-import android.net.Uri
-import android.support.annotation.ColorRes
-import android.support.annotation.DimenRes
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v4.view.ViewCompat
-import android.support.v7.widget.LinearLayoutManager
-import android.text.Editable
-import android.text.TextWatcher
-import kotlinx.android.synthetic.main.activity_card_editor.*
 
 
 /**
@@ -137,10 +132,10 @@ fun TextView.setHtmlText(htmlString: String) {
 
     val tagHandler = RootListTagHandler()
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        this.text = Html.fromHtml(htmlString, Html.FROM_HTML_MODE_COMPACT, null, tagHandler)
+    this.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        Html.fromHtml(htmlString, Html.FROM_HTML_MODE_COMPACT, null, tagHandler)
     } else {
-        this.text = Html.fromHtml(htmlString, null, tagHandler)
+        Html.fromHtml(htmlString, null, tagHandler)
     }
 
     // Ensure no newline at beginning:
