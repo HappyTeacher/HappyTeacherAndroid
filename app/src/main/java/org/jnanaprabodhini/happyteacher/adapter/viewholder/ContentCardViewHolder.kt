@@ -4,15 +4,16 @@ import android.app.Activity
 import android.support.constraint.Group
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.*
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.list_item_content_card.view.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.CardEditorActivity
+import org.jnanaprabodhini.happyteacher.extension.onFinish
 import org.jnanaprabodhini.happyteacher.extension.setDrawableLeft
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
-import org.jnanaprabodhini.happyteacher.extension.showSnackbar
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 import org.jnanaprabodhini.happyteacher.view.DownloadBarView
 import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
@@ -51,7 +52,15 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
         }
 
         deleteButton.setOnClickListener {
-            cardRef.delete()
+            // FirebaseUI query refreshes to fast to animate item removals
+            //  so for now we run our own animation -- delete item after.
+            val exitAnimation = AnimationUtils.loadAnimation(activity, R.anim.slide_out_right_quick)
+
+            exitAnimation.onFinish {
+                cardRef.delete()
+            }
+
+            itemView.startAnimation(exitAnimation)
         }
     }
 

@@ -15,6 +15,7 @@ import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.View
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.ImageView
@@ -196,4 +197,14 @@ fun LinearLayoutManager.isLastVisiblePositionCompletelyVisible(): Boolean {
     val lastCompletelyVisiblePosition = findLastCompletelyVisibleItemPosition()
 
     return lastVisiblePosition == lastCompletelyVisiblePosition
+}
+
+fun Animation.onFinish(onFinish: () -> Unit) {
+    this.setAnimationListener(object: Animation.AnimationListener {
+        override fun onAnimationRepeat(p0: Animation?) {}
+        override fun onAnimationEnd(animation: Animation?) {
+            onFinish()
+        }
+        override fun onAnimationStart(p0: Animation?) {}
+    })
 }
