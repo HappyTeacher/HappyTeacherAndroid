@@ -11,7 +11,7 @@ import org.jnanaprabodhini.happyteacher.adapter.helper.AttachmentDownloadManager
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentCardViewHolder
 import org.jnanaprabodhini.happyteacher.extension.loadImageToFit
-import org.jnanaprabodhini.happyteacher.extension.setHtmlText
+import org.jnanaprabodhini.happyteacher.extension.setHtmlAndMarkdownText
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.AttachmentMetadata
@@ -62,7 +62,7 @@ abstract class CardListContentRecyclerAdapter(options: FirestoreRecyclerOptions<
 
         if (card.body.isNotEmpty()) {
             holder?.bodyTextView?.setVisible()
-            holder?.bodyTextView?.setHtmlText(card.body)
+            holder?.bodyTextView?.setHtmlAndMarkdownText(card.body)
         } else {
             holder?.bodyTextView?.setVisibilityGone()
         }

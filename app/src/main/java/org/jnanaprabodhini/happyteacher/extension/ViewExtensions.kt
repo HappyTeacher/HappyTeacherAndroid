@@ -13,12 +13,14 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.text.method.LinkMovementMethod
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
+import com.commonsware.cwac.anddown.AndDown
 import com.squareup.picasso.Picasso
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.taghandler.RootListTagHandler
@@ -127,19 +129,20 @@ fun TextView.setDrawableRight(@DrawableRes drawableId: Int) {
     this.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
 }
 
-fun TextView.setHtmlText(htmlString: String) {
+fun TextView.setHtmlAndMarkdownText(formattedString: String) {
     this.movementMethod = LinkMovementMethod.getInstance()
-
     val tagHandler = RootListTagHandler()
 
-    this.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        Html.fromHtml(htmlString, Html.FROM_HTML_MODE_COMPACT, null, tagHandler)
+    val markdownParser = AndDown()
+    val htmlFromMarkdown = markdownParser.markdownToHtml(formattedString)
+
+    val spannedText = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        Html.fromHtml(htmlFromMarkdown, Html.FROM_HTML_MODE_COMPACT, null, tagHandler)
     } else {
-        Html.fromHtml(htmlString, null, tagHandler)
+        Html.fromHtml(htmlFromMarkdown, null, tagHandler)
     }
 
-    // Ensure no newline at beginning:
-    this.text = this.text.removePrefix("\n")
+    this.text = spannedText.trim()
 }
 
 fun ImageView.loadImageToFit(imageUrl: String) {

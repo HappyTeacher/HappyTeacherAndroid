@@ -66,8 +66,8 @@ dependencies {
     }
     compile 'com.google.firebase:firebase-core:11.4.2'
 
-    // Calligraphy
     compile 'uk.co.chrisjenx:calligraphy:2.3.0'
+    compile 'com.commonsware.cwac:anddown:0.4.0'
 
     testCompile 'junit:junit:4.12'
 }
@@ -75,6 +75,9 @@ repositories {
     mavenCentral()
     maven {
         url 'https://maven.google.com'
+    }
+    maven {
+        url "https://s3.amazonaws.com/repo.commonsware.com"
     }
 }
 
