@@ -185,20 +185,6 @@ fun RecyclerView.canScrollRightHorizontally(): Boolean {
     return canScrollHorizontally(1)
 }
 
-fun LinearLayoutManager.isFirstVisiblePositionCompletelyVisible(): Boolean {
-    val firstVisiblePosition = findFirstVisibleItemPosition()
-    val firstCompletelyVisiblePosition = findFirstCompletelyVisibleItemPosition()
-
-    return firstVisiblePosition == firstCompletelyVisiblePosition
-}
-
-fun LinearLayoutManager.isLastVisiblePositionCompletelyVisible(): Boolean {
-    val lastVisiblePosition = findLastVisibleItemPosition()
-    val lastCompletelyVisiblePosition = findLastCompletelyVisibleItemPosition()
-
-    return lastVisiblePosition == lastCompletelyVisiblePosition
-}
-
 fun Animation.onFinish(onFinish: () -> Unit) {
     this.setAnimationListener(object: Animation.AnimationListener {
         override fun onAnimationRepeat(p0: Animation?) {}
