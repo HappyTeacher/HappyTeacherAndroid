@@ -18,7 +18,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.extension.showToast
-import org.jnanaprabodhini.happyteacher.preference.EditTextValueDisplayPreference
+import org.jnanaprabodhini.happyteacher.preference.MandatoryContributorPreference
 import org.jnanaprabodhini.happyteacher.util.PreferencesManager
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 
@@ -139,7 +139,7 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
      */
     private fun onLocationChange(newLocation: String?) {
         // Persist value and refresh the UI:
-        val locationPref = settingsFragment.findPreference(getString(R.string.prefs_key_user_location)) as EditTextValueDisplayPreference
+        val locationPref = settingsFragment.findPreference(getString(R.string.prefs_key_user_location)) as MandatoryContributorPreference
         locationPref.text = newLocation
         locationPref.callChangeListener(newLocation)
 

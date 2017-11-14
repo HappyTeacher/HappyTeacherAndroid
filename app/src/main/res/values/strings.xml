@@ -141,6 +141,7 @@
     <string name="open_source_notices">Open source notices</string>
     <string name="add_card">Add card</string>
     <string name="submit">Submit</string>
+    <string name="required_for_contributors_tap_to_add">Required for contributors. Tap to add.</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>
