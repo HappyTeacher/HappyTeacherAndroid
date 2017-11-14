@@ -11,6 +11,7 @@ import android.support.v4.view.ViewCompat
 import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.TooltipCompat
 import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.view.View
@@ -206,4 +207,8 @@ fun Animation.onFinish(onFinish: () -> Unit) {
         }
         override fun onAnimationStart(p0: Animation?) {}
     })
+}
+
+fun View.setTooltip(tooltipText: String) {
+    TooltipCompat.setTooltipText(this, tooltipText)
 }

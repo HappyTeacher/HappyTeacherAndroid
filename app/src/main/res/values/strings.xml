@@ -139,6 +139,8 @@
     <string name="image_from_gallery">From gallery</string>
     <string name="image_from_url">From URL</string>
     <string name="open_source_notices">Open source notices</string>
+    <string name="add_card">Add card</string>
+    <string name="submit">Submit</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>

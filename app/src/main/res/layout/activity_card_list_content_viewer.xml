@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.jnanaprabodhini.happyteacher.activity.TopicsListActivity"
+    android:id="@+id/parentView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -104,20 +105,39 @@
             android:textSize="14sp"
             fontPath="fonts/Roboto-Light.ttf"
             android:gravity="center_vertical"
-            android:maxLines="1"
             android:ellipsize="marquee"
-            app:layout_scrollFlags="scroll"/>
+            app:layout_scrollFlags="scroll"
+            android:singleLine="true" />
 
     </android.support.design.widget.AppBarLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/addCardFab"
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:useCompatPadding="true"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
         app:srcCompat="@drawable/ic_add_white_24dp" />
+
+    <View
+        android:id="@+id/fabDivider"
+        android:layout_width="1dp"
+        android:layout_height="16dp"
+        app:layout_anchor="@id/addCardFab"
+        app:layout_anchorGravity="top|center" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/submitLessonFab"
+        android:visibility="gone"
+        app:backgroundTint="@color/grassGreen"
+        app:fabSize="mini"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_margin="16dp"
+        app:srcCompat="@drawable/ic_arrow_forward_white_24dp"
+        app:layout_anchor="@id/fabDivider"
+        app:layout_anchorGravity="top|right|end" />
 
 </android.support.design.widget.CoordinatorLayout>

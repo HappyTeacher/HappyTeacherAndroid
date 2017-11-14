@@ -13,7 +13,9 @@ import org.jnanaprabodhini.happyteacher.adapter.contentlist.CardListContentRecyc
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.EditableLessonRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.MovableViewContainer
 import org.jnanaprabodhini.happyteacher.adapter.helper.RecyclerVerticalDragHelperCallback
+import org.jnanaprabodhini.happyteacher.extension.setTooltip
 import org.jnanaprabodhini.happyteacher.extension.setVisible
+import org.jnanaprabodhini.happyteacher.extension.showSnackbar
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 
@@ -44,7 +46,7 @@ class LessonEditorActivity: CardListContentViewerActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.setSubtitle(R.string.lesson_editor)
-        setupFab()
+        setupFabs()
     }
 
     override fun initializeRecyclerView() {
@@ -54,22 +56,38 @@ class LessonEditorActivity: CardListContentViewerActivity() {
         itemTouchHelper.attachToRecyclerView(cardRecyclerView)
     }
 
-    private fun setupFab() {
-        fab.setVisible()
+    private fun setupFabs() {
+        addCardFab.setVisible()
+        submitLessonFab.setVisible()
 
-        fab.setOnClickListener {
-            val newCardRef = cardsRef.document()
-            val newCard = ContentCard()
+        addCardFab.setTooltip(getString(R.string.add_card))
+        submitLessonFab.setTooltip(getString(R.string.submit))
 
-            val cardCount = cardRecyclerAdapter.itemCount
-            if (cardCount > 0) {
-                val lastCard = cardRecyclerAdapter.getItem(cardRecyclerAdapter.itemCount - 1)
-                val newCardNumber = lastCard.orderNumber + 1
-                newCard.orderNumber = newCardNumber
-            }
-
-            CardEditorActivity.launch(this, newCardRef, newCard, contentRef.id)
+        addCardFab.setOnClickListener {
+            addNewCard()
         }
+
+        submitLessonFab.setOnClickListener{
+            submit()
+        }
+    }
+
+    private fun submit() {
+        parentView.showSnackbar("dingus")
+    }
+
+    private fun addNewCard() {
+        val newCardRef = cardsRef.document()
+        val newCard = ContentCard()
+
+        val cardCount = cardRecyclerAdapter.itemCount
+        if (cardCount > 0) {
+            val lastCard = cardRecyclerAdapter.getItem(cardRecyclerAdapter.itemCount - 1)
+            val newCardNumber = lastCard.orderNumber + 1
+            newCard.orderNumber = newCardNumber
+        }
+
+        CardEditorActivity.launch(this, newCardRef, newCard, contentRef.id)
     }
 
     override fun finish() {
