@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.preference.PreferenceFragmentCompat
+import android.view.Menu
+import android.view.MenuItem
 import com.crashlytics.android.Crashlytics
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
@@ -18,6 +20,9 @@ import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.extension.showToast
 import org.jnanaprabodhini.happyteacher.preference.EditTextValueDisplayPreference
 import org.jnanaprabodhini.happyteacher.util.PreferencesManager
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+
+
 
 class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -177,6 +182,26 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
                 }
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_settings, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.menu_open_source_notices -> launchOpenSourceNotices()
+        }
+        return true
+    }
+
+    private fun launchOpenSourceNotices() {
+        val intent = Intent(this, OssLicensesMenuActivity::class.java)
+        val title = getString(R.string.open_source_notices)
+        intent.putExtra("title", title)
+        startActivity(intent)
     }
 
 }

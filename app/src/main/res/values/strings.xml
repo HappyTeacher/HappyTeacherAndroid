@@ -138,6 +138,7 @@
     <string name="click_and_hold_to_cancel_upload">Click and hold to cancel upload</string>
     <string name="image_from_gallery">From gallery</string>
     <string name="image_from_url">From URL</string>
+    <string name="open_source_notices">Open source notices</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>
