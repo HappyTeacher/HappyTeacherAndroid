@@ -73,7 +73,7 @@ class LessonEditorActivity: CardListContentViewerActivity() {
     }
 
     private fun submit() {
-        parentView.showSnackbar("dingus")
+        parentView.showSnackbar("You can't submit things yet")
     }
 
     private fun addNewCard() {
