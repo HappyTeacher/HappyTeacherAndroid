@@ -157,7 +157,7 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
                     .build(this)
             startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE)
         } catch (e: GooglePlayServicesRepairableException) {
-            GoogleApiAvailability.getInstance().getErrorDialog(this, e.connectionStatusCode, 0)
+            GoogleApiAvailability.getInstance().getErrorDialog(this, e.connectionStatusCode, 0).show()
             Crashlytics.logException(e)
         } catch (e: GooglePlayServicesNotAvailableException) {
             showToast(getString(R.string.you_must_have_google_play_service_to_do_this))
