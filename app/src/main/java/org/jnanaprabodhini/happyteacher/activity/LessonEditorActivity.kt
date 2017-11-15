@@ -89,6 +89,7 @@ class LessonEditorActivity: CardListContentViewerActivity() {
     }
 
     private fun submit() {
+        showToast("Submitting...")
         contentRef.update(getString(R.string.status), getString(R.string.status_awaiting_review))
                 .addOnSuccessListener {
                     showToast("Lesson submitted")
