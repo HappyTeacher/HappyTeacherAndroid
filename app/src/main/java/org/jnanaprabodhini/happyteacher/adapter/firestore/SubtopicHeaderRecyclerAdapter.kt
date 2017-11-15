@@ -53,7 +53,8 @@ class SubtopicHeaderRecyclerAdapter(options: FirestoreRecyclerOptions<Subtopic>,
                 authorInstitution = authorInstitution,
                 authorLocation = authorLocation,
                 authorName = authorName,
-                status = activity.getString(R.string.status_draft)
+                status = activity.getString(R.string.status_draft),
+                resourceType = activity.getString(R.string.lesson) // add classroom resources too!
         )
     }
 

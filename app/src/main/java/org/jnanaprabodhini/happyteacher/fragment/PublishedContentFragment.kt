@@ -16,7 +16,7 @@ class PublishedContentFragment : RecyclerFragment() {
 
         val publishedQuery = firestoreLocalized.collection(getString(R.string.resources))
                 .whereEqualTo(getString(R.string.author_id), userId)
-                .whereEqualTo(getString(R.string.status), getString(R.string.status_awaiting_review))
+                .whereEqualTo(getString(R.string.status), getString(R.string.status_published))
 
         val adapterOptions = FirestoreRecyclerOptions.Builder<CardListContentHeader>()
                 .setQuery(publishedQuery, CardListContentHeader::class.java).build()

@@ -45,7 +45,8 @@ data class CardListContentHeader(val name: String = "",
                                  val topicName: String = "",
                                  val subjectName: String = "",
                                  val subtopicSubmissionCount: Int = 0,
-                                 val status: String = ""): Parcelable
+                                 val status: String = "",
+                                 val resourceType: String = ""): Parcelable
 
 data class CardListContent(val name: String = "",
                            val authorEmail: String = "",
