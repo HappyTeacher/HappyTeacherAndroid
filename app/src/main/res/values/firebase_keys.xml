@@ -5,18 +5,11 @@
     <string name="subjects" translatable="false">subjects</string>
     <string name="subject" translatable="false">subject</string>
     <string name="maharashtra_board_key" translatable="false">maharashtra board</string>
-    <string name="levels" translatable="false">levels</string>
     <string name="syllabus_lessons" translatable="false">syllabus_lessons</string>
     <string name="lesson_number" translatable="false">lessonNumber</string>
     <string name="boards" translatable="false">boards</string>
-    <string name="names" translatable="false">names</string>
     <string name="parent_subject" translatable="false">parentSubject</string>
     <string name="subtopics" translatable="false">subtopics</string>
-    <string name="subtopic_lesson_headers" translatable="false">subtopic_lesson_headers</string>
-    <string name="featured" translatable="false">featured</string>
-    <string name="level_subtopics" translatable="false">level_subtopics</string>
-    <string name="featured_subtopic_lesson_headers" translatable="false">featured_subtopic_lesson_headers</string>
-    <string name="subtopic_lessons" translatable="false">subtopic_lessons</string>
     <string name="subtopic" translatable="false">subtopic</string>
     <string name="is_featured" translatable="false">isFeatured</string>
     <string name="board" translatable="false">board</string>
