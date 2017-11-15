@@ -9,7 +9,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.adapter.contentlist.CardListContentRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.contentlist.ResourceContentRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.EditableLessonRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.MovableViewContainer
 import org.jnanaprabodhini.happyteacher.adapter.helper.RecyclerVerticalDragHelperCallback
@@ -17,27 +17,27 @@ import org.jnanaprabodhini.happyteacher.extension.setTooltip
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.extension.showSnackbar
 import org.jnanaprabodhini.happyteacher.extension.showToast
-import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
+import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 
 /**
  * Created by grahamearley on 11/3/17.
  */
-class LessonEditorActivity: CardListContentViewerActivity() {
+class LessonEditorActivity: ResourceContentViewerActivity() {
 
     companion object {
-        fun launch(from: Activity, lessonRef: DocumentReference, cardListContentHeader: CardListContentHeader) {
+        fun launch(from: Activity, lessonRef: DocumentReference, resourceHeader: ResourceHeader) {
             val lessonEditorIntent = Intent(from, LessonEditorActivity::class.java)
 
             lessonEditorIntent.apply {
                 putExtra(CONTENT_REF_PATH, lessonRef.path)
-                putExtra(HEADER, cardListContentHeader)
+                putExtra(HEADER, resourceHeader)
             }
             from.startActivity(lessonEditorIntent)
         }
     }
 
-    override val cardRecyclerAdapter: CardListContentRecyclerAdapter by lazy {
+    override val cardRecyclerAdapter: ResourceContentRecyclerAdapter by lazy {
         val options = FirestoreRecyclerOptions.Builder<ContentCard>()
                 .setQuery(cardsRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
 

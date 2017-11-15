@@ -5,21 +5,20 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
-import org.jnanaprabodhini.happyteacher.adapter.contentlist.CardListContentRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.contentlist.ResourceContentRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
-import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
+import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 import org.jnanaprabodhini.happyteacher.model.User
 import java.io.File
 
-abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseDataObserver {
+abstract class ResourceContentViewerActivity : HappyTeacherActivity(), FirebaseDataObserver {
 
     companion object {
         const val WRITE_STORAGE_PERMISSION_CODE = 1
@@ -28,14 +27,14 @@ abstract class CardListContentViewerActivity : HappyTeacherActivity(), FirebaseD
         fun Intent.getContentRefPath(): String = getStringExtra(CONTENT_REF_PATH)
 
         const val HEADER: String = "HEADER"
-        fun Intent.getHeader(): CardListContentHeader = getParcelableExtra(HEADER)
+        fun Intent.getHeader(): ResourceHeader = getParcelableExtra(HEADER)
     }
 
     protected val header by lazy { intent.getHeader() }
     protected val contentRef by lazy { firestoreRoot.document(intent.getContentRefPath()) }
     protected val cardsRef by lazy { contentRef.collection(getString(R.string.cards)) }
 
-    abstract val cardRecyclerAdapter: CardListContentRecyclerAdapter
+    abstract val cardRecyclerAdapter: ResourceContentRecyclerAdapter
 
     protected val attachmentDestinationDirectory by lazy {
         // This directory will be used to store any attachments downloaded from this contentKey.

@@ -15,7 +15,7 @@ import org.jnanaprabodhini.happyteacher.activity.base.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacher.adapter.firestore.TopicLessonsRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.*
-import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
+import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 import org.jnanaprabodhini.happyteacher.model.Topic
 import org.jnanaprabodhini.happyteacher.view.SubjectSpinnerManager
 
@@ -127,14 +127,14 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
                 .setQuery(topicQuery, Topic::class.java).build()
 
         val topicAdapter = object: TopicLessonsRecyclerAdapter(topicAdapterOptions, this, this) {
-            override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<CardListContentHeader> {
+            override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<ResourceHeader> {
                 val query: Query = firestoreLocalized.collection(getString(R.string.resources))
                         .whereEqualTo(getString(R.string.resource_type), getString(R.string.lesson))
                         .whereEqualTo(getString(R.string.topic), topicId)
                         .whereEqualTo(getString(R.string.status), getString(R.string.status_published))
                         .whereEqualTo(getString(R.string.is_featured), true)
 
-                return FirestoreRecyclerOptions.Builder<CardListContentHeader>().setQuery(query, CardListContentHeader::class.java).build()
+                return FirestoreRecyclerOptions.Builder<ResourceHeader>().setQuery(query, ResourceHeader::class.java).build()
             }
         }
 
@@ -151,7 +151,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
                 .setQuery(topicsQuery, Topic::class.java).build()
 
         val adapter = object: TopicLessonsRecyclerAdapter(topicsAdapterOptions, this, this) {
-            override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<CardListContentHeader> {
+            override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<ResourceHeader> {
                 val subtopicQuery = firestoreLocalized.collection(getString(R.string.resources))
                         .whereEqualTo(getString(R.string.resource_type), getString(R.string.lesson))
                         .whereEqualTo(getString(R.string.topic), topicId)
@@ -159,8 +159,8 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
                         .whereEqualTo(getString(R.string.status), getString(R.string.status_published))
                         .whereEqualTo(getString(R.string.is_featured), true)
 
-                return FirestoreRecyclerOptions.Builder<CardListContentHeader>()
-                        .setQuery(subtopicQuery, CardListContentHeader::class.java).build()
+                return FirestoreRecyclerOptions.Builder<ResourceHeader>()
+                        .setQuery(subtopicQuery, ResourceHeader::class.java).build()
             }
         }
         adapter.startListening()

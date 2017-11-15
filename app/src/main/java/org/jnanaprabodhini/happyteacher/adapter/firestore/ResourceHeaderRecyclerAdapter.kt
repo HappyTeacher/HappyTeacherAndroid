@@ -5,10 +5,10 @@ import android.text.format.DateFormat
 import android.view.ViewGroup
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
-import org.jnanaprabodhini.happyteacher.adapter.viewholder.CardListHeaderViewHolder
+import org.jnanaprabodhini.happyteacher.adapter.viewholder.ResourceHeaderViewHolder
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ClassroomResourcesHeaderViewHolder
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.LessonHeaderViewHolder
-import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
+import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 import android.view.LayoutInflater
 import android.view.View
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -17,30 +17,30 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 /**
  * An abstract adapter for a list of cards showing header information for content lists.
  */
-abstract class CardListContentHeaderRecyclerAdapter<VH: CardListHeaderViewHolder>(options: FirestoreRecyclerOptions<CardListContentHeader>, val activity: Activity, firebaseDataObserver: FirebaseDataObserver):
-        FirestoreObserverRecyclerAdapter<CardListContentHeader, VH>(options, firebaseDataObserver) {
+abstract class ResourceHeaderRecyclerAdapter<VH: ResourceHeaderViewHolder>(options: FirestoreRecyclerOptions<ResourceHeader>, val activity: Activity, firebaseDataObserver: FirebaseDataObserver):
+        FirestoreObserverRecyclerAdapter<ResourceHeader, VH>(options, firebaseDataObserver) {
 
     private val dateFormat by lazy {
         DateFormat.getDateFormat(activity)
     }
 
-    override fun onBindViewHolder(holder: VH, position: Int, model: CardListContentHeader?) {
+    override fun onBindViewHolder(holder: VH, position: Int, model: ResourceHeader?) {
         val contentRef = snapshots.getSnapshot(position).reference
         holder.populateView(model, contentRef, activity, dateFormat)
     }
 
     fun inflateView(parent: ViewGroup?): View {
         return LayoutInflater.from(parent?.context)
-                .inflate(R.layout.list_item_content_header_card, parent, false)
+                .inflate(R.layout.list_item_resource_header_card, parent, false)
     }
 
 }
 
 /**
- * A CardListContentHeaderRecyclerAdapter implementation for Lesson headers.
+ * A ResourceHeaderRecyclerAdapter implementation for lessons.
  */
-class LessonHeaderRecyclerAdapter(private val shouldShowSubmissionCount: Boolean, options: FirestoreRecyclerOptions<CardListContentHeader>, activity: Activity, firebaseDataObserver: FirebaseDataObserver):
-        CardListContentHeaderRecyclerAdapter<LessonHeaderViewHolder>(options, activity, firebaseDataObserver) {
+class LessonHeaderRecyclerAdapter(private val shouldShowSubmissionCount: Boolean, options: FirestoreRecyclerOptions<ResourceHeader>, activity: Activity, firebaseDataObserver: FirebaseDataObserver):
+        ResourceHeaderRecyclerAdapter<LessonHeaderViewHolder>(options, activity, firebaseDataObserver) {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): LessonHeaderViewHolder {
         return LessonHeaderViewHolder(inflateView(parent), shouldShowSubmissionCount)
@@ -48,10 +48,10 @@ class LessonHeaderRecyclerAdapter(private val shouldShowSubmissionCount: Boolean
 }
 
 /**
- * A CardListContentHeaderRecyclerAdapter implementation for classroom resources.
+ * A ResourceHeaderRecyclerAdapter implementation for classroom resources.
  */
-class ClassroomResourcesHeaderRecyclerAdapter(options: FirestoreRecyclerOptions<CardListContentHeader>, activity: Activity, firebaseDataObserver: FirebaseDataObserver):
-        CardListContentHeaderRecyclerAdapter<ClassroomResourcesHeaderViewHolder>(options, activity, firebaseDataObserver) {
+class ClassroomResourceHeaderRecyclerAdapter(options: FirestoreRecyclerOptions<ResourceHeader>, activity: Activity, firebaseDataObserver: FirebaseDataObserver):
+        ResourceHeaderRecyclerAdapter<ClassroomResourcesHeaderViewHolder>(options, activity, firebaseDataObserver) {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ClassroomResourcesHeaderViewHolder {
         return ClassroomResourcesHeaderViewHolder(inflateView(parent))

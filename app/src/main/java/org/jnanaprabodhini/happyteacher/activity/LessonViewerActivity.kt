@@ -8,23 +8,23 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import kotlinx.android.synthetic.main.view_recycler_horizontal_pager.*
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.adapter.contentlist.CardListContentRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.contentlist.ResourceContentRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.LessonPlanRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.extension.setDrawableRight
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
-import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
+import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 
-class LessonViewerActivity : CardListContentViewerActivity(){
+class LessonViewerActivity : ResourceContentViewerActivity(){
 
     companion object {
-        fun launch(from: Activity, lessonRef: DocumentReference, cardListContentHeader: CardListContentHeader, shouldShowSubmissionCount: Boolean) {
+        fun launch(from: Activity, lessonRef: DocumentReference, resourceHeader: ResourceHeader, shouldShowSubmissionCount: Boolean) {
             val lessonViewerIntent = Intent(from, LessonViewerActivity::class.java)
 
             lessonViewerIntent.apply {
                 putExtra(CONTENT_REF_PATH, lessonRef.path)
-                putExtra(HEADER, cardListContentHeader)
+                putExtra(HEADER, resourceHeader)
                 putExtra(SHOW_SUBMISSION_COUNT, shouldShowSubmissionCount)
             }
             from.startActivity(lessonViewerIntent)
@@ -36,7 +36,7 @@ class LessonViewerActivity : CardListContentViewerActivity(){
 
     private val shouldShowSubmissionCount by lazy { intent.shouldShowSubmissionCount() }
 
-    override val cardRecyclerAdapter: CardListContentRecyclerAdapter by lazy {
+    override val cardRecyclerAdapter: ResourceContentRecyclerAdapter by lazy {
         val options = FirestoreRecyclerOptions.Builder<ContentCard>()
                 .setQuery(cardsRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
 

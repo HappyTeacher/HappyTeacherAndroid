@@ -12,7 +12,7 @@ import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.OnProgressListener
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.activity.CardListContentViewerActivity
+import org.jnanaprabodhini.happyteacher.activity.ResourceContentViewerActivity
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.AttachmentMetadata
 import org.jnanaprabodhini.happyteacher.view.DownloadBarView
@@ -167,7 +167,7 @@ class AttachmentDownloadManager(attachmentPath: String, val attachmentDestinatio
 
             ActivityCompat.requestPermissions(activity,
                     arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE),
-                    CardListContentViewerActivity.WRITE_STORAGE_PERMISSION_CODE)
+                    ResourceContentViewerActivity.WRITE_STORAGE_PERMISSION_CODE)
 
         } else {
             action()

@@ -1,19 +1,12 @@
 package org.jnanaprabodhini.happyteacher.adapter.firestore
 
-import android.app.Activity
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.firestore.FirebaseFirestoreException
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
-import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentHeaderRecyclerViewHolder
-import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 import org.jnanaprabodhini.happyteacher.model.Topic
-import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
 
 /**
  * An abstract base adapter for adapters that display lists of Topics (with alternating colors)

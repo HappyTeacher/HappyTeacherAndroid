@@ -7,11 +7,11 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
-import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentHeaderRecyclerViewHolder
+import org.jnanaprabodhini.happyteacher.adapter.viewholder.ResourceHeaderRecyclerViewHolder
 import org.jnanaprabodhini.happyteacher.extension.setInvisible
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
-import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
+import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 import org.jnanaprabodhini.happyteacher.model.Topic
 import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
 
@@ -20,14 +20,14 @@ import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
  */
 abstract class TopicLessonsRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOptions<Topic>,
                                            topicsDataObserver: FirebaseDataObserver,
-                                           activity: HappyTeacherActivity): TopicsRecyclerAdapter<ContentHeaderRecyclerViewHolder>(topicsAdapterOptions, topicsDataObserver, activity) {
+                                           activity: HappyTeacherActivity): TopicsRecyclerAdapter<ResourceHeaderRecyclerViewHolder>(topicsAdapterOptions, topicsDataObserver, activity) {
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ContentHeaderRecyclerViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ResourceHeaderRecyclerViewHolder {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_content_header_recycler, parent, false)
-        return ContentHeaderRecyclerViewHolder(view)
+        return ResourceHeaderRecyclerViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ContentHeaderRecyclerViewHolder?, position: Int, model: Topic?) {
+    override fun onBindViewHolder(holder: ResourceHeaderRecyclerViewHolder?, position: Int, model: Topic?) {
         holder?.titleTextView?.text = model?.name
 
         setBackgroundColor(holder?.itemView, position)
@@ -36,7 +36,7 @@ abstract class TopicLessonsRecyclerAdapter(topicsAdapterOptions: FirestoreRecycl
         initializeLessonRecyclerView(holder?.horizontalRecyclerView, topicId, holder)
     }
 
-    private fun initializeLessonRecyclerView(recyclerView: HorizontalPagerRecyclerView?, topicId: String, holder: ContentHeaderRecyclerViewHolder?) {
+    private fun initializeLessonRecyclerView(recyclerView: HorizontalPagerRecyclerView?, topicId: String, holder: ResourceHeaderRecyclerViewHolder?) {
         val adapterOptions = getSubtopicAdapterOptions(topicId)
 
         val shouldShowSubmissionsCount = true
@@ -46,7 +46,7 @@ abstract class TopicLessonsRecyclerAdapter(topicsAdapterOptions: FirestoreRecycl
         recyclerView?.setAdapter(adapter)
     }
 
-    override fun getSubtopicDataObserverForViewHolder(viewHolder: ContentHeaderRecyclerViewHolder?, level: Int?) = object: FirebaseDataObserver {
+    override fun getSubtopicDataObserverForViewHolder(viewHolder: ResourceHeaderRecyclerViewHolder?, level: Int?) = object: FirebaseDataObserver {
         override fun onRequestNewData() {
             viewHolder?.horizontalRecyclerView?.setVisibilityGone()
             viewHolder?.hideEmptyViews()
@@ -79,5 +79,5 @@ abstract class TopicLessonsRecyclerAdapter(topicsAdapterOptions: FirestoreRecycl
         }
     }
 
-    abstract fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<CardListContentHeader>
+    abstract fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<ResourceHeader>
 }

@@ -1,16 +1,10 @@
 package org.jnanaprabodhini.happyteacher.fragment
 
-import android.support.v7.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_recycler.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.adapter.firestore.DraftHeaderRecyclerAdapter
-import org.jnanaprabodhini.happyteacher.adapter.firestore.LessonHeaderRecyclerAdapter
-import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
-import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
+import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 
 class DraftsFragment : RecyclerFragment() {
 
@@ -24,8 +18,8 @@ class DraftsFragment : RecyclerFragment() {
                 .whereEqualTo(getString(R.string.author_id), userId)
                 .whereEqualTo(getString(R.string.status), getString(R.string.status_draft))
 
-        val adapterOptions = FirestoreRecyclerOptions.Builder<CardListContentHeader>()
-                .setQuery(draftQuery, CardListContentHeader::class.java).build()
+        val adapterOptions = FirestoreRecyclerOptions.Builder<ResourceHeader>()
+                .setQuery(draftQuery, ResourceHeader::class.java).build()
 
         val adapter = DraftHeaderRecyclerAdapter(adapterOptions, this, activity)
         adapter.startListening()
