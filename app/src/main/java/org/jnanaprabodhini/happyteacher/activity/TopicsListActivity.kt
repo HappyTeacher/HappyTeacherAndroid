@@ -128,8 +128,10 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
         val topicAdapter = object: TopicLessonsRecyclerAdapter(topicAdapterOptions, this, this) {
             override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<CardListContentHeader> {
-                val query: Query = firestoreLocalized.collection(getString(R.string.lessons))
+                val query: Query = firestoreLocalized.collection(getString(R.string.resources))
+                        .whereEqualTo(getString(R.string.resource_type), getString(R.string.lesson))
                         .whereEqualTo(getString(R.string.topic), topicId)
+                        .whereEqualTo(getString(R.string.status), getString(R.string.status_published))
                         .whereEqualTo(getString(R.string.is_featured), true)
 
                 return FirestoreRecyclerOptions.Builder<CardListContentHeader>().setQuery(query, CardListContentHeader::class.java).build()
@@ -150,9 +152,11 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
         val adapter = object: TopicLessonsRecyclerAdapter(topicsAdapterOptions, this, this) {
             override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<CardListContentHeader> {
-                val subtopicQuery = firestoreLocalized.collection(getString(R.string.lessons))
+                val subtopicQuery = firestoreLocalized.collection(getString(R.string.resources))
+                        .whereEqualTo(getString(R.string.resource_type), getString(R.string.lesson))
                         .whereEqualTo(getString(R.string.topic), topicId)
                         .whereEqualTo("syllabus_lessons.$syllabusLessonId", true)
+                        .whereEqualTo(getString(R.string.status), getString(R.string.status_published))
                         .whereEqualTo(getString(R.string.is_featured), true)
 
                 return FirestoreRecyclerOptions.Builder<CardListContentHeader>()

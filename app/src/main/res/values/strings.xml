@@ -142,6 +142,7 @@
     <string name="add_card">Add card</string>
     <string name="submit">Submit</string>
     <string name="required_for_contributors_tap_to_add">Required for contributors. Tap to add.</string>
+    <string name="classroom_resource">classroom resource</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>

@@ -16,6 +16,7 @@ import org.jnanaprabodhini.happyteacher.adapter.helper.RecyclerVerticalDragHelpe
 import org.jnanaprabodhini.happyteacher.extension.setTooltip
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.extension.showSnackbar
+import org.jnanaprabodhini.happyteacher.extension.showToast
 import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 
@@ -68,12 +69,33 @@ class LessonEditorActivity: CardListContentViewerActivity() {
         }
 
         submitLessonFab.setOnClickListener{
-            submit()
+            showSubmitConfirmationDialog()
         }
     }
 
-    private fun submit() {
+    private fun showSubmitConfirmationDialog() {
         parentView.showSnackbar("You can't submit things yet")
+
+        AlertDialog.Builder(this)
+                .setTitle("Submit lesson")
+                // TODO: add details in this message -- user will have to unsubmit lesson to be able to edit it again
+                .setMessage("Are you ready to submit this lesson for review? Once an editor reads it, it will either be published or you will be asked to make changes.")
+                .setPositiveButton(R.string.submit, { dialog, _ ->
+                    submit()
+                    dialog.dismiss()
+                })
+                .setNegativeButton(R.string.cancel, { dialog, _ -> dialog.dismiss() })
+                .show()
+    }
+
+    private fun submit() {
+        contentRef.update(getString(R.string.status), getString(R.string.status_awaiting_review))
+                .addOnSuccessListener {
+                    showToast("Lesson submitted")
+                    finish()
+                }.addOnFailureListener {
+                    showToast("Submission failed. Try again later")
+                }
     }
 
     private fun addNewCard() {

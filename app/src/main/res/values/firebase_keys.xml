@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="lesson_headers" translatable="false">lesson_headers</string>
     <string name="name_key" translatable="false">name</string>
     <string name="topics" translatable="false">topics</string>
     <string name="subjects" translatable="false">subjects</string>
@@ -18,9 +17,6 @@
     <string name="level_subtopics" translatable="false">level_subtopics</string>
     <string name="featured_subtopic_lesson_headers" translatable="false">featured_subtopic_lesson_headers</string>
     <string name="subtopic_lessons" translatable="false">subtopic_lessons</string>
-    <string name="classroom_resources_key" translatable="false">classroom_resources</string>
-    <string name="classroom_resources_headers" translatable="false">classroom_resources_headers</string>
-    <string name="lessons" translatable="false">lessons</string>
     <string name="subtopic" translatable="false">subtopic</string>
     <string name="is_featured" translatable="false">isFeatured</string>
     <string name="board" translatable="false">board</string>
@@ -34,4 +30,9 @@
     <string name="institution_key" translatable="false">institution</string>
     <string name="location_key" translatable="false">location</string>
     <string name="drafts_key" translatable="false">drafts</string>
+    <string name="status" translatable="false">status</string>
+    <string name="resources" translatable="false">resources</string>
+    <string name="author_id" translatable="false">authorId</string>
+    <string name="resource_type">resourceType</string>
+    <string name="lesson">lesson</string>
 </resources>

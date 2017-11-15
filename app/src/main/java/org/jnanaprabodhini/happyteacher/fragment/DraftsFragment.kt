@@ -17,28 +17,12 @@ class DraftsFragment : RecyclerFragment() {
     override val emptyRecyclerText: String by lazy { getString(R.string.you_have_no_drafts_yet) }
     override val errorText: String by lazy { getString(R.string.there_was_an_error_loading_your_drafts) }
 
-    val firestoreRoot: FirebaseFirestore by lazy {
-        FirebaseFirestore.getInstance()
-    }
+    override fun setupAdapter() {
+        val userId = auth.currentUser?.uid ?: return
 
-    val firestoreUsersCollection: CollectionReference by lazy {
-        firestoreRoot.collection(getString(R.string.users))
-    }
-
-    val auth: FirebaseAuth by lazy {
-        FirebaseAuth.getInstance()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        recyclerView.layoutManager = LinearLayoutManager(context)
-
-        setupAdapter()
-    }
-
-    private fun setupAdapter() {
-        val draftQuery = firestoreUsersCollection.document(auth.currentUser!!.uid)
-                .collection(activity.getString(R.string.drafts_key))
+        val draftQuery = firestoreLocalized.collection(getString(R.string.resources))
+                .whereEqualTo(getString(R.string.author_id), userId)
+                .whereEqualTo(getString(R.string.status), getString(R.string.status_draft))
 
         val adapterOptions = FirestoreRecyclerOptions.Builder<CardListContentHeader>()
                 .setQuery(draftQuery, CardListContentHeader::class.java).build()

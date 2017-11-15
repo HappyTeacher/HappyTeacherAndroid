@@ -3,6 +3,7 @@ package org.jnanaprabodhini.happyteacher.util
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
+import org.jnanaprabodhini.happyteacher.R
 import java.util.*
 
 /**
@@ -42,5 +43,14 @@ object LocaleManager {
 
         return context
     }
+
+    data class LocaleCodeWithTitle(val code: String, val title: String) {
+        override fun toString(): String = title
+    }
+
+    fun getSupportedLanguagesWithTitles(context: Context) = arrayOf(
+            LocaleCodeWithTitle("en", context.getString(R.string.english_in_english)),
+            LocaleCodeWithTitle("mr", context.getString(R.string.marathi_in_marathi))
+    )
 
 }

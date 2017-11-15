@@ -29,9 +29,8 @@ class SubtopicHeaderRecyclerAdapter(options: FirestoreRecyclerOptions<Subtopic>,
             val subtopicId = snapshots.getSnapshot(position).reference.id
             val lessonHeader = getLessonHeader(model ?: Subtopic(), subtopicId)
 
-            // Create a new draft and launch editor when draft exists
-            val draftRef = activity.firestoreUsersCollection.document(userId)
-                    .collection(activity.getString(R.string.drafts_key))
+            // Create a new draft lesson and launch editor
+            val draftRef = activity.firestoreLocalized.collection(activity.getString(R.string.resources))
                     .document()
 
             draftRef.set(lessonHeader)
@@ -53,7 +52,8 @@ class SubtopicHeaderRecyclerAdapter(options: FirestoreRecyclerOptions<Subtopic>,
                 subjectName = subtopic.subjectName,
                 authorInstitution = authorInstitution,
                 authorLocation = authorLocation,
-                authorName = authorName
+                authorName = authorName,
+                status = activity.getString(R.string.status_draft)
         )
     }
 

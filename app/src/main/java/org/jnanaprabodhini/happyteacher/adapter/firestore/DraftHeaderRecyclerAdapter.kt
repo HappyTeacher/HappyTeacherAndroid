@@ -49,7 +49,7 @@ class DraftHeaderRecyclerAdapter(adapterOptions: FirestoreRecyclerOptions<CardLi
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): DraftHeaderViewHolder {
-        val view =  LayoutInflater.from(parent?.context)
+        val view = LayoutInflater.from(parent?.context)
                 .inflate(R.layout.list_item_draft_header_card, parent, false)
         return DraftHeaderViewHolder(view)
     }
