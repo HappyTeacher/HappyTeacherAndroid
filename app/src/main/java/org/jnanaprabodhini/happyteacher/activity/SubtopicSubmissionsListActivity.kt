@@ -4,9 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import com.crashlytics.android.Crashlytics
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_subtopic_submissions_list.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
@@ -14,8 +14,7 @@ import org.jnanaprabodhini.happyteacher.adapter.firestore.LessonHeaderRecyclerAd
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
-import org.jnanaprabodhini.happyteacher.extension.showToast
-import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
+import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 
 class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObserver {
 
@@ -47,12 +46,14 @@ class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObse
 
     private fun initializeRecyclerViewForSubtopic() {
 
-        val submissionHeadersQuery = firestoreLocalized.collection(getString(R.string.lessons))
+        val submissionHeadersQuery = firestoreLocalized.collection(getString(R.string.resources))
+                .whereEqualTo(getString(R.string.resource_type), getString(R.string.lesson))
                 .whereEqualTo(getString(R.string.subtopic), subtopicKey)
-                .orderBy(getString(R.string.is_featured))
+                .whereEqualTo(getString(R.string.status), getString(R.string.status_published))
+                .orderBy(getString(R.string.is_featured), Query.Direction.ASCENDING)
 
-        val adapterOptions = FirestoreRecyclerOptions.Builder<CardListContentHeader>()
-                .setQuery(submissionHeadersQuery, CardListContentHeader::class.java).build()
+        val adapterOptions = FirestoreRecyclerOptions.Builder<ResourceHeader>()
+                .setQuery(submissionHeadersQuery, ResourceHeader::class.java).build()
 
         val shouldShowSubmissionsCount = false
         val adapter = LessonHeaderRecyclerAdapter(shouldShowSubmissionsCount, adapterOptions, this, this)

@@ -34,25 +34,19 @@ data class SyllabusLesson(val board: String = "",
                           val topicCount: Int = 0)
 
 @Parcelize // TODO: Remove dateEdited, use @ServerTimestamp
-data class CardListContentHeader(val name: String = "",
-                                 val authorId: String = "",
-                                 val authorInstitution: String = "",
-                                 val authorLocation: String = "",
-                                 val authorName: String = "",
-                                 val dateEdited: Long = 0,
-                                 val subtopic: String = "",
-                                 val topic: String = "",
-                                 val topicName: String = "",
-                                 val subjectName: String = "",
-                                 val subtopicSubmissionCount: Int = 0): Parcelable
-
-data class CardListContent(val name: String = "",
-                           val authorEmail: String = "",
-                           val authorInstitution: String = "",
-                           val authorLocation: String = "",
-                           val authorName: String = "",
-                           val dateEdited: Long = 0,
-                           val cards: Map<String, ContentCard> = emptyMap())
+data class ResourceHeader(val name: String = "",
+                          val authorId: String = "",
+                          val authorInstitution: String = "",
+                          val authorLocation: String = "",
+                          val authorName: String = "",
+                          val dateEdited: Long = 0,
+                          val subtopic: String = "",
+                          val topic: String = "",
+                          val topicName: String = "",
+                          val subjectName: String = "",
+                          val subtopicSubmissionCount: Int = 0,
+                          val status: String = "",
+                          val resourceType: String = ""): Parcelable
 
 @Parcelize
 data class ContentCard(var header: String = "",

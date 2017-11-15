@@ -1,11 +1,8 @@
 package org.jnanaprabodhini.happyteacher.adapter.firestore
 
-import android.app.Activity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import org.jnanaprabodhini.happyteacher.R
@@ -16,7 +13,6 @@ import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.Subtopic
 import org.jnanaprabodhini.happyteacher.model.Topic
-import org.jnanaprabodhini.happyteacher.util.PreferencesManager
 import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
 
 /**
@@ -44,7 +40,7 @@ class TopicSubtopicsRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOptio
                 .whereEqualTo(activity.getString(R.string.topic), topicId)
 
         val adapterOptions = FirestoreRecyclerOptions.Builder<Subtopic>().setQuery(query, Subtopic::class.java).build()
-        val adapter = SubtopicHeaderRecyclerAdapter(adapterOptions, getSubtopicDataObserverForViewHolder(holder), activity)
+        val adapter = SubtopicWriteChoiceRecyclerAdapter(adapterOptions, getSubtopicDataObserverForViewHolder(holder), activity)
 
         adapter.startListening()
         horizontalRecyclerView?.setAdapter(adapter)

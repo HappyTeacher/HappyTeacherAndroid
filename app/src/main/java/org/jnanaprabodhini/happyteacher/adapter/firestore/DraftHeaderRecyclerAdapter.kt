@@ -11,20 +11,20 @@ import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.DraftHeaderViewHolder
 import org.jnanaprabodhini.happyteacher.extension.setDrawableLeft
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
-import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
+import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 import java.util.*
 
 /**
  * Created by grahamearley on 11/5/17.
  */
-class DraftHeaderRecyclerAdapter(adapterOptions: FirestoreRecyclerOptions<CardListContentHeader>, dataObserver: FirebaseDataObserver, val activity: Activity):
-        FirestoreObserverRecyclerAdapter<CardListContentHeader, DraftHeaderViewHolder>(adapterOptions, dataObserver) {
+class DraftHeaderRecyclerAdapter(adapterOptions: FirestoreRecyclerOptions<ResourceHeader>, dataObserver: FirebaseDataObserver, val activity: Activity):
+        FirestoreObserverRecyclerAdapter<ResourceHeader, DraftHeaderViewHolder>(adapterOptions, dataObserver) {
 
     private val dateFormat by lazy {
         DateFormat.getDateFormat(activity)
     }
 
-    override fun onBindViewHolder(holder: DraftHeaderViewHolder?, position: Int, model: CardListContentHeader?) {
+    override fun onBindViewHolder(holder: DraftHeaderViewHolder?, position: Int, model: ResourceHeader?) {
         holder?.apply {
             titleTextView.text = model?.name
             subjectTextView.text = model?.subjectName
@@ -42,14 +42,14 @@ class DraftHeaderRecyclerAdapter(adapterOptions: FirestoreRecyclerOptions<CardLi
             }
 
             itemView.setOnClickListener {
-                val modelOrEmpty = model ?: CardListContentHeader()
+                val modelOrEmpty = model ?: ResourceHeader()
                 LessonEditorActivity.launch(activity, draftDocumentRef, modelOrEmpty)
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): DraftHeaderViewHolder {
-        val view =  LayoutInflater.from(parent?.context)
+        val view = LayoutInflater.from(parent?.context)
                 .inflate(R.layout.list_item_draft_header_card, parent, false)
         return DraftHeaderViewHolder(view)
     }

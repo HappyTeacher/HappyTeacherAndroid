@@ -1,21 +1,19 @@
 package org.jnanaprabodhini.happyteacher.adapter.firestore
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.firestore.FirebaseFirestore
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.LessonEditorActivity
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.SubtopicViewHolder
-import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
+import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 import org.jnanaprabodhini.happyteacher.model.Subtopic
 
 
-class SubtopicHeaderRecyclerAdapter(options: FirestoreRecyclerOptions<Subtopic>, firebaseDataObserver: FirebaseDataObserver, val activity: HappyTeacherActivity):
+class SubtopicWriteChoiceRecyclerAdapter(options: FirestoreRecyclerOptions<Subtopic>, firebaseDataObserver: FirebaseDataObserver, val activity: HappyTeacherActivity):
         FirestoreObserverRecyclerAdapter<Subtopic, SubtopicViewHolder>(options, firebaseDataObserver) {
 
     private val userId by lazy {
@@ -29,9 +27,8 @@ class SubtopicHeaderRecyclerAdapter(options: FirestoreRecyclerOptions<Subtopic>,
             val subtopicId = snapshots.getSnapshot(position).reference.id
             val lessonHeader = getLessonHeader(model ?: Subtopic(), subtopicId)
 
-            // Create a new draft and launch editor when draft exists
-            val draftRef = activity.firestoreUsersCollection.document(userId)
-                    .collection(activity.getString(R.string.drafts_key))
+            // Create a new draft lesson and launch editor
+            val draftRef = activity.firestoreLocalized.collection(activity.getString(R.string.resources))
                     .document()
 
             draftRef.set(lessonHeader)
@@ -39,12 +36,12 @@ class SubtopicHeaderRecyclerAdapter(options: FirestoreRecyclerOptions<Subtopic>,
         }
     }
 
-    private fun getLessonHeader(subtopic: Subtopic, subtopicId: String): CardListContentHeader {
+    private fun getLessonHeader(subtopic: Subtopic, subtopicId: String): ResourceHeader {
         val authorName = activity.prefs.getUserName()
         val authorInstitution = activity.prefs.getUserInstitution()
         val authorLocation = activity.prefs.getUserLocation()
 
-        return CardListContentHeader(
+        return ResourceHeader(
                 name = subtopic.name,
                 authorId = userId,
                 subtopic = subtopicId,
@@ -53,7 +50,9 @@ class SubtopicHeaderRecyclerAdapter(options: FirestoreRecyclerOptions<Subtopic>,
                 subjectName = subtopic.subjectName,
                 authorInstitution = authorInstitution,
                 authorLocation = authorLocation,
-                authorName = authorName
+                authorName = authorName,
+                status = activity.getString(R.string.status_draft),
+                resourceType = activity.getString(R.string.lesson) // add classroom resources too!
         )
     }
 
