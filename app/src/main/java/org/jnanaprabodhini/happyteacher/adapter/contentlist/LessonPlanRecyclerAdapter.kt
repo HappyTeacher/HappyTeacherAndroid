@@ -83,6 +83,7 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
 
         val classroomResourceQuery = activity.firestoreLocalized.collection(activity.getString(R.string.resources))
                 .whereEqualTo(activity.getString(R.string.resource_type), activity.getString(R.string.classroom_resource))
+                .whereEqualTo(activity.getString(R.string.status), activity.getString(R.string.status_published))
                 .whereEqualTo(activity.getString(R.string.subtopic), subtopicId)
                 .orderBy(activity.getString(R.string.name_key))
 
@@ -122,6 +123,7 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
         override fun onError(e: FirebaseFirestoreException?) {
             holder.horizontalRecyclerView.setVisibilityGone()
             holder.contributeButton.setInvisible()
+            holder.progressBar.setVisibilityGone()
 
             holder.statusTextView.setVisible()
             holder.statusTextView.setText(R.string.there_was_an_error_loading_classroom_resources_for_this_lesson)

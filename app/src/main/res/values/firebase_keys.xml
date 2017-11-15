@@ -33,6 +33,8 @@
     <string name="status" translatable="false">status</string>
     <string name="resources" translatable="false">resources</string>
     <string name="author_id" translatable="false">authorId</string>
-    <string name="resource_type">resourceType</string>
-    <string name="lesson">lesson</string>
+    <string name="resource_type" translatable="false">resourceType</string>
+    <string name="lesson" translatable="false">lesson</string>
+    <string name="classroom_resource" translatable="false">classroom resource</string>
+
 </resources>

@@ -77,9 +77,9 @@ class LessonEditorActivity: CardListContentViewerActivity() {
         parentView.showSnackbar("You can't submit things yet")
 
         AlertDialog.Builder(this)
-                .setTitle("Submit lesson")
+                .setTitle("Submit lesson?")
                 // TODO: add details in this message -- user will have to unsubmit lesson to be able to edit it again
-                .setMessage("Are you ready to submit this lesson for review? Once an editor reads it, it will either be published or you will be asked to make changes.")
+                .setMessage("Are you ready to submit this lesson for review? \n\nOnce a lesson is submitted, you will not be able to edit it unless you unsubmit it. Once an editor has reviewed your lesson, it will either be published or you will be requested to make changes.")
                 .setPositiveButton(R.string.submit, { dialog, _ ->
                     submit()
                     dialog.dismiss()
@@ -89,13 +89,13 @@ class LessonEditorActivity: CardListContentViewerActivity() {
     }
 
     private fun submit() {
-        showToast("Submitting...")
+        showToast(getString(R.string.submitting))
         contentRef.update(getString(R.string.status), getString(R.string.status_awaiting_review))
                 .addOnSuccessListener {
                     showToast("Lesson submitted")
                     finish()
                 }.addOnFailureListener {
-                    showToast("Submission failed. Try again later")
+                    showToast(getString(R.string.submission_failed_try_again_later))
                 }
     }
 
