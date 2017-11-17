@@ -41,6 +41,7 @@ abstract class ContributionAdapter(adapterOptions: FirestoreRecyclerOptions<Reso
         holder?.apply {
             titleTextView.text = model?.name
             subjectTextView.text = model?.subjectName
+            holder.setTextColorForResourceType(model?.resourceType)
 
             model?.dateEdited?.let {
                 dateEditedTextView.text = dateFormat.format(Date(it))

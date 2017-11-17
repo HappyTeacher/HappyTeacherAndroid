@@ -19,9 +19,10 @@ import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
 /**
  * Created by grahamearley on 11/2/17.
  */
-class TopicSubtopicsRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOptions<Topic>,
-                                    topicsDataObserver: FirebaseDataObserver,
-                                    activity: HappyTeacherActivity): TopicsRecyclerAdapter<TopicSubtopicChoiceRecyclerViewHolder>(topicsAdapterOptions, topicsDataObserver, activity) {
+class TopicSubtopicsWriteChoiceAdapter(topicsAdapterOptions: FirestoreRecyclerOptions<Topic>,
+                                       private val resourceType: String,
+                                       topicsDataObserver: FirebaseDataObserver,
+                                       activity: HappyTeacherActivity): TopicsRecyclerAdapter<TopicSubtopicChoiceRecyclerViewHolder>(topicsAdapterOptions, topicsDataObserver, activity) {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): TopicSubtopicChoiceRecyclerViewHolder {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_subtopic_choice_header_recycler, parent, false)
@@ -41,7 +42,7 @@ class TopicSubtopicsRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOptio
                 .whereEqualTo(activity.getString(R.string.topic), topicId)
 
         val adapterOptions = FirestoreRecyclerOptions.Builder<Subtopic>().setQuery(query, Subtopic::class.java).build()
-        val adapter = SubtopicWriteChoiceRecyclerAdapter(adapterOptions, getSubtopicDataObserverForViewHolder(holder), activity)
+        val adapter = SubtopicWriteChoiceRecyclerAdapter(adapterOptions, resourceType, getSubtopicDataObserverForViewHolder(holder), activity)
 
         adapter.startListening()
         horizontalRecyclerView?.setAdapter(adapter)

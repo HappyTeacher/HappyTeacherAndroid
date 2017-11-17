@@ -12,10 +12,12 @@ import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.contentlist.ResourceContentRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
+import org.jnanaprabodhini.happyteacher.extension.setDrawableResource
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 import org.jnanaprabodhini.happyteacher.model.User
+import org.jnanaprabodhini.happyteacher.util.ResourceType
 import java.io.File
 
 abstract class ResourceContentViewerActivity : HappyTeacherActivity(), FirebaseDataObserver {
@@ -71,6 +73,12 @@ abstract class ResourceContentViewerActivity : HappyTeacherActivity(), FirebaseD
         authorNameTextView.text = header.authorName
         institutionTextView.text = header.authorInstitution
         locationTextView.text = header.authorLocation
+
+        if (header.resourceType == ResourceType.CLASSROOM_RESOURCE) {
+            headerView.setBackgroundResource(R.color.deepGrassGreen)
+            icon.setDrawableResource(R.drawable.ic_tv_video_white_24dp)
+        }
+
     }
 
     open fun initializeRecyclerView() {
@@ -124,7 +132,7 @@ abstract class ResourceContentViewerActivity : HappyTeacherActivity(), FirebaseD
 
     private fun openInEditor() {
         // TODO: make this abstract -- launch separate editors for Lessons, Classroom Resources
-        LessonEditorActivity.launch(this, contentRef, header)
+        ResourceEditorActivity.launch(this, contentRef, header)
     }
 
 }

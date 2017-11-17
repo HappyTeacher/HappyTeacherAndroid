@@ -1,5 +1,6 @@
 package org.jnanaprabodhini.happyteacher.activity
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.IntegerRes
@@ -13,6 +14,7 @@ import org.jnanaprabodhini.happyteacher.adapter.contribute.ContributeFragmentAda
 import org.jnanaprabodhini.happyteacher.extension.hasCompleteContributorProfile
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
+import org.jnanaprabodhini.happyteacher.util.ResourceType
 
 class ContributeActivity : BottomNavigationActivity(), FirebaseAuth.AuthStateListener {
 
@@ -100,9 +102,23 @@ class ContributeActivity : BottomNavigationActivity(), FirebaseAuth.AuthStateLis
     private fun showFab() {
         fab.setVisible()
         fab.setOnClickListener {
-            val subtopicChoiceIntent = Intent(this, SubtopicChoiceActivity::class.java)
-            startActivity(subtopicChoiceIntent)
+            showResourceTypeDialog()
         }
+    }
+
+    private fun showResourceTypeDialog() {
+        val resourceTypeChoiceOptions = arrayOf(getString(R.string.lesson_plan), getString(R.string.classroom_resource))
+
+        // TODO: add explanation of what a classroom resource is to this dialog
+        AlertDialog.Builder(this)
+            .setTitle(R.string.what_would_you_like_to_contribute)
+            .setItems(resourceTypeChoiceOptions, { dialog, which ->
+                when (resourceTypeChoiceOptions[which]) {
+                    getString(R.string.lesson_plan) -> SubtopicWriteChoiceActivity.launch(this, ResourceType.LESSON)
+                    getString(R.string.classroom_resource) -> SubtopicWriteChoiceActivity.launch(this, ResourceType.CLASSROOM_RESOURCE)
+                }
+                dialog.dismiss()
+            }).show()
     }
 
     private fun hideStatusViews() {

@@ -7,7 +7,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.ClassroomResourceViewerActivity
-import org.jnanaprabodhini.happyteacher.activity.LessonEditorActivity
 import org.jnanaprabodhini.happyteacher.activity.LessonViewerActivity
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContributionHeaderViewHolder

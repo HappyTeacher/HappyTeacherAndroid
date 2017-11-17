@@ -94,7 +94,11 @@
     <string name="draft_deleted">Draft deleted.</string>
     <string name="card_deleted">Card deleted.</string>
     <string name="delete_empty_lesson_question">Delete empty lesson?</string>
+    <string name="delete_empty_classroom_resource_question">Delete empty classroom resource?</string>
+    <string name="delete_empty_resource_question">Delete empty resource?</string>
     <string name="there_are_no_cards_in_this_lesson_would_you_like_to_delete_it">There are no cards in this lesson. Would you like to delete it?</string>
+    <string name="there_are_no_cards_in_this_classroom_resource_would_you_like_to_delete_it">There are no cards in this classroom resource. Would you like to delete it?</string>
+    <string name="there_are_no_cards_in_this_resource_would_you_like_to_delete_it">There are no cards in this resource. Would you like to delete it?</string>
     <string name="you_have_no_drafts_yet">You don\'t have any drafts yet. Create one!</string>
     <string name="there_was_an_error_loading_your_drafts">There was an error loading your drafts</string>
     <string name="you_have_no_submitted_contributions">You don\'t have any submitted contributions yet</string>
@@ -164,6 +168,24 @@
     <string name="the_lesson_will_return_to_your_drafts_and_will_no_longer_be_publicly_visible">The lesson will return to your drafts and will no longer be publicly visible.</string>
     <string name="the_classroom_resource_will_return_to_your_drafts_and_will_no_longer_be_publicly_visible">The classroom resource will return to your drafts and will no longer be publicly visible.</string>
     <string name="it_will_return_to_your_drafts_and_will_no_longer_be_publicly_visible">It will return to your drafts and will no longer be publicly visible.</string>
+    <string name="create_a_resource">Create a resource</string>
+    <string name="create_a_classroom_resource">Create a classroom resource</string>
+    <string name="write">Write</string>
+    <string name="write_classroom_resource">Write classroom resource</string>
+    <string name="submit_lesson_question">Submit lesson?</string>
+    <string name="submit_classroom_resource_question">Submit classroom resource?</string>
+    <string name="submit_question">Submit?</string>
+    <string name="submit_lesson_confirmation_message">Are you ready to submit this lesson for review? \\n\\nOnce a lesson is submitted, you will not be able to edit it unless you unsubmit it. Once an editor has reviewed your lesson, it will either be published or you will be requested to make changes.</string>
+    <string name="submit_classroom_resource_confirmation_message">Are you ready to submit this classroom resource for review? \\n\\nOnce a classroom resource is submitted, you will not be able to edit it unless you unsubmit it. Once an editor has reviewed your classroom resource, it will either be published or you will be requested to make changes.</string>
+    <string name="submit_resource_confirmation_message">Are you ready to submit this resource for review? \\n\\nOnce a resource is submitted, you will not be able to edit it unless you unsubmit it. Once an editor has reviewed your resource, it will either be published or you will be requested to make changes.</string>
+    <string name="lesson_submitted">Lesson submitted</string>
+    <string name="classroom_resource_submitted">Classroom resource submitted</string>
+    <string name="submitted_toast">Submitted</string>
+    <string name="what_would_you_like_to_contribute">What would you like to contribute?</string>
+    <string name="lesson_plan">Lesson plan</string>
+    <string name="classroom_resource">Classroom resource</string>
+    <string name="classroom_resource_editor">Classroom Resource Editor</string>
+    <string name="editor">Editor</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>

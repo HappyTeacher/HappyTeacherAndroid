@@ -7,6 +7,7 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.list_item_contribution_header_card.view.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.*
+import org.jnanaprabodhini.happyteacher.util.ResourceType
 
 class ContributionHeaderViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     val titleTextView: TextView = itemView.titleTextView
@@ -16,6 +17,23 @@ class ContributionHeaderViewHolder(itemView: View): RecyclerView.ViewHolder(item
     val editButton: TextView = itemView.editButton
     val statusTextView: TextView = itemView.statusTextView
     val statusColorBar: View = itemView.statusColorBar
+
+    fun setTextColorForResourceType(type: String?) {
+        when (type) {
+            ResourceType.LESSON -> setTextColorForLessonResource()
+            ResourceType.CLASSROOM_RESOURCE -> setTextColorForClassroomResource()
+        }
+    }
+
+    private fun setTextColorForLessonResource() {
+        titleTextView.setTextColorRes(R.color.deepLightBlue)
+        subjectTextView.setTextColorRes(R.color.deepLightBlue)
+    }
+
+    private fun setTextColorForClassroomResource() {
+        titleTextView.setTextColorRes(R.color.deepGrassGreen)
+        subjectTextView.setTextColorRes(R.color.deepGrassGreen)
+    }
 
     fun showButtonsForDraft() {
         deleteButton.setDrawableLeft(R.drawable.ic_delete_white_24dp)

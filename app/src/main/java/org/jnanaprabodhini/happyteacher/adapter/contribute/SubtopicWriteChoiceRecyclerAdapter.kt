@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.activity.LessonEditorActivity
+import org.jnanaprabodhini.happyteacher.activity.ResourceEditorActivity
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.adapter.firestore.FirestoreObserverRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
@@ -13,9 +13,10 @@ import org.jnanaprabodhini.happyteacher.adapter.viewholder.SubtopicViewHolder
 import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 import org.jnanaprabodhini.happyteacher.model.Subtopic
 import org.jnanaprabodhini.happyteacher.util.ResourceStatus
+import org.jnanaprabodhini.happyteacher.util.ResourceType
 
 
-class SubtopicWriteChoiceRecyclerAdapter(options: FirestoreRecyclerOptions<Subtopic>, firebaseDataObserver: FirebaseDataObserver, val activity: HappyTeacherActivity):
+class SubtopicWriteChoiceRecyclerAdapter(options: FirestoreRecyclerOptions<Subtopic>, val resourceType: String, firebaseDataObserver: FirebaseDataObserver, val activity: HappyTeacherActivity):
         FirestoreObserverRecyclerAdapter<Subtopic, SubtopicViewHolder>(options, firebaseDataObserver) {
 
     private val userId by lazy {
@@ -24,6 +25,12 @@ class SubtopicWriteChoiceRecyclerAdapter(options: FirestoreRecyclerOptions<Subto
 
     override fun onBindViewHolder(holder: SubtopicViewHolder, position: Int, model: Subtopic?) {
         holder.populateView(model?.name.orEmpty())
+
+        holder.writeButton.text = when(resourceType) {
+            ResourceType.LESSON -> activity.getString(R.string.write_lesson)
+            ResourceType.CLASSROOM_RESOURCE -> activity.getString(R.string.write_classroom_resource)
+            else -> activity.getString(R.string.write)
+        }
 
         holder.writeButton.setOnClickListener {
             val subtopicId = snapshots.getSnapshot(position).reference.id
@@ -34,7 +41,7 @@ class SubtopicWriteChoiceRecyclerAdapter(options: FirestoreRecyclerOptions<Subto
                     .document()
 
             draftRef.set(lessonHeader)
-            LessonEditorActivity.launch(activity, draftRef, lessonHeader)
+            ResourceEditorActivity.launch(activity, draftRef, lessonHeader)
         }
     }
 
@@ -54,7 +61,7 @@ class SubtopicWriteChoiceRecyclerAdapter(options: FirestoreRecyclerOptions<Subto
                 authorLocation = authorLocation,
                 authorName = authorName,
                 status = ResourceStatus.DRAFT,
-                resourceType = activity.getString(R.string.lesson) // add classroom resources too!
+                resourceType = resourceType
         )
     }
 
@@ -63,8 +70,5 @@ class SubtopicWriteChoiceRecyclerAdapter(options: FirestoreRecyclerOptions<Subto
                 .inflate(R.layout.list_item_subtopic_header_card, parent, false)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SubtopicViewHolder {
-        return SubtopicViewHolder(inflateView(parent))
-    }
-
+    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) = SubtopicViewHolder(inflateView(parent))
 }

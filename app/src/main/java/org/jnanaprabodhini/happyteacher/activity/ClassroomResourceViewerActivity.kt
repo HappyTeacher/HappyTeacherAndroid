@@ -37,13 +37,6 @@ class ClassroomResourceViewerActivity : ResourceContentViewerActivity() {
         ClassroomResourceRecyclerAdapter(options, attachmentDestinationDirectory, header.subtopic, this, this)
     }
 
-    override fun setHeaderView() {
-        super.setHeaderView()
-
-        headerView.setBackgroundResource(R.color.deepGrassGreen)
-        icon.setDrawableResource(R.drawable.ic_tv_video_white_24dp)
-    }
-
     override fun onError(e: FirebaseFirestoreException?) {
         recyclerView.setVisibilityGone()
         statusTextView.setVisible()

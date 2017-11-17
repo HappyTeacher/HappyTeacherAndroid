@@ -6,7 +6,7 @@ import android.view.View
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.activity.LessonEditorActivity
+import org.jnanaprabodhini.happyteacher.activity.ResourceEditorActivity
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContributionHeaderViewHolder
 import org.jnanaprabodhini.happyteacher.model.ResourceHeader
@@ -51,7 +51,7 @@ class DraftHeaderAdapter(adapterOptions: FirestoreRecyclerOptions<ResourceHeader
     override fun getViewResourceOnClickListener(model: ResourceHeader?, contributionDocumentRef: DocumentReference): View.OnClickListener {
         return View.OnClickListener {
             val modelOrEmpty = model ?: ResourceHeader()
-            LessonEditorActivity.launch(activity, contributionDocumentRef, modelOrEmpty)
+            ResourceEditorActivity.launch(activity, contributionDocumentRef, modelOrEmpty)
         }
     }
 }
