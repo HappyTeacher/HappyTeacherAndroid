@@ -136,9 +136,14 @@ fun View.setBackgroundDrawable(@DrawableRes drawableId: Int) {
     this.background = drawable
 }
 
-fun View.setBackgroundColorCompat(@ColorRes colorId: Int) {
+fun View.setBackgroundColorRes(@ColorRes colorId: Int) {
     val color = ResourcesCompat.getColor(context.resources, colorId, null)
     this.setBackgroundColor(color)
+}
+
+fun TextView.setTextColorRes(@ColorRes colorId: Int) {
+    val color = ResourcesCompat.getColor(context.resources, colorId, null)
+    this.setTextColor(color)
 }
 
 fun TextView.setHtmlAndMarkdownText(formattedString: String) {

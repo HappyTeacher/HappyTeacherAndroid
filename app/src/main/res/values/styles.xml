@@ -228,7 +228,7 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">0dp</item>
-        <item name="android:drawablePadding">16dp</item>
+        <item name="android:drawablePadding">8dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
@@ -238,7 +238,7 @@
     </style>
 
     <style name="CardButton.Edit">
-        <item name="android:background">@color/deepLightBlue</item>
+        <item name="android:background">@color/gray</item>
     </style>
 
     <style name="CardButton.Delete">

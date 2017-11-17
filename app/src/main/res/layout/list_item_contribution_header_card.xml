@@ -16,19 +16,11 @@
         android:layout_height="wrap_content"
         android:background="@drawable/ripple_white_lightgray">
 
-        <TextView
-            android:id="@+id/statusTextView"
+        <View
+            android:id="@+id/statusColorBar"
             android:visibility="gone"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:gravity="center_vertical"
-            android:drawablePadding="16dp"
-            android:textColor="@android:color/white"
-            android:textAllCaps="true"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="6dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
@@ -43,7 +35,7 @@
             android:paddingBottom="6dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/statusTextView"
+            app:layout_constraintTop_toBottomOf="@id/statusColorBar"
             tools:text="Draft Lesson Title" />
 
         <TextView
@@ -58,6 +50,22 @@
             tools:text="Subject name here" />
 
         <TextView
+            android:id="@+id/statusTextView"
+            android:visibility="gone"
+            android:textSize="14sp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:gravity="center_vertical"
+            android:drawablePadding="@dimen/padding_card_icon"
+            android:textAllCaps="true"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingBottom="6dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/subjectTextView"/>
+
+        <TextView
             android:id="@+id/dateEditedTextView"
             style="@style/HeaderCardSubSubheaderText"
             android:layout_marginLeft="16dp"
@@ -66,7 +74,7 @@
             android:paddingBottom="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subjectTextView"
+            app:layout_constraintTop_toBottomOf="@id/statusTextView"
             tools:text="1 December, 2017" />
 
         <TextView

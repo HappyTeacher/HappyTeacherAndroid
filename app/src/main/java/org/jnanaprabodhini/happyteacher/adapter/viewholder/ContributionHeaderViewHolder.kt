@@ -15,6 +15,7 @@ class ContributionHeaderViewHolder(itemView: View): RecyclerView.ViewHolder(item
     val deleteButton: TextView = itemView.deleteButton
     val editButton: TextView = itemView.editButton
     val statusTextView: TextView = itemView.statusTextView
+    val statusColorBar: View = itemView.statusColorBar
 
     fun showButtonsForDraft() {
         deleteButton.setDrawableLeft(R.drawable.ic_delete_white_24dp)
@@ -39,25 +40,34 @@ class ContributionHeaderViewHolder(itemView: View): RecyclerView.ViewHolder(item
     }
 
     fun showAwaitingReviewStatus(context: Context) {
-        statusTextView.setBackgroundColorCompat(R.color.colorAccent)
+        statusColorBar.setVisible()
+        statusColorBar.setBackgroundColorRes(R.color.colorAccent)
+
         statusTextView.text = context.getString(R.string.submitted_for_review)
-        statusTextView.setDrawableLeft(R.drawable.ic_assignment_ind_white_24dp)
+        statusTextView.setDrawableLeft(R.drawable.ic_assignment_ind_accent_24dp)
+        statusTextView.setTextColorRes(R.color.colorAccent)
 
         statusTextView.setVisible()
     }
 
     fun showChangesRequestedStatus(context: Context) {
-        statusTextView.setBackgroundColorCompat(R.color.dreamsicleOrange)
+        statusColorBar.setVisible()
+        statusColorBar.setBackgroundColorRes(R.color.dreamsicleOrange)
+
         statusTextView.text = context.getString(R.string.changes_requested)
-        statusTextView.setDrawableLeft(R.drawable.ic_assignment_returned_white_24dp)
+        statusTextView.setDrawableLeft(R.drawable.ic_assignment_returned_orange_24dp)
+        statusTextView.setTextColorRes(R.color.dreamsicleOrange)
 
         statusTextView.setVisible()
     }
 
     fun showPublishedStatus(context: Context) {
-        statusTextView.setBackgroundColorCompat(R.color.grassGreen)
+        statusColorBar.setVisible()
+        statusColorBar.setBackgroundColorRes(R.color.grassGreen)
+
         statusTextView.text = context.getString(R.string.published_status)
-        statusTextView.setDrawableLeft(R.drawable.ic_assignment_checkmark_white_24dp)
+        statusTextView.setDrawableLeft(R.drawable.ic_assignment_checkmark_green_24dp)
+        statusTextView.setTextColorRes(R.color.grassGreen)
 
         statusTextView.setVisible()
     }
