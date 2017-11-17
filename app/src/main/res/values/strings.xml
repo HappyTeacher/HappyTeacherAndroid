@@ -16,6 +16,7 @@
     <string name="there_are_currently_no_lesson_plans_for_this_subject_and_level">There are currently no lesson plans for this subject and level.</string>
     <string name="no_lessons_at_level_yet">There are no lessons for this topic at the Standard %d level yet.</string>
     <string name="there_was_an_error_loading_this_lesson">There was an error loading this lesson.</string>
+    <string name="there_was_an_error_loading_this_classroom_resource">There was an error loading this classroom resource.</string>
     <string name="downloading">Downloading…</string>
     <string name="canceling">Canceling…</string>
     <string name="open_x">Open %s</string>
@@ -72,7 +73,6 @@
     <string name="there_are_no_lessons_available_for_this_board">There are no lessons available for this board.</string>
     <string name="there_was_an_error_loading_lessons_for_this_board">There was an error loading lessons for this board.</string>
     <string name="you_are_signed_in">You are signed in</string>
-    <string name="prefs_key_user_sign_out">USER_SIGN_OUT</string>
     <string name="you_must_be_signed_in_to_contribute">You must be signed in to contribute.</string>
     <string name="update_profile">Update profile</string>
     <string name="you_need_to_complete_your_contributor_profile_before_you_can_contribute">You need to complete your Contributor Profile before you can contribute.</string>
@@ -85,5 +85,99 @@
     <string name="drafts">Drafts</string>
     <string name="submitted">Submitted</string>
     <string name="published">Published</string>
+    <string name="create_a_lesson_plan">Create a lesson plan</string>
+    <string name="choose_what_your_lesson_will_be_about">Choose what your lesson will be about.</string>
+    <string name="write_lesson">Write lesson</string>
+    <string name="lesson_editor">Lesson Editor</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="draft_deleted">Draft deleted.</string>
+    <string name="card_deleted">Card deleted.</string>
+    <string name="delete_empty_lesson_question">Delete empty lesson?</string>
+    <string name="there_are_no_cards_in_this_lesson_would_you_like_to_delete_it">There are no cards in this lesson. Would you like to delete it?</string>
+    <string name="you_have_no_drafts_yet">You don\'t have any drafts yet. Create one!</string>
+    <string name="there_was_an_error_loading_your_drafts">There was an error loading your drafts</string>
+    <string name="you_have_no_submitted_contributions">You don\'t have any submitted contributions yet</string>
+    <string name="there_was_an_error_loading_your_submissions">There was an error loading your submissions</string>
+    <string name="you_have_no_published_contributions">You don\'t have any published contributions yet</string>
+    <string name="there_was_an_error_loading_your_published_contributions">There was an error loading your published contributions</string>
+    <string name="card_header">Card header</string>
+    <string name="card_body">Card body</string>
+    <string name="card_editor">Card Editor</string>
+    <string name="save">Save</string>
+    <string name="add_image">Add Image</string>
+    <string name="add_video">Add Video</string>
+    <string name="add_file">Add File</string>
+    <string name="youtube_url">Youtube URL</string>
+    <string name="remove_video">Remove video</string>
+    <string name="youtube_url_not_recognized">Youtube URL not recognized.</string>
+    <string name="unsaved_changes">Unsaved changes</string>
+    <string name="you_have_changed_this_card_would_you_like_to_save_your_changes">You have changed this card. Would you like to save your changes?</string>
+    <string name="discard_changes">Discard changes</string>
+    <string name="image_url">Image URL…</string>
+    <string name="add_image_by_url">Add image by URL</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="uploading_image">Uploading image…</string>
+    <string name="image_added_to_card">Image added to card</string>
+    <string name="image_upload_failed">Image upload failed</string>
+    <string name="choose_a_picture">Choose a picture</string>
+    <string name="add_an_image">Add an image</string>
+    <string name="a_card_cannot_have_images_and_a_video">A card cannot have images and a video.</string>
+    <string name="a_card_cannot_have_images_and_a_video_remove_your_images_before_adding_a_video">A card cannot have images and a video. Remove your images before adding a video.</string>
+    <string name="you_can_only_have_n_images_per_card">You can only have %d images per card</string>
+    <string name="dont_close">Don\'t close</string>
+    <string name="empty_card">Empty card</string>
+    <string name="this_card_is_empty_would_you_like_to_delete_it">This card is empty. Would you like to delete it?</string>
+    <string name="delete_card">Delete card</string>
+    <string name="save_empty_card">Save empty card</string>
+    <string name="cancel_uploads">Cancel uploads</string>
+    <string name="remove_attachment">Remove attachment</string>
+    <string name="you_can_only_have_one_file_attachment_per_card">You can only have one file attachment per card</string>
+    <string name="attach_a_file">Attach a file</string>
+    <string name="click_and_hold_to_cancel_upload">Click and hold to cancel upload</string>
+    <string name="image_from_gallery">From gallery</string>
+    <string name="image_from_url">From URL</string>
+    <string name="open_source_notices">Open source notices</string>
+    <string name="add_card">Add card</string>
+    <string name="submit">Submit</string>
+    <string name="required_for_contributors_tap_to_add">Required for contributors. Tap to add.</string>
+    <string name="submitting">Submitting…</string>
+    <string name="submission_failed_try_again_later">Submission failed. Try again later</string>
+
+    <plurals name="unsaved_changes_and_pending_uploads">
+        <item quantity="one">Unsaved changes and pending upload</item>
+        <item quantity="other">Unsaved changes and pending uploads</item>
+    </plurals>
+
+    <plurals name="you_have_unsaved_changes_and_n_pending_uploads">
+        <item quantity="one">You have changed this card and you have a pending file upload. Would you like to save your changes? Closing the editor will cancel the upload.</item>
+        <item quantity="other">You have changed this card and you have %d pending file uploads. Would you like to save your changes? Closing the editor will cancel the uploads.</item>
+    </plurals>
+
+    <plurals name="save_and_cancel_uploads">
+        <item quantity="one">Save and cancel upload</item>
+        <item quantity="other">Save and cancel uploads</item>
+    </plurals>
+
+    <plurals name="discard_changes_and_cancel_uploads">
+        <item quantity="one">Discard changes and cancel upload</item>
+        <item quantity="other">Discard changes and cancel uploads</item>
+    </plurals>
+
+    <plurals name="pending_uploads">
+        <item quantity="one">Pending upload</item>
+        <item quantity="other">Pending uploads</item>
+    </plurals>
+
+    <plurals name="you_have_n_pending_uploads">
+        <item quantity="one">You have a pending file upload. Closing the editor will cancel this upload. Would you like to continue?</item>
+        <item quantity="other">You have %d pending file uploads. Closing the editor will cancel these uploads. Would you like to continue?</item>
+    </plurals>
+
+    <plurals name="cancel_uploads">
+        <item quantity="one">Cancel upload</item>
+        <item quantity="other">Cancel uploads</item>
+    </plurals>
 
 </resources>

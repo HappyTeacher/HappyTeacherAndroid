@@ -1,7 +1,6 @@
 package org.jnanaprabodhini.happyteacher.extension.taghandler
 
 import android.text.Editable
-import android.text.Html
 import org.xml.sax.XMLReader
 
 /**
@@ -10,20 +9,19 @@ import org.xml.sax.XMLReader
  *  (outside of any list). From there, it delegates list
  *  tag handling to the other subclasses.
  */
-class RootListTagHandler : ListTagHandler() {
+class RootListTagHandler() : ListTagHandler() {
 
-    override val TAG: String = ""
+    override val tag: String = ""
 
     override fun handleTag(opening: Boolean, tag: String?, output: Editable?, xmlReader: XMLReader?) {
         super.handleTag(opening, tag, output, xmlReader)
 
+        // At the root level, if we're closing a list,
+        //  there must be a newline afterward for the span
+        //  to work.
         if (!opening && (tag == "ol" || tag == "ul")
                 && activeListHandler == null) {
             output?.append("\n")
         }
-    }
-
-    override fun handleListItem(opening: Boolean, tag: String, output: Editable?, xmlReader: XMLReader?) {
-        // Root level should not receive <li> tags outside of <ul> or <ol>, but if we do, do nothing.
     }
 }

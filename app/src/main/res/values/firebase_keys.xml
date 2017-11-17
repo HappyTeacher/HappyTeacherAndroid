@@ -1,26 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="lesson_headers" translatable="false">lesson_headers</string>
     <string name="name_key" translatable="false">name</string>
     <string name="topics" translatable="false">topics</string>
     <string name="subjects" translatable="false">subjects</string>
     <string name="subject" translatable="false">subject</string>
-    <string name="maharashtra_state_board_key" translatable="false">maharashtra state board</string>
-    <string name="levels" translatable="false">levels</string>
+    <string name="maharashtra_board_key" translatable="false">maharashtra board</string>
     <string name="syllabus_lessons" translatable="false">syllabus_lessons</string>
     <string name="lesson_number" translatable="false">lessonNumber</string>
     <string name="boards" translatable="false">boards</string>
-    <string name="names" translatable="false">names</string>
     <string name="parent_subject" translatable="false">parentSubject</string>
     <string name="subtopics" translatable="false">subtopics</string>
-    <string name="subtopic_lesson_headers" translatable="false">subtopic_lesson_headers</string>
-    <string name="featured" translatable="false">featured</string>
-    <string name="level_subtopics" translatable="false">level_subtopics</string>
-    <string name="featured_subtopic_lesson_headers" translatable="false">featured_subtopic_lesson_headers</string>
-    <string name="subtopic_lessons" translatable="false">subtopic_lessons</string>
-    <string name="classroom_resources_key" translatable="false">classroom_resources</string>
-    <string name="classroom_resources_headers" translatable="false">classroom_resources_headers</string>
-    <string name="lessons" translatable="false">lessons</string>
     <string name="subtopic" translatable="false">subtopic</string>
     <string name="is_featured" translatable="false">isFeatured</string>
     <string name="board" translatable="false">board</string>
@@ -33,4 +22,12 @@
     <string name="display_name" translatable="false">displayName</string>
     <string name="institution_key" translatable="false">institution</string>
     <string name="location_key" translatable="false">location</string>
+    <string name="drafts_key" translatable="false">drafts</string>
+    <string name="status" translatable="false">status</string>
+    <string name="resources" translatable="false">resources</string>
+    <string name="author_id" translatable="false">authorId</string>
+    <string name="resource_type" translatable="false">resourceType</string>
+    <string name="lesson" translatable="false">lesson</string>
+    <string name="classroom_resource" translatable="false">classroom resource</string>
+
 </resources>

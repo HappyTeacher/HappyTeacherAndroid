@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="status_published" translatable="false">published</string>
+    <string name="status_draft" translatable="false">draft</string>
+    <string name="status_awaiting_review" translatable="false">awaiting review</string>
+    <string name="status_awaiting_edits" translatable="false">awaiting edits</string>
+</resources>

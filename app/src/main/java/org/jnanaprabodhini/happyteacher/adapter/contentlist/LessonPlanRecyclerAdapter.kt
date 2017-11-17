@@ -3,39 +3,38 @@ package org.jnanaprabodhini.happyteacher.adapter.contentlist
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.crashlytics.android.Crashlytics
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestoreException
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
-import org.jnanaprabodhini.happyteacher.adapter.firestore.ClassroomResourcesHeaderRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.firestore.ClassroomResourceHeaderRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentCardViewHolder
-import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContentHeaderRecyclerViewHolder
+import org.jnanaprabodhini.happyteacher.adapter.viewholder.ResourceHeaderRecyclerViewHolder
 import org.jnanaprabodhini.happyteacher.extension.setInvisible
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
-import org.jnanaprabodhini.happyteacher.model.CardListContentHeader
+import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 import org.jnanaprabodhini.happyteacher.model.ContentCard
 import java.io.File
 
-class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, attachmentDestinationDirectory: File, topicName: String, topicId: String, subtopicId: String, activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
-        CardListContentRecyclerAdapter(options, attachmentDestinationDirectory, topicName, topicId, subtopicId, activity, dataObserver) {
+class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, attachmentDestinationDirectory: File, val topicName: String, subtopicId: String, activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
+        ResourceContentRecyclerAdapter(options, attachmentDestinationDirectory, subtopicId, activity, dataObserver) {
 
     companion object { val LESSON_CARD_VIEW_TYPE = 0; val CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE = 1 }
 
     override fun getItemCount(): Int {
         val cardCount = super.getItemCount()
-        if (cardCount > 0) {
+        return if (cardCount > 0) {
             // Show a footer view if there are cards
-            return cardCount + 1
+            cardCount + 1
         } else {
-            return cardCount
+            cardCount
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder? {
-        if (viewType == CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE) {
+        return if (viewType == CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE) {
             val classroomResourcesView = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_content_header_recycler, parent, false)
 
             // Add margin to top of view:
@@ -43,18 +42,18 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
             margins.topMargin = activity.resources.getDimensionPixelSize(R.dimen.classroom_resources_list_top_padding)
             classroomResourcesView.layoutParams = margins
 
-            return ContentHeaderRecyclerViewHolder(classroomResourcesView)
+            ResourceHeaderRecyclerViewHolder(classroomResourcesView)
         } else {
             val cardView = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_content_card, parent, false)
-            return ContentCardViewHolder(cardView)
+            ContentCardViewHolder(cardView)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (position == itemCount - 1) {
-            return CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE
+        return if (position == itemCount - 1) {
+            CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE
         } else {
-            return LESSON_CARD_VIEW_TYPE
+            LESSON_CARD_VIEW_TYPE
         }
     }
 
@@ -66,7 +65,7 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         when (getItemViewType(position)) {
             LESSON_CARD_VIEW_TYPE -> onBindViewHolder(holder, position, getItem(position))
-            CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE -> onBindClassroomResourcesViewHolder(holder as ContentHeaderRecyclerViewHolder)
+            CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE -> onBindClassroomResourcesViewHolder(holder as ResourceHeaderRecyclerViewHolder)
         }
     }
 
@@ -76,25 +75,27 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
         }
     }
 
-    private fun onBindClassroomResourcesViewHolder(holder: ContentHeaderRecyclerViewHolder) {
+    private fun onBindClassroomResourcesViewHolder(holder: ResourceHeaderRecyclerViewHolder) {
         holder.itemView.setBackgroundResource(R.color.colorPrimaryDark)
         holder.titleTextView.setText(R.string.classroom_resources)
 
-        val classroomResourceQuery = activity.firestoreLocalized.collection(activity.getString(R.string.classroom_resources_key))
+        val classroomResourceQuery = activity.firestoreLocalized.collection(activity.getString(R.string.resources))
+                .whereEqualTo(activity.getString(R.string.resource_type), activity.getString(R.string.classroom_resource))
+                .whereEqualTo(activity.getString(R.string.status), activity.getString(R.string.status_published))
                 .whereEqualTo(activity.getString(R.string.subtopic), subtopicId)
                 .orderBy(activity.getString(R.string.name_key))
 
-        val adapterOptions = FirestoreRecyclerOptions.Builder<CardListContentHeader>()
-                .setQuery(classroomResourceQuery, CardListContentHeader::class.java)
+        val adapterOptions = FirestoreRecyclerOptions.Builder<ResourceHeader>()
+                .setQuery(classroomResourceQuery, ResourceHeader::class.java)
                 .build()
 
-        val adapter = ClassroomResourcesHeaderRecyclerAdapter(topicName, adapterOptions, activity, getClassroomResourcesDataObserver(holder))
+        val adapter = ClassroomResourceHeaderRecyclerAdapter(adapterOptions, activity, getClassroomResourcesDataObserver(holder))
         adapter.startListening()
 
         holder.horizontalRecyclerView.setAdapter(adapter)
     }
 
-    private fun getClassroomResourcesDataObserver(holder: ContentHeaderRecyclerViewHolder): FirebaseDataObserver = object: FirebaseDataObserver {
+    private fun getClassroomResourcesDataObserver(holder: ResourceHeaderRecyclerViewHolder): FirebaseDataObserver = object: FirebaseDataObserver {
         override fun onRequestNewData() {
             holder.progressBar.setVisible()
             holder.hideEmptyViews()
@@ -120,6 +121,7 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
         override fun onError(e: FirebaseFirestoreException?) {
             holder.horizontalRecyclerView.setVisibilityGone()
             holder.contributeButton.setInvisible()
+            holder.progressBar.setVisibilityGone()
 
             holder.statusTextView.setVisible()
             holder.statusTextView.setText(R.string.there_was_an_error_loading_classroom_resources_for_this_lesson)

@@ -198,23 +198,23 @@
 
     <style name="LessonCardText">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_marginLeft">18dp</item>
         <item name="android:layout_marginRight">18dp</item>
     </style>
 
     <style name="LessonCardText.Header" parent="LessonCardText">
-        <item name="android:layout_marginTop">18dp</item>
-        <item name="android:layout_marginBottom">8dp</item>
-        <item name="android:textSize">20sp</item>
+        <item name="fontPath">fonts/Roboto-Medium.ttf</item>
+        <item name="android:paddingBottom">18dp</item>
+        <item name="android:paddingTop">18dp</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
     <style name="LessonCardText.Body" parent="LessonCardText">
+        <item name="android:paddingBottom">18dp</item>
         <item name="android:textSize">16sp</item>
         <item name="android:lineSpacingMultiplier">1.15</item>
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:layout_marginBottom">18dp</item>
     </style>
     
     <style name="RecyclerViewHorizontalPager">

@@ -6,15 +6,15 @@ import android.text.style.LeadingMarginSpan
 import org.xml.sax.XMLReader
 
 /**
- * An abstract class for handling list HTML tags (<ul> and <ol>) in a TextView.
+ * An abstract base class for handling list HTML tags (<ul> and <ol>) in a TextView.
  */
-abstract class ListTagHandler(val indentationLevel: Int = 0) : Html.TagHandler {
+abstract class ListTagHandler(private val indentationLevel: Int = 0): Html.TagHandler {
 
     /**
-     * TAG represents the tag that the implementation of this abstract class is
+     * The tag that the implementation of this abstract class is
      *  designed to handle. ("ul", "ol")
      */
-    abstract val TAG: String
+    abstract val tag: String
 
     /**
      * The activeListHandler is an implementation of ListTagHandler
@@ -29,39 +29,46 @@ abstract class ListTagHandler(val indentationLevel: Int = 0) : Html.TagHandler {
      * Determine which tag handler should handle the most recently read tag.
      */
     override fun handleTag(opening: Boolean, tag: String?, output: Editable?, xmlReader: XMLReader?) {
-        if (activeListHandler != null && activeListHandler?.activeListHandler == null
-                && !opening && tag == activeListHandler?.TAG) {
+        if (this.hasListHandler()
+                && activeListHandler?.hasListHandler() == false
+                && !opening
+                && tag == activeListHandler?.tag) {
 
-            // If we're closing the list tag on the active list handler
-            // (and not on its active list handler), remove it.
+            // If we're closing the list tag of the active list handler
+            // (and not *its* active list handler), remove it.
             activeListHandler = null
 
-        } else if (activeListHandler != null) {
-            // Let the <ul> or <ol> list handler handle this tag!
+        } else if (this.hasListHandler()) {
+            // Delegate handling of this tag to the list handler!
             activeListHandler?.handleTag(opening, tag, output, xmlReader)
-        } else if (tag == "ul") {
-            output?.append("\n")
-            // Set <ul> handler as active
-            activeListHandler = UnorderedListTagHandler(indentationLevel + 1)
-        } else if (tag == "ol") {
-            output?.append("\n")
-            // Set <ol> handler as active
-            activeListHandler = OrderedListTagHandler(indentationLevel + 1)
-        } else if (tag == "li") {
-            handleListItem(opening, tag, output, xmlReader)
+        } else {
+
+            when (tag) {
+                "li" -> handleListItem(opening, tag, output, xmlReader)
+                "ul" -> {
+                    // At the root level, there is no need for an extra newline.
+                    //  At other levels, newline is required for spans.
+                    if (this !is RootListTagHandler) output?.append("\n")
+                    activeListHandler = UnorderedListTagHandler(indentationLevel + 1)
+                }
+                "ol" -> {
+                    if (this !is RootListTagHandler) output?.append("\n")
+                    activeListHandler = OrderedListTagHandler(indentationLevel + 1)
+                }
+            }
         }
     }
 
-    fun getIndentationSpan(): LeadingMarginSpan.Standard {
-        val firstLineIndentation = indentationLevel * indentationMultiplier
-        val remainingLinesIndentation = firstLineIndentation + indentationMultiplier
+    private fun hasListHandler() = activeListHandler != null
 
-        return LeadingMarginSpan.Standard(firstLineIndentation, remainingLinesIndentation)
+    fun getIndentationSpan(): LeadingMarginSpan.Standard {
+        val indentationAmount = indentationLevel * indentationMultiplier
+
+        return LeadingMarginSpan.Standard(indentationAmount)
     }
 
     /**
      * Subclasses will use this function to display a list item from a tag.
      */
-    abstract fun handleListItem(opening: Boolean, tag: String, output: Editable?, xmlReader: XMLReader?)
-
+    open fun handleListItem(opening: Boolean, tag: String, output: Editable?, xmlReader: XMLReader?) {}
 }

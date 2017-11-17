@@ -1,29 +1,30 @@
 package org.jnanaprabodhini.happyteacher.extension
 
 import android.database.DataSetObserver
-import android.graphics.Bitmap
 import android.os.Build
+import android.support.annotation.DimenRes
 import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
+import android.support.v4.content.res.ResourcesCompat
+import android.support.v4.view.ViewCompat
 import android.support.v7.content.res.AppCompatResources
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.TooltipCompat
 import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.view.View
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.webkit.*
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ImageView
+import android.widget.Spinner
+import android.widget.TextView
+import com.commonsware.cwac.anddown.AndDown
 import com.squareup.picasso.Picasso
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.taghandler.RootListTagHandler
-import android.content.Intent
-import android.net.Uri
-import android.support.annotation.ColorRes
-import android.support.annotation.DimenRes
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v4.view.ViewCompat
-import android.support.v7.widget.LinearLayoutManager
 
 
 /**
@@ -57,6 +58,10 @@ fun View.showSnackbar(@StringRes stringId: Int) {
 
 fun View.showSnackbar(message: String) {
     Snackbar.make(this, message, Snackbar.LENGTH_LONG).show()
+}
+
+fun View.showSnackbarWithAction(message: String, actionName: String, action: (View) -> Unit) {
+    Snackbar.make(this, message, Snackbar.LENGTH_LONG).setAction(actionName, action).show()
 }
 
 fun View.setOneTimeOnClickListener(l: View.OnClickListener) {
@@ -125,35 +130,44 @@ fun TextView.setDrawableRight(@DrawableRes drawableId: Int) {
     this.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
 }
 
-fun TextView.setHtmlText(htmlString: String) {
+fun TextView.setHtmlAndMarkdownText(formattedString: String) {
     this.movementMethod = LinkMovementMethod.getInstance()
-
     val tagHandler = RootListTagHandler()
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        this.text = Html.fromHtml(htmlString, Html.FROM_HTML_MODE_COMPACT, null, tagHandler)
+    val markdownParser = AndDown()
+    val htmlFromMarkdown = markdownParser.markdownToHtml(formattedString)
+
+    val spannedText = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        Html.fromHtml(htmlFromMarkdown, Html.FROM_HTML_MODE_COMPACT, null, tagHandler)
     } else {
-        this.text = Html.fromHtml(htmlString, null, tagHandler)
+        Html.fromHtml(htmlFromMarkdown, null, tagHandler)
     }
 
-    // Ensure no newline at beginning:
-    this.text = this.text.removePrefix("\n")
+    this.text = spannedText.trim()
 }
 
 fun ImageView.loadImageToFit(imageUrl: String) {
     Picasso.with(context)
             .load(imageUrl)
-            .placeholder(R.drawable.ripple_accent_gray)
-            .error(R.drawable.white_ripple_pill)
+            .placeholder(R.drawable.ic_image_primary_32dp)
+            .error(R.drawable.ic_error_gray_32dp)
             .fit()
             .centerCrop()
             .into(this)
 }
 
-fun ImageView.loadImageWithNoPlaceholder(imageUrl: String) {
+fun ImageView.loadImageToFitWithNoPlaceholders(imageUrl: String) {
     Picasso.with(context)
             .load(imageUrl)
-            .error(R.drawable.white_ripple_pill)
+            .fit()
+            .centerCrop()
+            .into(this)
+}
+
+fun ImageView.loadFullImageWithNoPlaceholder(imageUrl: String) {
+    Picasso.with(context)
+            .load(imageUrl)
+            .error(R.drawable.ic_error_gray_32dp)
             .fit()
             .centerInside()
             .into(this)
@@ -171,16 +185,16 @@ fun RecyclerView.canScrollRightHorizontally(): Boolean {
     return canScrollHorizontally(1)
 }
 
-fun LinearLayoutManager.isFirstVisiblePositionCompletelyVisible(): Boolean {
-    val firstVisiblePosition = findFirstVisibleItemPosition()
-    val firstCompletelyVisiblePosition = findFirstCompletelyVisibleItemPosition()
-
-    return firstVisiblePosition == firstCompletelyVisiblePosition
+fun Animation.onFinish(onFinish: () -> Unit) {
+    this.setAnimationListener(object: Animation.AnimationListener {
+        override fun onAnimationRepeat(p0: Animation?) {}
+        override fun onAnimationEnd(animation: Animation?) {
+            onFinish()
+        }
+        override fun onAnimationStart(p0: Animation?) {}
+    })
 }
 
-fun LinearLayoutManager.isLastVisiblePositionCompletelyVisible(): Boolean {
-    val lastVisiblePosition = findLastVisibleItemPosition()
-    val lastCompletelyVisiblePosition = findLastCompletelyVisibleItemPosition()
-
-    return lastVisiblePosition == lastCompletelyVisiblePosition
+fun View.setTooltip(tooltipText: String) {
+    TooltipCompat.setTooltipText(this, tooltipText)
 }

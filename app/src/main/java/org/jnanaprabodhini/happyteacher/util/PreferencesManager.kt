@@ -58,7 +58,7 @@ class PreferencesManager private constructor(val context: Context) {
     }
 
     // TODO: what should default board be?
-    fun getBoardKey(): String = preferences.getString(context.getString(R.string.prefs_key_board_id), context.getString(R.string.maharashtra_state_board_key))
+    fun getBoardKey(): String = preferences.getString(context.getString(R.string.prefs_key_board_id), context.getString(R.string.maharashtra_board_key))
 
     fun getBoardName(): String = preferences.getString(context.getString(R.string.prefs_key_board_name), "")
 

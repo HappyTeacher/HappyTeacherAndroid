@@ -20,4 +20,6 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="actionbar_default_elevation">8dp</dimen>
+    <dimen name="subtopic_header_card_height">150dp</dimen>
+    <dimen name="subtopic_header_card_width">300dp</dimen>
 </resources>

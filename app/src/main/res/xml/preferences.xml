@@ -4,17 +4,17 @@
         android:title="@string/contributor_profile"
         android:key="@string/prefs_key_user_settings"
         xmlns:pref="http://schemas.android.com/apk/res/org.jnanaprabodhini.happyteacher">
-        <org.jnanaprabodhini.happyteacher.preference.EditTextValueDisplayPreference
+        <org.jnanaprabodhini.happyteacher.preference.MandatoryContributorPreference
             android:key="@string/prefs_key_user_name"
             android:summary="@string/your_first_and_last_name"
             android:title="@string/name"
             android:defaultValue="" />
-        <org.jnanaprabodhini.happyteacher.preference.EditTextValueDisplayPreference
+        <org.jnanaprabodhini.happyteacher.preference.MandatoryContributorPreference
             android:key="@string/prefs_key_user_institution"
             android:summary="@string/the_name_of_the_institution_you_are_affiliated_with"
             android:title="@string/institution_name"
             android:defaultValue="" />
-        <org.jnanaprabodhini.happyteacher.preference.EditTextValueDisplayPreference
+        <org.jnanaprabodhini.happyteacher.preference.MandatoryContributorPreference
             android:key="@string/prefs_key_user_location"
             android:summary="@string/the_location_of_your_institution"
             android:title="@string/location"

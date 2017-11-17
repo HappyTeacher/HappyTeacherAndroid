@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.preference.PreferenceFragmentCompat
+import android.view.Menu
+import android.view.MenuItem
 import com.crashlytics.android.Crashlytics
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
@@ -16,8 +18,11 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacher.extension.showToast
-import org.jnanaprabodhini.happyteacher.preference.EditTextValueDisplayPreference
+import org.jnanaprabodhini.happyteacher.preference.MandatoryContributorPreference
 import org.jnanaprabodhini.happyteacher.util.PreferencesManager
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+
+
 
 class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -134,7 +139,7 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
      */
     private fun onLocationChange(newLocation: String?) {
         // Persist value and refresh the UI:
-        val locationPref = settingsFragment.findPreference(getString(R.string.prefs_key_user_location)) as EditTextValueDisplayPreference
+        val locationPref = settingsFragment.findPreference(getString(R.string.prefs_key_user_location)) as MandatoryContributorPreference
         locationPref.text = newLocation
         locationPref.callChangeListener(newLocation)
 
@@ -152,7 +157,7 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
                     .build(this)
             startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE)
         } catch (e: GooglePlayServicesRepairableException) {
-            GoogleApiAvailability.getInstance().getErrorDialog(this, e.connectionStatusCode, 0)
+            GoogleApiAvailability.getInstance().getErrorDialog(this, e.connectionStatusCode, 0).show()
             Crashlytics.logException(e)
         } catch (e: GooglePlayServicesNotAvailableException) {
             showToast(getString(R.string.you_must_have_google_play_service_to_do_this))
@@ -177,6 +182,26 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
                 }
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_settings, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.menu_open_source_notices -> launchOpenSourceNotices()
+        }
+        return true
+    }
+
+    private fun launchOpenSourceNotices() {
+        val intent = Intent(this, OssLicensesMenuActivity::class.java)
+        val title = getString(R.string.open_source_notices)
+        intent.putExtra("title", title)
+        startActivity(intent)
     }
 
 }

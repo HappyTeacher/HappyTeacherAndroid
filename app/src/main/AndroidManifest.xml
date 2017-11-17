@@ -37,6 +37,9 @@
             android:name=".activity.SubtopicSubmissionsListActivity"
             android:label="@string/other_lesson_plans"
             android:parentActivityName=".activity.TopicsListActivity" />
+        <activity
+            android:name=".activity.LessonEditorActivity"
+            android:parentActivityName=".activity.ContributeActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -46,6 +49,14 @@
             android:name=".activity.SettingsActivity"
             android:label="@string/settings"
             android:parentActivityName=".activity.TopicsListActivity" />
+        <activity
+            android:name=".activity.SubtopicChoiceActivity"
+            android:label="@string/create_a_lesson_plan"
+            android:noHistory="true"
+            android:parentActivityName=".activity.ContributeActivity" />
+        <activity android:name=".activity.CardEditorActivity"
+            android:label="@string/card_editor"
+            android:parentActivityName=".activity.LessonEditorActivity"/>
     </application>
 
 </manifest>

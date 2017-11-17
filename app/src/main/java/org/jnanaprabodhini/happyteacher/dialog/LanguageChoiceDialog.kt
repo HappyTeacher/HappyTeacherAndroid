@@ -4,6 +4,7 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.BottomNavigationActivity
+import org.jnanaprabodhini.happyteacher.util.LocaleManager
 import org.jnanaprabodhini.happyteacher.util.PreferencesManager
 
 /**
@@ -15,11 +16,7 @@ class LanguageChoiceDialog(val activity: BottomNavigationActivity): SettingsChoi
 
         optionsListView.choiceMode = ListView.CHOICE_MODE_SINGLE
 
-        val supportedLanguages = arrayOf(
-                LocaleCodeWithTitle("en", context.getString(R.string.english_in_english)),
-                LocaleCodeWithTitle("mr", context.getString(R.string.marathi_in_marathi))
-        )
-
+        val supportedLanguages = LocaleManager.getSupportedLanguagesWithTitles(activity)
         val supportedLanguagesAdapter = ArrayAdapter(context, R.layout.dialog_option_singlechoice, supportedLanguages)
 
         optionsListView.adapter = supportedLanguagesAdapter
@@ -33,9 +30,5 @@ class LanguageChoiceDialog(val activity: BottomNavigationActivity): SettingsChoi
             dismiss()
             activity.changeLocaleAndRefresh(supportedLanguages[position].code)
         }
-    }
-
-    data class LocaleCodeWithTitle(val code: String, val title: String) {
-        override fun toString(): String = title
     }
 }
