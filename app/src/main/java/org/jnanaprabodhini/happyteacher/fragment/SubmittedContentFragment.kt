@@ -5,6 +5,7 @@ import kotlinx.android.synthetic.main.fragment_recycler.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.adapter.firestore.DraftHeaderRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.model.ResourceHeader
+import org.jnanaprabodhini.happyteacher.util.ResourceStatus
 
 class SubmittedContentFragment : RecyclerFragment() {
 
@@ -16,7 +17,7 @@ class SubmittedContentFragment : RecyclerFragment() {
 
         val submissionsQuery = firestoreLocalized.collection(getString(R.string.resources))
                 .whereEqualTo(getString(R.string.author_id), userId)
-                .whereEqualTo(getString(R.string.status), getString(R.string.status_awaiting_review))
+                .whereEqualTo(getString(R.string.status), ResourceStatus.AWAITING_REVIEW)
 
         val adapterOptions = FirestoreRecyclerOptions.Builder<ResourceHeader>()
                 .setQuery(submissionsQuery, ResourceHeader::class.java).build()

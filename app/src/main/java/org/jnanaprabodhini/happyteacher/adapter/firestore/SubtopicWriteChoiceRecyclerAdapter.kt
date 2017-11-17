@@ -11,6 +11,7 @@ import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.SubtopicViewHolder
 import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 import org.jnanaprabodhini.happyteacher.model.Subtopic
+import org.jnanaprabodhini.happyteacher.util.ResourceStatus
 
 
 class SubtopicWriteChoiceRecyclerAdapter(options: FirestoreRecyclerOptions<Subtopic>, firebaseDataObserver: FirebaseDataObserver, val activity: HappyTeacherActivity):
@@ -51,7 +52,7 @@ class SubtopicWriteChoiceRecyclerAdapter(options: FirestoreRecyclerOptions<Subto
                 authorInstitution = authorInstitution,
                 authorLocation = authorLocation,
                 authorName = authorName,
-                status = activity.getString(R.string.status_draft),
+                status = ResourceStatus.DRAFT,
                 resourceType = activity.getString(R.string.lesson) // add classroom resources too!
         )
     }

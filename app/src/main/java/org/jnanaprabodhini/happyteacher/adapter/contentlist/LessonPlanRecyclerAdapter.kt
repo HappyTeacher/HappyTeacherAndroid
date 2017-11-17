@@ -16,6 +16,7 @@ import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 import org.jnanaprabodhini.happyteacher.model.ContentCard
+import org.jnanaprabodhini.happyteacher.util.ResourceStatus
 import java.io.File
 
 class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, attachmentDestinationDirectory: File, val topicName: String, subtopicId: String, activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
@@ -81,7 +82,7 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
 
         val classroomResourceQuery = activity.firestoreLocalized.collection(activity.getString(R.string.resources))
                 .whereEqualTo(activity.getString(R.string.resource_type), activity.getString(R.string.classroom_resource))
-                .whereEqualTo(activity.getString(R.string.status), activity.getString(R.string.status_published))
+                .whereEqualTo(activity.getString(R.string.status), ResourceStatus.PUBLISHED)
                 .whereEqualTo(activity.getString(R.string.subtopic), subtopicId)
                 .orderBy(activity.getString(R.string.name_key))
 

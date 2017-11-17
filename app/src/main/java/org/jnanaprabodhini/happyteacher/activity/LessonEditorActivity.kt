@@ -19,6 +19,7 @@ import org.jnanaprabodhini.happyteacher.extension.showSnackbar
 import org.jnanaprabodhini.happyteacher.extension.showToast
 import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 import org.jnanaprabodhini.happyteacher.model.ContentCard
+import org.jnanaprabodhini.happyteacher.util.ResourceStatus
 
 /**
  * Created by grahamearley on 11/3/17.
@@ -88,7 +89,7 @@ class LessonEditorActivity: ResourceContentViewerActivity() {
 
     private fun submit() {
         showToast(getString(R.string.submitting))
-        contentRef.update(getString(R.string.status), getString(R.string.status_awaiting_review))
+        contentRef.update(getString(R.string.status), ResourceStatus.AWAITING_REVIEW)
                 .addOnSuccessListener {
                     showToast("Lesson submitted")
                     finish()

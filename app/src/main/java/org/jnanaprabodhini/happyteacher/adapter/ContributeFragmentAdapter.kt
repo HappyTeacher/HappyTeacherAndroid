@@ -28,7 +28,7 @@ class ContributeFragmentAdapter(fragmentManager: FragmentManager, val context: C
         return when (position) {
             0 -> context.getString(R.string.drafts)
             1 -> context.getString(R.string.submitted)
-            2 -> context.getString(R.string.published)
+            2 -> context.getString(R.string.published_tab)
             else -> ""
         }
     }

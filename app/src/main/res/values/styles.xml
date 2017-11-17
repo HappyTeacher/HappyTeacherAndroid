@@ -235,7 +235,7 @@
     </style>
 
     <style name="CardButton.Edit">
-        <item name="android:background">@color/mediumGray</item>
+        <item name="android:background">@color/deepLightBlue</item>
     </style>
 
     <style name="CardButton.Delete">

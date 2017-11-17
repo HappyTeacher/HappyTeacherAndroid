@@ -15,6 +15,7 @@ import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.model.ResourceHeader
+import org.jnanaprabodhini.happyteacher.util.ResourceStatus
 
 class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObserver {
 
@@ -49,7 +50,7 @@ class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObse
         val submissionHeadersQuery = firestoreLocalized.collection(getString(R.string.resources))
                 .whereEqualTo(getString(R.string.resource_type), getString(R.string.lesson))
                 .whereEqualTo(getString(R.string.subtopic), subtopicKey)
-                .whereEqualTo(getString(R.string.status), getString(R.string.status_published))
+                .whereEqualTo(getString(R.string.status), ResourceStatus.PUBLISHED)
                 .orderBy(getString(R.string.is_featured), Query.Direction.ASCENDING)
 
         val adapterOptions = FirestoreRecyclerOptions.Builder<ResourceHeader>()

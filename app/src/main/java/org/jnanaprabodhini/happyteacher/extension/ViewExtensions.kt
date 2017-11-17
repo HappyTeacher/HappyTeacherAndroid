@@ -130,6 +130,11 @@ fun TextView.setDrawableRight(@DrawableRes drawableId: Int) {
     this.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
 }
 
+fun View.setBackgroundDrawable(@DrawableRes drawableId: Int) {
+    val drawable = AppCompatResources.getDrawable(context, drawableId)
+    this.background = drawable
+}
+
 fun TextView.setHtmlAndMarkdownText(formattedString: String) {
     this.movementMethod = LinkMovementMethod.getInstance()
     val tagHandler = RootListTagHandler()

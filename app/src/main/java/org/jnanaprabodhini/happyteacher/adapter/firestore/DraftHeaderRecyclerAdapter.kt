@@ -13,7 +13,9 @@ import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContributionHeaderVie
 import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 
 /**
- * Created by grahamearley on 11/5/17.
+ * A [ContributionAdapter] implementation for drafts.
+ *  Drafts have two buttons: edit and delete.
+ *  A draft card opens the editor on click.
  */
 class DraftHeaderRecyclerAdapter(adapterOptions: FirestoreRecyclerOptions<ResourceHeader>, dataObserver: FirebaseDataObserver, activity: Activity):
         ContributionAdapter(adapterOptions, dataObserver, activity) {

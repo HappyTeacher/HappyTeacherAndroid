@@ -14,15 +14,15 @@ import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContributionHeaderVie
 import org.jnanaprabodhini.happyteacher.extension.setDrawableLeft
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.model.ResourceHeader
+import org.jnanaprabodhini.happyteacher.util.ResourceStatus
 import java.util.*
 
 /**
  * A base class for showing list items in the Contribute section.
- *  Each item represents a contribution the user has made. Different
- *  implementations will contain logic for showing drafts, submissions
- *  awaiting feedback, submissions with changes requested, or published
- *  submissions.
+ *  Each item represents a contribution the user has made.
  *
+ *  Different implementations will contain logic for card buttons and
+ *  onClicks.
  */
 abstract class ContributionAdapter(adapterOptions: FirestoreRecyclerOptions<ResourceHeader>, dataObserver: FirebaseDataObserver, val activity: Activity):
         FirestoreObserverRecyclerAdapter<ResourceHeader, ContributionHeaderViewHolder>(adapterOptions, dataObserver) {
@@ -47,7 +47,7 @@ abstract class ContributionAdapter(adapterOptions: FirestoreRecyclerOptions<Reso
                 dateEditedTextView.setDrawableLeft(R.drawable.ic_clock_light_gray)
             } ?: dateEditedTextView.setVisibilityGone()
 
-            setStatusView(holder, model)
+            setStatusView(holder, model?.status)
 
             val contributionDocumentRef = snapshots.getSnapshot(position).reference
             setCardButtons(holder, contributionDocumentRef, model)
@@ -61,7 +61,13 @@ abstract class ContributionAdapter(adapterOptions: FirestoreRecyclerOptions<Reso
 
     abstract fun setCardButtons(holder: ContributionHeaderViewHolder, contributionDocumentRef: DocumentReference, model: ResourceHeader?)
 
-    private fun setStatusView(holder: ContributionHeaderViewHolder, model: ResourceHeader?) {
-        // todo
+    private fun setStatusView(holder: ContributionHeaderViewHolder, status: String?) {
+        when (status) {
+            ResourceStatus.DRAFT -> holder.hideStatusView()
+            ResourceStatus.AWAITING_REVIEW -> holder.showAwaitingReviewStatus(activity)
+            ResourceStatus.CHANGES_REQUESTED -> holder.showChangesRequestedStatus(activity)
+            ResourceStatus.PUBLISHED -> holder.showPublishedStatus(activity)
+            else -> holder.hideStatusView()
+        }
     }
 }

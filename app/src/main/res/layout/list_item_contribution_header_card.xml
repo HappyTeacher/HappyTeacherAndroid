@@ -46,12 +46,32 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:maxLines="1"
-            android:paddingBottom="16dp"
-            app:layout_constraintBottom_toTopOf="@id/editButton"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="16dp"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/subjectTextView"
+            app:layout_constraintBottom_toTopOf="@id/statusTextView"
             tools:text="1 December, 2017" />
+
+        <TextView
+            android:id="@+id/statusTextView"
+            android:visibility="gone"
+            android:gravity="center_vertical"
+            android:drawablePadding="8dp"
+            android:textColor="@android:color/white"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textAllCaps="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dateEditedTextView"
+            app:layout_constraintBottom_toTopOf="@id/editButton"/>
 
         <TextView
             android:id="@+id/editButton"
@@ -60,8 +80,7 @@
             android:text="@string/edit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/deleteButton"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dateEditedTextView" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/deleteButton"
@@ -71,7 +90,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/editButton"
-            app:layout_constraintTop_toBottomOf="@id/dateEditedTextView"
             app:srcCompat="@drawable/ic_delete_gray_24dp" />
 
     </android.support.constraint.ConstraintLayout>

@@ -17,6 +17,7 @@ import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.*
 import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 import org.jnanaprabodhini.happyteacher.model.Topic
+import org.jnanaprabodhini.happyteacher.util.ResourceStatus
 import org.jnanaprabodhini.happyteacher.view.SubjectSpinnerManager
 
 class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
@@ -131,7 +132,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
                 val query: Query = firestoreLocalized.collection(getString(R.string.resources))
                         .whereEqualTo(getString(R.string.resource_type), getString(R.string.lesson))
                         .whereEqualTo(getString(R.string.topic), topicId)
-                        .whereEqualTo(getString(R.string.status), getString(R.string.status_published))
+                        .whereEqualTo(getString(R.string.status), ResourceStatus.PUBLISHED)
                         .whereEqualTo(getString(R.string.is_featured), true)
 
                 return FirestoreRecyclerOptions.Builder<ResourceHeader>().setQuery(query, ResourceHeader::class.java).build()
@@ -156,7 +157,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
                         .whereEqualTo(getString(R.string.resource_type), getString(R.string.lesson))
                         .whereEqualTo(getString(R.string.topic), topicId)
                         .whereEqualTo("syllabus_lessons.$syllabusLessonId", true)
-                        .whereEqualTo(getString(R.string.status), getString(R.string.status_published))
+                        .whereEqualTo(getString(R.string.status), ResourceStatus.PUBLISHED)
                         .whereEqualTo(getString(R.string.is_featured), true)
 
                 return FirestoreRecyclerOptions.Builder<ResourceHeader>()
