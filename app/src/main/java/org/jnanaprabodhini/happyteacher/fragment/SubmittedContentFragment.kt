@@ -1,11 +1,13 @@
 package org.jnanaprabodhini.happyteacher.fragment
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.fragment_recycler.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.adapter.contribute.DraftHeaderAdapter
 import org.jnanaprabodhini.happyteacher.adapter.contribute.SubmissionHeaderAdapter
 import org.jnanaprabodhini.happyteacher.model.ResourceHeader
+import org.jnanaprabodhini.happyteacher.util.FirestoreKeys
 import org.jnanaprabodhini.happyteacher.util.ResourceStatus
 
 class SubmittedContentFragment : RecyclerFragment() {
@@ -19,6 +21,7 @@ class SubmittedContentFragment : RecyclerFragment() {
         val submissionsQuery = firestoreLocalized.collection(getString(R.string.resources))
                 .whereEqualTo(getString(R.string.author_id), userId)
                 .whereEqualTo(ResourceStatus.AWAITING_REVIEW_OR_CHANGES_REQUESTED, true)
+                .orderBy(FirestoreKeys.STATUS, Query.Direction.DESCENDING)
 
         val adapterOptions = FirestoreRecyclerOptions.Builder<ResourceHeader>()
                 .setQuery(submissionsQuery, ResourceHeader::class.java).build()
