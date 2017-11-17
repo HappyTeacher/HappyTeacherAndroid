@@ -24,6 +24,20 @@ class ContributionHeaderViewHolder(itemView: View): RecyclerView.ViewHolder(item
         editButton.setVisible()
     }
 
+    fun showButtonsForSubmittedContent() {
+        deleteButton.setVisibilityGone()
+        editButton.setDrawableLeft(R.drawable.ic_undo_white_24dp)
+        editButton.setText(R.string.unsubmit)
+        editButton.setVisible()
+    }
+
+    fun showButtonsForPublishedContent() {
+        deleteButton.setVisibilityGone()
+        editButton.setDrawableLeft(R.drawable.ic_undo_white_24dp)
+        editButton.setText(R.string.unpublish)
+        editButton.setVisible()
+    }
+
     fun showAwaitingReviewStatus(context: Context) {
         statusTextView.setBackgroundColorCompat(R.color.colorAccent)
         statusTextView.text = context.getString(R.string.submitted_for_review)

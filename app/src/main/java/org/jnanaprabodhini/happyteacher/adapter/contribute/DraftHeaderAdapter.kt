@@ -16,7 +16,7 @@ import org.jnanaprabodhini.happyteacher.model.ResourceHeader
  *  Drafts have two buttons: edit and delete.
  *  A draft card opens the editor on click.
  */
-class DraftHeaderRecyclerAdapter(adapterOptions: FirestoreRecyclerOptions<ResourceHeader>, dataObserver: FirebaseDataObserver, activity: Activity):
+class DraftHeaderAdapter(adapterOptions: FirestoreRecyclerOptions<ResourceHeader>, dataObserver: FirebaseDataObserver, activity: Activity):
         ContributionAdapter(adapterOptions, dataObserver, activity) {
 
     override fun setCardButtons(holder: ContributionHeaderViewHolder, contributionDocumentRef: DocumentReference, model: ResourceHeader?) {
@@ -33,8 +33,8 @@ class DraftHeaderRecyclerAdapter(adapterOptions: FirestoreRecyclerOptions<Resour
 
     private fun showDeleteAlert(documentReference: DocumentReference, documentPosition: Int) {
         AlertDialog.Builder(activity)
-                .setTitle(activity.getString(R.string.do_you_want_to_delete_this_draft))
-                .setMessage(activity.getString(R.string.this_cannot_be_undone))
+                .setTitle(R.string.do_you_want_to_delete_this_draft)
+                .setMessage(R.string.this_cannot_be_undone)
                 .setPositiveButton(R.string.delete, {dialog, _ ->
                     deleteDocument(documentReference, documentPosition)
                     dialog.dismiss()

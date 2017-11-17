@@ -149,6 +149,15 @@
     <string name="submitted_for_review">Submitted for Review</string>
     <string name="changes_requested">Changes Requested</string>
     <string name="published_status">Published</string>
+    <string name="unsubmit">Unsubmit</string>
+    <string name="unpublish">Unpublish</string>
+    <string name="do_you_want_to_unsubmit_this_lesson">Do you want to unsubmit this lesson?</string>
+    <string name="the_lesson_will_return_to_your_drafts">The lesson will return to your drafts.</string>
+    <string name="do_you_want_to_unsubmit_this_classroom_resource">Do you want to unsubmit this classroom resource?</string>
+    <string name="the_classroom_resource_will_return_to_your_drafts">The classroom resource will return to your drafts.</string>
+    <string name="do_you_want_to_unsubmit_this_contribution">Do you want to unsubmit this contribution?</string>
+    <string name="it_will_return_to_your_drafts">It will return to your drafts.</string>
+    <string name="submission_returned_to_drafts">Submission returned to drafts</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>

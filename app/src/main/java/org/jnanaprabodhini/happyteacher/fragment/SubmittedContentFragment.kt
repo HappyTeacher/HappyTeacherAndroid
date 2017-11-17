@@ -3,7 +3,8 @@ package org.jnanaprabodhini.happyteacher.fragment
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import kotlinx.android.synthetic.main.fragment_recycler.*
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.adapter.contribute.DraftHeaderRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.contribute.DraftHeaderAdapter
+import org.jnanaprabodhini.happyteacher.adapter.contribute.SubmissionHeaderAdapter
 import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 import org.jnanaprabodhini.happyteacher.util.ResourceStatus
 
@@ -17,14 +18,12 @@ class SubmittedContentFragment : RecyclerFragment() {
 
         val submissionsQuery = firestoreLocalized.collection(getString(R.string.resources))
                 .whereEqualTo(getString(R.string.author_id), userId)
-                .whereEqualTo(getString(R.string.status), ResourceStatus.AWAITING_REVIEW)
+                .whereEqualTo(ResourceStatus.AWAITING_REVIEW_OR_CHANGES_REQUESTED, true)
 
         val adapterOptions = FirestoreRecyclerOptions.Builder<ResourceHeader>()
                 .setQuery(submissionsQuery, ResourceHeader::class.java).build()
 
-        // TODO: update adapter!!
-        //  add feedback status to the views (awaiting feedback, or feedback received + awaiting edits)
-        val adapter = DraftHeaderRecyclerAdapter(adapterOptions, this, activity)
+        val adapter = SubmissionHeaderAdapter(adapterOptions, this, activity)
         adapter.startListening()
 
         recyclerView.adapter = adapter
