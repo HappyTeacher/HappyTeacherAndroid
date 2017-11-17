@@ -1,57 +1,57 @@
 package org.jnanaprabodhini.happyteacher.adapter.firestore
 
 import android.app.Activity
-import android.text.format.DateFormat
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import android.app.AlertDialog
+import android.view.View
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.DocumentReference
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.LessonEditorActivity
+import org.jnanaprabodhini.happyteacher.adapter.ContributionAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
-import org.jnanaprabodhini.happyteacher.adapter.viewholder.DraftHeaderViewHolder
-import org.jnanaprabodhini.happyteacher.extension.setDrawableLeft
-import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
+import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContributionHeaderViewHolder
 import org.jnanaprabodhini.happyteacher.model.ResourceHeader
-import java.util.*
 
 /**
  * Created by grahamearley on 11/5/17.
  */
-class DraftHeaderRecyclerAdapter(adapterOptions: FirestoreRecyclerOptions<ResourceHeader>, dataObserver: FirebaseDataObserver, val activity: Activity):
-        FirestoreObserverRecyclerAdapter<ResourceHeader, DraftHeaderViewHolder>(adapterOptions, dataObserver) {
+class DraftHeaderRecyclerAdapter(adapterOptions: FirestoreRecyclerOptions<ResourceHeader>, dataObserver: FirebaseDataObserver, activity: Activity):
+        ContributionAdapter(adapterOptions, dataObserver, activity) {
 
-    private val dateFormat by lazy {
-        DateFormat.getDateFormat(activity)
-    }
+    override fun setCardButtons(holder: ContributionHeaderViewHolder, contributionDocumentRef: DocumentReference, model: ResourceHeader?) {
+        holder.apply {
+            showButtonsForDraft()
 
-    override fun onBindViewHolder(holder: DraftHeaderViewHolder?, position: Int, model: ResourceHeader?) {
-        holder?.apply {
-            titleTextView.text = model?.name
-            subjectTextView.text = model?.subjectName
-
-            val draftDocumentRef = snapshots.getSnapshot(position).reference
-
-            model?.dateEdited?.let {
-                dateEditedTextView.text = dateFormat.format(Date(it))
-                dateEditedTextView.setDrawableLeft(R.drawable.ic_clock_light_gray)
-            } ?: dateEditedTextView.setVisibilityGone()
-
+            val viewResourceOnClickListener = getViewResourceOnClickListener(model, contributionDocumentRef)
+            editButton.setOnClickListener(viewResourceOnClickListener)
             deleteButton.setOnClickListener {
-                draftDocumentRef.delete()
-                notifyItemRemoved(holder.adapterPosition)
-            }
-
-            itemView.setOnClickListener {
-                val modelOrEmpty = model ?: ResourceHeader()
-                LessonEditorActivity.launch(activity, draftDocumentRef, modelOrEmpty)
+                showDeleteAlert(contributionDocumentRef, holder.adapterPosition)
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): DraftHeaderViewHolder {
-        val view = LayoutInflater.from(parent?.context)
-                .inflate(R.layout.list_item_draft_header_card, parent, false)
-        return DraftHeaderViewHolder(view)
+    private fun showDeleteAlert(documentReference: DocumentReference, documentPosition: Int) {
+        AlertDialog.Builder(activity)
+                .setTitle(activity.getString(R.string.do_you_want_to_delete_this_draft))
+                .setMessage(activity.getString(R.string.this_cannot_be_undone))
+                .setPositiveButton(R.string.delete, {dialog, _ ->
+                    deleteDocument(documentReference, documentPosition)
+                    dialog.dismiss()
+                })
+                .setNegativeButton(R.string.cancel, {dialog, _ -> dialog.dismiss() })
+                .show()
+    }
+
+    private fun deleteDocument(documentReference: DocumentReference, position: Int) {
+        documentReference.delete()
+        notifyItemRemoved(position)
+    }
+
+    override fun getViewResourceOnClickListener(model: ResourceHeader?, contributionDocumentRef: DocumentReference): View.OnClickListener {
+        return View.OnClickListener {
+            val modelOrEmpty = model ?: ResourceHeader()
+            LessonEditorActivity.launch(activity, contributionDocumentRef, modelOrEmpty)
+        }
     }
 }
 
