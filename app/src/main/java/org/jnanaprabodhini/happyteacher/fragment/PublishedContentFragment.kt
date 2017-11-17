@@ -4,6 +4,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import kotlinx.android.synthetic.main.fragment_recycler.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.adapter.contribute.DraftHeaderAdapter
+import org.jnanaprabodhini.happyteacher.adapter.contribute.PublishedSubmissionHeaderAdapter
 import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 import org.jnanaprabodhini.happyteacher.util.ResourceStatus
 
@@ -22,8 +23,7 @@ class PublishedContentFragment : RecyclerFragment() {
         val adapterOptions = FirestoreRecyclerOptions.Builder<ResourceHeader>()
                 .setQuery(publishedQuery, ResourceHeader::class.java).build()
 
-        // TODO: update adapter!
-        val adapter = DraftHeaderAdapter(adapterOptions, this, activity)
+        val adapter = PublishedSubmissionHeaderAdapter(adapterOptions, this, activity)
         adapter.startListening()
 
         recyclerView.adapter = adapter

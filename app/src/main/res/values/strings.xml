@@ -158,6 +158,12 @@
     <string name="do_you_want_to_unsubmit_this_contribution">Do you want to unsubmit this contribution?</string>
     <string name="it_will_return_to_your_drafts">It will return to your drafts.</string>
     <string name="submission_returned_to_drafts">Submission returned to drafts</string>
+    <string name="do_you_want_to_unpublish_this_lesson">Do you want to unpublish this lesson?</string>
+    <string name="do_you_want_to_unpublish_this_classroom_resource">Do you want to unpublish this classroom resource?</string>
+    <string name="do_you_want_to_unpublish_this_contribution">Do you want to unpublish this contribution?</string>
+    <string name="the_lesson_will_return_to_your_drafts_and_will_no_longer_be_publicly_visible">The lesson will return to your drafts and will no longer be publicly visible.</string>
+    <string name="the_classroom_resource_will_return_to_your_drafts_and_will_no_longer_be_publicly_visible">The classroom resource will return to your drafts and will no longer be publicly visible.</string>
+    <string name="it_will_return_to_your_drafts_and_will_no_longer_be_publicly_visible">It will return to your drafts and will no longer be publicly visible.</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>
