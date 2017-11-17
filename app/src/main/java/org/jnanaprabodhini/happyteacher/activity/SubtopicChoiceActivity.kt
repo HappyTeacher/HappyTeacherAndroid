@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.activity_subtopic_choice.*
 import kotlinx.android.synthetic.main.stacked_subject_spinners.*
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
-import org.jnanaprabodhini.happyteacher.adapter.firestore.TopicSubtopicsRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.contribute.TopicSubtopicsRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible

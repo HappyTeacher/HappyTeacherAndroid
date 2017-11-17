@@ -1,4 +1,4 @@
-package org.jnanaprabodhini.happyteacher.adapter
+package org.jnanaprabodhini.happyteacher.adapter.contribute
 
 import android.content.Context
 import android.support.v4.app.Fragment
@@ -13,24 +13,20 @@ import org.jnanaprabodhini.happyteacher.fragment.SubmittedContentFragment
  * Created by grahamearley on 11/1/17.
  */
 class ContributeFragmentAdapter(fragmentManager: FragmentManager, val context: Context): FragmentStatePagerAdapter(fragmentManager) {
-    override fun getItem(position: Int): Fragment {
-        return when (position) {
-            0 -> DraftsFragment()
-            1 -> SubmittedContentFragment()
-            2 -> PublishedContentFragment()
-            else -> Fragment()
-        }
+    override fun getItem(position: Int): Fragment = when (position) {
+        0 -> DraftsFragment()
+        1 -> SubmittedContentFragment()
+        2 -> PublishedContentFragment()
+        else -> Fragment()
     }
 
     override fun getCount(): Int = 3
 
-    override fun getPageTitle(position: Int): CharSequence {
-        return when (position) {
-            0 -> context.getString(R.string.drafts)
-            1 -> context.getString(R.string.submitted)
-            2 -> context.getString(R.string.published_tab)
-            else -> ""
-        }
+    override fun getPageTitle(position: Int): CharSequence = when (position) {
+        0 -> context.getString(R.string.drafts)
+        1 -> context.getString(R.string.submitted)
+        2 -> context.getString(R.string.published_tab)
+        else -> ""
     }
 }
 

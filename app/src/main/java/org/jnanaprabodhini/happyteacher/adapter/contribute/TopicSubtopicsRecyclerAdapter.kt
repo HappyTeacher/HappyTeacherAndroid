@@ -1,4 +1,4 @@
-package org.jnanaprabodhini.happyteacher.adapter.firestore
+package org.jnanaprabodhini.happyteacher.adapter.contribute
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,6 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
+import org.jnanaprabodhini.happyteacher.adapter.firestore.TopicsRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.TopicSubtopicChoiceRecyclerViewHolder
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone

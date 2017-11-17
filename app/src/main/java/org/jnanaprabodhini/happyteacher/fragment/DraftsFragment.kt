@@ -3,7 +3,7 @@ package org.jnanaprabodhini.happyteacher.fragment
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import kotlinx.android.synthetic.main.fragment_recycler.*
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.adapter.firestore.DraftHeaderRecyclerAdapter
+import org.jnanaprabodhini.happyteacher.adapter.contribute.DraftHeaderRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 import org.jnanaprabodhini.happyteacher.util.ResourceStatus
 

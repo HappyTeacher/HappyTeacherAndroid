@@ -3,14 +3,13 @@ package org.jnanaprabodhini.happyteacher.activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.IntegerRes
-import android.support.design.widget.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import org.jnanaprabodhini.happyteacher.R
 
 import kotlinx.android.synthetic.main.activity_contribute.*
 import kotlinx.android.synthetic.main.content_contribute.*
 import org.jnanaprabodhini.happyteacher.activity.base.BottomNavigationActivity
-import org.jnanaprabodhini.happyteacher.adapter.ContributeFragmentAdapter
+import org.jnanaprabodhini.happyteacher.adapter.contribute.ContributeFragmentAdapter
 import org.jnanaprabodhini.happyteacher.extension.hasCompleteContributorProfile
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible

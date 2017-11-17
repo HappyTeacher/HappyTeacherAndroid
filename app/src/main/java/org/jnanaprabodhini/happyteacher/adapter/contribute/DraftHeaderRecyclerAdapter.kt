@@ -1,4 +1,4 @@
-package org.jnanaprabodhini.happyteacher.adapter.firestore
+package org.jnanaprabodhini.happyteacher.adapter.contribute
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -7,7 +7,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.LessonEditorActivity
-import org.jnanaprabodhini.happyteacher.adapter.ContributionAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.ContributionHeaderViewHolder
 import org.jnanaprabodhini.happyteacher.model.ResourceHeader

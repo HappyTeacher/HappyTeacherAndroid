@@ -1,4 +1,4 @@
-package org.jnanaprabodhini.happyteacher.adapter.firestore
+package org.jnanaprabodhini.happyteacher.adapter.contribute
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.activity.LessonEditorActivity
 import org.jnanaprabodhini.happyteacher.activity.base.HappyTeacherActivity
+import org.jnanaprabodhini.happyteacher.adapter.firestore.FirestoreObserverRecyclerAdapter
 import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.adapter.viewholder.SubtopicViewHolder
 import org.jnanaprabodhini.happyteacher.model.ResourceHeader

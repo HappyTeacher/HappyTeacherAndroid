@@ -1,4 +1,4 @@
-package org.jnanaprabodhini.happyteacher.adapter
+package org.jnanaprabodhini.happyteacher.adapter.contribute
 
 import android.app.Activity
 import android.text.format.DateFormat
