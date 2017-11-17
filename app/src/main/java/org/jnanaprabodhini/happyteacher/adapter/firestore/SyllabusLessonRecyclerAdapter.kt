@@ -1,6 +1,5 @@
 package org.jnanaprabodhini.happyteacher.adapter.firestore
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -47,7 +46,7 @@ class SyllabusLessonRecyclerAdapter(options: FirestoreRecyclerOptions<SyllabusLe
                 val level = model?.level
                 val title = model?.name
 
-                TopicsListActivity.launchActivity(activity, syllabusLessonId, subjectName, title ?: "", level ?: 0)
+                TopicsListActivity.launch(activity, syllabusLessonId, subjectName, title ?: "", level ?: 0)
             }
         }
     }

@@ -3,14 +3,11 @@ package org.jnanaprabodhini.happyteacher
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
-import android.preference.PreferenceManager
-import android.util.Log
-import com.google.firebase.auth.FirebaseAuth
+import android.support.v7.preference.PreferenceManager
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import org.jnanaprabodhini.happyteacher.extension.withCurrentLocale
 import org.jnanaprabodhini.happyteacher.util.LocaleManager
-import org.jnanaprabodhini.happyteacher.util.PreferencesManager
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig
 
 class HappyTeacherApplication: Application() {

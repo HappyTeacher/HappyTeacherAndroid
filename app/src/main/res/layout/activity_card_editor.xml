@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:paddingBottom="32dp"
+        android:id="@+id/parentConstraintLayout"
+        tools:context="org.jnanaprabodhini.happyteacher.activity.CardEditorActivity">
+
+        <HorizontalScrollView
+            android:id="@+id/attachmentToolbarLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:background="@color/lightGray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include layout="@layout/attachment_toolbar_layout" />
+
+        </HorizontalScrollView>
+
+        <ProgressBar
+            android:id="@+id/imageUploadProgressBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/attachmentToolbarLayout"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/imageRecycler"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageUploadProgressBar"
+            android:layoutAnimation="@anim/layout_fade_in"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/youtubeUrlInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="18dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/removeVideoButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageRecycler">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/youtubeUrlEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/youtube_url"
+                android:inputType="textUri" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/removeVideoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_margin="18dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/youtubeUrlInputLayout"
+            app:layout_constraintBottom_toBottomOf="@id/youtubeUrlInputLayout"
+            app:srcCompat="@drawable/ic_close_gray_24dp"
+            android:contentDescription="@string/remove_video" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/headerTextInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="18dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/youtubeUrlInputLayout">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/headerEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/card_header"
+                android:inputType="textCapSentences"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/bodyTextInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="18dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerTextInputLayout">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/bodyEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/card_body"
+                android:inputType="textCapSentences|textLongMessage|textMultiLine"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <org.jnanaprabodhini.happyteacher.view.DownloadBarView
+            android:id="@+id/fileAttachmentView"
+            android:longClickable="true"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/bodyTextInputLayout"/>
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.NestedScrollView>

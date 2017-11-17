@@ -9,7 +9,7 @@ import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
 import org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
 
-class ContentHeaderRecyclerViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)  {
+class ResourceHeaderRecyclerViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     val titleTextView: TextView = itemView.titleTextView
     val horizontalRecyclerView: HorizontalPagerRecyclerView = itemView.horizontalRecyclerView
     val statusTextView: TextView = itemView.statusTextView

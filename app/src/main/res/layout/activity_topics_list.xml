@@ -29,7 +29,7 @@
             android:id="@+id/statusTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/EmptyListFeedbackText"
+            style="@style/StatusText"
             android:visibility="gone"
             android:text="@string/there_are_no_topics_for_this_subject_yet"
             android:layout_gravity="center"/>
@@ -45,33 +45,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:id="@+id/topicsHeaderView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:animateLayoutChanges="true"
-                android:background="@color/colorAccent"
-                app:layout_scrollFlags="scroll|enterAlways"
-                android:orientation="vertical">
+            <include layout="@layout/header_syllabus_lesson_topic"/>
 
-                <include layout="@layout/header_syllabus_lesson_topic"/>
-
-                <Spinner
-                    android:id="@+id/parentSubjectSpinner"
-                    style="@style/PurpleSpinner"
-                    android:visibility="gone" />
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/lightGrayShadow">
-                    <Spinner
-                        android:id="@+id/childSubjectSpinner"
-                        style="@style/ChildSpinner"
-                        android:visibility="gone" />
-                </FrameLayout>
-            </LinearLayout>
+            <include layout="@layout/stacked_subject_spinners" />
 
         </android.support.design.widget.AppBarLayout>
     </android.support.design.widget.CoordinatorLayout>

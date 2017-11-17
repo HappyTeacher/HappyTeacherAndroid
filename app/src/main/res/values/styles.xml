@@ -154,7 +154,12 @@
         <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="EmptyListFeedbackText">
+    <style name="Button.Accent" parent="Button">
+        <item name="android:background">@drawable/accent_ripple_pill</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="StatusText">
         <item name="android:gravity">center</item>
         <item name="android:textSize">18sp</item>
         <item name="android:padding">32dp</item>
@@ -193,23 +198,23 @@
 
     <style name="LessonCardText">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_marginLeft">18dp</item>
         <item name="android:layout_marginRight">18dp</item>
     </style>
 
     <style name="LessonCardText.Header" parent="LessonCardText">
-        <item name="android:layout_marginTop">18dp</item>
-        <item name="android:layout_marginBottom">8dp</item>
-        <item name="android:textSize">20sp</item>
+        <item name="fontPath">fonts/Roboto-Medium.ttf</item>
+        <item name="android:paddingBottom">18dp</item>
+        <item name="android:paddingTop">18dp</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
     <style name="LessonCardText.Body" parent="LessonCardText">
+        <item name="android:paddingBottom">18dp</item>
         <item name="android:textSize">16sp</item>
         <item name="android:lineSpacingMultiplier">1.15</item>
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:layout_marginBottom">18dp</item>
     </style>
     
     <style name="RecyclerViewHorizontalPager">
@@ -217,6 +222,28 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/gray_ripple_pill</item>
+    </style>
+
+    <style name="CardButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="CardButton.Edit">
+        <item name="android:background">@color/gray</item>
+    </style>
+
+    <style name="CardButton.Delete">
+        <item name="android:background">@color/errorRed</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
 </resources>

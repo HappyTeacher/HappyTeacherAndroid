@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:animateLayoutChanges="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/addImageButton"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:text="@string/add_image"
+        android:gravity="center"
+        android:padding="18dp"
+        android:textColor="@color/card_editor_attachment"
+        android:drawableTop="@drawable/ic_image_statelist_32dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/addVideoButton"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:text="@string/add_video"
+        android:gravity="center"
+        android:padding="18dp"
+        android:textColor="@color/card_editor_attachment"
+        android:clickable="true"
+        android:focusable="true"
+        android:drawableTop="@drawable/ic_videocam_statelist_32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/addFileButton"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:text="@string/add_file"
+        android:gravity="center"
+        android:padding="18dp"
+        android:textColor="@color/card_editor_attachment"
+        android:clickable="true"
+        android:focusable="true"
+        android:drawableTop="@drawable/ic_attach_file_statelist_32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

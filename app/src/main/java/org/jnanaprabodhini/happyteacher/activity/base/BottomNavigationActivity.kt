@@ -16,6 +16,7 @@ import android.app.Activity
 import com.crashlytics.android.Crashlytics
 import com.firebase.ui.auth.IdpResponse
 import org.jnanaprabodhini.happyteacher.BuildConfig
+import org.jnanaprabodhini.happyteacher.activity.ContributeActivity
 import org.jnanaprabodhini.happyteacher.activity.SettingsActivity
 import org.jnanaprabodhini.happyteacher.model.User
 
@@ -50,7 +51,8 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_contribute -> {
-                // TODO
+                val contributeActivityIntent = Intent(this, ContributeActivity::class.java)
+                startBottomNavigationActivityWithFade(contributeActivityIntent)
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -86,7 +88,7 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
         return true
     }
 
-    private fun launchSettings() {
+    protected fun launchSettings() {
         val profileIntent = Intent(this, SettingsActivity::class.java)
         startActivity(profileIntent)
     }
@@ -96,7 +98,7 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
         dialog.show()
     }
 
-    private fun launchSignIn() {
+    protected fun launchSignIn() {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
@@ -153,11 +155,24 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
 
     private fun persistUserInfo() {
         getUserReference()?.get()?.addOnSuccessListener { snapshot ->
-            val userModel = snapshot.toObject(User::class.java)
+            if (snapshot.exists()) {
+                val userModel = snapshot.toObject(User::class.java)
 
-            prefs.setUserLocation(userModel.location)
-            prefs.setUserInstitution(userModel.institution)
-            prefs.setUserName(userModel.displayName)
+                prefs.setUserLocation(userModel.location)
+                prefs.setUserInstitution(userModel.institution)
+                prefs.setUserName(userModel.displayName)
+            } else {
+                // If Cloud Functions haven't created the user fast enough,
+                //  it's possible for the user Document to not exist yet.
+                //  In this case, fail silently. The user will have to re-enter
+                //  their info. :(
+                Crashlytics.log("User object does not exist in Firestore upon registration.")
+
+                prefs.clearUserProfileData()
+
+                // Recover name if possible
+                prefs.setUserName(auth.currentUser?.displayName.orEmpty())
+            }
         }
     }
 

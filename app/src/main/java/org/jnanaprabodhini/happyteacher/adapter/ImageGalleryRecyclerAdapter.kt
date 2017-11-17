@@ -1,7 +1,6 @@
 package org.jnanaprabodhini.happyteacher.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -27,7 +26,7 @@ class ImageGalleryRecyclerAdapter(val imageUrls: List<String>, val context: Cont
         holder?.galleryImageView?.loadImageToFit(imageUrl)
 
         holder?.galleryImageView?.setOnClickListener {
-            FullScreenGalleryViewerActivity.launchActivity(context, imageUrls.toTypedArray(), position)
+            FullScreenGalleryViewerActivity.launch(context, imageUrls.toTypedArray(), position)
         }
 
     }

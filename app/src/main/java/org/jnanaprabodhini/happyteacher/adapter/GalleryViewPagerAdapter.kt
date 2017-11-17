@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.image_item_fullscreen.view.*
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.extension.loadImageWithNoPlaceholder
+import org.jnanaprabodhini.happyteacher.extension.loadFullImageWithNoPlaceholder
 
 /**
  * A view pager adapter for loading images in the full screen gallery view.
@@ -23,7 +23,7 @@ class GalleryViewPagerAdapter(val imageUrls: Array<String>): PagerAdapter() {
         val imagePage = LayoutInflater.from(container.context).inflate(R.layout.image_item_fullscreen, container, false)
         val imageUrl = imageUrls[position]
 
-        imagePage.fullscreenImageView.loadImageWithNoPlaceholder(imageUrl)
+        imagePage.fullscreenImageView.loadFullImageWithNoPlaceholder(imageUrl)
         container.addView(imagePage)
 
         return imagePage

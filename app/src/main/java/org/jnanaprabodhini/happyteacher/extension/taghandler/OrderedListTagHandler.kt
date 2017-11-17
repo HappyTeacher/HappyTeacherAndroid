@@ -14,7 +14,7 @@ import org.xml.sax.XMLReader
  */
 class OrderedListTagHandler(indentationLevel: Int = 0): ListTagHandler(indentationLevel) {
 
-    override val TAG: String = "ol"
+    override val tag: String = "ol"
     private var listNumber: Int = 1
     private val numberPrefix: String
         get() = "${listNumber.toLocaleString()}. "
