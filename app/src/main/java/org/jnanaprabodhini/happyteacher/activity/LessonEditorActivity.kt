@@ -74,8 +74,6 @@ class LessonEditorActivity: ResourceContentViewerActivity() {
     }
 
     private fun showSubmitConfirmationDialog() {
-        parentView.showSnackbar("You can't submit things yet")
-
         AlertDialog.Builder(this)
                 .setTitle("Submit lesson?")
                 // TODO: add details in this message -- user will have to unsubmit lesson to be able to edit it again
