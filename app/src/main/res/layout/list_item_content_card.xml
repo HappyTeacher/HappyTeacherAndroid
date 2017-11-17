@@ -94,37 +94,23 @@
 
         <TextView
             android:id="@+id/editButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="0dp"
-            android:background="@color/mediumGray"
-            android:drawablePadding="8dp"
-            android:gravity="center"
-            android:padding="8dp"
             android:text="@string/edit"
-            android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="@id/bottomPlaceholder"
             app:layout_constraintEnd_toStartOf="@+id/deleteButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/attachmentDownloadBar" />
+            app:layout_constraintTop_toBottomOf="@id/attachmentDownloadBar"
+            style="@style/CardButton.Edit" />
 
         <TextView
             android:id="@+id/deleteButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="0dp"
-            android:background="@color/errorRed"
-            android:drawablePadding="8dp"
-            android:gravity="center"
-            android:padding="8dp"
             android:text="@string/delete"
-            android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/editButton"
             app:layout_constraintTop_toTopOf="@id/editButton"
             app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/ic_delete_gray_24dp" />
+            app:srcCompat="@drawable/ic_delete_gray_24dp"
+            style="@style/CardButton.Delete" />
 
         <View
             android:id="@+id/bottomPlaceholder"
