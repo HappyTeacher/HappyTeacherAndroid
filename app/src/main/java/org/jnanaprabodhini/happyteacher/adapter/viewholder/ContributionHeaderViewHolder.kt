@@ -6,10 +6,7 @@ import android.view.View
 import android.widget.TextView
 import kotlinx.android.synthetic.main.list_item_contribution_header_card.view.*
 import org.jnanaprabodhini.happyteacher.R
-import org.jnanaprabodhini.happyteacher.extension.setBackgroundDrawable
-import org.jnanaprabodhini.happyteacher.extension.setDrawableLeft
-import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
-import org.jnanaprabodhini.happyteacher.extension.setVisible
+import org.jnanaprabodhini.happyteacher.extension.*
 
 class ContributionHeaderViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     val titleTextView: TextView = itemView.titleTextView
@@ -28,7 +25,7 @@ class ContributionHeaderViewHolder(itemView: View): RecyclerView.ViewHolder(item
     }
 
     fun showAwaitingReviewStatus(context: Context) {
-        statusTextView.setBackgroundDrawable(R.drawable.accent_pill)
+        statusTextView.setBackgroundColorCompat(R.color.colorAccent)
         statusTextView.text = context.getString(R.string.submitted_for_review)
         statusTextView.setDrawableLeft(R.drawable.ic_assignment_ind_white_24dp)
 
@@ -36,7 +33,7 @@ class ContributionHeaderViewHolder(itemView: View): RecyclerView.ViewHolder(item
     }
 
     fun showChangesRequestedStatus(context: Context) {
-        statusTextView.setBackgroundDrawable(R.drawable.orange_pill)
+        statusTextView.setBackgroundColorCompat(R.color.dreamsicleOrange)
         statusTextView.text = context.getString(R.string.changes_requested)
         statusTextView.setDrawableLeft(R.drawable.ic_assignment_returned_white_24dp)
 
@@ -44,7 +41,7 @@ class ContributionHeaderViewHolder(itemView: View): RecyclerView.ViewHolder(item
     }
 
     fun showPublishedStatus(context: Context) {
-        statusTextView.setBackgroundDrawable(R.drawable.light_green_pill)
+        statusTextView.setBackgroundColorCompat(R.color.grassGreen)
         statusTextView.text = context.getString(R.string.published_status)
         statusTextView.setDrawableLeft(R.drawable.ic_assignment_checkmark_white_24dp)
 

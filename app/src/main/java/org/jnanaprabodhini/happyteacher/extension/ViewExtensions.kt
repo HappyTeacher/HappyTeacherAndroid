@@ -2,6 +2,7 @@ package org.jnanaprabodhini.happyteacher.extension
 
 import android.database.DataSetObserver
 import android.os.Build
+import android.support.annotation.ColorRes
 import android.support.annotation.DimenRes
 import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
@@ -133,6 +134,11 @@ fun TextView.setDrawableRight(@DrawableRes drawableId: Int) {
 fun View.setBackgroundDrawable(@DrawableRes drawableId: Int) {
     val drawable = AppCompatResources.getDrawable(context, drawableId)
     this.background = drawable
+}
+
+fun View.setBackgroundColorCompat(@ColorRes colorId: Int) {
+    val color = ResourcesCompat.getColor(context.resources, colorId, null)
+    this.setBackgroundColor(color)
 }
 
 fun TextView.setHtmlAndMarkdownText(formattedString: String) {
