@@ -81,4 +81,8 @@ repositories {
     }
 }
 
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+}
+
 apply plugin: 'com.google.gms.google-services'
