@@ -20,6 +20,7 @@ import org.jnanaprabodhini.happyteacher.extension.showToast
 import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 import org.jnanaprabodhini.happyteacher.model.User
 import org.jnanaprabodhini.happyteacher.util.FirestoreKeys
+import org.jnanaprabodhini.happyteacher.util.ResourceStatus
 import org.jnanaprabodhini.happyteacher.util.ResourceType
 import org.jnanaprabodhini.happyteacher.util.UserRoles
 import java.io.File
@@ -124,6 +125,7 @@ abstract class ResourceContentViewerActivity : HappyTeacherActivity(), FirebaseD
 
                 if (header.resourceType == ResourceType.LESSON
                         && !header.isFeatured
+                        && header.status == ResourceStatus.PUBLISHED
                         && user.role == UserRoles.ADMIN || user.role == UserRoles.MODERATOR) {
                     promoteToFeaturedLessonMenuItem?.isVisible = true
                 }
