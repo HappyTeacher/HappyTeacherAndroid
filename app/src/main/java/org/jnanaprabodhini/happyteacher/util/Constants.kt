@@ -1,7 +1,7 @@
 package org.jnanaprabodhini.happyteacher.util
 
 /**
- * Created by grahamearley on 11/17/17.
+ * Constants used in the app (and in Firestore)
  */
 object ResourceStatus {
     const val PUBLISHED = "published"
@@ -21,7 +21,13 @@ object ResourceType {
     const val CLASSROOM_RESOURCE = "classroom resource"
 }
 
+object UserRoles {
+    const val ADMIN = "admin"
+    const val MODERATOR = "moderator"
+}
+
 // TODO: move keys to this object from string resources
 object FirestoreKeys {
     const val STATUS = "status"
+    const val IS_FEATURED = "isFeatured"
 }

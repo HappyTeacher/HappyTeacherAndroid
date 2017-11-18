@@ -46,7 +46,8 @@ data class ResourceHeader(val name: String = "",
                           val subjectName: String = "",
                           val subtopicSubmissionCount: Int = 0,
                           val status: String = "",
-                          val resourceType: String = ""): Parcelable
+                          val resourceType: String = "",
+                          val isFeatured: Boolean = false): Parcelable
 
 @Parcelize
 data class ContentCard(var header: String = "",
@@ -80,9 +81,4 @@ data class User(val displayName: String = "",
                 val phoneNumber: String = "",
                 val location: String = "",
                 val institution: String = "",
-                val role: String = "") {
-    companion object Roles {
-        const val ADMIN = "admin"
-        const val MODERATOR = "moderator"
-    }
-}
+                val role: String = "")

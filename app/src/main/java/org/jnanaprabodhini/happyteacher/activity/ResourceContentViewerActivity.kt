@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
@@ -15,9 +16,12 @@ import org.jnanaprabodhini.happyteacher.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacher.extension.setDrawableResource
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.extension.setVisible
+import org.jnanaprabodhini.happyteacher.extension.showToast
 import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 import org.jnanaprabodhini.happyteacher.model.User
+import org.jnanaprabodhini.happyteacher.util.FirestoreKeys
 import org.jnanaprabodhini.happyteacher.util.ResourceType
+import org.jnanaprabodhini.happyteacher.util.UserRoles
 import java.io.File
 
 abstract class ResourceContentViewerActivity : HappyTeacherActivity(), FirebaseDataObserver {
@@ -104,17 +108,24 @@ abstract class ResourceContentViewerActivity : HappyTeacherActivity(), FirebaseD
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_cards_viewer, menu)
-        val editLessonButton = menu?.findItem(R.id.menu_admin_edit_card_list_content)
-        editLessonButton?.isVisible = false
+        val editLessonMenuItem = menu?.findItem(R.id.menu_admin_edit_card_list_content)
+        val promoteToFeaturedLessonMenuItem = menu?.findItem(R.id.menu_admin_promote_to_featured)
+        editLessonMenuItem?.isVisible = false
+        promoteToFeaturedLessonMenuItem?.isVisible = false
 
-        // Only show edit button to admins!
-        //  (Our Firestore security rules also
-        //   only allow writes from admins)
+        // Only show admin/mod buttons to admins/mods!
+        //  (Our Firestore security rules also only allow writes from admins)
         auth.currentUser?.uid?.let { uid ->
             firestoreUsersCollection.document(uid).get().addOnSuccessListener { snapshot ->
                 val user = snapshot.toObject(User::class.java)
-                if (user.role == User.Roles.ADMIN) {
-                    editLessonButton?.isVisible = true
+                if (user.role == UserRoles.ADMIN) {
+                    editLessonMenuItem?.isVisible = true
+                }
+
+                if (header.resourceType == ResourceType.LESSON
+                        && !header.isFeatured
+                        && user.role == UserRoles.ADMIN || user.role == UserRoles.MODERATOR) {
+                    promoteToFeaturedLessonMenuItem?.isVisible = true
                 }
             }
         }
@@ -126,13 +137,27 @@ abstract class ResourceContentViewerActivity : HappyTeacherActivity(), FirebaseD
         super.onOptionsItemSelected(item)
         when (item.itemId) {
             R.id.menu_admin_edit_card_list_content -> openInEditor()
+            R.id.menu_admin_promote_to_featured -> showPromoteToFeaturedLessonDialog()
         }
         return true
     }
 
     private fun openInEditor() {
-        // TODO: make this abstract -- launch separate editors for Lessons, Classroom Resources
         ResourceEditorActivity.launch(this, contentRef, header)
+    }
+
+    private fun showPromoteToFeaturedLessonDialog() {
+        AlertDialog.Builder(this)
+                .setTitle(R.string.do_you_want_to_set_this_as_the_featured_lesson)
+                .setMessage(R.string.this_lesson_will_replace_current_featured_lesson_warning)
+                .setPositiveButton(R.string.yes, { dialog, _ ->
+                    contentRef.update(FirestoreKeys.IS_FEATURED, true).addOnSuccessListener {
+                        showToast(R.string.lesson_set_to_featured)
+                    }
+                    dialog.dismiss()
+                })
+                .setNegativeButton(R.string.cancel, { dialog, _ -> dialog.dismiss() })
+                .show()
     }
 
 }

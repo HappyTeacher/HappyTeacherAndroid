@@ -8,4 +8,10 @@
         app:showAsAction="never"
         android:title="@string/edit" />
 
+    <item
+        android:id="@+id/menu_admin_promote_to_featured"
+        android:visible="false"
+        app:showAsAction="never"
+        android:title="@string/set_as_featured_lesson" />
+
 </menu>
