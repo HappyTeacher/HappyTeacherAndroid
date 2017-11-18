@@ -10,3 +10,6 @@ There are many syllabuses in the Indian education system, distributed by state o
 Happy Teacher connects Indian education board syllabuses to the topics that make up their lesson plans in an effort to provide a single source of content that applies to different education contexts in India. 
 
 Lesson plans for a given topic can be written by any teacher and submitted through the app.
+
+***
+*This repo contains the code for the new Happy Teacher, which is not yet published to the Play Store.*
