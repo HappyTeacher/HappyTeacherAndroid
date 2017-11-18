@@ -38,10 +38,11 @@
         android:layout_marginStart="16dp"
         app:layout_constraintVertical_chainStyle="packed"
         android:layout_marginRight="16dp"
-        app:layout_constraintLeft_toRightOf="@+id/lessonNumberCircle"
+        app:layout_constraintStart_toEndOf="@+id/lessonNumberCircle"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/topicCountTextView"
-        tools:text="The Title of the Lesson Goes Here"/>
+        tools:text="The Title of the Lesson Goes Here But what if it's long?"/>
 
     <TextView
         android:id="@+id/topicCountTextView"
