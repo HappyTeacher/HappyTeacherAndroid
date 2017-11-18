@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.os.Parcelable
 import android.util.Log
 import com.google.firebase.firestore.Exclude
+import com.google.firebase.firestore.ServerTimestamp
 import kotlinx.android.parcel.Parcelize
+import java.util.*
 
 /**
  * Data models for Firebase objects.
@@ -33,13 +35,13 @@ data class SyllabusLesson(val board: String = "",
                           val subject: String = "",
                           val topicCount: Int = 0)
 
-@Parcelize // TODO: Remove dateEdited, use @ServerTimestamp
+@Parcelize
 data class ResourceHeader(val name: String = "",
                           val authorId: String = "",
                           val authorInstitution: String = "",
                           val authorLocation: String = "",
                           val authorName: String = "",
-                          val dateEdited: Long = 0,
+                          val dateUpdated: Date = Date(),
                           val subtopic: String = "",
                           val topic: String = "",
                           val topicName: String = "",

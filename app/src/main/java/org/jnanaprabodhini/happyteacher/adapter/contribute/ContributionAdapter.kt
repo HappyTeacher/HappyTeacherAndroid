@@ -15,7 +15,6 @@ import org.jnanaprabodhini.happyteacher.extension.setDrawableLeft
 import org.jnanaprabodhini.happyteacher.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 import org.jnanaprabodhini.happyteacher.util.ResourceStatus
-import java.util.*
 
 /**
  * A base class for showing list items in the Contribute section.
@@ -43,8 +42,8 @@ abstract class ContributionAdapter(adapterOptions: FirestoreRecyclerOptions<Reso
             subjectTextView.text = model?.subjectName
             holder.setTextColorForResourceType(model?.resourceType)
 
-            model?.dateEdited?.let {
-                dateEditedTextView.text = dateFormat.format(Date(it))
+            model?.dateUpdated?.let {
+                dateEditedTextView.text = dateFormat.format(it)
                 dateEditedTextView.setDrawableLeft(R.drawable.ic_clock_light_gray)
             } ?: dateEditedTextView.setVisibilityGone()
 

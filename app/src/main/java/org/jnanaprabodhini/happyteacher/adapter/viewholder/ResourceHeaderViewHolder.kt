@@ -10,7 +10,6 @@ import org.jnanaprabodhini.happyteacher.R
 import org.jnanaprabodhini.happyteacher.extension.setDrawableLeft
 import org.jnanaprabodhini.happyteacher.model.ResourceHeader
 import java.text.DateFormat
-import java.util.*
 
 /**
  * Created by grahamearley on 9/12/17.
@@ -33,8 +32,8 @@ abstract class ResourceHeaderViewHolder(itemView: View): RecyclerView.ViewHolder
         institutionTextView.setDrawableLeft(R.drawable.ic_school_accent)
         locationTextView.setDrawableLeft(R.drawable.ic_location_accent)
 
-        resourceHeaderModel?.let {
-            dateEditedTextView.text = dateFormat.format(Date(resourceHeaderModel.dateEdited))
+        resourceHeaderModel?.dateUpdated?.let {
+            dateEditedTextView.text = dateFormat.format(it)
             dateEditedTextView.setDrawableLeft(R.drawable.ic_clock_light_gray)
         }
 
