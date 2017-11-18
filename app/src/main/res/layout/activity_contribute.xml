@@ -8,7 +8,7 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="org.jnanaprabodhini.happyteacher.activity.ContributeActivity"
+        tools:context="org.jnanaprabodhini.happyteacherapp.activity.ContributeActivity"
         android:layout_above="@id/bottomNavigation" >
 
         <android.support.design.widget.AppBarLayout
