@@ -70,7 +70,11 @@ class ContributeActivity : BottomNavigationActivity(), FirebaseAuth.AuthStateLis
 
     private fun initializePager() {
         showPager()
-        fragmentPager.adapter = ContributeFragmentAdapter(supportFragmentManager, this)
+
+        if (fragmentPager.adapter !is ContributeFragmentAdapter) {
+            // Only set up the adapter if it's not already set
+            fragmentPager.adapter = ContributeFragmentAdapter(supportFragmentManager, this)
+        }
 
         tabBar.setupWithViewPager(fragmentPager)
     }
