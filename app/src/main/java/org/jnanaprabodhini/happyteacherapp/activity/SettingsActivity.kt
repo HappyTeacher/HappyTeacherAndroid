@@ -103,6 +103,10 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
         super.onPause()
         settingsFragment.preferenceScreen.sharedPreferences
                 .unregisterOnSharedPreferenceChangeListener(this)
+
+        if (auth.currentUser == null) {
+            prefs.clearUserProfileData()
+        }
     }
 
     override fun onSharedPreferenceChanged(preferences: SharedPreferences?, key: String?) {
