@@ -10,7 +10,7 @@ import org.jnanaprabodhini.happyteacherapp.extension.withCurrentLocale
 import org.jnanaprabodhini.happyteacherapp.util.LocaleManager
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig
 
-class HappyTeacherApplication: Application() {
+class HappyTeacherApplication: android.support.multidex.MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
