@@ -1,20 +1,25 @@
 package org.jnanaprabodhini.happyteacherapp.adapter.viewholder
 
 import android.app.Activity
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.list_item_resource_header_card.view.*
 import org.jnanaprabodhini.happyteacherapp.R
+import org.jnanaprabodhini.happyteacherapp.activity.ClassroomResourceViewerActivity
+import org.jnanaprabodhini.happyteacherapp.activity.LessonViewerActivity
+import org.jnanaprabodhini.happyteacherapp.activity.SubtopicSubmissionsListActivity
 import org.jnanaprabodhini.happyteacherapp.extension.setDrawableLeft
+import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
+import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
+import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 import java.text.DateFormat
 
 /**
  * Created by grahamearley on 9/12/17.
  */
-abstract class ResourceHeaderViewHolder(itemView: View): BaseResourceHeaderViewHolder(itemView) {
+class ResourceHeaderViewHolder(itemView: View): BaseResourceHeaderViewHolder(itemView) {
     val titleTextView: TextView = itemView.titleTextView
     val authorNameTextView: TextView = itemView.authorNameTextView
     val institutionTextView: TextView = itemView.institutionTextView
@@ -23,7 +28,7 @@ abstract class ResourceHeaderViewHolder(itemView: View): BaseResourceHeaderViewH
     val submissionCountTextView: TextView = itemView.submissionCountTextView
     override val resourceColorBar: View = itemView.resourceColorBar
 
-    open fun populateView(resourceHeaderModel: ResourceHeader?, contentDocumentRef: DocumentReference, activity: Activity, dateFormat: DateFormat) {
+    fun populateView(resourceHeaderModel: ResourceHeader?, contentDocumentRef: DocumentReference, activity: Activity, dateFormat: DateFormat, showSubmissionCount: Boolean) {
         titleTextView.text = resourceHeaderModel?.name
         authorNameTextView.text = resourceHeaderModel?.authorName
         institutionTextView.text = resourceHeaderModel?.authorInstitution
@@ -38,11 +43,36 @@ abstract class ResourceHeaderViewHolder(itemView: View): BaseResourceHeaderViewH
             dateEditedTextView.setDrawableLeft(R.drawable.ic_clock_light_gray)
         }
 
+        if (showSubmissionCount) {
+            showSubmissionCount(resourceHeaderModel, activity)
+        }
+
+        setColorBarForResourceType(resourceHeaderModel?.resourceType)
+
         itemView.setOnClickListener {
-            launchContentViewerActivity(activity, contentDocumentRef, resourceHeaderModel)
+            launchContentViewerActivity(activity, contentDocumentRef, resourceHeaderModel, showSubmissionCount)
         }
     }
 
-    abstract fun launchContentViewerActivity(activity: Activity, contentDocumentRef: DocumentReference, resourceHeaderModel: ResourceHeader?)
+    private fun launchContentViewerActivity(activity: Activity, contentDocumentRef: DocumentReference, resourceHeaderModel: ResourceHeader?, showSubmissionCount: Boolean) {
+        when (resourceHeaderModel?.resourceType) {
+            ResourceType.LESSON -> LessonViewerActivity.launch(activity, contentDocumentRef, resourceHeaderModel, showSubmissionCount)
+            ResourceType.CLASSROOM_RESOURCE -> ClassroomResourceViewerActivity.launch(activity, contentDocumentRef, resourceHeaderModel)
+        }
+    }
+
+    private fun showSubmissionCount(resourceHeaderModel: ResourceHeader?, activity: Activity) {
+        resourceHeaderModel?.let {
+            if (resourceHeaderModel.subtopicSubmissionCount > 1) {
+                submissionCountTextView.setVisible()
+                submissionCountTextView.text = activity.getString(R.string.plus_number, resourceHeaderModel.subtopicSubmissionCount - 1) // subtract one to exclude the featured contentKey
+                submissionCountTextView.setOnClickListener {
+                    SubtopicSubmissionsListActivity.launch(activity, resourceHeaderModel.subtopic)
+                }
+            } else {
+                submissionCountTextView.setVisibilityGone()
+            }
+        }
+    }
 }
 

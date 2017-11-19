@@ -13,6 +13,6 @@ class SubtopicViewHolder(itemView: View): BaseResourceHeaderViewHolder(itemView)
     fun populateView(title: String, resourceType: String) {
         titleTextView.text = title
 
-        setTextColorForResourceType(resourceType)
+        setColorBarForResourceType(resourceType)
     }
 }

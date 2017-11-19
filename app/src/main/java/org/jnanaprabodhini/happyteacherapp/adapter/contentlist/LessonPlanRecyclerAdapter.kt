@@ -7,7 +7,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestoreException
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
-import org.jnanaprabodhini.happyteacherapp.adapter.firestore.ClassroomResourceHeaderRecyclerAdapter
+import org.jnanaprabodhini.happyteacherapp.adapter.firestore.ResourceHeaderRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.adapter.viewholder.ContentCardViewHolder
 import org.jnanaprabodhini.happyteacherapp.adapter.viewholder.ResourceHeaderRecyclerViewHolder
@@ -90,7 +90,8 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
                 .setQuery(classroomResourceQuery, ResourceHeader::class.java)
                 .build()
 
-        val adapter = ClassroomResourceHeaderRecyclerAdapter(adapterOptions, activity, getClassroomResourcesDataObserver(holder))
+        val adapter = ResourceHeaderRecyclerAdapter(adapterOptions, showSubmissionCount = false,
+                activity = activity, firebaseDataObserver = getClassroomResourcesDataObserver(holder))
         adapter.startListening()
 
         holder.horizontalRecyclerView.setAdapter(adapter)

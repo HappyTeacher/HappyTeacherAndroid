@@ -16,7 +16,7 @@ import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 abstract class BaseResourceHeaderViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     abstract val resourceColorBar: View
 
-    fun setTextColorForResourceType(type: String?) {
+    fun setColorBarForResourceType(type: String?) {
         when (type) {
             ResourceType.LESSON -> setColorBarForLessonResource()
             ResourceType.CLASSROOM_RESOURCE -> setColorBarForClassroomResource()

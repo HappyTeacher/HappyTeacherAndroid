@@ -40,7 +40,7 @@ abstract class TopicLessonsRecyclerAdapter(topicsAdapterOptions: FirestoreRecycl
     private fun initializeLessonRecyclerView(recyclerView: HorizontalPagerRecyclerView?, topicId: String, holder: ResourceHeaderRecyclerViewHolder?) {
         val adapterOptions = getSubtopicAdapterOptions(topicId)
 
-        val adapter = LessonHeaderRecyclerAdapter(showSubmissionCount, adapterOptions, activity, getSubtopicDataObserverForViewHolder(holder))
+        val adapter = ResourceHeaderRecyclerAdapter(adapterOptions, showSubmissionCount, activity, getSubtopicDataObserverForViewHolder(holder))
 
         adapter.startListening()
         recyclerView?.setAdapter(adapter)
