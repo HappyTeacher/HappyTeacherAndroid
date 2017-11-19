@@ -127,7 +127,8 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val topicAdapterOptions = FirestoreRecyclerOptions.Builder<Topic>()
                 .setQuery(topicQuery, Topic::class.java).build()
 
-        val topicAdapter = object: TopicLessonsRecyclerAdapter(topicAdapterOptions, this, this) {
+        val topicAdapter = object: TopicLessonsRecyclerAdapter(topicAdapterOptions, showSubmissionCount = true,
+                topicsDataObserver = this, activity = this) {
             override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<ResourceHeader> {
                 val query: Query = firestoreLocalized.collection(getString(R.string.resources))
                         .whereEqualTo(getString(R.string.resource_type), getString(R.string.lesson))
@@ -151,7 +152,8 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val topicsAdapterOptions = FirestoreRecyclerOptions.Builder<Topic>()
                 .setQuery(topicsQuery, Topic::class.java).build()
 
-        val adapter = object: TopicLessonsRecyclerAdapter(topicsAdapterOptions, this, this) {
+        val adapter = object: TopicLessonsRecyclerAdapter(topicsAdapterOptions, showSubmissionCount = true,
+                topicsDataObserver = this, activity = this) {
             override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<ResourceHeader> {
                 val subtopicQuery = firestoreLocalized.collection(getString(R.string.resources))
                         .whereEqualTo(getString(R.string.resource_type), getString(R.string.lesson))

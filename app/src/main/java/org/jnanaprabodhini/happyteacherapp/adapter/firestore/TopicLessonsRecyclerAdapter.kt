@@ -20,6 +20,7 @@ import org.jnanaprabodhini.happyteacherapp.view.HorizontalPagerRecyclerView
  */
 abstract class TopicLessonsRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOptions<Topic>,
                                            topicsDataObserver: FirebaseDataObserver,
+                                           val showSubmissionCount: Boolean,
                                            activity: HappyTeacherActivity): TopicsRecyclerAdapter<ResourceHeaderRecyclerViewHolder>(topicsAdapterOptions, topicsDataObserver, activity) {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ResourceHeaderRecyclerViewHolder {
@@ -39,8 +40,7 @@ abstract class TopicLessonsRecyclerAdapter(topicsAdapterOptions: FirestoreRecycl
     private fun initializeLessonRecyclerView(recyclerView: HorizontalPagerRecyclerView?, topicId: String, holder: ResourceHeaderRecyclerViewHolder?) {
         val adapterOptions = getSubtopicAdapterOptions(topicId)
 
-        val shouldShowSubmissionsCount = true
-        val adapter = LessonHeaderRecyclerAdapter(shouldShowSubmissionsCount, adapterOptions, activity, getSubtopicDataObserverForViewHolder(holder))
+        val adapter = LessonHeaderRecyclerAdapter(showSubmissionCount, adapterOptions, activity, getSubtopicDataObserverForViewHolder(holder))
 
         adapter.startListening()
         recyclerView?.setAdapter(adapter)

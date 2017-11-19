@@ -2,13 +2,9 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="org.jnanaprabodhini.happyteacherapp.activity.TopicsListActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/topicsListWithHeader"
-    android:animateLayoutChanges="true"
-    android:layout_above="@id/bottomNavigation">
+    android:animateLayoutChanges="true">
 
     <org.jnanaprabodhini.happyteacherapp.view.ClickableScrollingRecyclerView
         android:id="@+id/topicsRecyclerView"
@@ -36,7 +32,7 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        
+
         <include layout="@layout/stacked_subject_spinners" />
 
     </android.support.design.widget.AppBarLayout>
