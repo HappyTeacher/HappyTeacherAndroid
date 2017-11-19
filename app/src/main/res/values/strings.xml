@@ -175,9 +175,9 @@
     <string name="submit_lesson_question">Submit lesson?</string>
     <string name="submit_classroom_resource_question">Submit classroom resource?</string>
     <string name="submit_question">Submit?</string>
-    <string name="submit_lesson_confirmation_message">Are you ready to submit this lesson for review? \\n\\nOnce a lesson is submitted, you will not be able to edit it unless you unsubmit it. Once an editor has reviewed your lesson, it will either be published or you will be requested to make changes.</string>
-    <string name="submit_classroom_resource_confirmation_message">Are you ready to submit this classroom resource for review? \\n\\nOnce a classroom resource is submitted, you will not be able to edit it unless you unsubmit it. Once an editor has reviewed your classroom resource, it will either be published or you will be requested to make changes.</string>
-    <string name="submit_resource_confirmation_message">Are you ready to submit this resource for review? \\n\\nOnce a resource is submitted, you will not be able to edit it unless you unsubmit it. Once an editor has reviewed your resource, it will either be published or you will be requested to make changes.</string>
+    <string name="submit_lesson_confirmation_message">Are you ready to submit this lesson for review? \n\nOnce a lesson is submitted, you will not be able to edit it unless you unsubmit it. Once an editor has reviewed your lesson, it will either be published or you will be requested to make changes.</string>
+    <string name="submit_classroom_resource_confirmation_message">Are you ready to submit this classroom resource for review? \n\nOnce a classroom resource is submitted, you will not be able to edit it unless you unsubmit it. Once an editor has reviewed your classroom resource, it will either be published or you will be requested to make changes.</string>
+    <string name="submit_resource_confirmation_message">Are you ready to submit this resource for review? \n\nOnce a resource is submitted, you will not be able to edit it unless you unsubmit it. Once an editor has reviewed your resource, it will either be published or you will be requested to make changes.</string>
     <string name="lesson_submitted">Lesson submitted</string>
     <string name="classroom_resource_submitted">Classroom resource submitted</string>
     <string name="submitted_toast">Submitted</string>
