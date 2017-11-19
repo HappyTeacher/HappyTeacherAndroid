@@ -99,7 +99,7 @@
     <string name="there_are_no_cards_in_this_lesson_would_you_like_to_delete_it">There are no cards in this lesson. Would you like to delete it?</string>
     <string name="there_are_no_cards_in_this_classroom_resource_would_you_like_to_delete_it">There are no cards in this classroom resource. Would you like to delete it?</string>
     <string name="there_are_no_cards_in_this_resource_would_you_like_to_delete_it">There are no cards in this resource. Would you like to delete it?</string>
-    <string name="you_have_no_drafts_yet">You don\'t have any drafts yet. Create one!</string>
+    <string name="you_have_no_drafts_yet">You don\'t have any drafts yet</string>
     <string name="there_was_an_error_loading_your_drafts">There was an error loading your drafts</string>
     <string name="you_have_no_submitted_contributions">You don\'t have any submitted contributions yet</string>
     <string name="there_was_an_error_loading_your_submissions">There was an error loading your submissions</string>
