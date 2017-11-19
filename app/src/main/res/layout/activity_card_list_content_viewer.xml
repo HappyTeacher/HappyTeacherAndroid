@@ -40,6 +40,19 @@
         android:layout_width="match_parent"
         android:animateLayoutChanges="true"
         android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/unpublishedTextView"
+            android:text="@string/unpublished"
+            android:gravity="center"
+            android:textAllCaps="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray"
+            android:textColor="@android:color/white"
+            android:visibility="gone"
+            app:layout_scrollFlags="scroll"
+            android:padding="8dp"/>
         
         <android.support.constraint.ConstraintLayout
             android:padding="16dp"

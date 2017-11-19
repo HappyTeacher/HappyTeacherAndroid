@@ -84,6 +84,11 @@ abstract class ResourceContentViewerActivity : HappyTeacherActivity(), FirebaseD
             icon.setDrawableResource(R.drawable.ic_tv_video_white_24dp)
         }
 
+        if (header.status != ResourceStatus.PUBLISHED) {
+            unpublishedTextView.setVisible()
+        } else {
+            unpublishedTextView.setVisibilityGone()
+        }
     }
 
     open fun initializeRecyclerView() {
