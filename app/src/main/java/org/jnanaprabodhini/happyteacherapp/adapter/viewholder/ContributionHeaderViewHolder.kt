@@ -1,6 +1,7 @@
 package org.jnanaprabodhini.happyteacherapp.adapter.viewholder
 
 import android.content.Context
+import android.support.annotation.ColorRes
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
@@ -16,23 +17,26 @@ class ContributionHeaderViewHolder(itemView: View): RecyclerView.ViewHolder(item
     val deleteButton: TextView = itemView.deleteButton
     val editButton: TextView = itemView.editButton
     val statusTextView: TextView = itemView.statusTextView
-    val statusColorBar: View = itemView.statusColorBar
+    val resourceColorBar: View = itemView.resourceColorBar
 
     fun setTextColorForResourceType(type: String?) {
         when (type) {
-            ResourceType.LESSON -> setTextColorForLessonResource()
-            ResourceType.CLASSROOM_RESOURCE -> setTextColorForClassroomResource()
+            ResourceType.LESSON -> setColorBarForLessonResource()
+            ResourceType.CLASSROOM_RESOURCE -> setColorBarForClassroomResource()
         }
     }
 
-    private fun setTextColorForLessonResource() {
-        titleTextView.setTextColorRes(R.color.deepLightBlue)
-        subjectTextView.setTextColorRes(R.color.deepLightBlue)
+    private fun setColorBarForLessonResource() {
+        showColorBarWithColor(R.color.deepLightBlue)
     }
 
-    private fun setTextColorForClassroomResource() {
-        titleTextView.setTextColorRes(R.color.deepGrassGreen)
-        subjectTextView.setTextColorRes(R.color.deepGrassGreen)
+    private fun setColorBarForClassroomResource() {
+        showColorBarWithColor(R.color.grassGreen)
+    }
+
+    private fun showColorBarWithColor(@ColorRes colorId: Int) {
+        resourceColorBar.setVisible()
+        resourceColorBar.setBackgroundColorRes(colorId)
     }
 
     fun showButtonsForDraft() {
@@ -58,8 +62,7 @@ class ContributionHeaderViewHolder(itemView: View): RecyclerView.ViewHolder(item
     }
 
     fun showAwaitingReviewStatus(context: Context) {
-        statusColorBar.setVisible()
-        statusColorBar.setBackgroundColorRes(R.color.colorAccent)
+        setTextColor(R.color.colorAccent)
 
         statusTextView.text = context.getString(R.string.submitted_for_review)
         statusTextView.setDrawableLeft(R.drawable.ic_assignment_ind_accent_24dp)
@@ -69,8 +72,7 @@ class ContributionHeaderViewHolder(itemView: View): RecyclerView.ViewHolder(item
     }
 
     fun showChangesRequestedStatus(context: Context) {
-        statusColorBar.setVisible()
-        statusColorBar.setBackgroundColorRes(R.color.dreamsicleOrange)
+        setTextColor(R.color.dreamsicleOrange)
 
         statusTextView.text = context.getString(R.string.changes_requested)
         statusTextView.setDrawableLeft(R.drawable.ic_assignment_returned_orange_24dp)
@@ -80,14 +82,18 @@ class ContributionHeaderViewHolder(itemView: View): RecyclerView.ViewHolder(item
     }
 
     fun showPublishedStatus(context: Context) {
-        statusColorBar.setVisible()
-        statusColorBar.setBackgroundColorRes(R.color.grassGreen)
+        setTextColor(R.color.deepGrassGreen)
 
         statusTextView.text = context.getString(R.string.published_status)
         statusTextView.setDrawableLeft(R.drawable.ic_assignment_checkmark_green_24dp)
         statusTextView.setTextColorRes(R.color.grassGreen)
 
         statusTextView.setVisible()
+    }
+
+    private fun setTextColor(@ColorRes colorId: Int) {
+        titleTextView.setTextColorRes(colorId)
+        subjectTextView.setTextColorRes(colorId)
     }
 
     fun hideStatusView() {
