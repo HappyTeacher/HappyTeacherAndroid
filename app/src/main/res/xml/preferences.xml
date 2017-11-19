@@ -20,10 +20,6 @@
             android:title="@string/location"
             android:defaultValue=""
             pref:showDialogOnClick="false"/>
-
-        <Preference
-            android:key="@string/prefs_key_user_sign_out"
-            android:title="@string/sign_out"/>
     </PreferenceCategory>
 
     <PreferenceCategory

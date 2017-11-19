@@ -44,21 +44,14 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
 
             locationPref.setOnPreferenceClickListener { parentActivity.launchPlacesAutocompleteOverlay(); true }
 
-            // Remove user info prefs if user is not signed in. If signed in, setup sign out button
+            // Remove user info prefs if user is not signed in.
             val auth = FirebaseAuth.getInstance()
             if (auth.currentUser == null) {
                 removeUserPreferences()
-            } else {
-                val signOutPref = findPreference(getString(R.string.prefs_key_user_sign_out))
-                signOutPref.setOnPreferenceClickListener {
-                    auth.signOut()
-                    removeUserPreferences()
-                    true
-                }
             }
         }
 
-        private fun removeUserPreferences() {
+        fun removeUserPreferences() {
             val userPreferences = findPreference(getString(R.string.prefs_key_user_settings))
             preferenceScreen.removePreference(userPreferences)
         }
@@ -189,10 +182,19 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
         return true
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        val signOutMenuItem = menu?.findItem(R.id.menu_sign_out)
+        val isUserSignedIn = auth.currentUser != null
+        signOutMenuItem?.isVisible = isUserSignedIn
+
+        return super.onPrepareOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         super.onOptionsItemSelected(item)
         when (item.itemId) {
             R.id.menu_open_source_notices -> launchOpenSourceNotices()
+            R.id.menu_sign_out -> signOut()
         }
         return true
     }
@@ -202,6 +204,11 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
         val title = getString(R.string.open_source_notices)
         intent.putExtra("title", title)
         startActivity(intent)
+    }
+
+    private fun signOut() {
+        auth.signOut()
+        settingsFragment.removeUserPreferences()
     }
 
 }
