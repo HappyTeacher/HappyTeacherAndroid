@@ -13,6 +13,7 @@ import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import org.jnanaprabodhini.happyteacherapp.model.Topic
+import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 import org.jnanaprabodhini.happyteacherapp.view.HorizontalPagerRecyclerView
 
 /**
@@ -59,7 +60,7 @@ abstract class TopicLessonsRecyclerAdapter(topicsAdapterOptions: FirestoreRecycl
 
         override fun onDataEmpty() {
             viewHolder?.horizontalRecyclerView?.setVisibilityGone()
-            viewHolder?.showEmptyViews()
+            viewHolder?.showEmptyViewWithContributeButton(ResourceType.LESSON, activity)
             viewHolder?.statusTextView?.setText(R.string.there_are_no_lessons_for_this_topic_yet)
 
             level?.let { viewHolder?.statusTextView?.text = activity.getString(R.string.no_lessons_at_level_yet, level) }

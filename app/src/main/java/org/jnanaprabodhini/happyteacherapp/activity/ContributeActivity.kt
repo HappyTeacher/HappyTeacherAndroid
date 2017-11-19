@@ -1,6 +1,8 @@
 package org.jnanaprabodhini.happyteacherapp.activity
 
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.IntegerRes
 import com.google.firebase.auth.FirebaseAuth
@@ -18,6 +20,13 @@ import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 class ContributeActivity : BottomNavigationActivity(), FirebaseAuth.AuthStateListener {
 
     @IntegerRes override val bottomNavigationMenuItemId: Int = R.id.navigation_contribute
+
+    companion object IntentExtraHelper {
+        fun launch(from: Activity) {
+            val intent = Intent(from, ContributeActivity::class.java)
+            from.startActivity(intent)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

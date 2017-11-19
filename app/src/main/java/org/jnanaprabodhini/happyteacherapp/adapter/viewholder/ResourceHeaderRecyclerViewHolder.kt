@@ -1,10 +1,15 @@
 package org.jnanaprabodhini.happyteacherapp.adapter.viewholder
 
+import android.app.Activity
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.list_item_content_header_recycler.view.*
+import org.jnanaprabodhini.happyteacherapp.activity.ContributeActivity
+import org.jnanaprabodhini.happyteacherapp.activity.SubtopicWriteChoiceActivity
+import org.jnanaprabodhini.happyteacherapp.extension.hasCompleteContributorProfile
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.view.HorizontalPagerRecyclerView
@@ -21,8 +26,16 @@ class ResourceHeaderRecyclerViewHolder(itemView: View): RecyclerView.ViewHolder(
         contributeButton.setVisibilityGone()
     }
 
-    fun showEmptyViews() {
+    fun showEmptyViewWithContributeButton(resourceType: String, activity: Activity) {
         statusTextView.setVisible()
         contributeButton.setVisible()
+
+        contributeButton.setOnClickListener {
+            if (FirebaseAuth.getInstance().currentUser?.hasCompleteContributorProfile(activity) == true) {
+                SubtopicWriteChoiceActivity.launch(activity, resourceType)
+            } else {
+                ContributeActivity.launch(activity)
+            }
+        }
     }
 }

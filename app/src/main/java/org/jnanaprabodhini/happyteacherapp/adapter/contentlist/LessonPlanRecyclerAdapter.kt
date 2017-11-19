@@ -17,6 +17,7 @@ import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import org.jnanaprabodhini.happyteacherapp.model.ContentCard
 import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
+import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 import java.io.File
 
 class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, attachmentDestinationDirectory: File, val topicName: String, subtopicId: String, activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
@@ -116,7 +117,7 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
         override fun onDataEmpty() {
             holder.horizontalRecyclerView.setVisibilityGone()
 
-            holder.showEmptyViews()
+            holder.showEmptyViewWithContributeButton(ResourceType.CLASSROOM_RESOURCE, activity)
             holder.statusTextView.setText(R.string.there_are_no_classroom_resources_for_this_lesson_yet)
         }
 
