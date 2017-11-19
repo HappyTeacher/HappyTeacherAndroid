@@ -11,7 +11,7 @@
         android:animateLayoutChanges="true"
         android:paddingBottom="32dp"
         android:id="@+id/parentConstraintLayout"
-        tools:context="org.jnanaprabodhini.happyteacher.activity.CardEditorActivity">
+        tools:context="org.jnanaprabodhini.happyteacherapp.activity.CardEditorActivity">
 
         <HorizontalScrollView
             android:id="@+id/attachmentToolbarLayout"
@@ -117,7 +117,7 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <org.jnanaprabodhini.happyteacher.view.DownloadBarView
+        <org.jnanaprabodhini.happyteacherapp.view.DownloadBarView
             android:id="@+id/fileAttachmentView"
             android:longClickable="true"
             android:layout_width="0dp"

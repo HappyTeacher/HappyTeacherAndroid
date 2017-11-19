@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:background="@color/lightGray"
-    tools:context="org.jnanaprabodhini.happyteacher.activity.SubtopicSubmissionsListActivity">
+    tools:context="org.jnanaprabodhini.happyteacherapp.activity.SubtopicSubmissionsListActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/submissionRecyclerView"

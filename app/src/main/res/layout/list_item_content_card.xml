@@ -47,12 +47,12 @@
                 android:layout_gravity="center"
                 android:visibility="gone" />
 
-            <org.jnanaprabodhini.happyteacher.view.YoutubeWebView
+            <org.jnanaprabodhini.happyteacherapp.view.YoutubeWebView
                 android:id="@+id/youtubePlayerWebView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <org.jnanaprabodhini.happyteacher.view.HorizontalPagerRecyclerView
+            <org.jnanaprabodhini.happyteacherapp.view.HorizontalPagerRecyclerView
                 android:id="@+id/imageGalleryRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
@@ -83,7 +83,7 @@
             app:layout_constraintTop_toBottomOf="@id/headerTextView"
             app:layout_goneMarginTop="18dp" />
 
-        <org.jnanaprabodhini.happyteacher.view.DownloadBarView
+        <org.jnanaprabodhini.happyteacherapp.view.DownloadBarView
             android:id="@+id/attachmentDownloadBar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
