@@ -10,8 +10,8 @@ import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 
 /**
- * A parent viewholder for resource headers. Used to centralize
- *  logic for coloring the view's resourceType color bar.
+ * A parent viewholder for headers of objects that have a resource type.
+ *  Used for centralizing logic for coloring the view's resourceType color bar.
  */
 abstract class BaseResourceHeaderViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     abstract val resourceColorBar: View

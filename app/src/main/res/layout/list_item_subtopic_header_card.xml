@@ -17,6 +17,12 @@
         android:orientation="vertical"
         android:background="@drawable/ripple_white_lightgray">
 
+        <include layout="@layout/resource_color_bar"
+            android:id="@+id/resourceColorBar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
         <TextView
             android:id="@+id/titleTextView"
             style="@style/HeaderCardTitleText"
@@ -29,7 +35,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/resourceColorBar"
             app:layout_constraintBottom_toTopOf="@+id/writeButton"/>
 
         <Button

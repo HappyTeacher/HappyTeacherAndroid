@@ -24,7 +24,7 @@ class SubtopicWriteChoiceRecyclerAdapter(options: FirestoreRecyclerOptions<Subto
     }
 
     override fun onBindViewHolder(holder: SubtopicViewHolder, position: Int, model: Subtopic?) {
-        holder.populateView(model?.name.orEmpty())
+        holder.populateView(model?.name.orEmpty(), resourceType)
 
         holder.writeButton.text = when(resourceType) {
             ResourceType.LESSON -> activity.getString(R.string.write_lesson)
