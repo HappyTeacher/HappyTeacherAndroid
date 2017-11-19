@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.jnanaprabodhini.happyteacherapp.activity.TopicsListActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/topicsListWithHeader"
+    android:animateLayoutChanges="true"
+    android:layout_above="@id/bottomNavigation">
+
+    <org.jnanaprabodhini.happyteacherapp.view.ClickableScrollingRecyclerView
+        android:id="@+id/topicsRecyclerView"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layoutAnimation="@anim/layout_fall_down" />
+
+    <TextView
+        android:id="@+id/statusTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/StatusText"
+        android:visibility="gone"
+        android:text="@string/there_are_no_topics_for_this_subject_yet"
+        android:layout_gravity="center"/>
+
+    <ProgressBar
+        android:id="@+id/topicsProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"/>
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        
+        <include layout="@layout/stacked_subject_spinners" />
+
+    </android.support.design.widget.AppBarLayout>
+</android.support.design.widget.CoordinatorLayout>

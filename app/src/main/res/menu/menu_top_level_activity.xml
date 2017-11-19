@@ -5,7 +5,7 @@
     <item
         android:id="@+id/menu_change_language"
         android:icon="@drawable/ic_language_white_24dp"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:title="@string/change_language" />
 
     <item
@@ -13,6 +13,12 @@
         android:icon="@drawable/ic_person_white"
         app:showAsAction="withText"
         android:title="@string/sign_in" />
+
+    <item
+        android:id="@+id/menu_moderator_submission_review"
+        app:showAsAction="never"
+        android:visible="false"
+        android:title="@string/submissions_for_review" />
 
     <item
         android:id="@+id/menu_settings"

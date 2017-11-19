@@ -190,6 +190,8 @@
     <string name="this_lesson_will_replace_current_featured_lesson_warning">This lesson will replace the current featured lesson. The current featured lesson will no longer show up first in the list of lessons for this subtopic.</string>
     <string name="do_you_want_to_set_this_as_the_featured_lesson">Do you want to set this as the featured lesson?</string>
     <string name="lesson_set_to_featured">Lesson set to featured</string>
+    <string name="submissions_for_review">Submissions for review</string>
+    <string name="review_submissions">Review Submissions</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>
