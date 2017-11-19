@@ -135,13 +135,17 @@ class ResourceEditorActivity : ResourceContentViewerActivity() {
 
     private fun submit() {
         showToast(getString(R.string.submitting))
-        contentRef.update(FirestoreKeys.STATUS, ResourceStatus.AWAITING_REVIEW)
-                .addOnSuccessListener {
-                    showToast(resourceSubmittedMessage)
-                    finish()
-                }.addOnFailureListener {
-                    showToast(getString(R.string.submission_failed_try_again_later))
-                }
+        // The AWAITING_REVIEW_OR_CHANGES_REQUESTED field is set by a Cloud Function,
+        //  but we'll set it manually here too so that it is reflected immediately when
+        //  the update is complete.
+        contentRef.update(mapOf(FirestoreKeys.STATUS to ResourceStatus.AWAITING_REVIEW,
+                ResourceStatus.AWAITING_REVIEW_OR_CHANGES_REQUESTED to true))
+                    .addOnSuccessListener {
+                        showToast(resourceSubmittedMessage)
+                        finish()
+                    }.addOnFailureListener {
+                        showToast(getString(R.string.submission_failed_try_again_later))
+                    }
     }
 
     private fun addNewCard() {
