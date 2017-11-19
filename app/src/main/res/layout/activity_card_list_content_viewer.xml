@@ -43,7 +43,7 @@
 
         <TextView
             android:id="@+id/unpublishedTextView"
-            android:text="@string/unpublished"
+            android:text="@string/not_published"
             android:gravity="center"
             android:textAllCaps="true"
             android:layout_width="match_parent"

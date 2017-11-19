@@ -192,7 +192,7 @@
     <string name="lesson_set_to_featured">Lesson set to featured</string>
     <string name="submissions_for_review">Submissions for review</string>
     <string name="review_submissions">Review Submissions</string>
-    <string name="unpublished">Unpublished</string>
+    <string name="not_published">Not Published</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>
