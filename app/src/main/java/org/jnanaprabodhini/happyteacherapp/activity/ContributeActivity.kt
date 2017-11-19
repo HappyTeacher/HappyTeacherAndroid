@@ -3,6 +3,7 @@ package org.jnanaprabodhini.happyteacherapp.activity
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.annotation.IntegerRes
 import com.google.firebase.auth.FirebaseAuth
@@ -17,7 +18,7 @@ import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 
-class ContributeActivity : BottomNavigationActivity(), FirebaseAuth.AuthStateListener {
+class ContributeActivity : BottomNavigationActivity(), FirebaseAuth.AuthStateListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     @IntegerRes override val bottomNavigationMenuItemId: Int = R.id.navigation_contribute
 
@@ -39,12 +40,13 @@ class ContributeActivity : BottomNavigationActivity(), FirebaseAuth.AuthStateLis
     override fun onResume() {
         super.onResume()
         auth.addAuthStateListener(this)
-
+        prefs.preferences.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onPause() {
         super.onPause()
         auth.removeAuthStateListener(this)
+        prefs.preferences.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     override fun onAuthStateChanged(changedAuth: FirebaseAuth) {
@@ -53,6 +55,15 @@ class ContributeActivity : BottomNavigationActivity(), FirebaseAuth.AuthStateLis
             user == null -> showUiForSignedOutUser()
             user.hasCompleteContributorProfile(this) -> initializeUiForSignedInUser()
             else -> showUiForIncompleteProfile()
+        }
+    }
+
+    override fun onSharedPreferenceChanged(preferences: SharedPreferences?, key: String?) {
+        val user = auth.currentUser
+        if (user != null && user.hasCompleteContributorProfile(this)) {
+            initializeUiForSignedInUser()
+        } else if (user != null && !user.hasCompleteContributorProfile(this)) {
+            showUiForIncompleteProfile()
         }
     }
 

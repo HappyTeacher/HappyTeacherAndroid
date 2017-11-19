@@ -17,7 +17,7 @@ class PreferencesManager private constructor(val context: Context) {
         fun getInstance(context: Context): PreferencesManager = PreferencesManager(context)
     }
 
-    private val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     fun setCurrentLanguageCode(code: String) {
         val languageCodeKey = context.getString(R.string.prefs_key_current_language_code)
