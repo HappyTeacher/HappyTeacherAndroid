@@ -1,4 +1,4 @@
-package org.jnanaprabodhini.happyteacherapp.view
+package org.jnanaprabodhini.happyteacherapp.view.manager
 
 import android.support.annotation.LayoutRes
 import android.view.View
@@ -36,11 +36,11 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
     private var progressBar: ProgressBar? = null
     private var onSpinnerSelectionsComplete: (String) -> Unit = {}
 
-    fun initializeSpinners(parentSpinner: Spinner, childSpinner: Spinner, progressBar: ProgressBar, onSpinnerSelectionsComplete: (String) -> Unit) {
+    fun initializeWithTopicsListManager(parentSpinner: Spinner, childSpinner: Spinner, progressBar: ProgressBar, topicsListManager: TopicListManager) {
         this.parentSpinner = parentSpinner
         this.childSpinner = childSpinner
         this.progressBar = progressBar
-        this.onSpinnerSelectionsComplete = onSpinnerSelectionsComplete
+        this.onSpinnerSelectionsComplete = { subjectKey -> topicsListManager.updateListOfTopicsForSubject(subjectKey) }
 
         setupSpinners()
     }
