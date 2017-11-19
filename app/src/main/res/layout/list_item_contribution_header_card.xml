@@ -16,11 +16,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/ripple_white_lightgray">
 
-        <View
+        <include layout="@layout/resource_color_bar"
             android:id="@+id/resourceColorBar"
-            android:visibility="gone"
-            android:layout_width="0dp"
-            android:layout_height="6dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>

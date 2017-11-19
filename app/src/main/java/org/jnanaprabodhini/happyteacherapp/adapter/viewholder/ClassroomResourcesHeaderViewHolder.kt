@@ -7,6 +7,11 @@ import org.jnanaprabodhini.happyteacherapp.activity.ClassroomResourceViewerActiv
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 
 class ClassroomResourcesHeaderViewHolder(itemView: View): ResourceHeaderViewHolder(itemView) {
+
+    init {
+        setColorBarForClassroomResource()
+    }
+
     override fun launchContentViewerActivity(activity: Activity, contentDocumentRef: DocumentReference, resourceHeaderModel: ResourceHeader?) {
         ClassroomResourceViewerActivity.launch(activity, contentDocumentRef, resourceHeaderModel ?: ResourceHeader())
     }

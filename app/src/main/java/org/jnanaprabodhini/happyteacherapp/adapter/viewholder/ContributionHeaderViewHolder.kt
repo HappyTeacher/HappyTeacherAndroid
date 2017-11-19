@@ -10,34 +10,14 @@ import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.extension.*
 import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 
-class ContributionHeaderViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+class ContributionHeaderViewHolder(itemView: View): BaseResourceHeaderViewHolder(itemView) {
     val titleTextView: TextView = itemView.titleTextView
     val subjectTextView: TextView = itemView.subjectTextView
     val dateEditedTextView: TextView = itemView.dateEditedTextView
     val deleteButton: TextView = itemView.deleteButton
     val editButton: TextView = itemView.editButton
     val statusTextView: TextView = itemView.statusTextView
-    val resourceColorBar: View = itemView.resourceColorBar
-
-    fun setTextColorForResourceType(type: String?) {
-        when (type) {
-            ResourceType.LESSON -> setColorBarForLessonResource()
-            ResourceType.CLASSROOM_RESOURCE -> setColorBarForClassroomResource()
-        }
-    }
-
-    private fun setColorBarForLessonResource() {
-        showColorBarWithColor(R.color.deepLightBlue)
-    }
-
-    private fun setColorBarForClassroomResource() {
-        showColorBarWithColor(R.color.grassGreen)
-    }
-
-    private fun showColorBarWithColor(@ColorRes colorId: Int) {
-        resourceColorBar.setVisible()
-        resourceColorBar.setBackgroundColorRes(colorId)
-    }
+    override val resourceColorBar: View = itemView.resourceColorBar
 
     fun showButtonsForDraft() {
         deleteButton.setDrawableLeft(R.drawable.ic_delete_white_24dp)

@@ -12,6 +12,11 @@ import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import java.text.DateFormat
 
 class LessonHeaderViewHolder(itemView: View, private val shouldShowSubmissionCount: Boolean): ResourceHeaderViewHolder(itemView) {
+
+    init {
+        setColorBarForLessonResource()
+    }
+
     override fun launchContentViewerActivity(activity: Activity, contentDocumentRef: DocumentReference, resourceHeaderModel: ResourceHeader?) {
         LessonViewerActivity.launch(activity, contentDocumentRef, resourceHeaderModel ?: ResourceHeader(), shouldShowSubmissionCount)
     }

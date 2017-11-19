@@ -14,13 +14,14 @@ import java.text.DateFormat
 /**
  * Created by grahamearley on 9/12/17.
  */
-abstract class ResourceHeaderViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+abstract class ResourceHeaderViewHolder(itemView: View): BaseResourceHeaderViewHolder(itemView) {
     val titleTextView: TextView = itemView.titleTextView
     val authorNameTextView: TextView = itemView.authorNameTextView
     val institutionTextView: TextView = itemView.institutionTextView
     val locationTextView: TextView = itemView.locationTextView
     val dateEditedTextView: TextView = itemView.dateEditedTextView
     val submissionCountTextView: TextView = itemView.submissionCountTextView
+    override val resourceColorBar: View = itemView.resourceColorBar
 
     open fun populateView(resourceHeaderModel: ResourceHeader?, contentDocumentRef: DocumentReference, activity: Activity, dateFormat: DateFormat) {
         titleTextView.text = resourceHeaderModel?.name
