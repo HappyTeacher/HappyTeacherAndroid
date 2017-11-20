@@ -49,7 +49,7 @@ class ResourceHeaderRecyclerAdapter(options: FirestoreRecyclerOptions<ResourceHe
 
     private fun launchContentViewerActivity(contentDocumentRef: DocumentReference, resourceHeaderModel: ResourceHeader?) {
         if (resourceHeaderModel?.status == ResourceStatus.AWAITING_REVIEW
-                && prefs.userIsMod() || prefs.userIsAdmin()) {
+                && (prefs.userIsMod() || prefs.userIsAdmin())) {
             ResourceContentReviewActivity.launch(activity, contentDocumentRef, resourceHeaderModel ?: ResourceHeader())
         } else when (resourceHeaderModel?.resourceType) {
             ResourceType.LESSON -> LessonViewerActivity.launch(activity, contentDocumentRef, resourceHeaderModel, showSubmissionCount)
