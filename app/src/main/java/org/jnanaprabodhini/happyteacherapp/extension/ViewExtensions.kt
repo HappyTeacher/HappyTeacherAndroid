@@ -133,6 +133,11 @@ fun TextView.setDrawableRight(@DrawableRes drawableId: Int) {
     this.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
 }
 
+fun TextView.setDrawableTop(@DrawableRes drawableId: Int) {
+    val drawable = AppCompatResources.getDrawable(context, drawableId)
+    this.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
+}
+
 fun View.setBackgroundDrawable(@DrawableRes drawableId: Int) {
     val drawable = AppCompatResources.getDrawable(context, drawableId)
     this.background = drawable

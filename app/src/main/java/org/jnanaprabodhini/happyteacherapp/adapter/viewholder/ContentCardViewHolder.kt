@@ -68,10 +68,11 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
         commentsButton.apply {
             setVisible()
 
-            setText(R.string.comments) // todo: add count!
-            setDrawableLeft(R.drawable.ic_comment_white_24dp)
+            text = 0.toString() // todo: add count!
+            setDrawableTop(R.drawable.ic_comment_white_24dp)
 
             setOnClickListener {
+                commentsButton.jiggle()
                 activity.showToast("Comments coming soon!")
             }
         }
