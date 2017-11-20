@@ -196,6 +196,20 @@
     <string name="awaiting_review">Pending Review</string>
     <string name="comments">Comments</string>
     <string name="choose_what_your_classroom_resource_will_be_about">Choose what your classroom resource will be about</string>
+    <string name="publish">Publish</string>
+    <string name="do_you_want_to_publish_this_lesson">Do you want to publish this lesson?</string>
+    <string name="do_you_want_to_publish_this_classroom_resource">Do you want to publish this classroom resource?</string>
+    <string name="do_you_want_to_publish_this_contribution">Do you want to publish this contribution?</string>
+    <string name="publish_lesson_dialog_message">This lesson plan will become publicly visible to all users. If you think the lesson requires changes, add comments to a card and request the author to make changes first.</string>
+    <string name="publish_classroom_resource_dialog_message">This classroom resource will become publicly visible to all users. If you think this classroom resource requires changes, add comments to a card and request the author to make changes first.</string>
+    <string name="publish_resource_dialog_message">This resource will become publicly visible to all users. If you think this resource requires changes, add comments to a card and request the author to make changes first.</string>
+    <string name="successfully_published">Successfully published</string>
+    <string name="publishing">Publishing…</string>
+    <string name="sending_feedback_to_author">Sending feedback to author…</string>
+    <string name="feedback_sent">Feedback sent</string>
+    <string name="request_changes">Request changes</string>
+    <string name="do_you_want_to_send_your_feedback_to_the_author">Do you want to send your feedback to the author?</string>
+    <string name="request_changes_dialog_message">The author will see your comments and be asked to make changes before submitting again.</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>
