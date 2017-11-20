@@ -22,6 +22,7 @@ class EditableResourceRecyclerAdapter(options: FirestoreRecyclerOptions<ContentC
             val cardRef = snapshots.getSnapshot(position).reference
             val parentContentId = cardRef.parent.parent.id
             holder.setupEditButtons(activity, cardRef, model ?: ContentCard(), parentContentId)
+            holder.setupCommentButton(activity, cardRef, model ?: ContentCard(), parentContentId)
         }
     }
 

@@ -193,6 +193,9 @@
     <string name="submissions_for_review">Submissions for review</string>
     <string name="review_submissions">Review Submissions</string>
     <string name="not_published">Not Published</string>
+    <string name="awaiting_review">Pending Review</string>
+    <string name="comments">Comments</string>
+    <string name="choose_what_your_classroom_resource_will_be_about">Choose what your classroom resource will be about</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>

@@ -86,6 +86,7 @@
         <org.jnanaprabodhini.happyteacherapp.view.DownloadBarView
             android:id="@+id/attachmentDownloadBar"
             android:layout_width="0dp"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -93,12 +94,22 @@
             app:layout_constraintTop_toBottomOf="@id/bodyTextView" />
 
         <TextView
+            android:id="@+id/commentsButton"
+            android:text="@string/comments"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/attachmentDownloadBar"
+            app:layout_constraintBottom_toTopOf="@id/editButton"
+            style="@style/CardButton.Comment" />
+
+        <TextView
             android:id="@+id/editButton"
             android:text="@string/edit"
             app:layout_constraintBottom_toBottomOf="@id/bottomPlaceholder"
             app:layout_constraintEnd_toStartOf="@+id/deleteButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/attachmentDownloadBar"
+            app:layout_constraintTop_toBottomOf="@id/commentsButton"
             style="@style/CardButton.Edit" />
 
         <TextView

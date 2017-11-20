@@ -10,10 +10,7 @@ import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.list_item_content_card.view.*
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.CardEditorActivity
-import org.jnanaprabodhini.happyteacherapp.extension.onFinish
-import org.jnanaprabodhini.happyteacherapp.extension.setDrawableLeft
-import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
-import org.jnanaprabodhini.happyteacherapp.extension.setVisible
+import org.jnanaprabodhini.happyteacherapp.extension.*
 import org.jnanaprabodhini.happyteacherapp.model.ContentCard
 import org.jnanaprabodhini.happyteacherapp.view.DownloadBarView
 import org.jnanaprabodhini.happyteacherapp.view.HorizontalPagerRecyclerView
@@ -40,6 +37,8 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
     private val editButton: TextView = itemView.editButton
     private val deleteButton: TextView = itemView.deleteButton
 
+    private val commentsButton: TextView = itemView.commentsButton
+
     fun setupEditButtons(activity: Activity, cardRef: DocumentReference, cardModel: ContentCard, parentContentId: String) {
 
         editButton.setDrawableLeft(R.drawable.ic_pencil_white_24dp)
@@ -52,7 +51,7 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
         }
 
         deleteButton.setOnClickListener {
-            // FirebaseUI query refreshes to fast to animate item removals
+            // FirebaseUI query refreshes too fast to animate item removals
             //  so for now we run our own animation -- delete item after.
             val exitAnimation = AnimationUtils.loadAnimation(activity, R.anim.slide_out_right_quick)
 
@@ -61,6 +60,20 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
             }
 
             itemView.startAnimation(exitAnimation)
+        }
+    }
+
+    // TODO: revisit parameters..
+    fun setupCommentButton(activity: Activity, cardRef: DocumentReference, cardModel: ContentCard, parentContentId: String) {
+        commentsButton.apply {
+            setVisible()
+
+            setText(R.string.comments) // todo: add count!
+            setDrawableLeft(R.drawable.ic_comment_white_24dp)
+
+            setOnClickListener {
+                activity.showToast("Comments coming soon!")
+            }
         }
     }
 

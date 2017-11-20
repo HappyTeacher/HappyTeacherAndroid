@@ -31,6 +31,9 @@
             android:name=".activity.ClassroomResourceViewerActivity"
             android:parentActivityName=".activity.TopicsListActivity" />
         <activity
+            android:name=".activity.CommentableResourceContentViewerActivity"
+            android:parentActivityName=".activity.TopicsListActivity" />
+        <activity
             android:name=".activity.FullScreenGalleryViewerActivity"
             android:theme="@style/Theme.Transparent" />
         <activity

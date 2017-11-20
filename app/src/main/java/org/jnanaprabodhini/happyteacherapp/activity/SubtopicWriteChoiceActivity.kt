@@ -50,6 +50,21 @@ class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver
             else -> getString(R.string.create_a_resource)
         }
 
+        when(resourceType) {
+            ResourceType.LESSON -> {
+                supportActionBar?.title = getString(R.string.create_a_lesson_plan)
+                instructionTextView.setText(R.string.choose_what_your_lesson_will_be_about)
+            }
+            ResourceType.CLASSROOM_RESOURCE -> {
+                supportActionBar?.title = getString(R.string.create_a_classroom_resource)
+                instructionTextView.setText(R.string.choose_what_your_classroom_resource_will_be_about)
+            }
+            else -> {
+                supportActionBar?.title = getString(R.string.create_a_resource)
+                instructionTextView.setVisibilityGone()
+            }
+        }
+
         initializeSpinners()
     }
 

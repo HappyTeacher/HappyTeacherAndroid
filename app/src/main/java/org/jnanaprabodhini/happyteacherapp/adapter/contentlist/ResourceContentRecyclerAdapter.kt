@@ -2,7 +2,10 @@ package org.jnanaprabodhini.happyteacherapp.adapter.contentlist
 
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.FullScreenGalleryViewerActivity
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacherapp.adapter.ImageGalleryRecyclerAdapter
@@ -23,6 +26,11 @@ import java.io.File
  */
 abstract class ResourceContentRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, private val attachmentDestinationDirectory: File, val subtopicId: String, val activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
         FirestoreObserverRecyclerAdapter<ContentCard, RecyclerView.ViewHolder>(options, dataObserver) {
+
+    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder? {
+        val cardView = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_content_card, parent, false)
+        return ContentCardViewHolder(cardView)
+    }
 
     protected fun onBindContentCardViewHolder(holder: ContentCardViewHolder, model: ContentCard?) {
         resetViewVisibility(holder)

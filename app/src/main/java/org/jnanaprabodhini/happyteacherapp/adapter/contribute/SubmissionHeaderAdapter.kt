@@ -7,7 +7,9 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.ClassroomResourceViewerActivity
+import org.jnanaprabodhini.happyteacherapp.activity.CommentableResourceContentViewerActivity
 import org.jnanaprabodhini.happyteacherapp.activity.LessonViewerActivity
+import org.jnanaprabodhini.happyteacherapp.activity.ResourceContentEditorActivity
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.adapter.viewholder.ContributionHeaderViewHolder
 import org.jnanaprabodhini.happyteacherapp.extension.showToast
@@ -60,21 +62,26 @@ class SubmissionHeaderAdapter(adapterOptions: FirestoreRecyclerOptions<ResourceH
     }
 
     private fun unsubmitDocument(documentReference: DocumentReference, position: Int) {
-        documentReference.update(FirestoreKeys.STATUS, ResourceStatus.DRAFT).addOnSuccessListener(activity, {
-            activity.showToast(R.string.submission_returned_to_drafts)
-        })
+        documentReference.update(FirestoreKeys.STATUS, ResourceStatus.DRAFT)
+                .addOnSuccessListener(activity, {
+                    activity.showToast(R.string.submission_returned_to_drafts)
+                })
         notifyItemRemoved(position)
     }
 
     override fun getViewResourceOnClickListener(model: ResourceHeader?, contributionDocumentRef: DocumentReference): View.OnClickListener {
         return View.OnClickListener {
             val modelOrEmpty = model ?: ResourceHeader()
-
-            when (model?.resourceType) {
-                ResourceType.LESSON -> LessonViewerActivity.launch(activity, contributionDocumentRef, modelOrEmpty, shouldShowSubmissionCount = false)
-                ResourceType.CLASSROOM_RESOURCE -> ClassroomResourceViewerActivity.launch(activity, contributionDocumentRef, modelOrEmpty)
+            when (model?.status) {
+                ResourceStatus.AWAITING_REVIEW -> CommentableResourceContentViewerActivity.launch(activity, contributionDocumentRef, modelOrEmpty)
+                ResourceStatus.CHANGES_REQUESTED -> ResourceContentEditorActivity.launch(activity, contributionDocumentRef, modelOrEmpty)
+                else -> when (model?.resourceType) {
+                    ResourceType.LESSON -> LessonViewerActivity.launch(activity, contributionDocumentRef,
+                            modelOrEmpty, shouldShowSubmissionCount = false)
+                    ResourceType.CLASSROOM_RESOURCE -> ClassroomResourceViewerActivity.launch(activity,
+                            contributionDocumentRef, modelOrEmpty)
+                }
             }
         }
     }
-
 }
