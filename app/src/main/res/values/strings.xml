@@ -210,6 +210,8 @@
     <string name="request_changes">Request changes</string>
     <string name="do_you_want_to_send_your_feedback_to_the_author">Do you want to send your feedback to the author?</string>
     <string name="request_changes_dialog_message">The author will see your comments and be asked to make changes before submitting again.</string>
+    <string name="unpublished">Unpublished</string>
+    <string name="unpublishing">Unpublishing…</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>
