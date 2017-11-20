@@ -13,6 +13,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
 import org.jnanaprabodhini.happyteacherapp.activity.ClassroomResourceViewerActivity
 import org.jnanaprabodhini.happyteacherapp.activity.LessonViewerActivity
+import org.jnanaprabodhini.happyteacherapp.activity.ResourceContentReviewActivity
+import org.jnanaprabodhini.happyteacherapp.util.PreferencesManager
 import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
 import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 
@@ -30,6 +32,10 @@ class ResourceHeaderRecyclerAdapter(options: FirestoreRecyclerOptions<ResourceHe
         DateFormat.getDateFormat(activity)
     }
 
+    private val prefs by lazy {
+        PreferencesManager.getInstance(activity)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) = ResourceHeaderViewHolder(inflateView(parent))
 
     override fun onBindViewHolder(holder: ResourceHeaderViewHolder, position: Int, model: ResourceHeader?) {
@@ -42,7 +48,10 @@ class ResourceHeaderRecyclerAdapter(options: FirestoreRecyclerOptions<ResourceHe
     }
 
     private fun launchContentViewerActivity(contentDocumentRef: DocumentReference, resourceHeaderModel: ResourceHeader?) {
-        when (resourceHeaderModel?.resourceType) {
+        if (resourceHeaderModel?.status == ResourceStatus.AWAITING_REVIEW
+                && prefs.userIsMod() || prefs.userIsAdmin()) {
+            ResourceContentReviewActivity.launch(activity, contentDocumentRef, resourceHeaderModel ?: ResourceHeader())
+        } else when (resourceHeaderModel?.resourceType) {
             ResourceType.LESSON -> LessonViewerActivity.launch(activity, contentDocumentRef, resourceHeaderModel, showSubmissionCount)
             ResourceType.CLASSROOM_RESOURCE -> ClassroomResourceViewerActivity.launch(activity, contentDocumentRef, resourceHeaderModel)
         }
