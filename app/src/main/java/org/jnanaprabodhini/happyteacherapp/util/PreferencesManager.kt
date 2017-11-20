@@ -92,6 +92,10 @@ class PreferencesManager private constructor(val context: Context) {
 
     fun getUserRole(): String = preferences.getString(context.getString(R.string.prefs_key_user_role), "")
 
+    fun userIsMod() = getUserRole() == UserRoles.MODERATOR
+
+    fun userIsAdmin() = getUserRole() == UserRoles.ADMIN
+
     fun clearUserProfileData() {
         setUserLocation("")
         setUserName("")

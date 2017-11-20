@@ -70,13 +70,8 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
         menuInflater.inflate(R.menu.menu_top_level_activity, menu)
         val reviewLessonsMenuItem = menu?.findItem(R.id.menu_moderator_submission_review)
 
-        auth.currentUser?.uid?.let { uid ->
-            firestoreUsersCollection.document(uid).get().addOnSuccessListener { snapshot ->
-                val user = snapshot.toObject(User::class.java)
-                if (user.role == UserRoles.ADMIN || user.role == UserRoles.MODERATOR) {
-                    reviewLessonsMenuItem?.isVisible = true
-                }
-            }
+        if (prefs.userIsAdmin() || prefs.userIsMod()) {
+            reviewLessonsMenuItem?.isVisible = true
         }
 
         return true

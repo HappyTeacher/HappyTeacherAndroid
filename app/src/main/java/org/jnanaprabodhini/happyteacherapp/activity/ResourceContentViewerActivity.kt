@@ -26,20 +26,15 @@ abstract class ResourceContentViewerActivity: ResourceContentActivity() {
 
         // Only show admin/mod buttons to admins/mods!
         //  (Our Firestore security rules also only allow writes from admins)
-        auth.currentUser?.uid?.let { uid ->
-            firestoreUsersCollection.document(uid).get().addOnSuccessListener { snapshot ->
-                val user = snapshot.toObject(User::class.java)
-                if (user.role == UserRoles.ADMIN) {
-                    editLessonMenuItem?.isVisible = true
-                }
+        if (prefs.userIsAdmin()) {
+            editLessonMenuItem?.isVisible = true
+        }
 
-                if (header.resourceType == ResourceType.LESSON
-                        && !header.isFeatured
-                        && header.status == ResourceStatus.PUBLISHED
-                        && user.role == UserRoles.ADMIN || user.role == UserRoles.MODERATOR) {
-                    promoteToFeaturedLessonMenuItem?.isVisible = true
-                }
-            }
+        if (header.resourceType == ResourceType.LESSON
+                && !header.isFeatured
+                && header.status == ResourceStatus.PUBLISHED
+                && prefs.userIsAdmin() || prefs.userIsMod()) {
+            promoteToFeaturedLessonMenuItem?.isVisible = true
         }
 
         return true
