@@ -71,7 +71,7 @@ class PublishedSubmissionHeaderAdapter(adapterOptions: FirestoreRecyclerOptions<
             val modelOrEmpty = model ?: ResourceHeader()
 
             when (model?.resourceType) {
-                ResourceType.LESSON -> LessonViewerActivity.launch(activity, contributionDocumentRef, modelOrEmpty, shouldShowSubmissionCount = true)
+                ResourceType.LESSON -> LessonViewerActivity.launch(activity, contributionDocumentRef, modelOrEmpty, showSubmissionCount = true)
                 ResourceType.CLASSROOM_RESOURCE -> ClassroomResourceViewerActivity.launch(activity, contributionDocumentRef, modelOrEmpty)
             }
         }

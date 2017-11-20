@@ -15,7 +15,7 @@ import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
 /**
  * Created by grahamearley on 11/20/17.
  */
-class CommentableResourceContentViewerActivity: ResourceContentViewerActivity() {
+open class CommentableResourceContentViewerActivity: ResourceContentViewerActivity() {
 
     companion object {
         fun launch(from: Activity, resourceRef: DocumentReference, resourceHeader: ResourceHeader) {

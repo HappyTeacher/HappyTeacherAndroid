@@ -77,7 +77,7 @@ class SubmissionHeaderAdapter(adapterOptions: FirestoreRecyclerOptions<ResourceH
                 ResourceStatus.CHANGES_REQUESTED -> ResourceContentEditorActivity.launch(activity, contributionDocumentRef, modelOrEmpty)
                 else -> when (model?.resourceType) {
                     ResourceType.LESSON -> LessonViewerActivity.launch(activity, contributionDocumentRef,
-                            modelOrEmpty, shouldShowSubmissionCount = false)
+                            modelOrEmpty, showSubmissionCount = false)
                     ResourceType.CLASSROOM_RESOURCE -> ClassroomResourceViewerActivity.launch(activity,
                             contributionDocumentRef, modelOrEmpty)
                 }

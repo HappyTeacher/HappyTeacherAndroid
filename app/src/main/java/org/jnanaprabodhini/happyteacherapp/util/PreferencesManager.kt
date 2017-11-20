@@ -85,9 +85,17 @@ class PreferencesManager private constructor(val context: Context) {
 
     fun getUserInstitution(): String = preferences.getString(context.getString(R.string.prefs_key_user_institution), "")
 
+    fun setUserRole(role: String) {
+        val rolePrefsKey = context.getString(R.string.prefs_key_user_role)
+        preferences.edit().putString(rolePrefsKey, role).apply()
+    }
+
+    fun getUserRole(): String = preferences.getString(context.getString(R.string.prefs_key_user_role), "")
+
     fun clearUserProfileData() {
         setUserLocation("")
         setUserName("")
         setUserInstitution("")
+        setUserRole("")
     }
 }

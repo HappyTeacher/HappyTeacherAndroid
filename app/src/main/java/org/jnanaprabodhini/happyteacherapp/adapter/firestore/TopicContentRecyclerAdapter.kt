@@ -3,8 +3,11 @@ package org.jnanaprabodhini.happyteacherapp.adapter.firestore
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestoreException
 import org.jnanaprabodhini.happyteacherapp.R
+import org.jnanaprabodhini.happyteacherapp.activity.ClassroomResourceViewerActivity
+import org.jnanaprabodhini.happyteacherapp.activity.LessonViewerActivity
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.adapter.viewholder.ResourceHeaderRecyclerViewHolder
@@ -19,7 +22,7 @@ import org.jnanaprabodhini.happyteacherapp.view.HorizontalPagerRecyclerView
 /**
  * An adapter for displaying Topics and the lessons for those topics.
  */
-abstract class TopicLessonsRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOptions<Topic>,
+abstract class TopicContentRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOptions<Topic>,
                                            topicsDataObserver: FirebaseDataObserver,
                                            val showSubmissionCount: Boolean,
                                            activity: HappyTeacherActivity): TopicsRecyclerAdapter<ResourceHeaderRecyclerViewHolder>(topicsAdapterOptions, topicsDataObserver, activity) {

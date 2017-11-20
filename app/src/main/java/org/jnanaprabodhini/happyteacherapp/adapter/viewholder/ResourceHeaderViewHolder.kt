@@ -6,14 +6,11 @@ import android.widget.TextView
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.list_item_resource_header_card.view.*
 import org.jnanaprabodhini.happyteacherapp.R
-import org.jnanaprabodhini.happyteacherapp.activity.ClassroomResourceViewerActivity
-import org.jnanaprabodhini.happyteacherapp.activity.LessonViewerActivity
-import org.jnanaprabodhini.happyteacherapp.activity.SubtopicSubmissionsListActivity
+import org.jnanaprabodhini.happyteacherapp.activity.SubtopicLessonListActivity
 import org.jnanaprabodhini.happyteacherapp.extension.setDrawableLeft
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
-import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 import java.text.DateFormat
 
 /**
@@ -48,17 +45,6 @@ class ResourceHeaderViewHolder(itemView: View): BaseResourceHeaderViewHolder(ite
         }
 
         setColorBarForResourceType(resourceHeaderModel?.resourceType)
-
-        itemView.setOnClickListener {
-            launchContentViewerActivity(activity, contentDocumentRef, resourceHeaderModel, showSubmissionCount)
-        }
-    }
-
-    private fun launchContentViewerActivity(activity: Activity, contentDocumentRef: DocumentReference, resourceHeaderModel: ResourceHeader?, showSubmissionCount: Boolean) {
-        when (resourceHeaderModel?.resourceType) {
-            ResourceType.LESSON -> LessonViewerActivity.launch(activity, contentDocumentRef, resourceHeaderModel, showSubmissionCount)
-            ResourceType.CLASSROOM_RESOURCE -> ClassroomResourceViewerActivity.launch(activity, contentDocumentRef, resourceHeaderModel)
-        }
     }
 
     private fun showSubmissionCount(resourceHeaderModel: ResourceHeader?, activity: Activity) {
@@ -67,7 +53,7 @@ class ResourceHeaderViewHolder(itemView: View): BaseResourceHeaderViewHolder(ite
                 submissionCountTextView.setVisible()
                 submissionCountTextView.text = activity.getString(R.string.plus_number, resourceHeaderModel.subtopicSubmissionCount - 1) // subtract one to exclude the featured contentKey
                 submissionCountTextView.setOnClickListener {
-                    SubtopicSubmissionsListActivity.launch(activity, resourceHeaderModel.subtopic)
+                    SubtopicLessonListActivity.launch(activity, resourceHeaderModel.subtopic)
                 }
             } else {
                 submissionCountTextView.setVisibilityGone()

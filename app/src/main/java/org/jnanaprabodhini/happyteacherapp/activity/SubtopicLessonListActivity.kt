@@ -17,14 +17,14 @@ import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
 
-class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObserver {
+class SubtopicLessonListActivity : HappyTeacherActivity(), FirebaseDataObserver {
 
     companion object IntentExtraHelper {
         fun launch(from: Activity, subtopicId: String) {
-            val subtopicSubmissionsIntent = Intent(from, SubtopicSubmissionsListActivity::class.java)
+            val subtopicSubmissionsIntent = Intent(from, SubtopicLessonListActivity::class.java)
 
             subtopicSubmissionsIntent.apply {
-                putExtra(SubtopicSubmissionsListActivity.SUBTOPIC_KEY, subtopicId)
+                putExtra(SubtopicLessonListActivity.SUBTOPIC_KEY, subtopicId)
             }
 
             from.startActivity(subtopicSubmissionsIntent)

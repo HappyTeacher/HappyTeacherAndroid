@@ -106,17 +106,17 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
     }
 
     private fun setupFabs() {
-        addCardFab.setVisible()
-        submitLessonFab.setVisible()
+        primaryFab.setVisible()
+        secondaryFab.setVisible()
 
-        addCardFab.setTooltip(getString(R.string.add_card))
-        submitLessonFab.setTooltip(getString(R.string.submit))
+        primaryFab.setTooltip(getString(R.string.add_card))
+        secondaryFab.setTooltip(getString(R.string.submit))
 
-        addCardFab.setOnClickListener {
+        primaryFab.setOnClickListener {
             addNewCard()
         }
 
-        submitLessonFab.setOnClickListener{
+        secondaryFab.setOnClickListener{
             showSubmitConfirmationDialog()
         }
     }

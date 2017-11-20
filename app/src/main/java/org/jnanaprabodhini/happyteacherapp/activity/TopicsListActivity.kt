@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.header_syllabus_lesson_topic.*
 import kotlinx.android.synthetic.main.stacked_subject_spinners.*
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.base.BottomNavigationActivity
-import org.jnanaprabodhini.happyteacherapp.adapter.firestore.TopicLessonsRecyclerAdapter
+import org.jnanaprabodhini.happyteacherapp.adapter.firestore.TopicContentRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.extension.*
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
@@ -125,7 +125,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val topicsAdapterOptions = FirestoreRecyclerOptions.Builder<Topic>()
                 .setQuery(topicsQuery, Topic::class.java).build()
 
-        val adapter = object: TopicLessonsRecyclerAdapter(topicsAdapterOptions, showSubmissionCount = true,
+        val adapter = object: TopicContentRecyclerAdapter(topicsAdapterOptions, showSubmissionCount = true,
                 topicsDataObserver = this, activity = this) {
             override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<ResourceHeader> {
                 val subtopicQuery = firestoreLocalized.collection(getString(R.string.resources))

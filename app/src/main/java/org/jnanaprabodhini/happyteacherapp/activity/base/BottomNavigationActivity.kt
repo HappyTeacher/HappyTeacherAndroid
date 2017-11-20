@@ -179,6 +179,7 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
                 prefs.setUserLocation(userModel.location)
                 prefs.setUserInstitution(userModel.institution)
                 prefs.setUserName(userModel.displayName)
+                prefs.setUserRole(userModel.role)
             } else {
                 // If Cloud Functions haven't created the user fast enough,
                 //  it's possible for the user Document to not exist yet.

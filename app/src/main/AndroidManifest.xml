@@ -34,10 +34,13 @@
             android:name=".activity.CommentableResourceContentViewerActivity"
             android:parentActivityName=".activity.TopicsListActivity" />
         <activity
+            android:name=".activity.ResourceContentReviewActivity"
+            android:parentActivityName=".activity.TopicsListActivity" />
+        <activity
             android:name=".activity.FullScreenGalleryViewerActivity"
             android:theme="@style/Theme.Transparent" />
         <activity
-            android:name=".activity.SubtopicSubmissionsListActivity"
+            android:name=".activity.SubtopicLessonListActivity"
             android:label="@string/other_lesson_plans"
             android:parentActivityName=".activity.TopicsListActivity" />
         <activity

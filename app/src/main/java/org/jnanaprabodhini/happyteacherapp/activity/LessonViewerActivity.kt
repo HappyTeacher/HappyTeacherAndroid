@@ -19,13 +19,13 @@ import org.jnanaprabodhini.happyteacherapp.model.ContentCard
 class LessonViewerActivity : ResourceContentViewerActivity(){
 
     companion object {
-        fun launch(from: Activity, lessonRef: DocumentReference, resourceHeader: ResourceHeader, shouldShowSubmissionCount: Boolean) {
+        fun launch(from: Activity, lessonRef: DocumentReference, resourceHeader: ResourceHeader, showSubmissionCount: Boolean) {
             val lessonViewerIntent = Intent(from, LessonViewerActivity::class.java)
 
             lessonViewerIntent.apply {
                 putExtra(CONTENT_REF_PATH, lessonRef.path)
                 putExtra(HEADER, resourceHeader)
-                putExtra(SHOW_SUBMISSION_COUNT, shouldShowSubmissionCount)
+                putExtra(SHOW_SUBMISSION_COUNT, showSubmissionCount)
             }
             from.startActivity(lessonViewerIntent)
         }
@@ -51,7 +51,7 @@ class LessonViewerActivity : ResourceContentViewerActivity(){
             otherSubmissionsTextView.text = getString(R.string.see_all_n_lesson_plans_for_lesson, header.subtopicSubmissionCount, header.name)
             otherSubmissionsTextView.setDrawableRight(R.drawable.ic_keyboard_arrow_right_white_24dp)
             otherSubmissionsTextView.setOnClickListener {
-                SubtopicSubmissionsListActivity.launch(this, header.subtopic)
+                SubtopicLessonListActivity.launch(this, header.subtopic)
             }
         } else {
             otherSubmissionsTextView.setVisibilityGone()
