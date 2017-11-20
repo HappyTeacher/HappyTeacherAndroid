@@ -105,8 +105,8 @@
     <string name="there_was_an_error_loading_your_submissions">There was an error loading your submissions</string>
     <string name="you_have_no_published_contributions">You don\'t have any published contributions yet.</string>
     <string name="there_was_an_error_loading_your_published_contributions">There was an error loading your published contributions</string>
-    <string name="card_header">Card header</string>
-    <string name="card_body">Card body</string>
+    <string name="card_title">Card title</string>
+    <string name="card_text">Card text</string>
     <string name="card_editor">Card Editor</string>
     <string name="save">Save</string>
     <string name="add_image">Add Image</string>
