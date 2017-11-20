@@ -2,14 +2,14 @@ package org.jnanaprabodhini.happyteacherapp.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import org.jnanaprabodhini.happyteacherapp.R
-import org.jnanaprabodhini.happyteacherapp.extension.setDrawableResource
-import org.jnanaprabodhini.happyteacherapp.extension.setTooltip
-import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
-import org.jnanaprabodhini.happyteacherapp.extension.setVisible
+import org.jnanaprabodhini.happyteacherapp.extension.*
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
 
@@ -41,7 +41,7 @@ class ResourceContentReviewActivity: CommentableResourceContentViewerActivity() 
 
         // TODO: change action based on feedback status (publish if no comments, send feedback if comments)
         primaryFab.setDrawableResource(R.drawable.ic_check_white_24dp)
-        primaryFab.setColorFilter(R.color.grassGreen)
+        primaryFab.setColor(R.color.grassGreen)
     }
 
 }

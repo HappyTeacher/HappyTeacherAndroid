@@ -1,11 +1,14 @@
 package org.jnanaprabodhini.happyteacherapp.extension
 
+import android.content.res.ColorStateList
 import android.database.DataSetObserver
+import android.graphics.Color
 import android.os.Build
 import android.support.annotation.ColorRes
 import android.support.annotation.DimenRes
 import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
+import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.ViewCompat
@@ -192,13 +195,9 @@ fun ImageView.setDrawableResource(@DrawableRes drawableRes: Int) {
     this.setImageDrawable(ResourcesCompat.getDrawable(resources, drawableRes, null))
 }
 
-fun RecyclerView.canScrollLeftHorizontally(): Boolean {
-    return canScrollHorizontally(-1)
-}
+fun RecyclerView.canScrollLeftHorizontally(): Boolean = canScrollHorizontally(-1)
 
-fun RecyclerView.canScrollRightHorizontally(): Boolean {
-    return canScrollHorizontally(1)
-}
+fun RecyclerView.canScrollRightHorizontally(): Boolean = canScrollHorizontally(1)
 
 fun Animation.onFinish(onFinish: () -> Unit) {
     this.setAnimationListener(object: Animation.AnimationListener {
@@ -212,4 +211,9 @@ fun Animation.onFinish(onFinish: () -> Unit) {
 
 fun View.setTooltip(tooltipText: String) {
     TooltipCompat.setTooltipText(this, tooltipText)
+}
+
+fun FloatingActionButton.setColor(@ColorRes colorId: Int) {
+    val color = ResourcesCompat.getColor(context.resources, colorId, null)
+    backgroundTintList = ColorStateList.valueOf(color)
 }
