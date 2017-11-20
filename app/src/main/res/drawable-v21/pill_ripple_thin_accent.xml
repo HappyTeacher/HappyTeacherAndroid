@@ -5,7 +5,7 @@
     <item>
         <shape
             android:shape="rectangle">
-            <corners android:topLeftRadius="100dp" android:topRightRadius="100dp" />
+            <corners android:radius="100dp"/>
             <padding android:bottom="8dp"
                 android:top="8dp"
                 android:right="8dp"

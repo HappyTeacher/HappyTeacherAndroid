@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginTop="8dp"
@@ -69,7 +68,6 @@
         <TextView
             android:id="@+id/headerTextView"
             style="@style/LessonCardText.Header"
-            tools:text="Dingus Title"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/bodyTextView"
             app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +78,6 @@
         <TextView
             android:id="@+id/bodyTextView"
             style="@style/LessonCardText.Body"
-            tools:text="Dingus body"
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@id/attachmentDownloadBar"
             app:layout_constraintEnd_toEndOf="parent"
@@ -91,8 +88,8 @@
         <org.jnanaprabodhini.happyteacherapp.view.DownloadBarView
             android:id="@+id/attachmentDownloadBar"
             android:layout_width="0dp"
-            android:visibility="gone"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -100,37 +97,38 @@
 
         <TextView
             android:id="@+id/editButton"
+            style="@style/CardButton.Edit"
             android:text="@string/edit"
             app:layout_constraintBottom_toBottomOf="@id/bottomPlaceholder"
-            app:layout_constraintEnd_toStartOf="@+id/commentsButton"
+            app:layout_constraintEnd_toStartOf="@+id/deleteButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/attachmentDownloadBar"
-            style="@style/CardButton.Edit" />
+            app:layout_constraintTop_toBottomOf="@id/attachmentDownloadBar" />
 
         <TextView
+            android:id="@+id/deleteButton"
+            style="@style/CardButton.Delete"
+            android:text="@string/delete"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/editButton"
+            app:layout_constraintTop_toTopOf="@id/editButton"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <ImageView
             android:id="@+id/commentsButton"
             style="@style/CardButton.Comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableTop="@drawable/ic_comment_white_24dp"
             android:background="@drawable/pill_ripple_thin_accent"
             android:drawablePadding="8dp"
+            app:srcCompat="@drawable/ic_comment_white_24dp"
             android:gravity="center"
-            android:text="0"
             android:visibility="visible"
-            app:layout_constraintStart_toEndOf="@id/editButton"
-            app:layout_constraintEnd_toStartOf="@id/deleteButton"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <TextView
-            android:id="@+id/deleteButton"
-            android:text="@string/delete"
+            app:layout_constraintTop_toBottomOf="@id/attachmentDownloadBar"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/commentsButton"
-            app:layout_constraintTop_toTopOf="@id/editButton"
-            app:layout_constraintVertical_bias="1.0"
-            style="@style/CardButton.Delete" />
+            android:contentDescription="@string/comments" />
 
         <View
             android:id="@+id/bottomPlaceholder"
@@ -141,9 +139,9 @@
 
         <android.support.constraint.Group
             android:id="@+id/editButtonGroup"
-            android:visibility="visible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:constraint_referenced_ids="deleteButton,editButton" />
 
     </android.support.constraint.ConstraintLayout>

@@ -20,7 +20,7 @@ class ContributionHeaderViewHolder(itemView: View): BaseResourceHeaderViewHolder
     override val resourceColorBar: View = itemView.resourceColorBar
 
     fun showButtonsForDraft() {
-        deleteButton.setDrawableLeft(R.drawable.ic_delete_white_24dp)
+        deleteButton.setDrawableRight(R.drawable.ic_delete_white_24dp)
         editButton.setDrawableLeft(R.drawable.ic_pencil_white_24dp)
 
         deleteButton.setVisible()

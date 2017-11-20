@@ -37,12 +37,12 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
     private val editButton: TextView = itemView.editButton
     private val deleteButton: TextView = itemView.deleteButton
 
-    private val commentsButton: TextView = itemView.commentsButton
+    private val commentsButton: ImageView = itemView.commentsButton
 
     fun setupEditButtons(activity: Activity, cardRef: DocumentReference, cardModel: ContentCard, parentContentId: String) {
 
         editButton.setDrawableLeft(R.drawable.ic_pencil_white_24dp)
-        deleteButton.setDrawableLeft(R.drawable.ic_delete_white_24dp)
+        deleteButton.setDrawableRight(R.drawable.ic_delete_white_24dp)
 
         editButtonGroup.setVisible()
 
@@ -68,8 +68,7 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
         commentsButton.apply {
             setVisible()
 
-            text = 0.toString() // todo: add count!
-            setDrawableTop(R.drawable.ic_comment_white_24dp)
+            // todo: add count!
 
             setOnClickListener {
                 commentsButton.jiggle()
