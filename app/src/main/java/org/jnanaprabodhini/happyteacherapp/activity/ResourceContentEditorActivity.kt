@@ -50,6 +50,8 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
         EditableResourceRecyclerAdapter(options, attachmentDestinationDirectory, header.subtopic, this, this)
     }
 
+    private var hasSeenChangeNameDialog = false
+
     // Dialog text (depending on resource type):
     private val confirmationDialogTitle by lazy {
         when (header.resourceType) {
@@ -130,7 +132,7 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
         if (header.name.isNotEmpty()) {
             showSubmitConfirmationDialog()
         } else {
-            showChangeNameDialog()
+            showChangeNameDialog(getString(R.string.resources_must_be_named_before_being_submitted))
         }
     }
 
@@ -187,6 +189,8 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
                     })
                     .setNegativeButton(R.string.no, { _, _ -> super.finish()})
                     .show()
+        } else if (header.name.isEmpty() && !hasSeenChangeNameDialog) {
+            showChangeNameDialog()
         } else {
             super.finish()
         }
@@ -211,20 +215,21 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
         return true
     }
 
-    private fun showChangeNameDialog() {
+    private fun showChangeNameDialog(message: String? = null) {
         val nameChangeDialog = AlertDialog.Builder(this)
 
         val editText = EditText(this)
         editText.setHint(R.string.resource_name)
-        editText.inputType = InputType.TYPE_CLASS_TEXT
+        editText.inputType = InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
 
         if (header.name.isNotEmpty()) {
             editText.setText(header.name)
             nameChangeDialog.setTitle(R.string.resource_name)
         } else {
             nameChangeDialog.setTitle(R.string.name_your_resource)
-            nameChangeDialog.setMessage(R.string.resources_must_be_named_before_being_submitted)
         }
+
+        message?.let { nameChangeDialog.setMessage(it) }
 
         nameChangeDialog.setView(editText)
                 .setPositiveButton(R.string.save, {dialog, _ ->
@@ -233,6 +238,8 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
                 })
                 .setNegativeButton(R.string.cancel, { dialog, _ -> dialog.dismiss() })
                 .show()
+
+        hasSeenChangeNameDialog = true
     }
 
     private fun setResourceName(name: String) {
