@@ -51,7 +51,7 @@ class SubtopicWriteChoiceRecyclerAdapter(options: FirestoreRecyclerOptions<Subto
         val authorLocation = activity.prefs.getUserLocation()
 
         return ResourceHeader(
-                name = subtopic.name,
+                name = if (resourceType == ResourceType.CLASSROOM_RESOURCE) "" else subtopic.name,
                 authorId = userId,
                 subtopic = subtopicId,
                 topic = subtopic.topic,

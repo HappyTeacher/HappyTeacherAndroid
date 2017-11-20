@@ -70,9 +70,18 @@ abstract class ResourceContentActivity : HappyTeacherActivity(), FirebaseDataObs
         initializeRecyclerView()
     }
 
+    protected fun updateActionBarHeader() {
+        if (header.name.isNotEmpty()) {
+            supportActionBar?.title = header.name
+        } else {
+            supportActionBar?.title = getString(R.string.no_name)
+        }
+    }
+
     open fun setHeaderView() {
+        updateActionBarHeader()
+
         headerView.setVisible()
-        supportActionBar?.title = header.name
 
         subjectTextView.text = header.subjectName
         authorNameTextView.text = header.authorName

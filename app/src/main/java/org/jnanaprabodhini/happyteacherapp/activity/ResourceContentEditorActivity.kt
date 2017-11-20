@@ -5,6 +5,10 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.text.InputType
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.EditText
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
@@ -95,6 +99,7 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
             ResourceType.CLASSROOM_RESOURCE -> R.string.classroom_resource_editor
             else -> R.string.editor
         })
+
         setupFabs()
     }
 
@@ -117,7 +122,15 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
         }
 
         secondaryFab.setOnClickListener{
+            checkForNameAndSubmit()
+        }
+    }
+
+    private fun checkForNameAndSubmit() {
+        if (header.name.isNotEmpty()) {
             showSubmitConfirmationDialog()
+        } else {
+            showChangeNameDialog()
         }
     }
 
@@ -177,6 +190,55 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
         } else {
             super.finish()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_resource_editor, menu)
+        val changeNameMenuItem = menu?.findItem(R.id.menu_change_name)
+
+        if (header.resourceType == ResourceType.CLASSROOM_RESOURCE) {
+            changeNameMenuItem?.isVisible = true
+        }
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.menu_change_name -> showChangeNameDialog()
+        }
+        return true
+    }
+
+    private fun showChangeNameDialog() {
+        val nameChangeDialog = AlertDialog.Builder(this)
+
+        val editText = EditText(this)
+        editText.setHint(R.string.resource_name)
+        editText.inputType = InputType.TYPE_CLASS_TEXT
+
+        if (header.name.isNotEmpty()) {
+            editText.setText(header.name)
+            nameChangeDialog.setTitle(R.string.resource_name)
+        } else {
+            nameChangeDialog.setTitle(R.string.name_your_resource)
+            nameChangeDialog.setMessage(R.string.resources_must_be_named_before_being_submitted)
+        }
+
+        nameChangeDialog.setView(editText)
+                .setPositiveButton(R.string.save, {dialog, _ ->
+                    setResourceName(editText.text.toString())
+                    dialog.dismiss()
+                })
+                .setNegativeButton(R.string.cancel, { dialog, _ -> dialog.dismiss() })
+                .show()
+    }
+
+    private fun setResourceName(name: String) {
+        header.name = name
+        contentRef.set(header)
+        updateActionBarHeader()
     }
 }
 

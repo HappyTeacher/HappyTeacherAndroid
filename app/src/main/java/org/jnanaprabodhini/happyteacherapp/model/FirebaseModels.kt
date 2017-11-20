@@ -33,7 +33,7 @@ data class SyllabusLesson(val board: String = "",
                           val topicCount: Int = 0)
 
 @Parcelize
-data class ResourceHeader(val name: String = "",
+data class ResourceHeader(var name: String = "",
                           val authorId: String = "",
                           val authorInstitution: String = "",
                           val authorLocation: String = "",
