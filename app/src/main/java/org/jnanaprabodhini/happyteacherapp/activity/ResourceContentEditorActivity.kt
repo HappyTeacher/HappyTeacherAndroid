@@ -10,7 +10,7 @@ import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.ResourceContentRecyclerAdapter
-import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.EditableLessonRecyclerAdapter
+import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.EditableResourceRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.MovableViewContainer
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.RecyclerVerticalDragHelperCallback
 import org.jnanaprabodhini.happyteacherapp.extension.setTooltip
@@ -28,11 +28,11 @@ import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 class ResourceContentEditorActivity : ResourceContentActivity() {
 
     companion object {
-        fun launch(from: Activity, lessonRef: DocumentReference, resourceHeader: ResourceHeader) {
+        fun launch(from: Activity, resourceRef: DocumentReference, resourceHeader: ResourceHeader) {
             val lessonEditorIntent = Intent(from, ResourceContentEditorActivity::class.java)
 
             lessonEditorIntent.apply {
-                putExtra(CONTENT_REF_PATH, lessonRef.path)
+                putExtra(CONTENT_REF_PATH, resourceRef.path)
                 putExtra(HEADER, resourceHeader)
             }
             from.startActivity(lessonEditorIntent)
@@ -43,7 +43,7 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
         val options = FirestoreRecyclerOptions.Builder<ContentCard>()
                 .setQuery(cardsRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
 
-        EditableLessonRecyclerAdapter(options, attachmentDestinationDirectory, header.subtopic, this, this)
+        EditableResourceRecyclerAdapter(options, attachmentDestinationDirectory, header.subtopic, this, this)
     }
 
     // Dialog text (depending on resource type):
