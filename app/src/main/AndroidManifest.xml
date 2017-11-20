@@ -38,7 +38,7 @@
             android:label="@string/other_lesson_plans"
             android:parentActivityName=".activity.TopicsListActivity" />
         <activity
-            android:name=".activity.ResourceEditorActivity"
+            android:name=".activity.ResourceContentEditorActivity"
             android:parentActivityName=".activity.ContributeActivity" />
 
         <meta-data
@@ -57,7 +57,7 @@
         <activity
             android:name=".activity.CardEditorActivity"
             android:label="@string/card_editor"
-            android:parentActivityName=".activity.ResourceEditorActivity" />
+            android:parentActivityName=".activity.ResourceContentEditorActivity" />
         <activity android:name=".activity.SubmissionsForReviewActivity"
             android:label="@string/review_submissions"
             android:parentActivityName=".activity.TopicsListActivity"/>

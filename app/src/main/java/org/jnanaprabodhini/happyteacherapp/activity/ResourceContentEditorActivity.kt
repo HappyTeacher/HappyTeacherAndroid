@@ -25,11 +25,11 @@ import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 /**
  * Created by grahamearley on 11/3/17.
  */
-class ResourceEditorActivity : ResourceContentViewerActivity() {
+class ResourceContentEditorActivity : ResourceContentActivity() {
 
     companion object {
         fun launch(from: Activity, lessonRef: DocumentReference, resourceHeader: ResourceHeader) {
-            val lessonEditorIntent = Intent(from, ResourceEditorActivity::class.java)
+            val lessonEditorIntent = Intent(from, ResourceContentEditorActivity::class.java)
 
             lessonEditorIntent.apply {
                 putExtra(CONTENT_REF_PATH, lessonRef.path)
