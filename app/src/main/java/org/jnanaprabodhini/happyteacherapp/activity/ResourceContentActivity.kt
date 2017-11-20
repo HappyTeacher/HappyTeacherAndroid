@@ -44,7 +44,7 @@ abstract class ResourceContentActivity : HappyTeacherActivity(), FirebaseDataObs
     abstract val cardRecyclerAdapter: ResourceContentRecyclerAdapter
 
     protected val attachmentDestinationDirectory by lazy {
-        // This directory will be used to store any attachments downloaded from this contentKey.
+        // This directory will be used to store any attachments downloaded from this resource.
         File(Environment.getExternalStorageDirectory().path
                 + File.separator
                 + getString(R.string.app_name)
