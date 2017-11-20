@@ -2,8 +2,10 @@ package org.jnanaprabodhini.happyteacherapp.extension.taghandler
 
 import android.text.Editable
 import android.text.Html
+import android.text.TextPaint
 import android.text.style.LeadingMarginSpan
 import org.xml.sax.XMLReader
+
 
 /**
  * An abstract base class for handling list HTML tags (<ul> and <ol>) in a TextView.
@@ -23,16 +25,14 @@ abstract class ListTagHandler(private val indentationLevel: Int = 0): Html.TagHa
      */
     var activeListHandler: ListTagHandler? = null
 
-    private val indentationMultiplier = 15
-
     /**
      * Determine which tag handler should handle the most recently read tag.
      */
     override fun handleTag(opening: Boolean, tag: String?, output: Editable?, xmlReader: XMLReader?) {
         if (this.hasListHandler()
                 && activeListHandler?.hasListHandler() == false
-                && !opening
-                && tag == activeListHandler?.tag) {
+                && tag == activeListHandler?.tag
+                && !opening) {
 
             // If we're closing the list tag of the active list handler
             // (and not *its* active list handler), remove it.
@@ -48,11 +48,11 @@ abstract class ListTagHandler(private val indentationLevel: Int = 0): Html.TagHa
                 "ul" -> {
                     // At the root level, there is no need for an extra newline.
                     //  At other levels, newline is required for spans.
-                    if (this !is RootListTagHandler) output?.append("\n")
+                    if (!output.isNullOrEmpty() && output?.last() != '\n') output?.append("\n")
                     activeListHandler = UnorderedListTagHandler(indentationLevel + 1)
                 }
                 "ol" -> {
-                    if (this !is RootListTagHandler) output?.append("\n")
+                    if (!output.isNullOrEmpty() && output?.last() != '\n') output?.append("\n")
                     activeListHandler = OrderedListTagHandler(indentationLevel + 1)
                 }
             }
@@ -62,9 +62,17 @@ abstract class ListTagHandler(private val indentationLevel: Int = 0): Html.TagHa
     private fun hasListHandler() = activeListHandler != null
 
     fun getIndentationSpan(): LeadingMarginSpan.Standard {
-        val indentationAmount = indentationLevel * indentationMultiplier
+        val firstIndentAmount = 10
+        val firstHangingIndentAmount = 50
+        val restIndentAmount = 20
 
-        return LeadingMarginSpan.Standard(indentationAmount)
+        return if (indentationLevel == 1) {
+            // Hanging indent on first indentation level
+            //  will carry over to preceding indentation levels
+            LeadingMarginSpan.Standard(firstIndentAmount, firstHangingIndentAmount)
+        } else {
+            LeadingMarginSpan.Standard(restIndentAmount)
+        }
     }
 
     /**

@@ -18,7 +18,7 @@ class UnorderedListTagHandler(indentationLevel: Int = 0): ListTagHandler(indenta
             stringStart = output?.length ?: 0
             output?.append(bulletPrefix)
         } else {
-            if (output?.get(output.lastIndex) != '\n') output?.append('\n')
+            if (!output.isNullOrEmpty() && output?.last() != '\n') output?.append('\n')
 
             output?.setSpan(getIndentationSpan(), stringStart, output.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }

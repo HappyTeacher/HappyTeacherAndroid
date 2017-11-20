@@ -9,7 +9,7 @@ import org.xml.sax.XMLReader
  *  (outside of any list). From there, it delegates list
  *  tag handling to the other subclasses.
  */
-class RootListTagHandler() : ListTagHandler() {
+class RootListTagHandler : ListTagHandler() {
 
     override val tag: String = ""
 
