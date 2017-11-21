@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
+    android:background="@color/lightGrayShadow">
+
+    <TextView
+        android:id="@+id/commenterNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toTopOf="@id/commentTextView"
+        app:layout_constraintEnd_toStartOf="@id/commenterRoleTextView"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        fontPath="fonts/Roboto-Bold.ttf"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        tools:text="Mister Bojangles" />
+
+    <TextView
+        android:id="@+id/commenterRoleTextView"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        app:layout_constraintBottom_toTopOf="@id/commentTextView"
+        app:layout_constraintEnd_toStartOf="@id/commentTimeTextView"
+        app:layout_constraintStart_toEndOf="@id/commenterNameTextView"
+        app:layout_constraintTop_toTopOf="parent"
+        fontPath="fonts/Roboto-MediumItalic.ttf"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold|italic"
+        tools:text="@string/parenthesized_reviewer" />
+
+    <TextView
+        android:id="@+id/commentTimeTextView"
+        tools:text="12 Dec. 3:54pm"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/commenterRoleTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/commentTextView"
+        fontPath="fonts/Roboto-Light.ttf"
+        android:textColor="@color/colorPrimary"
+        android:layout_width="0dp"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/commentTextView"
+        tools:text="Hello. This is the comment. It's a nice comment with all sorts of good feedback in it. Hope you fix this stuff!"
+        app:layout_constraintTop_toBottomOf="@id/commenterNameTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="match_parent" />
+
+</android.support.constraint.ConstraintLayout>

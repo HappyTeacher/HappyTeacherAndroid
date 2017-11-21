@@ -71,6 +71,7 @@ data class ContentCard(var header: String = "",
 @SuppressLint("ParcelCreator")
 @Parcelize
 data class CardComment(val commenterId: String = "",
+                       val commenterName: String = "",
                        var commentText: String = "",
                        var dateUpdated: Date = Date(),
                        val isReviewerComment: Boolean = false): Parcelable

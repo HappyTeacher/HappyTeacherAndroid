@@ -53,4 +53,9 @@ object LocaleManager {
             LocaleCodeWithTitle("mr", context.getString(R.string.marathi_in_marathi))
     )
 
+    fun getCurrentLocale(context: Context): Locale {
+        val prefs = PreferencesManager.getInstance(context)
+        return Locale(prefs.getCurrentLanguageCode())
+    }
+
 }

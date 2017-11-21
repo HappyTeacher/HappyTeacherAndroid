@@ -30,4 +30,5 @@ object UserRoles {
 object FirestoreKeys {
     const val STATUS = "status"
     const val IS_FEATURED = "isFeatured"
+    const val COMMENTS = "comments"
 }

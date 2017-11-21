@@ -64,9 +64,13 @@
             android:name=".activity.CardEditorActivity"
             android:label="@string/card_editor"
             android:parentActivityName=".activity.ResourceContentEditorActivity" />
-        <activity android:name=".activity.SubmissionsForReviewActivity"
+        <activity
+            android:name=".activity.SubmissionsForReviewActivity"
             android:label="@string/review_submissions"
-            android:parentActivityName=".activity.TopicsListActivity"/>
+            android:parentActivityName=".activity.TopicsListActivity" />
+        <activity android:name=".activity.FeedbackCommentsActivity"
+            android:label="@string/feedback_notes"
+            android:parentActivityName=".activity.LessonViewerActivity"/>
     </application>
 
 </manifest>
