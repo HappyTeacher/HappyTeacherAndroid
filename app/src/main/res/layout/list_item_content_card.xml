@@ -26,6 +26,7 @@
         <!--TODO: ViewStub this-->
         <org.jnanaprabodhini.happyteacherapp.view.FeedbackPreviewView
             android:id="@+id/feedbackPreviewView"
+            android:visibility="gone"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

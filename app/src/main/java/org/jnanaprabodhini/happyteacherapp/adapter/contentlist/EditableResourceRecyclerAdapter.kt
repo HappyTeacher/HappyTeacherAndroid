@@ -23,8 +23,7 @@ class EditableResourceRecyclerAdapter(options: FirestoreRecyclerOptions<ContentC
             val parentContentId = cardRef.parent.parent.id
             holder.setupEditButtons(activity, cardRef, model ?: ContentCard(), parentContentId)
 
-            // Only show if comment
-            holder.setFeedbackDisplayForCard(cardRef.id)
+            holder.setFeedbackDisplayForCard(cardRef, model ?: ContentCard())
         }
     }
 

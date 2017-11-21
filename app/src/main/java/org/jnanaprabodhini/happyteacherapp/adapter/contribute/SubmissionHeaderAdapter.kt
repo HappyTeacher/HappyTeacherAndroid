@@ -73,7 +73,6 @@ class SubmissionHeaderAdapter(adapterOptions: FirestoreRecyclerOptions<ResourceH
         return View.OnClickListener {
             val modelOrEmpty = model ?: ResourceHeader()
             when (model?.status) {
-                ResourceStatus.AWAITING_REVIEW -> CommentableResourceContentViewerActivity.launch(activity, contributionDocumentRef, modelOrEmpty)
                 ResourceStatus.CHANGES_REQUESTED -> ResourceContentEditorActivity.launch(activity, contributionDocumentRef, modelOrEmpty)
                 else -> when (model?.resourceType) {
                     ResourceType.LESSON -> LessonViewerActivity.launch(activity, contributionDocumentRef,

@@ -64,12 +64,12 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
         }
     }
 
-    fun setFeedbackEditableForCard(cardId: String) {
-        feedbackPreview.setEditableForCard(cardId)
+    fun setFeedbackEditableForCard(cardRef: DocumentReference, card: ContentCard) {
+        feedbackPreview.setEditableForCard(cardRef, card)
     }
 
-    fun setFeedbackDisplayForCard(cardId: String) {
-        // todo: pass in comment as parameter
+    fun setFeedbackDisplayForCard(cardRef: DocumentReference, card: ContentCard) {
+        feedbackPreview.setReadOnlyForCard(cardRef, card)
     }
 
     fun hideEditButtons() {

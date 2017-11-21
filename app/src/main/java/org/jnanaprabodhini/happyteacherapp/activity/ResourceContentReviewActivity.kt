@@ -5,9 +5,12 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.extension.*
+import org.jnanaprabodhini.happyteacherapp.model.ContentCard
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import org.jnanaprabodhini.happyteacherapp.util.FirestoreKeys
 import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
@@ -33,8 +36,15 @@ class ResourceContentReviewActivity: CommentableResourceContentViewerActivity() 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // TODO: change action based on feedback status (publish if no comments, send feedback if comments)
-        setFabForPublishing()
+        cardsRef.addSnapshotListener(this, { querySnapshot, exception ->
+            if (querySnapshot?.documents
+                    ?.map { it.toObject(ContentCard::class.java) }
+                    ?.any { it.feedbackPreviewComment.isNotEmpty() } == true) {
+                setFabForChangeRequest()
+            } else {
+                setFabForPublishing()
+            }
+        })
     }
 
     private fun setFabForPublishing() {

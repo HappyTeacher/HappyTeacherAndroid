@@ -20,7 +20,7 @@ class CommentableResourceRecyclerAdapter(options: FirestoreRecyclerOptions<Conte
             onBindContentCardViewHolder(holder, model)
 
             val cardRef = snapshots.getSnapshot(position).reference
-            holder.setFeedbackEditableForCard(cardRef.id)
+            holder.setFeedbackEditableForCard(cardRef, model ?: ContentCard())
         }
     }
 

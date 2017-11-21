@@ -9,10 +9,12 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/actionIcon"
+        app:layout_constraintEnd_toStartOf="@id/arrowIcon"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/noteTextView"
+        app:layout_constraintVertical_chainStyle="packed"
         fontPath="fonts/Roboto-Bold.ttf"
-        android:text="Feedback Notes"/>
+        android:text="@string/feedback_notes"/>
 
     <TextView
         android:id="@+id/noteTextView"
@@ -20,22 +22,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:text="This is a peek comment. It shows some (or maybe all if it's short) of a comment that a reviewer left on your lesson."
-        android:ellipsize="end"
-        android:maxLines="3"
         app:layout_constraintTop_toBottomOf="@id/feedbackNotesTitleTextView"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/actionIcon"/>
+        app:layout_constraintEnd_toStartOf="@id/arrowIcon"/>
 
     <ImageView
-        android:id="@+id/actionIcon"
+        android:id="@+id/arrowIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
+        android:padding="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:srcCompat="@drawable/ic_keyboard_arrow_right_white_24dp"/>
 
