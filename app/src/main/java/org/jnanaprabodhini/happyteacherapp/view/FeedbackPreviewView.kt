@@ -35,7 +35,7 @@ class FeedbackPreviewView(context: Context, attrs: AttributeSet): ConstraintLayo
 
     init {
         LayoutInflater.from(context).inflate(R.layout.view_feedback_preview, this)
-        this.background = ResourcesCompat.getDrawable(context.resources, R.drawable.accent_ripple_pill, null)
+        this.background = ResourcesCompat.getDrawable(context.resources, R.drawable.ripple_round_corners_accent, null)
     }
 
     fun setEditableForCard(cardRef: DocumentReference, card: ContentCard) {
