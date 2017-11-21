@@ -2,6 +2,7 @@ package org.jnanaprabodhini.happyteacherapp.view
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Typeface
 import android.support.constraint.ConstraintLayout
 import android.support.v4.content.res.ResourcesCompat
@@ -15,6 +16,7 @@ import android.widget.EditText
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.view_feedback_preview.view.*
 import org.jnanaprabodhini.happyteacherapp.R
+import org.jnanaprabodhini.happyteacherapp.dialog.InputTextDialogBuilder
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.extension.showToast
@@ -53,25 +55,28 @@ class FeedbackPreviewView(context: Context, attrs: AttributeSet): ConstraintLayo
         }
 
         setOnClickListener {
-            val feedbackDialog = AlertDialog.Builder(context)
+            val feedbackDialog = InputTextDialogBuilder(context)
 
-            val editText = EditText(context)
-            editText.setHint("Add feedback here")
-            editText.inputType = InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+            feedbackDialog.apply {
+                setTitle(context.getString(R.string.feedback))
 
-            if (card.feedbackPreviewComment.isNotEmpty()) {
-                editText.setText(card.feedbackPreviewComment)
+                if (card.feedbackPreviewComment.isNotEmpty()) {
+                    setInputText(card.feedbackPreviewComment)
+                } else {
+                    setInputHint(context.getString(R.string.add_your_feedback))
+                }
+
+                setPositiveButton(R.string.save, {dialog, feedbackText ->
+                    updateComment(feedbackText, cardRef)
+                    dialog.dismiss()
+                })
+
+                setNegativeButton(R.string.cancel, DialogInterface.OnClickListener {
+                    dialog, _ -> dialog.dismiss()
+                })
+
+                show()
             }
-
-            feedbackDialog.setTitle("Feedback")
-
-            feedbackDialog.setView(editText)
-                    .setPositiveButton(R.string.save, {dialog, _ ->
-                        updateComment(editText.text.toString(), cardRef)
-                        dialog.dismiss()
-                    })
-                    .setNegativeButton(R.string.cancel, { dialog, _ -> dialog.dismiss() })
-                    .show()
         }
 
         arrowIcon.setOnClickListener {
