@@ -4,12 +4,16 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.EventListener
-import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import org.jnanaprabodhini.happyteacherapp.R
-import org.jnanaprabodhini.happyteacherapp.extension.*
+import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.CommentableResourceRecyclerAdapter
+import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.ResourceContentRecyclerAdapter
+import org.jnanaprabodhini.happyteacherapp.extension.setColor
+import org.jnanaprabodhini.happyteacherapp.extension.setDrawableResource
+import org.jnanaprabodhini.happyteacherapp.extension.setVisible
+import org.jnanaprabodhini.happyteacherapp.extension.showToast
 import org.jnanaprabodhini.happyteacherapp.model.ContentCard
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import org.jnanaprabodhini.happyteacherapp.util.FirestoreKeys
@@ -19,7 +23,7 @@ import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 /**
  * Created by grahamearley on 11/20/17.
  */
-class ResourceContentReviewActivity: CommentableResourceContentViewerActivity() {
+class ResourceContentReviewActivity: ResourceContentViewerActivity() {
 
     companion object {
         fun launch(from: Activity, resourceRef: DocumentReference, resourceHeader: ResourceHeader) {
@@ -33,8 +37,19 @@ class ResourceContentReviewActivity: CommentableResourceContentViewerActivity() 
         }
     }
 
+    override val cardRecyclerAdapter: ResourceContentRecyclerAdapter by lazy {
+        val options = FirestoreRecyclerOptions.Builder<ContentCard>()
+                .setQuery(cardsRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
+
+        CommentableResourceRecyclerAdapter(options, attachmentDestinationDirectory, header.subtopic, this, this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        when (header.status) {
+            ResourceStatus.AWAITING_REVIEW -> supportActionBar?.setSubtitle(R.string.awaiting_review)
+            ResourceStatus.CHANGES_REQUESTED -> supportActionBar?.setSubtitle(R.string.changes_requested)
+        }
 
         cardsRef.addSnapshotListener(this, { querySnapshot, exception ->
             if (querySnapshot?.documents
@@ -125,5 +140,4 @@ class ResourceContentReviewActivity: CommentableResourceContentViewerActivity() 
                     finish()
                 }
     }
-
 }
