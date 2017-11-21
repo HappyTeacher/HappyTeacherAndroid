@@ -71,8 +71,4 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
     fun setFeedbackDisplayForCard(cardRef: DocumentReference, card: ContentCard) {
         feedbackPreview.setReadOnlyForCard(cardRef, card)
     }
-
-    fun hideEditButtons() {
-        editButtonGroup.setVisibilityGone()
-    }
 }
