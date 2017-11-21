@@ -43,7 +43,7 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
     fun setupEditButtons(activity: Activity, cardRef: DocumentReference, cardModel: ContentCard, parentContentId: String) {
 
         editButton.setDrawableLeft(R.drawable.ic_pencil_white_24dp)
-        deleteButton.setDrawableRight(R.drawable.ic_delete_white_24dp)
+        deleteButton.setDrawableLeft(R.drawable.ic_delete_white_24dp)
 
         editButtonGroup.setVisible()
 
