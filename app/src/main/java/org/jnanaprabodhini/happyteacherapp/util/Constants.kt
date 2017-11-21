@@ -31,4 +31,7 @@ object FirestoreKeys {
     const val STATUS = "status"
     const val IS_FEATURED = "isFeatured"
     const val COMMENTS = "comments"
+    const val DATE_UPDATED = "dateUpdated"
+    const val FEEDBACK_PREVIEW_COMMENT = "feedbackPreviewComment"
+    const val FEEDBACK_PREVIEW_COMMENT_PATH = "feedbackPreviewCommentPath"
 }

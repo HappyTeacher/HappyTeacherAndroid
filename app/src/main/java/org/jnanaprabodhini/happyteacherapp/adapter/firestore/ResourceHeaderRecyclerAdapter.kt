@@ -40,7 +40,7 @@ class ResourceHeaderRecyclerAdapter(options: FirestoreRecyclerOptions<ResourceHe
 
     override fun onBindViewHolder(holder: ResourceHeaderViewHolder, position: Int, model: ResourceHeader?) {
         val contentRef = snapshots.getSnapshot(position).reference
-        holder.populateView(model, contentRef, activity, dateFormat, showSubmissionCount)
+        holder.populateView(model, activity, dateFormat, showSubmissionCount)
 
         holder.itemView.setOnClickListener {
             launchContentViewerActivity(contentRef, model)
@@ -50,7 +50,7 @@ class ResourceHeaderRecyclerAdapter(options: FirestoreRecyclerOptions<ResourceHe
     private fun launchContentViewerActivity(contentDocumentRef: DocumentReference, resourceHeaderModel: ResourceHeader?) {
         if (resourceHeaderModel?.status == ResourceStatus.AWAITING_REVIEW
                 && (prefs.userIsMod() || prefs.userIsAdmin())) {
-            ResourceContentReviewActivity.launch(activity, contentDocumentRef, resourceHeaderModel ?: ResourceHeader())
+            ResourceContentReviewActivity.launch(activity, contentDocumentRef, resourceHeaderModel)
         } else when (resourceHeaderModel?.resourceType) {
             ResourceType.LESSON -> LessonViewerActivity.launch(activity, contentDocumentRef, resourceHeaderModel, showSubmissionCount)
             ResourceType.CLASSROOM_RESOURCE -> ClassroomResourceViewerActivity.launch(activity, contentDocumentRef, resourceHeaderModel)

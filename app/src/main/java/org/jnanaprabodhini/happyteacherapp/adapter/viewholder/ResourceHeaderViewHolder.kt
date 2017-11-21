@@ -25,7 +25,7 @@ class ResourceHeaderViewHolder(itemView: View): BaseResourceHeaderViewHolder(ite
     val submissionCountTextView: TextView = itemView.submissionCountTextView
     override val resourceColorBar: View = itemView.resourceColorBar
 
-    fun populateView(resourceHeaderModel: ResourceHeader?, contentDocumentRef: DocumentReference, activity: Activity, dateFormat: DateFormat, showSubmissionCount: Boolean) {
+    fun populateView(resourceHeaderModel: ResourceHeader?, activity: Activity, dateFormat: DateFormat, showSubmissionCount: Boolean) {
         titleTextView.text = resourceHeaderModel?.name
         authorNameTextView.text = resourceHeaderModel?.authorName
         institutionTextView.text = resourceHeaderModel?.authorInstitution

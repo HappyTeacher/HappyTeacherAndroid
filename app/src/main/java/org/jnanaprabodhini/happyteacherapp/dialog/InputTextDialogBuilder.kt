@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.support.annotation.StringRes
 import android.text.InputType
 import android.view.LayoutInflater
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import org.jnanaprabodhini.happyteacherapp.R
 
@@ -48,6 +49,15 @@ class InputTextDialogBuilder(context: Context) {
 
     fun setInputHint(hint: String) {
         editText.hint = hint
+    }
+
+    fun setInputType(inputType: Int) {
+        editText.inputType = inputType
+
+        if (inputType == InputType.TYPE_TEXT_FLAG_MULTI_LINE) {
+            editText.setSingleLine(false)
+            editText.imeOptions = EditorInfo.IME_FLAG_NO_ENTER_ACTION
+        }
     }
 
     fun setNegativeButton(text: String, listener: DialogInterface.OnClickListener) {

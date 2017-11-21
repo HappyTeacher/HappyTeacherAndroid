@@ -1,6 +1,7 @@
 package org.jnanaprabodhini.happyteacherapp.activity
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.support.v7.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_feedback_comments.*
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
@@ -23,14 +25,14 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
     //todo: data observer!
 
     companion object {
-        fun launch(from: Activity, resourceRef: DocumentReference) {
-            val intent = Intent(from, FeedbackCommentsActivity::class.java)
+        fun launch(context: Context, resourceRef: DocumentReference) {
+            val intent = Intent(context, FeedbackCommentsActivity::class.java)
 
             intent.apply {
                 putExtra(RESOURCE_REF_PATH, resourceRef.path)
             }
 
-            from.startActivity(intent)
+            context.startActivity(intent)
         }
 
         private const val RESOURCE_REF_PATH = "RESOURCE_REF_PATH"
@@ -60,8 +62,10 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
         dividerItemDecoration.setDrawable(ResourcesCompat.getDrawable(resources, R.drawable.divider_vertical, null)!!)
         commentsRecyclerView.addItemDecoration(dividerItemDecoration)
 
+        val query = commentsCollectionRef.orderBy(FirestoreKeys.DATE_UPDATED, Query.Direction.DESCENDING)
+
         val options = FirestoreRecyclerOptions.Builder<CardComment>()
-                .setQuery(commentsCollectionRef, CardComment::class.java)
+                .setQuery(query, CardComment::class.java)
                 .build()
         val adapter = CardCommentAdapter(options, this, this)
         adapter.startListening()

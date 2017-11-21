@@ -3,10 +3,8 @@ package org.jnanaprabodhini.happyteacherapp.adapter.firestore
 import android.app.Activity
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import org.jnanaprabodhini.happyteacherapp.R
-import org.jnanaprabodhini.happyteacherapp.adapter.firestore.FirestoreObserverRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.adapter.viewholder.CardCommentViewHolder
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
@@ -36,7 +34,7 @@ class CardCommentAdapter(options: FirestoreRecyclerOptions<CardComment>, dataObs
         holder?.apply {
             commenterNameTextView.text = model?.commenterName
 
-            if (model?.isReviewerComment == true) {
+            if (model?.reviewerComment == true) {
                 commenterRoleTextView.setVisible()
             } else {
                 commenterRoleTextView.setVisibilityGone()

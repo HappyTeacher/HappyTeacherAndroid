@@ -221,6 +221,7 @@
     <string name="feedback_notes">Feedback Notes</string>
     <string name="feedback">Feedback</string>
     <string name="add_your_feedback">Add your feedback…</string>
+    <string name="parenthesized_reviewer">(Reviewer)</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>

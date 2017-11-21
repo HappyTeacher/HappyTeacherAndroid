@@ -32,7 +32,7 @@
         fontPath="fonts/Roboto-MediumItalic.ttf"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold|italic"
-        tools:text="@string/parenthesized_reviewer" />
+        android:text="@string/parenthesized_reviewer" />
 
     <TextView
         android:id="@+id/commentTimeTextView"

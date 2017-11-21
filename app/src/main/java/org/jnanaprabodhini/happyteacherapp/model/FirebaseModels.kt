@@ -2,6 +2,7 @@ package org.jnanaprabodhini.happyteacherapp.model
 
 import android.annotation.SuppressLint
 import android.os.Parcelable
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Exclude
 import kotlinx.android.parcel.Parcelize
 import java.util.*
@@ -59,6 +60,7 @@ data class ContentCard(var header: String = "",
                        var attachmentPath: String = "",
                        var attachmentMetadata: AttachmentMetadata = AttachmentMetadata(),
                        var feedbackPreviewComment: String = "",
+                       var feedbackPreviewCommentPath: String = "",
                        var orderNumber: Int = 0): Parcelable {
     @Exclude
     fun isEmpty(): Boolean {
@@ -74,7 +76,7 @@ data class CardComment(val commenterId: String = "",
                        val commenterName: String = "",
                        var commentText: String = "",
                        var dateUpdated: Date = Date(),
-                       val isReviewerComment: Boolean = false): Parcelable
+                       val reviewerComment: Boolean = false): Parcelable
 
 @SuppressLint("ParcelCreator")
 @Parcelize
