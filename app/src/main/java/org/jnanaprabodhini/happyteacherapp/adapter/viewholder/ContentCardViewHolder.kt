@@ -13,6 +13,7 @@ import org.jnanaprabodhini.happyteacherapp.activity.CardEditorActivity
 import org.jnanaprabodhini.happyteacherapp.extension.*
 import org.jnanaprabodhini.happyteacherapp.model.ContentCard
 import org.jnanaprabodhini.happyteacherapp.view.DownloadBarView
+import org.jnanaprabodhini.happyteacherapp.view.FeedbackPreviewView
 import org.jnanaprabodhini.happyteacherapp.view.HorizontalPagerRecyclerView
 import org.jnanaprabodhini.happyteacherapp.view.YoutubeWebView
 
@@ -37,7 +38,7 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
     private val editButton: TextView = itemView.editButton
     private val deleteButton: TextView = itemView.deleteButton
 
-//    private val commentsButton: ImageView = itemView.commentsButton
+    private val feedbackPreview: FeedbackPreviewView = itemView.feedbackPreviewView
 
     fun setupEditButtons(activity: Activity, cardRef: DocumentReference, cardModel: ContentCard, parentContentId: String) {
 
@@ -63,18 +64,12 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
         }
     }
 
-    // TODO: revisit parameters..
-    fun setupCommentButton(activity: Activity, cardRef: DocumentReference, cardModel: ContentCard, parentContentId: String) {
-//        commentsButton.apply {
-//            setVisible()
-//
-//            // todo: add count!
-//
-//            setOnClickListener {
-//                commentsButton.jiggle()
-//                activity.showToast("Comments coming soon!")
-//            }
-//        }
+    fun setFeedbackEditableForCard(cardId: String) {
+        feedbackPreview.setEditableForCard(cardId)
+    }
+
+    fun setFeedbackDisplayForCard(cardId: String) {
+        // todo: pass in comment as parameter
     }
 
     fun hideEditButtons() {

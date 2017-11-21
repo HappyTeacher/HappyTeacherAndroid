@@ -217,6 +217,7 @@
     <string name="resource_name">Resource Name</string>
     <string name="name_your_resource">Name your resource</string>
     <string name="resources_must_be_named_before_being_submitted">Resources must be named before being submitted.</string>
+    <string name="tap_to_add_feedback">Tap to add feedback</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>
