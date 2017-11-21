@@ -37,7 +37,7 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
     private val editButton: TextView = itemView.editButton
     private val deleteButton: TextView = itemView.deleteButton
 
-    private val commentsButton: ImageView = itemView.commentsButton
+//    private val commentsButton: ImageView = itemView.commentsButton
 
     fun setupEditButtons(activity: Activity, cardRef: DocumentReference, cardModel: ContentCard, parentContentId: String) {
 
@@ -65,16 +65,16 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
 
     // TODO: revisit parameters..
     fun setupCommentButton(activity: Activity, cardRef: DocumentReference, cardModel: ContentCard, parentContentId: String) {
-        commentsButton.apply {
-            setVisible()
-
-            // todo: add count!
-
-            setOnClickListener {
-                commentsButton.jiggle()
-                activity.showToast("Comments coming soon!")
-            }
-        }
+//        commentsButton.apply {
+//            setVisible()
+//
+//            // todo: add count!
+//
+//            setOnClickListener {
+//                commentsButton.jiggle()
+//                activity.showToast("Comments coming soon!")
+//            }
+//        }
     }
 
     fun hideEditButtons() {
