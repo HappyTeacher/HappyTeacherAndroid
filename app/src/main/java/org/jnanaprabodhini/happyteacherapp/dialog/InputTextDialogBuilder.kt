@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.support.annotation.StringRes
+import android.text.InputType
 import android.view.LayoutInflater
 import android.widget.EditText
 import org.jnanaprabodhini.happyteacherapp.R
@@ -22,6 +23,7 @@ class InputTextDialogBuilder(context: Context) {
     init {
         val padding = context.resources.getDimensionPixelSize(R.dimen.padding_dialog)
         editText.setPadding(padding, padding, padding, padding)
+        editText.inputType = InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
     }
 
     fun setTitle(@StringRes title: Int) {

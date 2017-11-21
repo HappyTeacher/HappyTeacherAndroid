@@ -2,6 +2,7 @@ package org.jnanaprabodhini.happyteacherapp.activity
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -23,6 +24,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import org.jnanaprabodhini.happyteacherapp.adapter.EditableCardImageAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.RecyclerHorizontalDragHelperCallback
+import org.jnanaprabodhini.happyteacherapp.dialog.InputTextDialogBuilder
 import org.jnanaprabodhini.happyteacherapp.util.ObservableArrayList
 import java.io.InputStream
 import java.util.*
@@ -460,21 +462,18 @@ class CardEditorActivity : HappyTeacherActivity() {
     }
 
     private fun showAddImageUrlDialog() {
-        val urlTextEdit = EditText(this)
-        urlTextEdit.hint = getString(R.string.image_url)
-
-        AlertDialog.Builder(this)
-                .setTitle(R.string.add_image_by_url)
-                .setView(urlTextEdit)
-                .setPositiveButton(R.string.add, { dialog, _ ->
-                    val url = urlTextEdit.text.toString()
-                    addImageFromUrl(url)
-                    dialog.dismiss()
-                })
-                .setNegativeButton(R.string.cancel, { dialog, _ ->
-                    dialog.dismiss()
-                })
-                .show()
+        InputTextDialogBuilder(this).apply {
+            setTitle(R.string.add_image_by_url)
+            setInputHint(getString(R.string.image_url))
+            setPositiveButton(R.string.add, { dialog, url ->
+                addImageFromUrl(url)
+                dialog.dismiss()
+            })
+            setNegativeButton(R.string.cancel, DialogInterface.OnClickListener { dialog, _ ->
+                dialog.dismiss()
+            })
+            show()
+        }
     }
 
     private fun addImageFromUrl(url: String) {

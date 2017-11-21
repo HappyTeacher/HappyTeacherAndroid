@@ -2,6 +2,7 @@ package org.jnanaprabodhini.happyteacherapp.activity
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.helper.ItemTouchHelper
@@ -17,6 +18,7 @@ import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.ResourceContentRe
 import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.EditableResourceRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.MovableViewContainer
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.RecyclerVerticalDragHelperCallback
+import org.jnanaprabodhini.happyteacherapp.dialog.InputTextDialogBuilder
 import org.jnanaprabodhini.happyteacherapp.extension.setTooltip
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.extension.showToast
@@ -216,28 +218,31 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
     }
 
     private fun showChangeNameDialog(message: String? = null) {
-        val nameChangeDialog = AlertDialog.Builder(this)
+        val nameChangeDialog = InputTextDialogBuilder(this)
 
-        val editText = EditText(this)
-        editText.setHint(R.string.resource_name)
-        editText.inputType = InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+        nameChangeDialog.apply {
+            setInputHint(getString(R.string.resource_name))
 
-        if (header.name.isNotEmpty()) {
-            editText.setText(header.name)
-            nameChangeDialog.setTitle(R.string.resource_name)
-        } else {
-            nameChangeDialog.setTitle(R.string.name_your_resource)
+            if (header.name.isNotEmpty()) {
+                setInputText(header.name)
+                setTitle(R.string.resource_name)
+            } else {
+                setTitle(R.string.name_your_resource)
+            }
+
+            message?.let { setMessage(it) }
+
+            setPositiveButton(R.string.save, {dialog, name ->
+                setResourceName(name)
+                dialog.dismiss()
+            })
+
+            setNegativeButton(R.string.cancel, DialogInterface.OnClickListener { dialog, _ ->
+                dialog.dismiss()
+            })
+
+            show()
         }
-
-        message?.let { nameChangeDialog.setMessage(it) }
-
-        nameChangeDialog.setView(editText)
-                .setPositiveButton(R.string.save, {dialog, _ ->
-                    setResourceName(editText.text.toString())
-                    dialog.dismiss()
-                })
-                .setNegativeButton(R.string.cancel, { dialog, _ -> dialog.dismiss() })
-                .show()
 
         hasSeenChangeNameDialog = true
     }
