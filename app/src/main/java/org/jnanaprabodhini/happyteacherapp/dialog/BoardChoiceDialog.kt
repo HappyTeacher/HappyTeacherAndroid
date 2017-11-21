@@ -16,6 +16,11 @@ import org.jnanaprabodhini.happyteacherapp.model.Board
  */
 class BoardChoiceDialog(context: Context): SettingsChoiceDialog(context, R.string.choose_your_syllabus, R.string.you_can_change_this_setting_later) {
 
+    override fun show() {
+        super.show()
+        prefs.setHasSeenBoardChooser(true)
+    }
+
     override fun configureOptionsListView(optionsListView: ListView) {
         optionsListView.choiceMode = ListView.CHOICE_MODE_SINGLE
 

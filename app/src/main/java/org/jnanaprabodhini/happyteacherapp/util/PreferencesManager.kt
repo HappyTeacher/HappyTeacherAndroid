@@ -34,7 +34,7 @@ class PreferencesManager private constructor(val context: Context) {
     fun setBoard(boardName: String, boardId: String) {
         setBoardName(boardName)
         setBoardId(boardId)
-        setBoardChosen()
+        setHasSeenBoardChooser(true)
     }
 
     private fun setBoardName(boardName: String) {
@@ -47,14 +47,13 @@ class PreferencesManager private constructor(val context: Context) {
         preferences.edit().putString(boardIdPrefsKey, boardId).apply()
     }
 
-    private fun setBoardChosen() {
-        val hasChosenBoardPrefsKey = context.getString(R.string.prefs_key_has_chosen_board)
-        preferences.edit().putBoolean(hasChosenBoardPrefsKey, true).apply()
+    fun setHasSeenBoardChooser(hasSeen: Boolean) {
+        val hasSeenBoardChooserKey = context.getString(R.string.prefs_key_has_seen_board_chooser)
+        preferences.edit().putBoolean(hasSeenBoardChooserKey, hasSeen).apply()
     }
 
     fun resetBoardChoice() {
-        val hasChosenBoardPrefsKey = context.getString(R.string.prefs_key_has_chosen_board)
-        preferences.edit().putBoolean(hasChosenBoardPrefsKey, false).apply()
+        setHasSeenBoardChooser(false)
     }
 
     // TODO: what should default board be?
@@ -62,7 +61,7 @@ class PreferencesManager private constructor(val context: Context) {
 
     fun getBoardName(): String = preferences.getString(context.getString(R.string.prefs_key_board_name), "")
 
-    fun hasChosenBoard(): Boolean = preferences.getBoolean(context.getString(R.string.prefs_key_has_chosen_board), false)
+    fun hasSeenBoardChooser(): Boolean = preferences.getBoolean(context.getString(R.string.prefs_key_has_seen_board_chooser), false)
 
     fun setUserName(name: String) {
         val userNamePrefsKey = context.getString(R.string.prefs_key_user_name)

@@ -50,7 +50,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
         setupRecyclerView()
 
-        if (!prefs.hasChosenBoard()) {
+        if (!prefs.hasSeenBoardChooser()) {
             // Prompt the user to select which board they would like
             //  to see syllabus lesson plans from.
             showBoardChooser()
