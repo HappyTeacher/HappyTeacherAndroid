@@ -88,7 +88,7 @@ class FeedbackPreviewView(context: Context, attrs: AttributeSet): ConstraintLayo
         }
 
         arrowIcon.setOnClickListener {
-            launchCardFeedbackActivity(cardRef)
+            launchCardFeedbackActivity(cardRef, isReviewer = true)
         }
     }
 
@@ -99,7 +99,7 @@ class FeedbackPreviewView(context: Context, attrs: AttributeSet): ConstraintLayo
             noteText = card.feedbackPreviewComment
 
             arrowIcon.setOnClickListener {
-                launchCardFeedbackActivity(cardRef)
+                launchCardFeedbackActivity(cardRef, isReviewer = false)
             }
         } else {
             this.setVisibilityGone()
@@ -124,8 +124,8 @@ class FeedbackPreviewView(context: Context, attrs: AttributeSet): ConstraintLayo
         commentRef.set(comment)
     }
 
-    private fun launchCardFeedbackActivity(cardRef: DocumentReference) {
-        FeedbackCommentsActivity.launch(context, cardRef)
+    private fun launchCardFeedbackActivity(cardRef: DocumentReference, isReviewer: Boolean) {
+        FeedbackCommentsActivity.launch(context, cardRef, isReviewer)
     }
 
 }

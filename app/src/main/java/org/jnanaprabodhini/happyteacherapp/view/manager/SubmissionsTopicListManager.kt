@@ -5,7 +5,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import org.jnanaprabodhini.happyteacherapp.R
-import org.jnanaprabodhini.happyteacherapp.activity.CommentableResourceContentViewerActivity
 import org.jnanaprabodhini.happyteacherapp.activity.ResourceContentReviewActivity
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacherapp.adapter.firestore.TopicContentRecyclerAdapter

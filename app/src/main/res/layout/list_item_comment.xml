@@ -41,6 +41,7 @@
         app:layout_constraintStart_toEndOf="@id/commenterRoleTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/commentTextView"
+        android:gravity="end"
         fontPath="fonts/Roboto-Light.ttf"
         android:textColor="@color/colorPrimary"
         android:layout_width="0dp"

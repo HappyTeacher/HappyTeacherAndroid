@@ -36,8 +36,10 @@ class CardCommentAdapter(options: FirestoreRecyclerOptions<CardComment>, dataObs
 
             if (model?.reviewerComment == true) {
                 commenterRoleTextView.setVisible()
+                setTextColorForReviewer()
             } else {
                 commenterRoleTextView.setVisibilityGone()
+                setTextColorForAuthor()
             }
 
             model?.dateUpdated?.let {
