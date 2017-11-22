@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.res.ResourcesCompat
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.text.InputType
@@ -55,6 +56,19 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
         intent.isReviewer()
     }
 
+    private val adapter by lazy {
+        val query = commentsCollectionRef.orderBy(FirestoreKeys.DATE_UPDATED, Query.Direction.DESCENDING)
+
+        val options = FirestoreRecyclerOptions.Builder<CardComment>()
+                .setQuery(query, CardComment::class.java)
+                .build()
+
+        CardCommentAdapter(options,
+                dataObserver = this, activity = this,
+                onCommentEdit = {comment, ref -> showEditCommentDialog(comment, ref)},
+                onCommentDelete = {_, ref -> showDeleteCommentDialog(ref)})
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feedback_comments)
@@ -71,17 +85,7 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
         dividerItemDecoration.setDrawable(ResourcesCompat.getDrawable(resources, R.drawable.divider_vertical, null)!!)
         commentsRecyclerView.addItemDecoration(dividerItemDecoration)
 
-        val query = commentsCollectionRef.orderBy(FirestoreKeys.DATE_UPDATED, Query.Direction.DESCENDING)
-
-        val options = FirestoreRecyclerOptions.Builder<CardComment>()
-                .setQuery(query, CardComment::class.java)
-                .build()
-        val adapter = CardCommentAdapter(options,
-                dataObserver = this, activity = this,
-                onCommentEdit = {comment, ref -> editComment(comment, ref)},
-                onCommentDelete = {comment, ref -> deleteComment(comment, ref)})
         adapter.startListening()
-
         commentsRecyclerView.adapter = adapter
     }
 
@@ -128,11 +132,46 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
         }
     }
 
-    private fun deleteComment(comment: CardComment, ref: DocumentReference) {
+    private fun showEditCommentDialog(comment: CardComment, commentRef: DocumentReference) {
+        val feedbackDialog = InputTextDialogBuilder(this)
 
+        feedbackDialog.apply {
+            setTitle(R.string.edit_note)
+            setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE)
+            setInputText(comment.commentText)
+            setPositiveButton(R.string.update, {dialog, commentText ->
+                updateComment(commentText, commentRef)
+                dialog.dismiss()
+            })
+            setNegativeButton(R.string.cancel, DialogInterface.OnClickListener {
+                dialog, _ -> dialog.dismiss()
+            })
+
+            show()
+        }
     }
 
-    private fun editComment(comment: CardComment, ref: DocumentReference) {
-        
+    private fun updateComment(newCommentText: String, commentRef: DocumentReference) {
+        commentRef.update(mapOf(FirestoreKeys.COMMENT_TEXT to newCommentText,
+                FirestoreKeys.DATE_UPDATED to Date()))
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun showDeleteCommentDialog(commentRef: DocumentReference) {
+        AlertDialog.Builder(this)
+                .setMessage(R.string.do_you_want_to_delete_this_comment)
+                .setPositiveButton(R.string.delete, { dialog, _ ->
+                    deleteComment(commentRef)
+                    dialog.dismiss()
+                })
+                .setNegativeButton(R.string.cancel, { dialog, _ ->
+                    dialog.dismiss()
+                })
+                .show()
+    }
+
+    private fun deleteComment(commentRef: DocumentReference) {
+        commentRef.delete()
+        adapter.notifyDataSetChanged()
     }
 }
