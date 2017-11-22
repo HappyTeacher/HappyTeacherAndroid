@@ -9,7 +9,6 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.text.InputType
-import android.util.Log
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -20,12 +19,13 @@ import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacherapp.adapter.firestore.CardCommentAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.dialog.InputTextDialogBuilder
+import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
+import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.model.CardComment
 import org.jnanaprabodhini.happyteacherapp.util.FirestoreKeys
 import java.util.*
 
 class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
-    //todo: data observer!
 
     companion object {
         fun launch(context: Context, cardRef: DocumentReference, isReviewer: Boolean) {
@@ -203,19 +203,35 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
                 FirestoreKeys.FEEDBACK_PREVIEW_COMMENT_PATH to ""))
     }
 
+    override fun onRequestNewData() {
+        progressBar.setVisible()
+        commentsRecyclerView.setVisibilityGone()
+        statusTextView.setVisibilityGone()
+    }
+
     override fun onDataLoaded() {
-        // todo
+        progressBar.setVisibilityGone()
+        statusTextView.setVisibilityGone()
+        newCommentFab.setVisible()
     }
 
     override fun onDataNonEmpty() {
-        // todo
+        commentsRecyclerView.setVisible()
+        statusTextView.setVisibilityGone()
     }
 
     override fun onDataEmpty() {
-        // todo
+        commentsRecyclerView.setVisibilityGone()
+        statusTextView.setVisible()
+        statusTextView.setText(R.string.there_are_no_feedback_notes)
     }
 
     override fun onError(e: FirebaseFirestoreException?) {
-        // todo
+        commentsRecyclerView.setVisibilityGone()
+        progressBar.setVisibilityGone()
+        newCommentFab.setVisibilityGone()
+
+        statusTextView.setVisible()
+        statusTextView.setText(R.string.there_was_an_error_loading_feedback_notes)
     }
 }

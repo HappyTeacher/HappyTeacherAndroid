@@ -228,6 +228,8 @@
     <string name="edit_note">Edit Note</string>
     <string name="update">Update</string>
     <string name="do_you_want_to_delete_this_comment">Do you want to delete this comment?</string>
+    <string name="there_are_no_feedback_notes">There are no feedback notes.</string>
+    <string name="there_was_an_error_loading_feedback_notes">There was an error loading these feedback notes</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>
