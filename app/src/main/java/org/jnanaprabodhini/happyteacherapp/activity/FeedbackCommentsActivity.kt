@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.text.InputType
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_feedback_comments.*
 import org.jnanaprabodhini.happyteacherapp.R
@@ -79,6 +80,7 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
 
     private fun initializeRecycler() {
         val layoutManager = LinearLayoutManager(this)
+        layoutManager.reverseLayout = true
         commentsRecyclerView.layoutManager = layoutManager
 
         val dividerItemDecoration = DividerItemDecoration(this, layoutManager.orientation)
@@ -173,5 +175,21 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
     private fun deleteComment(commentRef: DocumentReference) {
         commentRef.delete()
         adapter.notifyDataSetChanged()
+    }
+
+    override fun onDataLoaded() {
+        // todo
+    }
+
+    override fun onDataNonEmpty() {
+        // todo
+    }
+
+    override fun onDataEmpty() {
+        // todo
+    }
+
+    override fun onError(e: FirebaseFirestoreException?) {
+        // todo
     }
 }
