@@ -61,10 +61,11 @@ class SubmissionHeaderAdapter(adapterOptions: FirestoreRecyclerOptions<ResourceH
     }
 
     private fun unsubmitDocument(documentReference: DocumentReference, position: Int) {
-        documentReference.update(FirestoreKeys.STATUS, ResourceStatus.DRAFT)
-                .addOnSuccessListener(activity, {
-                    activity.showToast(R.string.submission_returned_to_drafts)
-                })
+        documentReference.update(mapOf(FirestoreKeys.STATUS to ResourceStatus.DRAFT,
+                                           ResourceStatus.AWAITING_REVIEW_OR_CHANGES_REQUESTED to false))
+                                    .addOnSuccessListener(activity, {
+                                        activity.showToast(R.string.submission_returned_to_drafts)
+                                    })
         notifyItemRemoved(position)
     }
 
