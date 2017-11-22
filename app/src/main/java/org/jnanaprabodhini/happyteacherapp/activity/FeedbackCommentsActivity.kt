@@ -9,7 +9,6 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.text.InputType
-import android.util.Log
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -51,8 +50,8 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
         firestoreRoot.document(intent.getCardRefPath())
     }
 
-    private val commentsCollectionRef by lazy {
-        cardRef.collection(FirestoreKeys.COMMENTS)
+    private val feedbackCollectionRef by lazy {
+        cardRef.collection(FirestoreKeys.FEEDBACK)
     }
 
     private val isReviewer by lazy {
@@ -60,7 +59,7 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
     }
 
     private val adapter by lazy {
-        val query = commentsCollectionRef.orderBy(FirestoreKeys.DATE_UPDATED, Query.Direction.DESCENDING)
+        val query = feedbackCollectionRef.orderBy(FirestoreKeys.DATE_UPDATED, Query.Direction.DESCENDING)
 
         val options = FirestoreRecyclerOptions.Builder<CardComment>()
                 .setQuery(query, CardComment::class.java)
@@ -157,7 +156,7 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
                 dateUpdated = Date(),
                 reviewerComment = isReviewer
         )
-        val newCommentRef = commentsCollectionRef.document()
+        val newCommentRef = feedbackCollectionRef.document()
         newCommentRef.set(comment)
 
         setLatestReviewCommentAsPreview()
@@ -180,7 +179,8 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
     }
 
     private fun setLatestReviewCommentAsPreview() {
-        commentsCollectionRef.whereEqualTo(FirestoreKeys.REVIEWER_COMMENT, true)
+        feedbackCollectionRef.whereEqualTo(FirestoreKeys.REVIEWER_COMMENT, true)
+                .whereEqualTo(FirestoreKeys.LOCKED, false)
                 .orderBy(FirestoreKeys.DATE_UPDATED, Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener { querySnapshot ->

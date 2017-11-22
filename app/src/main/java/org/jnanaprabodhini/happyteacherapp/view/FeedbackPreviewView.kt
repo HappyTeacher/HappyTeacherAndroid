@@ -2,13 +2,9 @@ package org.jnanaprabodhini.happyteacherapp.view
 
 import android.content.Context
 import android.content.DialogInterface
-import android.graphics.Typeface
 import android.support.constraint.ConstraintLayout
 import android.support.v4.content.res.ResourcesCompat
 import android.text.InputType
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.style.StyleSpan
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import com.google.firebase.auth.FirebaseAuth
@@ -65,7 +61,7 @@ class FeedbackPreviewView(context: Context, attrs: AttributeSet): ConstraintLayo
 
         // Keep a reference to the most recent comment on the card:
         if (card.feedbackPreviewCommentPath.isEmpty()) {
-            card.feedbackPreviewCommentPath = cardRef.collection(FirestoreKeys.COMMENTS).document().path
+            card.feedbackPreviewCommentPath = cardRef.collection(FirestoreKeys.FEEDBACK).document().path
         }
 
         setOnClickListener {
