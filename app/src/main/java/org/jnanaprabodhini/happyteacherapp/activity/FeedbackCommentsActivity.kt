@@ -76,7 +76,10 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
         val options = FirestoreRecyclerOptions.Builder<CardComment>()
                 .setQuery(query, CardComment::class.java)
                 .build()
-        val adapter = CardCommentAdapter(options, this, this)
+        val adapter = CardCommentAdapter(options,
+                dataObserver = this, activity = this,
+                onCommentEdit = {comment, ref -> editComment(comment, ref)},
+                onCommentDelete = {comment, ref -> deleteComment(comment, ref)})
         adapter.startListening()
 
         commentsRecyclerView.adapter = adapter
@@ -123,5 +126,13 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
             cardRef.update(mapOf(FirestoreKeys.FEEDBACK_PREVIEW_COMMENT to commentText,
                     FirestoreKeys.FEEDBACK_PREVIEW_COMMENT_PATH to newCommentRef.path))
         }
+    }
+
+    private fun deleteComment(comment: CardComment, ref: DocumentReference) {
+
+    }
+
+    private fun editComment(comment: CardComment, ref: DocumentReference) {
+        
     }
 }

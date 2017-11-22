@@ -3,6 +3,7 @@ package org.jnanaprabodhini.happyteacherapp.adapter.viewholder
 import android.support.v7.widget.RecyclerView
 import android.text.format.DateFormat
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.list_item_comment.view.*
 import org.jnanaprabodhini.happyteacherapp.R
@@ -20,6 +21,8 @@ class CardCommentViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     val commenterRoleTextView: TextView = itemView.commenterRoleTextView
     val commentTimeTextView: TextView = itemView.commentTimeTextView
     val commentTextView: TextView = itemView.commentTextView
+    val editButton: ImageView = itemView.editButton
+    val deleteButton: ImageView = itemView.deleteButton
 
     fun setTextColorForReviewer() {
         commenterNameTextView.setTextColorRes(R.color.deepBlue)
@@ -31,5 +34,15 @@ class CardCommentViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         commenterNameTextView.setTextColorRes(R.color.colorPrimary)
         commenterRoleTextView.setTextColorRes(R.color.colorPrimary)
         commentTimeTextView.setTextColorRes(R.color.colorPrimary)
+    }
+
+    fun showEditButtons() {
+        editButton.setVisible()
+        deleteButton.setVisible()
+    }
+
+    fun hideEditButtons() {
+        editButton.setVisibilityGone()
+        deleteButton.setVisibilityGone()
     }
 }
