@@ -55,6 +55,7 @@ class InputTextDialogBuilder(context: Context) {
         editText.inputType = inputType
 
         if (inputType == InputType.TYPE_TEXT_FLAG_MULTI_LINE) {
+            editText.inputType = InputType.TYPE_TEXT_FLAG_MULTI_LINE or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
             editText.setSingleLine(false)
             editText.imeOptions = EditorInfo.IME_FLAG_NO_ENTER_ACTION
         }

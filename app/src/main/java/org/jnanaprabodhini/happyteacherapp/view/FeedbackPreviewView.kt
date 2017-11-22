@@ -27,11 +27,18 @@ import org.jnanaprabodhini.happyteacherapp.util.PreferencesManager
 import java.util.*
 
 /**
- * Created by grahamearley on 11/21/17.
+ * A view for showing a preview of the feedback left on a card.
+ *  The view has two modes: read-only and editable.
+ *
+ *  The view is editable when being shown to a moderator while a resource
+ *   is being reviewed. When editable, the view's comment can be edited.
+ *
+ *  The view is read-only when showing a moderator's feedback to the author
+ *   of a resource that was reviewed.
  */
 class FeedbackPreviewView(context: Context, attrs: AttributeSet): ConstraintLayout(context, attrs) {
 
-    var noteText: CharSequence
+    private var noteText: CharSequence
         get() = noteTextView?.text ?: ""
         set(text) {
             noteTextView?.text = text
@@ -45,15 +52,16 @@ class FeedbackPreviewView(context: Context, attrs: AttributeSet): ConstraintLayo
     fun setEditableForCard(cardRef: DocumentReference, card: ContentCard) {
         this.setVisible()
 
-        noteText = if (card.feedbackPreviewComment.isEmpty()) {
-            val tapToAddFeedbackText = context.getString(R.string.tap_to_add_feedback)
-            val italicText = SpannableStringBuilder(tapToAddFeedbackText)
-            italicText.setSpan(StyleSpan(Typeface.ITALIC), 0, italicText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-            italicText
+        if (card.feedbackPreviewComment.isNotEmpty()) {
+            noteTextView.setVisible()
+            noteText = card.feedbackPreviewComment
+            actionTextView.setText(R.string.tap_to_update_feedback)
         } else {
-            card.feedbackPreviewComment
+            noteTextView.setVisibilityGone()
+            actionTextView.setText(R.string.tap_to_add_feedback)
         }
+
+        noteTextView.setSingleLine(false)
 
         // Keep a reference to the most recent comment on the card:
         if (card.feedbackPreviewCommentPath.isEmpty()) {
@@ -75,7 +83,7 @@ class FeedbackPreviewView(context: Context, attrs: AttributeSet): ConstraintLayo
                 setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE)
 
                 setPositiveButton(R.string.save, {dialog, feedbackText ->
-                    updateComment(feedbackText, cardRef, card.feedbackPreviewCommentPath)
+                    updateReviewerComment(feedbackText, cardRef, card.feedbackPreviewCommentPath)
                     dialog.dismiss()
                 })
 
@@ -96,8 +104,14 @@ class FeedbackPreviewView(context: Context, attrs: AttributeSet): ConstraintLayo
         if (card.feedbackPreviewComment.isNotEmpty()) {
             this.setVisible()
 
+            noteTextView.setSingleLine(true)
+            actionTextView.setText(R.string.tap_to_see_more)
+
             noteText = card.feedbackPreviewComment
 
+            this.setOnClickListener {
+                launchCardFeedbackActivity(cardRef, isReviewer = false)
+            }
             arrowIcon.setOnClickListener {
                 launchCardFeedbackActivity(cardRef, isReviewer = false)
             }
@@ -106,7 +120,7 @@ class FeedbackPreviewView(context: Context, attrs: AttributeSet): ConstraintLayo
         }
     }
 
-    private fun updateComment(commentText: String, cardRef: DocumentReference, commentPath: String) {
+    private fun updateReviewerComment(commentText: String, cardRef: DocumentReference, commentPath: String) {
         if (commentPath.isEmpty()) return
         val commentRef = FirebaseFirestore.getInstance().document(commentPath)
 
