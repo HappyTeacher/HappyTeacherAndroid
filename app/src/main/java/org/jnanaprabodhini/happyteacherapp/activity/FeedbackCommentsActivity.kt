@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.text.InputType
+import android.util.Log
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -181,12 +182,13 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
     private fun setLatestReviewCommentAsPreview() {
         commentsCollectionRef.whereEqualTo(FirestoreKeys.REVIEWER_COMMENT, true)
                 .orderBy(FirestoreKeys.DATE_UPDATED, Query.Direction.DESCENDING)
-                .addSnapshotListener(this, { querySnapshot, exception ->
+                .get()
+                .addOnSuccessListener { querySnapshot ->
                     querySnapshot?.documents?.firstOrNull()?.let { doc ->
                         val comment = doc.toObject(CardComment::class.java)
                         updateFeaturedCommentForCard(comment.commentText, doc.reference)
                     } ?: removeFeaturedCommentForCard()
-                })
+                }
     }
 
     /**
