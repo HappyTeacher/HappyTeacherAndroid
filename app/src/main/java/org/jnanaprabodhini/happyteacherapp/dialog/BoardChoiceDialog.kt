@@ -26,7 +26,7 @@ class BoardChoiceDialog(context: Context): SettingsChoiceDialog(context, R.strin
 
         val firestoreRoot = FirebaseFirestore.getInstance()
         val firestoreLocalized = firestoreRoot.collection(context.getString(R.string.localized)).document(prefs.getCurrentLanguageCode())
-        val boardQuery = firestoreLocalized.collection(context.getString(R.string.boards)) // todo: ordering
+        val boardQuery = firestoreLocalized.collection(context.getString(R.string.boards))
 
         val emptyDataObserver = object: FirebaseDataObserver {}
 
