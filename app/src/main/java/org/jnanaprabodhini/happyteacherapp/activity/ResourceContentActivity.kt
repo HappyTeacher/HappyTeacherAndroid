@@ -4,25 +4,19 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
-import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
-import android.view.Menu
-import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.ResourceContentRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
+import org.jnanaprabodhini.happyteacherapp.extension.setBackgroundColorRes
 import org.jnanaprabodhini.happyteacherapp.extension.setDrawableResource
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
-import org.jnanaprabodhini.happyteacherapp.extension.showToast
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
-import org.jnanaprabodhini.happyteacherapp.model.User
-import org.jnanaprabodhini.happyteacherapp.util.FirestoreKeys
 import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
 import org.jnanaprabodhini.happyteacherapp.util.ResourceType
-import org.jnanaprabodhini.happyteacherapp.util.UserRoles
 import java.io.File
 
 abstract class ResourceContentActivity : HappyTeacherActivity(), FirebaseDataObserver {
@@ -93,10 +87,23 @@ abstract class ResourceContentActivity : HappyTeacherActivity(), FirebaseDataObs
             icon.setDrawableResource(R.drawable.ic_tv_video_white_24dp)
         }
 
-        if (header.status != ResourceStatus.PUBLISHED) {
-            unpublishedTextView.setVisible()
-        } else {
-            unpublishedTextView.setVisibilityGone()
+        when (header.status) {
+            ResourceStatus.PUBLISHED -> resourceStatusTextView.setVisibilityGone()
+            ResourceStatus.AWAITING_REVIEW -> {
+                resourceStatusTextView.setVisible()
+                resourceStatusTextView.setText(R.string.submitted_for_review)
+                resourceStatusTextView.setBackgroundColorRes(R.color.colorAccent)
+            }
+            ResourceStatus.CHANGES_REQUESTED -> {
+                resourceStatusTextView.setVisible()
+                resourceStatusTextView.setText(R.string.changes_requested)
+                resourceStatusTextView.setBackgroundColorRes(R.color.dreamsicleOrange)
+            }
+            else -> {
+                resourceStatusTextView.setVisible()
+                resourceStatusTextView.setText(R.string.not_published)
+                resourceStatusTextView.setBackgroundColorRes(R.color.gray)
+            }
         }
     }
 
