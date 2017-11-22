@@ -47,7 +47,10 @@ class ResourceContentReviewActivity: ResourceContentViewerActivity() {
             ResourceStatus.AWAITING_REVIEW -> supportActionBar?.setSubtitle(R.string.awaiting_review)
             ResourceStatus.CHANGES_REQUESTED -> supportActionBar?.setSubtitle(R.string.changes_requested)
         }
+    }
 
+    override fun onResume() {
+        super.onResume()
         cardsRef.addSnapshotListener(this, { querySnapshot, exception ->
             if (querySnapshot?.documents
                     ?.map { it.toObject(ContentCard::class.java) }
