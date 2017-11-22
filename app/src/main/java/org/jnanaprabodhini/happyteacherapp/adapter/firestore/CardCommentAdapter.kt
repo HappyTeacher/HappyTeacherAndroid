@@ -61,8 +61,9 @@ class CardCommentAdapter(options: FirestoreRecyclerOptions<CardComment>,
 
             commentTextView.text = model?.commentText
 
-            if (!currentUserId.isNullOrEmpty() && currentUserId == model?.commenterId
-                    && model != null) {
+            if (!currentUserId.isNullOrEmpty() && model != null
+                    && currentUserId == model.commenterId
+                    && !model.locked) {
                 showEditButtons()
 
                 holder.editButton.setOnClickListener {

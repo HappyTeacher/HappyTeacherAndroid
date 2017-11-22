@@ -76,7 +76,8 @@ data class CardComment(val commenterId: String = "",
                        val commenterName: String = "",
                        var commentText: String = "",
                        var dateUpdated: Date = Date(),
-                       val reviewerComment: Boolean = false): Parcelable
+                       val reviewerComment: Boolean = false,
+                       val locked: Boolean = false): Parcelable
 
 @SuppressLint("ParcelCreator")
 @Parcelize
