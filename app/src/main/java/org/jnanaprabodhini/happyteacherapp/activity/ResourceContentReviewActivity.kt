@@ -10,10 +10,7 @@ import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.CommentableResourceRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.ResourceContentRecyclerAdapter
-import org.jnanaprabodhini.happyteacherapp.extension.setColor
-import org.jnanaprabodhini.happyteacherapp.extension.setDrawableResource
-import org.jnanaprabodhini.happyteacherapp.extension.setVisible
-import org.jnanaprabodhini.happyteacherapp.extension.showToast
+import org.jnanaprabodhini.happyteacherapp.extension.*
 import org.jnanaprabodhini.happyteacherapp.model.ContentCard
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import org.jnanaprabodhini.happyteacherapp.util.FirestoreKeys
@@ -55,7 +52,7 @@ class ResourceContentReviewActivity: ResourceContentViewerActivity() {
             if (querySnapshot?.documents
                     ?.map { it.toObject(ContentCard::class.java) }
                     ?.any { it.feedbackPreviewComment.isNotEmpty() } == true) {
-                setFabForChangeRequest()
+                setFabsForChangeRequest()
             } else {
                 setFabForPublishing()
             }
@@ -63,24 +60,39 @@ class ResourceContentReviewActivity: ResourceContentViewerActivity() {
     }
 
     private fun setFabForPublishing() {
-        primaryFab.setVisible()
+        secondaryFab.setVisibilityGone()
+        primaryFab.apply {
+            setVisible()
+            setTooltip(getString(R.string.publish))
+            setDrawableResource(R.drawable.ic_check_white_24dp)
+            setColor(R.color.grassGreen)
 
-        primaryFab.setDrawableResource(R.drawable.ic_check_white_24dp)
-        primaryFab.setColor(R.color.grassGreen)
-
-        primaryFab.setOnClickListener {
-            showPublishAlert()
+            setOnClickListener {
+                showPublishAlert()
+            }
         }
     }
 
-    private fun setFabForChangeRequest() {
+    private fun setFabsForChangeRequest() {
         primaryFab.setVisible()
+        secondaryFab.setVisible()
 
-        primaryFab.setDrawableResource(R.drawable.ic_assignment_return_white_24dp)
-        primaryFab.setColor(R.color.dreamsicleOrange)
+        primaryFab.apply {
+            setDrawableResource(R.drawable.ic_assignment_return_white_24dp)
+            setColor(R.color.dreamsicleOrange)
+            setTooltip(getString(R.string.request_changes))
+            setOnClickListener {
+                showRequestChangesAlert()
+            }
+        }
 
-        primaryFab.setOnClickListener {
-            showRequestChangesAlert()
+        secondaryFab.apply {
+            setDrawableResource(R.drawable.ic_check_white_24dp)
+            setColor(R.color.grassGreen)
+            setTooltip(getString(R.string.publish))
+            setOnClickListener {
+                showPublishAlert()
+            }
         }
     }
 
