@@ -52,15 +52,7 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
         }
 
         deleteButton.setOnClickListener {
-            // FirebaseUI query refreshes too fast to animate item removals
-            //  so for now we run our own animation -- delete item after.
-            val exitAnimation = AnimationUtils.loadAnimation(activity, R.anim.slide_out_right_quick)
-
-            exitAnimation.onFinish {
-                cardRef.delete()
-            }
-
-            itemView.startAnimation(exitAnimation)
+            cardRef.slideOutViewAndDelete(activity, itemView)
         }
     }
 
