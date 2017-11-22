@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.text.InputType
+import android.util.Log
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -66,7 +67,7 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
 
         CardCommentAdapter(options,
                 dataObserver = this, activity = this,
-                onCommentEdit = {comment, ref -> showEditCommentDialog(comment, ref)},
+                onCommentEdit = {comment, ref -> showUpdateCommentDialog(comment, ref)},
                 onCommentDelete = {_, ref -> showDeleteCommentDialog(ref)})
     }
 
@@ -115,26 +116,7 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
         }
     }
 
-    private fun addComment(commentText: String) {
-        val comment = CardComment(
-                commenterId = auth.currentUser?.uid.orEmpty(),
-                commenterName = prefs.getUserName(),
-                commentText = commentText,
-                dateUpdated = Date(),
-                reviewerComment = isReviewer
-        )
-        val newCommentRef = commentsCollectionRef.document()
-        newCommentRef.set(comment)
-
-        // Only update the preview feedback note if it's from
-        //  a reviewer (not the author)
-        if (isReviewer) {
-            cardRef.update(mapOf(FirestoreKeys.FEEDBACK_PREVIEW_COMMENT to commentText,
-                    FirestoreKeys.FEEDBACK_PREVIEW_COMMENT_PATH to newCommentRef.path))
-        }
-    }
-
-    private fun showEditCommentDialog(comment: CardComment, commentRef: DocumentReference) {
+    private fun showUpdateCommentDialog(comment: CardComment, commentRef: DocumentReference) {
         val feedbackDialog = InputTextDialogBuilder(this)
 
         feedbackDialog.apply {
@@ -153,12 +135,6 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
         }
     }
 
-    private fun updateComment(newCommentText: String, commentRef: DocumentReference) {
-        commentRef.update(mapOf(FirestoreKeys.COMMENT_TEXT to newCommentText,
-                FirestoreKeys.DATE_UPDATED to Date()))
-        adapter.notifyDataSetChanged()
-    }
-
     private fun showDeleteCommentDialog(commentRef: DocumentReference) {
         AlertDialog.Builder(this)
                 .setMessage(R.string.do_you_want_to_delete_this_comment)
@@ -172,9 +148,59 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
                 .show()
     }
 
+    private fun addComment(commentText: String) {
+        val comment = CardComment(
+                commenterId = auth.currentUser?.uid.orEmpty(),
+                commenterName = prefs.getUserName(),
+                commentText = commentText,
+                dateUpdated = Date(),
+                reviewerComment = isReviewer
+        )
+        val newCommentRef = commentsCollectionRef.document()
+        newCommentRef.set(comment)
+
+        setLatestReviewCommentAsPreview()
+    }
+
+    private fun updateComment(newCommentText: String, commentRef: DocumentReference) {
+        val dateUpdated = Date()
+        commentRef.update(mapOf(FirestoreKeys.COMMENT_TEXT to newCommentText,
+                FirestoreKeys.DATE_UPDATED to dateUpdated))
+        adapter.notifyDataSetChanged()
+
+        setLatestReviewCommentAsPreview()
+    }
+
     private fun deleteComment(commentRef: DocumentReference) {
         commentRef.delete()
         adapter.notifyDataSetChanged()
+
+        setLatestReviewCommentAsPreview()
+    }
+
+    private fun setLatestReviewCommentAsPreview() {
+        commentsCollectionRef.whereEqualTo(FirestoreKeys.REVIEWER_COMMENT, true)
+                .orderBy(FirestoreKeys.DATE_UPDATED, Query.Direction.DESCENDING)
+                .addSnapshotListener(this, { querySnapshot, exception ->
+                    querySnapshot?.documents?.firstOrNull()?.let { doc ->
+                        val comment = doc.toObject(CardComment::class.java)
+                        updateFeaturedCommentForCard(comment.commentText, doc.reference)
+                    } ?: removeFeaturedCommentForCard()
+                })
+    }
+
+    /**
+     * Each card with feedback has a featured/preview comment appear on the card itself.
+     *  This comment will be the most recently added comment from a reviewer.
+     */
+    private fun updateFeaturedCommentForCard(commentText: String, commentRef: DocumentReference) {
+        cardRef.update(mapOf(FirestoreKeys.FEEDBACK_PREVIEW_COMMENT to commentText,
+                FirestoreKeys.FEEDBACK_PREVIEW_COMMENT_PATH to commentRef.path))
+    }
+
+    private fun removeFeaturedCommentForCard() {
+        cardRef.update(mapOf(FirestoreKeys.FEEDBACK_PREVIEW_COMMENT to "",
+                FirestoreKeys.FEEDBACK_PREVIEW_COMMENT_PATH to ""))
     }
 
     override fun onDataLoaded() {

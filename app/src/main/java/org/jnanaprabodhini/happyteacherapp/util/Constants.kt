@@ -35,4 +35,5 @@ object FirestoreKeys {
     const val FEEDBACK_PREVIEW_COMMENT = "feedbackPreviewComment"
     const val FEEDBACK_PREVIEW_COMMENT_PATH = "feedbackPreviewCommentPath"
     const val COMMENT_TEXT = "commentText"
+    const val REVIEWER_COMMENT = "reviewerComment"
 }
