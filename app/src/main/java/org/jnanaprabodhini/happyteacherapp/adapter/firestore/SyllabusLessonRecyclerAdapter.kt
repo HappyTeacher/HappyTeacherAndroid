@@ -18,7 +18,7 @@ import org.jnanaprabodhini.happyteacherapp.model.SyllabusLesson
  * Created by grahamearley on 10/11/17.
  */
 class SyllabusLessonRecyclerAdapter(options: FirestoreRecyclerOptions<SyllabusLesson>, val subjectName: String, dataObserver: FirebaseDataObserver, val activity: BottomNavigationActivity):
-        FirestoreObserverRecyclerAdapter<SyllabusLesson, SyllabusLessonViewHolder>(options, dataObserver) {
+        FirestoreObservableRecyclerAdapter<SyllabusLesson, SyllabusLessonViewHolder>(options, dataObserver) {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SyllabusLessonViewHolder {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_syllabus_lesson, parent, false)

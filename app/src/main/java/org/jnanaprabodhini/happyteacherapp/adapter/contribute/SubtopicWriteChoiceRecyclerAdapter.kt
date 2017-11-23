@@ -7,7 +7,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.ResourceContentEditorActivity
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
-import org.jnanaprabodhini.happyteacherapp.adapter.firestore.FirestoreObserverRecyclerAdapter
+import org.jnanaprabodhini.happyteacherapp.adapter.firestore.FirestoreObservableRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.adapter.viewholder.SubtopicViewHolder
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
@@ -17,7 +17,7 @@ import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 
 
 class SubtopicWriteChoiceRecyclerAdapter(options: FirestoreRecyclerOptions<Subtopic>, val resourceType: String, firebaseDataObserver: FirebaseDataObserver, val activity: HappyTeacherActivity):
-        FirestoreObserverRecyclerAdapter<Subtopic, SubtopicViewHolder>(options, firebaseDataObserver) {
+        FirestoreObservableRecyclerAdapter<Subtopic, SubtopicViewHolder>(options, firebaseDataObserver) {
 
     private val userId by lazy {
         activity.auth.currentUser!!.uid // User must be logged in to reach this point.

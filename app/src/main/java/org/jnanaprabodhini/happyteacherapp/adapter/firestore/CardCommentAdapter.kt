@@ -23,7 +23,7 @@ class CardCommentAdapter(options: FirestoreRecyclerOptions<CardComment>,
                          activity: Activity,
                          private val onCommentEdit: (comment: CardComment, ref: DocumentReference) -> Unit,
                          private val onCommentDelete: (comment: CardComment, ref: DocumentReference) -> Unit):
-        FirestoreObserverRecyclerAdapter<CardComment, CardCommentViewHolder>(options, dataObserver) {
+        FirestoreObservableRecyclerAdapter<CardComment, CardCommentViewHolder>(options, dataObserver) {
 
     private val dateFormat by lazy {
         DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, LocaleManager.getCurrentLocale(activity))

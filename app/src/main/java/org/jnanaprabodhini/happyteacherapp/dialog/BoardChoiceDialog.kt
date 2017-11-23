@@ -6,7 +6,7 @@ import android.widget.CheckedTextView
 import android.widget.ListView
 import com.google.firebase.firestore.FirebaseFirestore
 import org.jnanaprabodhini.happyteacherapp.R
-import org.jnanaprabodhini.happyteacherapp.adapter.firestore.FirestoreObserverListAdapter
+import org.jnanaprabodhini.happyteacherapp.adapter.firestore.FirestoreObservableListAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.model.Board
 
@@ -31,7 +31,7 @@ class BoardChoiceDialog(context: Context): SettingsChoiceDialog(context, R.strin
         val emptyDataObserver = object: FirebaseDataObserver {}
 
         var checkedIndex = 0
-        val boardChoiceAdapter = object: FirestoreObserverListAdapter<Board>(boardQuery, Board::class.java, R.layout.dialog_option_singlechoice, emptyDataObserver, context) {
+        val boardChoiceAdapter = object: FirestoreObservableListAdapter<Board>(boardQuery, Board::class.java, R.layout.dialog_option_singlechoice, emptyDataObserver, context) {
             override fun populateView(view: View, model: Board, position: Int) {
                 (view as CheckedTextView).text = model.name
                 val key = getItemKey(position)

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
 import org.jnanaprabodhini.happyteacherapp.R
-import org.jnanaprabodhini.happyteacherapp.adapter.firestore.FirestoreObserverRecyclerAdapter
+import org.jnanaprabodhini.happyteacherapp.adapter.firestore.FirestoreObservableRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.adapter.viewholder.ContributionHeaderViewHolder
 import org.jnanaprabodhini.happyteacherapp.extension.setDrawableLeft
@@ -24,7 +24,7 @@ import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
  *  onClicks.
  */
 abstract class ContributionAdapter(adapterOptions: FirestoreRecyclerOptions<ResourceHeader>, dataObserver: FirebaseDataObserver, val activity: Activity):
-        FirestoreObserverRecyclerAdapter<ResourceHeader, ContributionHeaderViewHolder>(adapterOptions, dataObserver) {
+        FirestoreObservableRecyclerAdapter<ResourceHeader, ContributionHeaderViewHolder>(adapterOptions, dataObserver) {
 
     private val dateFormat by lazy {
         DateFormat.getDateFormat(activity)

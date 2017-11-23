@@ -16,7 +16,7 @@ import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
  *  used in the original FirestoreRecyclerAdapter class.
  */
 
-abstract class FirestoreObserverRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(options: FirestoreRecyclerOptions<T>, val dataObserver: FirebaseDataObserver): FirestoreRecyclerAdapter<T, VH>(options) {
+abstract class FirestoreObservableRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(options: FirestoreRecyclerOptions<T>, val dataObserver: FirebaseDataObserver): FirestoreRecyclerAdapter<T, VH>(options) {
 
     override fun startListening() {
         super.startListening()

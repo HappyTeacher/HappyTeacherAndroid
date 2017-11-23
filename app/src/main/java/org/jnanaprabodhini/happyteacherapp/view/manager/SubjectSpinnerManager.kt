@@ -8,7 +8,7 @@ import android.widget.TextView
 import com.google.firebase.firestore.Query
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
-import org.jnanaprabodhini.happyteacherapp.adapter.firestore.FirestoreObserverListAdapter
+import org.jnanaprabodhini.happyteacherapp.adapter.firestore.FirestoreObservableListAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.extension.onItemSelected
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
@@ -102,7 +102,7 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
         }
     }
 
-    private fun getParentSubjectAdapter(): FirestoreObserverListAdapter<Subject> {
+    private fun getParentSubjectAdapter(): FirestoreObservableListAdapter<Subject> {
         val subjectQuery = activity.firestoreLocalized.collection(activity.getString(R.string.subjects))
                 .whereEqualTo(activity.getString(R.string.parent_subject), null)
         val dataObserver = getDataObserverForSpinner(parentSpinner, parentSpinnerSelectionIndex)
@@ -110,7 +110,7 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
         return getSpinnerAdapterForQuery(subjectQuery, dataObserver, R.layout.spinner_item)
     }
 
-    private fun getChildSubjectAdapter(parentSubject: String): FirestoreObserverListAdapter<Subject> {
+    private fun getChildSubjectAdapter(parentSubject: String): FirestoreObservableListAdapter<Subject> {
         val subjectQuery = activity.firestoreLocalized.collection(activity.getString(R.string.subjects))
                 .whereEqualTo(activity.getString(R.string.parent_subject), parentSubject)
         val dataObserver = getDataObserverForSpinner(childSpinner, childSpinnerSelectionIndex)
@@ -118,8 +118,8 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
         return getSpinnerAdapterForQuery(subjectQuery, dataObserver, R.layout.spinner_item_child)
     }
 
-    private fun getSpinnerAdapterForQuery(subjectQuery: Query, dataObserver: FirebaseDataObserver, @LayoutRes spinnerLayout: Int): FirestoreObserverListAdapter<Subject> {
-        return object: FirestoreObserverListAdapter<Subject>(subjectQuery, Subject::class.java, spinnerLayout, dataObserver, activity) {
+    private fun getSpinnerAdapterForQuery(subjectQuery: Query, dataObserver: FirebaseDataObserver, @LayoutRes spinnerLayout: Int): FirestoreObservableListAdapter<Subject> {
+        return object: FirestoreObservableListAdapter<Subject>(subjectQuery, Subject::class.java, spinnerLayout, dataObserver, activity) {
             override fun populateView(view: View, model: Subject, position: Int) {
                 (view as TextView).text = model.name
             }

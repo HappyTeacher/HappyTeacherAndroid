@@ -26,7 +26,7 @@ class ResourceHeaderRecyclerAdapter(options: FirestoreRecyclerOptions<ResourceHe
                                     private val showSubmissionCount: Boolean,
                                     val activity: Activity,
                                     firebaseDataObserver: FirebaseDataObserver):
-        FirestoreObserverRecyclerAdapter<ResourceHeader, ResourceHeaderViewHolder>(options, firebaseDataObserver) {
+        FirestoreObservableRecyclerAdapter<ResourceHeader, ResourceHeaderViewHolder>(options, firebaseDataObserver) {
 
     private val dateFormat by lazy {
         DateFormat.getDateFormat(activity)
