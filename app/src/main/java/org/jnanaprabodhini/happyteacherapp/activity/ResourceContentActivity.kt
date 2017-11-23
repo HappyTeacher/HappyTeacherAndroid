@@ -89,20 +89,13 @@ abstract class ResourceContentActivity : HappyTeacherActivity(), FirebaseDataObs
 
         when (header.status) {
             ResourceStatus.PUBLISHED -> resourceStatusTextView.setVisibilityGone()
-            ResourceStatus.AWAITING_REVIEW -> {
-                resourceStatusTextView.setVisible()
-                resourceStatusTextView.setText(R.string.submitted_for_review)
-                resourceStatusTextView.setBackgroundColorRes(R.color.colorAccent)
-            }
             ResourceStatus.CHANGES_REQUESTED -> {
                 resourceStatusTextView.setVisible()
                 resourceStatusTextView.setText(R.string.changes_requested)
-                resourceStatusTextView.setBackgroundColorRes(R.color.dreamsicleOrange)
             }
             else -> {
                 resourceStatusTextView.setVisible()
                 resourceStatusTextView.setText(R.string.not_published)
-                resourceStatusTextView.setBackgroundColorRes(R.color.gray)
             }
         }
     }
