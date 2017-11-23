@@ -103,8 +103,6 @@ fun Spinner.onItemSelected(onItemSelected: (Int) -> Unit) {
     }
 }
 
-fun Spinner.items(): List<Any> = (0..count - 1).map { adapter.getItem(it) }
-
 fun TextView.setDrawableLeft(@DrawableRes drawableId: Int) {
     val drawable = AppCompatResources.getDrawable(context, drawableId)
     this.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
