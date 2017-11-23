@@ -159,7 +159,7 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
         val newCommentRef = feedbackCollectionRef.document()
         newCommentRef.set(comment)
 
-        setLatestReviewCommentAsPreview()
+        if (isReviewer) setLatestReviewCommentAsPreview()
     }
 
     private fun updateComment(newCommentText: String, commentRef: DocumentReference) {
@@ -168,14 +168,14 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
                 FirestoreKeys.DATE_UPDATED to dateUpdated))
         adapter.notifyDataSetChanged()
 
-        setLatestReviewCommentAsPreview()
+        if (isReviewer) setLatestReviewCommentAsPreview()
     }
 
     private fun deleteComment(commentRef: DocumentReference) {
         commentRef.delete()
         adapter.notifyDataSetChanged()
 
-        setLatestReviewCommentAsPreview()
+        if (isReviewer) setLatestReviewCommentAsPreview()
     }
 
     private fun setLatestReviewCommentAsPreview() {
