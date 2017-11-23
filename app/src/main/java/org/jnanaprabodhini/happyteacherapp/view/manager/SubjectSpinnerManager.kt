@@ -11,7 +11,6 @@ import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacherapp.adapter.firestore.FirestoreObserverListAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.extension.onItemSelected
-import org.jnanaprabodhini.happyteacherapp.extension.selectIndexWhenPopulated
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.model.Subject
@@ -54,8 +53,6 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
         parentAdapter.startListening()
         parentSpinner?.adapter = parentAdapter
 
-        parentSpinner?.selectIndexWhenPopulated(parentSpinnerSelectionIndex)
-
         parentSpinner?.onItemSelected { position ->
 
             if (position != parentSpinnerSelectionIndex) {
@@ -83,8 +80,6 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
         childAdapter.startListening()
         childSpinner?.adapter = childAdapter
 
-        childSpinner?.selectIndexWhenPopulated(childSpinnerSelectionIndex)
-
         childSpinner?.onItemSelected { position ->
             childSpinnerSelectionIndex = position
 
@@ -93,11 +88,15 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
         }
     }
 
-    private fun getDataObserverForSpinner(spinner: Spinner?): FirebaseDataObserver {
+    private fun getDataObserverForSpinner(spinner: Spinner?, selectionIndex: Int): FirebaseDataObserver {
         return object: FirebaseDataObserver {
             override fun onDataNonEmpty() {
                 progressBar?.setVisibilityGone()
                 spinner?.setVisible()
+
+                if (spinner?.count ?: 0 > selectionIndex) {
+                    spinner?.setSelection(selectionIndex)
+                }
             }
             // todo: add on empty, error, etc.
         }
@@ -106,7 +105,7 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
     private fun getParentSubjectAdapter(): FirestoreObserverListAdapter<Subject> {
         val subjectQuery = activity.firestoreLocalized.collection(activity.getString(R.string.subjects))
                 .whereEqualTo(activity.getString(R.string.parent_subject), null)
-        val dataObserver = getDataObserverForSpinner(parentSpinner)
+        val dataObserver = getDataObserverForSpinner(parentSpinner, parentSpinnerSelectionIndex)
 
         return getSpinnerAdapterForQuery(subjectQuery, dataObserver, R.layout.spinner_item)
     }
@@ -114,7 +113,7 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
     private fun getChildSubjectAdapter(parentSubject: String): FirestoreObserverListAdapter<Subject> {
         val subjectQuery = activity.firestoreLocalized.collection(activity.getString(R.string.subjects))
                 .whereEqualTo(activity.getString(R.string.parent_subject), parentSubject)
-        val dataObserver = getDataObserverForSpinner(childSpinner)
+        val dataObserver = getDataObserverForSpinner(childSpinner, childSpinnerSelectionIndex)
 
         return getSpinnerAdapterForQuery(subjectQuery, dataObserver, R.layout.spinner_item_child)
     }

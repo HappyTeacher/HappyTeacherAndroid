@@ -19,7 +19,6 @@ import org.jnanaprabodhini.happyteacherapp.adapter.firestore.SyllabusLessonRecyc
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.dialog.BoardChoiceDialog
 import org.jnanaprabodhini.happyteacherapp.extension.onItemSelected
-import org.jnanaprabodhini.happyteacherapp.extension.selectIndexWhenPopulated
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.model.Subject
@@ -112,6 +111,10 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
             override fun onDataNonEmpty() {
                 setSpinnersVisible()
                 boardLessonsProgressBar.setVisibilityGone()
+
+                if (subjectSpinner.count > subjectSpinnerSelectionIndex) {
+                    subjectSpinner.setSelection(subjectSpinnerSelectionIndex)
+                }
             }
 
             override fun onDataEmpty() {
@@ -145,7 +148,6 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
         }
 
         subjectSpinner.adapter = adapter
-        subjectSpinner.selectIndexWhenPopulated(subjectSpinnerSelectionIndex)
     }
 
     private fun setupLevelSpinnerForSubject(levels: List<Int>, subjectId: String) {

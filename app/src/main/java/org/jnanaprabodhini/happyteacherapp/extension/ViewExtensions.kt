@@ -105,24 +105,6 @@ fun Spinner.onItemSelected(onItemSelected: (Int) -> Unit) {
 
 fun Spinner.items(): List<Any> = (0..count - 1).map { adapter.getItem(it) }
 
-/**
- * Select the given index in the spinner when the spinner's
- *  item count reaches that level.
- *
- *  Used for re-selecting a previous selection when a spinner
- *   is reset (across configuration changes).
- */
-fun Spinner.selectIndexWhenPopulated(index: Int) {
-    adapter?.registerDataSetObserver(object: DataSetObserver() {
-        override fun onChanged() {
-            if (count > 0 && count >= index) {
-                setSelection(index)
-                adapter?.unregisterDataSetObserver(this)
-            }
-        }
-    })
-}
-
 fun TextView.setDrawableLeft(@DrawableRes drawableId: Int) {
     val drawable = AppCompatResources.getDrawable(context, drawableId)
     this.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
