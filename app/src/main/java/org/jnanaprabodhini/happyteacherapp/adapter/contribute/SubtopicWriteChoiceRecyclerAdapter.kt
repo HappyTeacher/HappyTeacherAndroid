@@ -5,9 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import org.jnanaprabodhini.happyteacherapp.R
-import org.jnanaprabodhini.happyteacherapp.activity.ResourceEditorActivity
+import org.jnanaprabodhini.happyteacherapp.activity.ResourceContentEditorActivity
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
-import org.jnanaprabodhini.happyteacherapp.adapter.firestore.FirestoreObserverRecyclerAdapter
+import org.jnanaprabodhini.happyteacherapp.adapter.firestore.FirestoreObservableRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.adapter.viewholder.SubtopicViewHolder
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
@@ -17,14 +17,14 @@ import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 
 
 class SubtopicWriteChoiceRecyclerAdapter(options: FirestoreRecyclerOptions<Subtopic>, val resourceType: String, firebaseDataObserver: FirebaseDataObserver, val activity: HappyTeacherActivity):
-        FirestoreObserverRecyclerAdapter<Subtopic, SubtopicViewHolder>(options, firebaseDataObserver) {
+        FirestoreObservableRecyclerAdapter<Subtopic, SubtopicViewHolder>(options, firebaseDataObserver) {
 
     private val userId by lazy {
         activity.auth.currentUser!!.uid // User must be logged in to reach this point.
     }
 
     override fun onBindViewHolder(holder: SubtopicViewHolder, position: Int, model: Subtopic?) {
-        holder.populateView(model?.name.orEmpty())
+        holder.populateView(model?.name.orEmpty(), resourceType)
 
         holder.writeButton.text = when(resourceType) {
             ResourceType.LESSON -> activity.getString(R.string.write_lesson)
@@ -41,7 +41,7 @@ class SubtopicWriteChoiceRecyclerAdapter(options: FirestoreRecyclerOptions<Subto
                     .document()
 
             draftRef.set(lessonHeader)
-            ResourceEditorActivity.launch(activity, draftRef, lessonHeader)
+            ResourceContentEditorActivity.launch(activity, draftRef, lessonHeader)
         }
     }
 
@@ -51,7 +51,7 @@ class SubtopicWriteChoiceRecyclerAdapter(options: FirestoreRecyclerOptions<Subto
         val authorLocation = activity.prefs.getUserLocation()
 
         return ResourceHeader(
-                name = subtopic.name,
+                name = if (resourceType == ResourceType.CLASSROOM_RESOURCE) "" else subtopic.name,
                 authorId = userId,
                 subtopic = subtopicId,
                 topic = subtopic.topic,

@@ -7,4 +7,10 @@
         app:showAsAction="never"
         android:title="@string/open_source_notices" />
 
+    <item
+        android:id="@+id/menu_sign_out"
+        app:showAsAction="never"
+        android:visible="false"
+        android:title="@string/sign_out" />
+
 </menu>

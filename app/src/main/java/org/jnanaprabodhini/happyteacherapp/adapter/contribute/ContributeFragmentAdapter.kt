@@ -13,6 +13,12 @@ import org.jnanaprabodhini.happyteacherapp.fragment.SubmittedContentFragment
  * Created by grahamearley on 11/1/17.
  */
 class ContributeFragmentAdapter(fragmentManager: FragmentManager, val context: Context): FragmentStatePagerAdapter(fragmentManager) {
+    companion object {
+        const val DRAFTS_PAGE = 0
+        const val SUBMITTED_PAGE = 1
+        const val PUBLISHED_PAGE = 2
+    }
+
     override fun getItem(position: Int): Fragment = when (position) {
         0 -> DraftsFragment()
         1 -> SubmittedContentFragment()
@@ -23,9 +29,9 @@ class ContributeFragmentAdapter(fragmentManager: FragmentManager, val context: C
     override fun getCount(): Int = 3
 
     override fun getPageTitle(position: Int): CharSequence = when (position) {
-        0 -> context.getString(R.string.drafts)
-        1 -> context.getString(R.string.submitted)
-        2 -> context.getString(R.string.published_tab)
+        DRAFTS_PAGE -> context.getString(R.string.drafts)
+        SUBMITTED_PAGE -> context.getString(R.string.submitted)
+        PUBLISHED_PAGE -> context.getString(R.string.published_tab)
         else -> ""
     }
 }

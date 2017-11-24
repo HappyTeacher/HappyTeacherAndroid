@@ -4,19 +4,17 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.android.synthetic.main.activity_subtopic_choice.*
 import kotlinx.android.synthetic.main.stacked_subject_spinners.*
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
-import org.jnanaprabodhini.happyteacherapp.adapter.contribute.TopicSubtopicsWriteChoiceAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
-import org.jnanaprabodhini.happyteacherapp.model.Topic
 import org.jnanaprabodhini.happyteacherapp.util.ResourceType
-import org.jnanaprabodhini.happyteacherapp.view.SubjectSpinnerManager
+import org.jnanaprabodhini.happyteacherapp.view.manager.SubjectSpinnerManager
+import org.jnanaprabodhini.happyteacherapp.view.manager.SubtopicWriteChoiceTopicListManager
 
 class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver {
 
@@ -52,28 +50,29 @@ class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver
             else -> getString(R.string.create_a_resource)
         }
 
+        when(resourceType) {
+            ResourceType.LESSON -> {
+                supportActionBar?.title = getString(R.string.create_a_lesson_plan)
+                instructionTextView.setText(R.string.choose_what_your_lesson_will_be_about)
+            }
+            ResourceType.CLASSROOM_RESOURCE -> {
+                supportActionBar?.title = getString(R.string.create_a_classroom_resource)
+                instructionTextView.setText(R.string.choose_what_your_classroom_resource_will_be_about)
+            }
+            else -> {
+                supportActionBar?.title = getString(R.string.create_a_resource)
+                instructionTextView.setVisibilityGone()
+            }
+        }
+
         initializeSpinners()
     }
 
     private fun initializeSpinners() {
-        subjectSpinnerManager.initializeSpinners(parentSubjectSpinner, childSubjectSpinner, progressBar,
-                onSpinnerSelectionsComplete = {subjectKey -> updateListOfTopicsForSubject(subjectKey)})
-    }
-
-    /**
-     *  Display list of topics for the selected subject.
-     */
-    private fun updateListOfTopicsForSubject(subjectKey: String) {
-        val topicQuery = firestoreLocalized.collection(getString(R.string.topics))
-                .whereEqualTo(getString(R.string.subject), subjectKey) // todo: ordering
-
-        val topicAdapterOptions = FirestoreRecyclerOptions.Builder<Topic>()
-                .setQuery(topicQuery, Topic::class.java).build()
-
-        val topicAdapter = TopicSubtopicsWriteChoiceAdapter(topicAdapterOptions, resourceType,this, this)
-
-        topicAdapter.startListening()
-        topicsRecyclerView.adapter = topicAdapter
+        val topicListManager = SubtopicWriteChoiceTopicListManager(topicsRecyclerView, resourceType,
+                this, this)
+        subjectSpinnerManager.initializeWithTopicsListManager(parentSubjectSpinner,
+                childSubjectSpinner, progressBar, topicListManager)
     }
 
     override fun onRequestNewData() {

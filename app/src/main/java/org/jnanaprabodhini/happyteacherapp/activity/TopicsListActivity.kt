@@ -6,19 +6,19 @@ import android.support.annotation.IntegerRes
 import android.support.v7.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_topics_list.*
 import kotlinx.android.synthetic.main.header_syllabus_lesson_topic.*
 import kotlinx.android.synthetic.main.stacked_subject_spinners.*
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.base.BottomNavigationActivity
-import org.jnanaprabodhini.happyteacherapp.adapter.firestore.TopicLessonsRecyclerAdapter
+import org.jnanaprabodhini.happyteacherapp.adapter.firestore.TopicContentRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.extension.*
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import org.jnanaprabodhini.happyteacherapp.model.Topic
 import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
-import org.jnanaprabodhini.happyteacherapp.view.SubjectSpinnerManager
+import org.jnanaprabodhini.happyteacherapp.view.manager.PublishedLessonTopicListManager
+import org.jnanaprabodhini.happyteacherapp.view.manager.SubjectSpinnerManager
 
 class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
@@ -103,8 +103,9 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         hideSyllabusLessonTopicHeader()
         topicsProgressBar.setVisible()
 
-        subjectSpinnerManager.initializeSpinners(parentSubjectSpinner, childSubjectSpinner, topicsProgressBar,
-                onSpinnerSelectionsComplete = {subjectKey -> updateListOfTopicsForSubject(subjectKey)})
+        val topicListManager = PublishedLessonTopicListManager(topicsRecyclerView, this, this)
+        subjectSpinnerManager.initializeWithTopicsListManager(parentSubjectSpinner,
+                childSubjectSpinner, topicsProgressBar, topicListManager)
     }
 
     override fun onBottomNavigationItemReselected() {
@@ -117,33 +118,6 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         }
     }
 
-    /**
-     *  Display list of topics for the selected subject.
-     */
-    private fun updateListOfTopicsForSubject(subjectKey: String) {
-        val topicQuery = firestoreLocalized.collection(getString(R.string.topics))
-                .whereEqualTo(getString(R.string.subject), subjectKey) // todo: ordering
-
-        val topicAdapterOptions = FirestoreRecyclerOptions.Builder<Topic>()
-                .setQuery(topicQuery, Topic::class.java).build()
-
-        val topicAdapter = object: TopicLessonsRecyclerAdapter(topicAdapterOptions, this, this) {
-            override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<ResourceHeader> {
-                val query: Query = firestoreLocalized.collection(getString(R.string.resources))
-                        .whereEqualTo(getString(R.string.resource_type), getString(R.string.lesson))
-                        .whereEqualTo(getString(R.string.topic), topicId)
-                        .whereEqualTo(getString(R.string.status), ResourceStatus.PUBLISHED)
-                        .whereEqualTo(getString(R.string.is_featured), true)
-
-                return FirestoreRecyclerOptions.Builder<ResourceHeader>().setQuery(query, ResourceHeader::class.java).build()
-            }
-        }
-
-        topicAdapter.startListening()
-
-        topicsRecyclerView.adapter = topicAdapter
-    }
-
     private fun updateListOfTopicsForSyllabusLesson(syllabusLessonId: String) {
         val topicsQuery = firestoreLocalized.collection(getString(R.string.topics))
                 .whereEqualTo("syllabus_lessons.$syllabusLessonId", true)
@@ -151,7 +125,8 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val topicsAdapterOptions = FirestoreRecyclerOptions.Builder<Topic>()
                 .setQuery(topicsQuery, Topic::class.java).build()
 
-        val adapter = object: TopicLessonsRecyclerAdapter(topicsAdapterOptions, this, this) {
+        val adapter = object: TopicContentRecyclerAdapter(topicsAdapterOptions, showSubmissionCount = true,
+                topicsDataObserver = this, activity = this) {
             override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<ResourceHeader> {
                 val subtopicQuery = firestoreLocalized.collection(getString(R.string.resources))
                         .whereEqualTo(getString(R.string.resource_type), getString(R.string.lesson))

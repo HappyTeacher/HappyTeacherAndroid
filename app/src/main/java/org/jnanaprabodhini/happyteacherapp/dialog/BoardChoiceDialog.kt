@@ -6,7 +6,7 @@ import android.widget.CheckedTextView
 import android.widget.ListView
 import com.google.firebase.firestore.FirebaseFirestore
 import org.jnanaprabodhini.happyteacherapp.R
-import org.jnanaprabodhini.happyteacherapp.adapter.firestore.FirestoreObserverListAdapter
+import org.jnanaprabodhini.happyteacherapp.adapter.firestore.FirestoreObservableListAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.model.Board
 
@@ -16,17 +16,22 @@ import org.jnanaprabodhini.happyteacherapp.model.Board
  */
 class BoardChoiceDialog(context: Context): SettingsChoiceDialog(context, R.string.choose_your_syllabus, R.string.you_can_change_this_setting_later) {
 
+    override fun show() {
+        super.show()
+        prefs.setHasSeenBoardChooser(true)
+    }
+
     override fun configureOptionsListView(optionsListView: ListView) {
         optionsListView.choiceMode = ListView.CHOICE_MODE_SINGLE
 
         val firestoreRoot = FirebaseFirestore.getInstance()
         val firestoreLocalized = firestoreRoot.collection(context.getString(R.string.localized)).document(prefs.getCurrentLanguageCode())
-        val boardQuery = firestoreLocalized.collection(context.getString(R.string.boards)) // todo: ordering
+        val boardQuery = firestoreLocalized.collection(context.getString(R.string.boards))
 
         val emptyDataObserver = object: FirebaseDataObserver {}
 
         var checkedIndex = 0
-        val boardChoiceAdapter = object: FirestoreObserverListAdapter<Board>(boardQuery, Board::class.java, R.layout.dialog_option_singlechoice, emptyDataObserver, context) {
+        val boardChoiceAdapter = object: FirestoreObservableListAdapter<Board>(boardQuery, Board::class.java, R.layout.dialog_option_singlechoice, emptyDataObserver, context) {
             override fun populateView(view: View, model: Board, position: Int) {
                 (view as CheckedTextView).text = model.name
                 val key = getItemKey(position)

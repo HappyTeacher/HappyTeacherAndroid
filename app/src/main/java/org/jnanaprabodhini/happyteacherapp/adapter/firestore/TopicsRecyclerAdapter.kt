@@ -18,7 +18,7 @@ import org.jnanaprabodhini.happyteacherapp.model.Topic
 abstract class TopicsRecyclerAdapter<VH: RecyclerView.ViewHolder>(topicsAdapterOptions: FirestoreRecyclerOptions<Topic>,
                                      topicsDataObserver: FirebaseDataObserver,
                                      val activity: HappyTeacherActivity):
-        FirestoreObserverRecyclerAdapter<Topic, VH>(topicsAdapterOptions, topicsDataObserver) {
+        FirestoreObservableRecyclerAdapter<Topic, VH>(topicsAdapterOptions, topicsDataObserver) {
 
     protected fun setBackgroundColor(view: View?, position: Int) {
         // Alternate between these four colors:

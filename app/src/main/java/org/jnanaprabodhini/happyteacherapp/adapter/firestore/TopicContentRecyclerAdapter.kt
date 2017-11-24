@@ -3,8 +3,11 @@ package org.jnanaprabodhini.happyteacherapp.adapter.firestore
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestoreException
 import org.jnanaprabodhini.happyteacherapp.R
+import org.jnanaprabodhini.happyteacherapp.activity.ClassroomResourceViewerActivity
+import org.jnanaprabodhini.happyteacherapp.activity.LessonViewerActivity
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.adapter.viewholder.ResourceHeaderRecyclerViewHolder
@@ -13,13 +16,15 @@ import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import org.jnanaprabodhini.happyteacherapp.model.Topic
+import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 import org.jnanaprabodhini.happyteacherapp.view.HorizontalPagerRecyclerView
 
 /**
  * An adapter for displaying Topics and the lessons for those topics.
  */
-abstract class TopicLessonsRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOptions<Topic>,
+abstract class TopicContentRecyclerAdapter(topicsAdapterOptions: FirestoreRecyclerOptions<Topic>,
                                            topicsDataObserver: FirebaseDataObserver,
+                                           val showSubmissionCount: Boolean,
                                            activity: HappyTeacherActivity): TopicsRecyclerAdapter<ResourceHeaderRecyclerViewHolder>(topicsAdapterOptions, topicsDataObserver, activity) {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ResourceHeaderRecyclerViewHolder {
@@ -39,8 +44,7 @@ abstract class TopicLessonsRecyclerAdapter(topicsAdapterOptions: FirestoreRecycl
     private fun initializeLessonRecyclerView(recyclerView: HorizontalPagerRecyclerView?, topicId: String, holder: ResourceHeaderRecyclerViewHolder?) {
         val adapterOptions = getSubtopicAdapterOptions(topicId)
 
-        val shouldShowSubmissionsCount = true
-        val adapter = LessonHeaderRecyclerAdapter(shouldShowSubmissionsCount, adapterOptions, activity, getSubtopicDataObserverForViewHolder(holder))
+        val adapter = ResourceHeaderRecyclerAdapter(adapterOptions, showSubmissionCount, activity, getSubtopicDataObserverForViewHolder(holder))
 
         adapter.startListening()
         recyclerView?.setAdapter(adapter)
@@ -59,7 +63,7 @@ abstract class TopicLessonsRecyclerAdapter(topicsAdapterOptions: FirestoreRecycl
 
         override fun onDataEmpty() {
             viewHolder?.horizontalRecyclerView?.setVisibilityGone()
-            viewHolder?.showEmptyViews()
+            viewHolder?.showEmptyViewWithContributeButton(ResourceType.LESSON, activity)
             viewHolder?.statusTextView?.setText(R.string.there_are_no_lessons_for_this_topic_yet)
 
             level?.let { viewHolder?.statusTextView?.text = activity.getString(R.string.no_lessons_at_level_yet, level) }

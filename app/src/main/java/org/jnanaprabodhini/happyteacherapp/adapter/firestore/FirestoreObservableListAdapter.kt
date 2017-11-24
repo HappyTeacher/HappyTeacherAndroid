@@ -18,7 +18,7 @@ import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 /**
  * Created by grahamearley on 10/23/17.
  */
-abstract class FirestoreObserverListAdapter<T>(query: Query, modelClass: Class<T>, @LayoutRes val layoutId: Int, val dataObserver: FirebaseDataObserver, context: Context):
+abstract class FirestoreObservableListAdapter<T>(query: Query, modelClass: Class<T>, @LayoutRes val layoutId: Int, val dataObserver: FirebaseDataObserver, context: Context):
         ArrayAdapter<T>(context, layoutId),
         ChangeEventListener {
 

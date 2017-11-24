@@ -7,7 +7,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestoreException
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
-import org.jnanaprabodhini.happyteacherapp.adapter.firestore.ClassroomResourceHeaderRecyclerAdapter
+import org.jnanaprabodhini.happyteacherapp.adapter.firestore.ResourceHeaderRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.adapter.viewholder.ContentCardViewHolder
 import org.jnanaprabodhini.happyteacherapp.adapter.viewholder.ResourceHeaderRecyclerViewHolder
@@ -17,6 +17,7 @@ import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import org.jnanaprabodhini.happyteacherapp.model.ContentCard
 import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
+import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 import java.io.File
 
 class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, attachmentDestinationDirectory: File, val topicName: String, subtopicId: String, activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
@@ -90,7 +91,8 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
                 .setQuery(classroomResourceQuery, ResourceHeader::class.java)
                 .build()
 
-        val adapter = ClassroomResourceHeaderRecyclerAdapter(adapterOptions, activity, getClassroomResourcesDataObserver(holder))
+        val adapter = ResourceHeaderRecyclerAdapter(adapterOptions, showSubmissionCount = false,
+                activity = activity, firebaseDataObserver = getClassroomResourcesDataObserver(holder))
         adapter.startListening()
 
         holder.horizontalRecyclerView.setAdapter(adapter)
@@ -115,7 +117,7 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
         override fun onDataEmpty() {
             holder.horizontalRecyclerView.setVisibilityGone()
 
-            holder.showEmptyViews()
+            holder.showEmptyViewWithContributeButton(ResourceType.CLASSROOM_RESOURCE, activity)
             holder.statusTextView.setText(R.string.there_are_no_classroom_resources_for_this_lesson_yet)
         }
 

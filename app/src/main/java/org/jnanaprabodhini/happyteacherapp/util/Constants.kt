@@ -30,4 +30,16 @@ object UserRoles {
 object FirestoreKeys {
     const val STATUS = "status"
     const val IS_FEATURED = "isFeatured"
+    const val FEEDBACK = "feedback"
+    const val DATE_UPDATED = "dateUpdated"
+    const val FEEDBACK_PREVIEW_COMMENT = "feedbackPreviewComment"
+    const val FEEDBACK_PREVIEW_COMMENT_PATH = "feedbackPreviewCommentPath"
+    const val COMMENT_TEXT = "commentText"
+    const val REVIEWER_COMMENT = "reviewerComment"
+    const val LOCKED = "locked"
+    const val REGISTRATION_TOKEN = "registrationToken"
+    const val RESOURCE_TYPE = "resourceType"
+    const val REFERENCE_PATH = "referencePath"
+    const val NAME = "name"
+    const val RESOURCE_NAME = "resourceName"
 }

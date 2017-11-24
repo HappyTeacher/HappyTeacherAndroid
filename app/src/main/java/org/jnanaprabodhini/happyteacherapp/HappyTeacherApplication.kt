@@ -1,6 +1,5 @@
 package org.jnanaprabodhini.happyteacherapp
 
-import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import android.support.v7.preference.PreferenceManager

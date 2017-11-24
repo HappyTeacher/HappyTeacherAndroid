@@ -6,8 +6,6 @@ import android.view.Menu
 import android.view.MenuItem
 import org.jnanaprabodhini.happyteacherapp.util.LocaleManager
 import org.jnanaprabodhini.happyteacherapp.R
-import org.jnanaprabodhini.happyteacherapp.activity.BoardLessonsActivity
-import org.jnanaprabodhini.happyteacherapp.activity.TopicsListActivity
 import org.jnanaprabodhini.happyteacherapp.dialog.LanguageChoiceDialog
 import org.jnanaprabodhini.happyteacherapp.extension.showToast
 import com.firebase.ui.auth.AuthUI
@@ -16,9 +14,13 @@ import android.app.Activity
 import com.crashlytics.android.Crashlytics
 import com.firebase.ui.auth.IdpResponse
 import org.jnanaprabodhini.happyteacherapp.BuildConfig
-import org.jnanaprabodhini.happyteacherapp.activity.ContributeActivity
-import org.jnanaprabodhini.happyteacherapp.activity.SettingsActivity
+import org.jnanaprabodhini.happyteacherapp.activity.*
+import org.jnanaprabodhini.happyteacherapp.extension.signOutAndCleanup
 import org.jnanaprabodhini.happyteacherapp.model.User
+import org.jnanaprabodhini.happyteacherapp.service.FirebaseRegistrationTokenService
+import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
+import org.jnanaprabodhini.happyteacherapp.util.ResourceType
+import org.jnanaprabodhini.happyteacherapp.util.UserRoles
 
 
 /**
@@ -67,7 +69,13 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
     abstract fun onBottomNavigationItemReselected()
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.top_level_activity, menu)
+        menuInflater.inflate(R.menu.menu_top_level_activity, menu)
+        val reviewLessonsMenuItem = menu?.findItem(R.id.menu_moderator_submission_review)
+
+        if (prefs.userIsAdmin() || prefs.userIsMod()) {
+            reviewLessonsMenuItem?.isVisible = true
+        }
+
         return true
     }
 
@@ -84,8 +92,13 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
             R.id.menu_change_language -> showLanguageChangeDialog()
             R.id.menu_sign_in -> if (auth.currentUser == null) launchSignIn() else signOut()
             R.id.menu_settings -> launchSettings()
+            R.id.menu_moderator_submission_review -> launchSubmissionReview()
         }
         return true
+    }
+
+    private fun launchSubmissionReview() {
+        SubmissionsForReviewActivity.launch(this)
     }
 
     protected fun launchSettings() {
@@ -112,7 +125,7 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
     }
 
     private fun signOut() {
-        auth.signOut()
+        auth.signOutAndCleanup(this)
     }
 
     fun changeLocaleAndRefresh(locale: String) {
@@ -134,26 +147,29 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
                 return
             } else {
                 // Sign in failed
-                if (response == null) {
-                    // User pressed back button
-                    return
-                } else if (response.errorCode == ErrorCodes.NO_NETWORK) {
-                    showToast(R.string.sign_in_failed_network_error)
-                    return
-                } else if (response.errorCode == ErrorCodes.UNKNOWN_ERROR) {
-                    showToast(R.string.sign_in_failed)
-                    Crashlytics.log("Sign in failed due to unknown error.")
-                    return
-                } else {
-                    showToast(R.string.sign_in_failed)
-                    Crashlytics.log("Sign in failed due to unknown error with unknown error code.")
-                    return
+                when {
+                    response == null -> return // User pressed back button
+                    response.errorCode == ErrorCodes.NO_NETWORK -> {
+                        showToast(R.string.sign_in_failed_network_error)
+                        return
+                    }
+                    response.errorCode == ErrorCodes.UNKNOWN_ERROR -> {
+                        showToast(R.string.sign_in_failed)
+                        Crashlytics.log("Sign in failed due to unknown error.")
+                        return
+                    }
+                    else -> {
+                        showToast(R.string.sign_in_failed)
+                        Crashlytics.log("Sign in failed due to unknown error with unknown error code.")
+                        return
+                    }
                 }
             }
         }
     }
 
     private fun persistUserInfo() {
+        FirebaseRegistrationTokenService.updateUserToken(this)
         getUserReference()?.get()?.addOnSuccessListener { snapshot ->
             if (snapshot.exists()) {
                 val userModel = snapshot.toObject(User::class.java)
@@ -161,6 +177,7 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
                 prefs.setUserLocation(userModel.location)
                 prefs.setUserInstitution(userModel.institution)
                 prefs.setUserName(userModel.displayName)
+                prefs.setUserRole(userModel.role)
             } else {
                 // If Cloud Functions haven't created the user fast enough,
                 //  it's possible for the user Document to not exist yet.

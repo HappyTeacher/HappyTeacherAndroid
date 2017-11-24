@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginTop="8dp"
@@ -18,9 +19,24 @@
             android:id="@+id/topPlaceholder"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/headerMediaFrame"
+            app:layout_constraintBottom_toTopOf="@id/feedbackPreviewView"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="spread_inside" />
+
+        <!--TODO: ViewStub this-->
+        <org.jnanaprabodhini.happyteacherapp.view.FeedbackPreviewView
+            android:id="@+id/feedbackPreviewView"
+            android:visibility="gone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintTop_toBottomOf="@id/topPlaceholder"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/headerMediaFrame"/>
 
         <FrameLayout
             android:id="@+id/headerMediaFrame"
@@ -31,7 +47,7 @@
             app:layout_constraintBottom_toTopOf="@id/headerTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/topPlaceholder">
+            app:layout_constraintTop_toBottomOf="@id/feedbackPreviewView">
 
             <ImageView
                 android:id="@+id/headerImageView"
@@ -68,6 +84,8 @@
         <TextView
             android:id="@+id/headerTextView"
             style="@style/LessonCardText.Header"
+            android:visibility="visible"
+            tools:text="Test title"
             app:layout_constraintBottom_toTopOf="@id/bodyTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -77,6 +95,8 @@
         <TextView
             android:id="@+id/bodyTextView"
             style="@style/LessonCardText.Body"
+            android:visibility="visible"
+            tools:text="Test text"
             app:layout_constraintBottom_toTopOf="@id/attachmentDownloadBar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -87,29 +107,31 @@
             android:id="@+id/attachmentDownloadBar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/editButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bodyTextView" />
 
         <TextView
             android:id="@+id/editButton"
+            style="@style/CardButton.Edit"
             android:text="@string/edit"
             app:layout_constraintBottom_toBottomOf="@id/bottomPlaceholder"
             app:layout_constraintEnd_toStartOf="@+id/deleteButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/attachmentDownloadBar"
-            style="@style/CardButton.Edit" />
+            app:layout_constraintVertical_bias="1.0"/>
 
         <TextView
             android:id="@+id/deleteButton"
+            style="@style/CardButton.Delete"
             android:text="@string/delete"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/editButton"
             app:layout_constraintTop_toTopOf="@id/editButton"
-            app:layout_constraintVertical_bias="1.0"
-            style="@style/CardButton.Delete" />
+            app:layout_constraintVertical_bias="1.0" />
 
         <View
             android:id="@+id/bottomPlaceholder"
@@ -120,9 +142,9 @@
 
         <android.support.constraint.Group
             android:id="@+id/editButtonGroup"
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:constraint_referenced_ids="deleteButton,editButton" />
 
     </android.support.constraint.ConstraintLayout>

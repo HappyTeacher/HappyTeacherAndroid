@@ -10,21 +10,21 @@ import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_subtopic_submissions_list.*
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
-import org.jnanaprabodhini.happyteacherapp.adapter.firestore.LessonHeaderRecyclerAdapter
+import org.jnanaprabodhini.happyteacherapp.adapter.firestore.ResourceHeaderRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
 
-class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObserver {
+class SubtopicLessonListActivity : HappyTeacherActivity(), FirebaseDataObserver {
 
     companion object IntentExtraHelper {
         fun launch(from: Activity, subtopicId: String) {
-            val subtopicSubmissionsIntent = Intent(from, SubtopicSubmissionsListActivity::class.java)
+            val subtopicSubmissionsIntent = Intent(from, SubtopicLessonListActivity::class.java)
 
             subtopicSubmissionsIntent.apply {
-                putExtra(SubtopicSubmissionsListActivity.SUBTOPIC_KEY, subtopicId)
+                putExtra(SubtopicLessonListActivity.SUBTOPIC_KEY, subtopicId)
             }
 
             from.startActivity(subtopicSubmissionsIntent)
@@ -56,8 +56,8 @@ class SubtopicSubmissionsListActivity : HappyTeacherActivity(), FirebaseDataObse
         val adapterOptions = FirestoreRecyclerOptions.Builder<ResourceHeader>()
                 .setQuery(submissionHeadersQuery, ResourceHeader::class.java).build()
 
-        val shouldShowSubmissionsCount = false
-        val adapter = LessonHeaderRecyclerAdapter(shouldShowSubmissionsCount, adapterOptions, this, this)
+        val adapter = ResourceHeaderRecyclerAdapter(adapterOptions, showSubmissionCount = false,
+                activity = this, firebaseDataObserver = this)
         adapter.startListening()
 
         submissionRecyclerView.layoutManager = LinearLayoutManager(this)

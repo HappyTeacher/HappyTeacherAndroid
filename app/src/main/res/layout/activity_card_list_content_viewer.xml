@@ -40,6 +40,18 @@
         android:layout_width="match_parent"
         android:animateLayoutChanges="true"
         android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/resourceStatusTextView"
+            android:gravity="center"
+            android:textAllCaps="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray"
+            android:textColor="@android:color/white"
+            android:visibility="gone"
+            app:layout_scrollFlags="scroll"
+            android:padding="8dp"/>
         
         <android.support.constraint.ConstraintLayout
             android:padding="16dp"
@@ -112,7 +124,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addCardFab"
+        android:id="@+id/primaryFab"
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -124,13 +136,13 @@
         android:id="@+id/fabDivider"
         android:layout_width="1dp"
         android:layout_height="16dp"
-        app:layout_anchor="@id/addCardFab"
+        app:layout_anchor="@id/primaryFab"
         app:layout_anchorGravity="top|center" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/submitLessonFab"
+        android:id="@+id/secondaryFab"
         android:visibility="gone"
-        app:backgroundTint="@color/grassGreen"
+        app:backgroundTint="@color/deepGrassGreen"
         app:fabSize="mini"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

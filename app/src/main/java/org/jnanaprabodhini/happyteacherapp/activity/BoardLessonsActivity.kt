@@ -14,12 +14,11 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.android.synthetic.main.activity_board_lessons.*
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.base.BottomNavigationActivity
-import org.jnanaprabodhini.happyteacherapp.adapter.firestore.FirestoreObserverListAdapter
+import org.jnanaprabodhini.happyteacherapp.adapter.firestore.FirestoreObservableListAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.firestore.SyllabusLessonRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.dialog.BoardChoiceDialog
 import org.jnanaprabodhini.happyteacherapp.extension.onItemSelected
-import org.jnanaprabodhini.happyteacherapp.extension.selectIndexWhenPopulated
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.model.Subject
@@ -50,7 +49,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
         setupRecyclerView()
 
-        if (!prefs.hasChosenBoard()) {
+        if (!prefs.hasSeenBoardChooser()) {
             // Prompt the user to select which board they would like
             //  to see syllabus lesson plans from.
             showBoardChooser()
@@ -112,6 +111,10 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
             override fun onDataNonEmpty() {
                 setSpinnersVisible()
                 boardLessonsProgressBar.setVisibilityGone()
+
+                if (subjectSpinner.count > subjectSpinnerSelectionIndex) {
+                    subjectSpinner.setSelection(subjectSpinnerSelectionIndex)
+                }
             }
 
             override fun onDataEmpty() {
@@ -129,7 +132,7 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
             }
         }
 
-        val adapter = object: FirestoreObserverListAdapter<Subject>(subjectQuery, Subject::class.java, R.layout.spinner_item, subjectDataObserver, this) {
+        val adapter = object: FirestoreObservableListAdapter<Subject>(subjectQuery, Subject::class.java, R.layout.spinner_item, subjectDataObserver, this) {
             override fun populateView(view: View, model: Subject, position: Int) {
                 (view as TextView).text = model.name
             }
@@ -145,7 +148,6 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
         }
 
         subjectSpinner.adapter = adapter
-        subjectSpinner.selectIndexWhenPopulated(subjectSpinnerSelectionIndex)
     }
 
     private fun setupLevelSpinnerForSubject(levels: List<Int>, subjectId: String) {

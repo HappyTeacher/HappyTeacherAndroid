@@ -1,11 +1,14 @@
 package org.jnanaprabodhini.happyteacherapp.extension
 
+import android.content.res.ColorStateList
 import android.database.DataSetObserver
+import android.graphics.Color
 import android.os.Build
 import android.support.annotation.ColorRes
 import android.support.annotation.DimenRes
 import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
+import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.ViewCompat
@@ -100,26 +103,6 @@ fun Spinner.onItemSelected(onItemSelected: (Int) -> Unit) {
     }
 }
 
-fun Spinner.items(): List<Any> = (0..count - 1).map { adapter.getItem(it) }
-
-/**
- * Select the given index in the spinner when the spinner's
- *  item count reaches that level.
- *
- *  Used for re-selecting a previous selection when a spinner
- *   is reset (across configuration changes).
- */
-fun Spinner.selectIndexWhenPopulated(index: Int) {
-    adapter?.registerDataSetObserver(object: DataSetObserver() {
-        override fun onChanged() {
-            if (count > 0 && count >= index) {
-                setSelection(index)
-                adapter?.unregisterDataSetObserver(this)
-            }
-        }
-    })
-}
-
 fun TextView.setDrawableLeft(@DrawableRes drawableId: Int) {
     val drawable = AppCompatResources.getDrawable(context, drawableId)
     this.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
@@ -128,6 +111,11 @@ fun TextView.setDrawableLeft(@DrawableRes drawableId: Int) {
 fun TextView.setDrawableRight(@DrawableRes drawableId: Int) {
     val drawable = AppCompatResources.getDrawable(context, drawableId)
     this.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
+}
+
+fun TextView.setDrawableTop(@DrawableRes drawableId: Int) {
+    val drawable = AppCompatResources.getDrawable(context, drawableId)
+    this.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
 }
 
 fun View.setBackgroundDrawable(@DrawableRes drawableId: Int) {
@@ -192,13 +180,9 @@ fun ImageView.setDrawableResource(@DrawableRes drawableRes: Int) {
     this.setImageDrawable(ResourcesCompat.getDrawable(resources, drawableRes, null))
 }
 
-fun RecyclerView.canScrollLeftHorizontally(): Boolean {
-    return canScrollHorizontally(-1)
-}
+fun RecyclerView.canScrollLeftHorizontally(): Boolean = canScrollHorizontally(-1)
 
-fun RecyclerView.canScrollRightHorizontally(): Boolean {
-    return canScrollHorizontally(1)
-}
+fun RecyclerView.canScrollRightHorizontally(): Boolean = canScrollHorizontally(1)
 
 fun Animation.onFinish(onFinish: () -> Unit) {
     this.setAnimationListener(object: Animation.AnimationListener {
@@ -212,4 +196,9 @@ fun Animation.onFinish(onFinish: () -> Unit) {
 
 fun View.setTooltip(tooltipText: String) {
     TooltipCompat.setTooltipText(this, tooltipText)
+}
+
+fun FloatingActionButton.setColor(@ColorRes colorId: Int) {
+    val color = ResourcesCompat.getColor(context.resources, colorId, null)
+    backgroundTintList = ColorStateList.valueOf(color)
 }

@@ -12,7 +12,7 @@ import org.jnanaprabodhini.happyteacherapp.adapter.viewholder.ContentCardViewHol
 import org.jnanaprabodhini.happyteacherapp.model.ContentCard
 import java.io.File
 
-class EditableLessonRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, attachmentDestinationDirectory: File, subtopicId: String, activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
+class EditableResourceRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, attachmentDestinationDirectory: File, subtopicId: String, activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
         ResourceContentRecyclerAdapter(options, attachmentDestinationDirectory, subtopicId, activity, dataObserver), MovableViewContainer {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, model: ContentCard?) {
@@ -22,6 +22,8 @@ class EditableLessonRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCar
             val cardRef = snapshots.getSnapshot(position).reference
             val parentContentId = cardRef.parent.parent.id
             holder.setupEditButtons(activity, cardRef, model ?: ContentCard(), parentContentId)
+
+            holder.setFeedbackDisplayForCard(cardRef, model ?: ContentCard())
         }
     }
 

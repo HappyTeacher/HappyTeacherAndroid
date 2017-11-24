@@ -1,6 +1,8 @@
 package org.jnanaprabodhini.happyteacherapp.model
 
+import android.annotation.SuppressLint
 import android.os.Parcelable
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Exclude
 import kotlinx.android.parcel.Parcelize
 import java.util.*
@@ -32,8 +34,9 @@ data class SyllabusLesson(val board: String = "",
                           val subject: String = "",
                           val topicCount: Int = 0)
 
+@SuppressLint("ParcelCreator")
 @Parcelize
-data class ResourceHeader(val name: String = "",
+data class ResourceHeader(var name: String = "",
                           val authorId: String = "",
                           val authorInstitution: String = "",
                           val authorLocation: String = "",
@@ -48,6 +51,7 @@ data class ResourceHeader(val name: String = "",
                           val resourceType: String = "",
                           val isFeatured: Boolean = false): Parcelable
 
+@SuppressLint("ParcelCreator")
 @Parcelize
 data class ContentCard(var header: String = "",
                        var body: String = "",
@@ -55,6 +59,8 @@ data class ContentCard(var header: String = "",
                        var youtubeId: String = "",
                        var attachmentPath: String = "",
                        var attachmentMetadata: AttachmentMetadata = AttachmentMetadata(),
+                       var feedbackPreviewComment: String = "",
+                       var feedbackPreviewCommentPath: String = "",
                        var orderNumber: Int = 0): Parcelable {
     @Exclude
     fun isEmpty(): Boolean {
@@ -64,6 +70,16 @@ data class ContentCard(var header: String = "",
     }
 }
 
+@SuppressLint("ParcelCreator")
+@Parcelize
+data class CardComment(val commenterId: String = "",
+                       val commenterName: String = "",
+                       var commentText: String = "",
+                       var dateUpdated: Date = Date(),
+                       val reviewerComment: Boolean = false,
+                       val locked: Boolean = false): Parcelable
+
+@SuppressLint("ParcelCreator")
 @Parcelize
 data class AttachmentMetadata(val contentType: String = "",
                               val size: Long = 0,

@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name="org.jnanaprabodhini.happyteacherapp.HappyTeacherApplication"
+        android:name=".HappyTeacherApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="org.jnanaprabodhini.happyteacherapp.activity.TopicsListActivity"
+            android:name=".activity.TopicsListActivity"
             android:label="@string/app_name"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -22,41 +22,77 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.jnanaprabodhini.happyteacherapp.activity.BoardLessonsActivity" />
-        <activity android:name="org.jnanaprabodhini.happyteacherapp.activity.ContributeActivity" />
+        <activity android:name=".activity.BoardLessonsActivity" />
+        <activity android:name=".activity.ContributeActivity" />
         <activity
-            android:name="org.jnanaprabodhini.happyteacherapp.activity.LessonViewerActivity"
-            android:parentActivityName="org.jnanaprabodhini.happyteacherapp.activity.TopicsListActivity" />
+            android:name=".activity.LessonViewerActivity"
+            android:parentActivityName=".activity.TopicsListActivity" />
         <activity
-            android:name="org.jnanaprabodhini.happyteacherapp.activity.ClassroomResourceViewerActivity"
-            android:parentActivityName="org.jnanaprabodhini.happyteacherapp.activity.TopicsListActivity" />
+            android:name=".activity.ClassroomResourceViewerActivity"
+            android:parentActivityName=".activity.TopicsListActivity" />
         <activity
-            android:name="org.jnanaprabodhini.happyteacherapp.activity.FullScreenGalleryViewerActivity"
+            android:name=".activity.ResourceContentReviewActivity"
+            android:parentActivityName=".activity.TopicsListActivity" />
+        <activity
+            android:name=".activity.FullScreenGalleryViewerActivity"
             android:theme="@style/Theme.Transparent" />
         <activity
-            android:name="org.jnanaprabodhini.happyteacherapp.activity.SubtopicSubmissionsListActivity"
+            android:name=".activity.SubtopicLessonListActivity"
             android:label="@string/other_lesson_plans"
-            android:parentActivityName="org.jnanaprabodhini.happyteacherapp.activity.TopicsListActivity" />
+            android:parentActivityName=".activity.TopicsListActivity" />
         <activity
-            android:name="org.jnanaprabodhini.happyteacherapp.activity.ResourceEditorActivity"
-            android:parentActivityName="org.jnanaprabodhini.happyteacherapp.activity.ContributeActivity" />
+            android:name=".activity.ResourceContentEditorActivity"
+            android:parentActivityName=".activity.ContributeActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/places_api_key" />
 
         <activity
-            android:name="org.jnanaprabodhini.happyteacherapp.activity.SettingsActivity"
+            android:name=".activity.SettingsActivity"
             android:label="@string/settings"
-            android:parentActivityName="org.jnanaprabodhini.happyteacherapp.activity.TopicsListActivity" />
+            android:parentActivityName=".activity.TopicsListActivity" />
         <activity
-            android:name="org.jnanaprabodhini.happyteacherapp.activity.SubtopicWriteChoiceActivity"
+            android:name=".activity.SubtopicWriteChoiceActivity"
             android:label="@string/create_a_resource"
             android:noHistory="true"
-            android:parentActivityName="org.jnanaprabodhini.happyteacherapp.activity.ContributeActivity" />
-        <activity android:name="org.jnanaprabodhini.happyteacherapp.activity.CardEditorActivity"
+            android:parentActivityName=".activity.ContributeActivity" />
+        <activity
+            android:name=".activity.CardEditorActivity"
             android:label="@string/card_editor"
-            android:parentActivityName="org.jnanaprabodhini.happyteacherapp.activity.ResourceEditorActivity"/>
+            android:parentActivityName=".activity.ResourceContentEditorActivity" />
+        <activity
+            android:name=".activity.SubmissionsForReviewActivity"
+            android:label="@string/review_submissions"
+            android:parentActivityName=".activity.TopicsListActivity" />
+        <activity android:name=".activity.FeedbackCommentsActivity"
+            android:label="@string/feedback_notes"
+            android:parentActivityName=".activity.LessonViewerActivity"/>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_app_logo" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+
+        <service
+            android:name=".service.FirebaseRegistrationTokenService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.FirebaseNotificationService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+
     </application>
 
 </manifest>

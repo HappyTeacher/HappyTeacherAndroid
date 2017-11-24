@@ -2,17 +2,23 @@ package org.jnanaprabodhini.happyteacherapp.activity
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.text.InputType
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.EditText
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.ResourceContentRecyclerAdapter
-import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.EditableLessonRecyclerAdapter
+import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.EditableResourceRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.MovableViewContainer
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.RecyclerVerticalDragHelperCallback
+import org.jnanaprabodhini.happyteacherapp.dialog.InputTextDialogBuilder
 import org.jnanaprabodhini.happyteacherapp.extension.setTooltip
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.extension.showToast
@@ -25,14 +31,14 @@ import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 /**
  * Created by grahamearley on 11/3/17.
  */
-class ResourceEditorActivity : ResourceContentViewerActivity() {
+class ResourceContentEditorActivity : ResourceContentActivity() {
 
     companion object {
-        fun launch(from: Activity, lessonRef: DocumentReference, resourceHeader: ResourceHeader) {
-            val lessonEditorIntent = Intent(from, ResourceEditorActivity::class.java)
+        fun launch(from: Activity, resourceRef: DocumentReference, resourceHeader: ResourceHeader) {
+            val lessonEditorIntent = Intent(from, ResourceContentEditorActivity::class.java)
 
             lessonEditorIntent.apply {
-                putExtra(CONTENT_REF_PATH, lessonRef.path)
+                putExtra(CONTENT_REF_PATH, resourceRef.path)
                 putExtra(HEADER, resourceHeader)
             }
             from.startActivity(lessonEditorIntent)
@@ -43,8 +49,10 @@ class ResourceEditorActivity : ResourceContentViewerActivity() {
         val options = FirestoreRecyclerOptions.Builder<ContentCard>()
                 .setQuery(cardsRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
 
-        EditableLessonRecyclerAdapter(options, attachmentDestinationDirectory, header.subtopic, this, this)
+        EditableResourceRecyclerAdapter(options, attachmentDestinationDirectory, header.subtopic, this, this)
     }
+
+    private var hasSeenChangeNameDialog = false
 
     // Dialog text (depending on resource type):
     private val confirmationDialogTitle by lazy {
@@ -87,14 +95,14 @@ class ResourceEditorActivity : ResourceContentViewerActivity() {
         }
     }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun initializeUiForContentFromDatabase() {
+        super.initializeUiForContentFromDatabase()
         supportActionBar?.setSubtitle(when(header.resourceType) {
             ResourceType.LESSON -> R.string.lesson_editor
             ResourceType.CLASSROOM_RESOURCE -> R.string.classroom_resource_editor
             else -> R.string.editor
         })
+
         setupFabs()
     }
 
@@ -106,18 +114,26 @@ class ResourceEditorActivity : ResourceContentViewerActivity() {
     }
 
     private fun setupFabs() {
-        addCardFab.setVisible()
-        submitLessonFab.setVisible()
+        primaryFab.setVisible()
+        secondaryFab.setVisible()
 
-        addCardFab.setTooltip(getString(R.string.add_card))
-        submitLessonFab.setTooltip(getString(R.string.submit))
+        primaryFab.setTooltip(getString(R.string.add_card))
+        secondaryFab.setTooltip(getString(R.string.submit))
 
-        addCardFab.setOnClickListener {
+        primaryFab.setOnClickListener {
             addNewCard()
         }
 
-        submitLessonFab.setOnClickListener{
+        secondaryFab.setOnClickListener{
+            checkForNameAndSubmit()
+        }
+    }
+
+    private fun checkForNameAndSubmit() {
+        if (header.name.isNotEmpty()) {
             showSubmitConfirmationDialog()
+        } else {
+            showChangeNameDialog(getString(R.string.resources_must_be_named_before_being_submitted))
         }
     }
 
@@ -135,13 +151,17 @@ class ResourceEditorActivity : ResourceContentViewerActivity() {
 
     private fun submit() {
         showToast(getString(R.string.submitting))
-        contentRef.update(FirestoreKeys.STATUS, ResourceStatus.AWAITING_REVIEW)
-                .addOnSuccessListener {
-                    showToast(resourceSubmittedMessage)
-                    finish()
-                }.addOnFailureListener {
-                    showToast(getString(R.string.submission_failed_try_again_later))
-                }
+        // The AWAITING_REVIEW_OR_CHANGES_REQUESTED field is set by a Cloud Function,
+        //  but we'll set it manually here too so that it is reflected immediately when
+        //  the update is complete.
+        contentRef.update(mapOf(FirestoreKeys.STATUS to ResourceStatus.AWAITING_REVIEW,
+                ResourceStatus.AWAITING_REVIEW_OR_CHANGES_REQUESTED to true))
+                    .addOnSuccessListener {
+                        showToast(resourceSubmittedMessage)
+                        finish()
+                    }.addOnFailureListener {
+                        showToast(getString(R.string.submission_failed_try_again_later))
+                    }
     }
 
     private fun addNewCard() {
@@ -170,9 +190,66 @@ class ResourceEditorActivity : ResourceContentViewerActivity() {
                     })
                     .setNegativeButton(R.string.no, { _, _ -> super.finish()})
                     .show()
+        } else if (header.name.isEmpty() && !hasSeenChangeNameDialog) {
+            showChangeNameDialog()
         } else {
             super.finish()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_resource_editor, menu)
+        val changeNameMenuItem = menu?.findItem(R.id.menu_change_name)
+
+        if (header.resourceType == ResourceType.CLASSROOM_RESOURCE) {
+            changeNameMenuItem?.isVisible = true
+        }
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.menu_change_name -> showChangeNameDialog()
+        }
+        return true
+    }
+
+    private fun showChangeNameDialog(message: String? = null) {
+        val nameChangeDialog = InputTextDialogBuilder(this)
+
+        nameChangeDialog.apply {
+            setInputHint(getString(R.string.resource_name))
+
+            if (header.name.isNotEmpty()) {
+                setInputText(header.name)
+                setTitle(R.string.resource_name)
+            } else {
+                setTitle(R.string.name_your_resource)
+            }
+
+            message?.let { setMessage(it) }
+
+            setPositiveButton(R.string.save, {dialog, name ->
+                setResourceName(name)
+                dialog.dismiss()
+            })
+
+            setNegativeButton(R.string.cancel, DialogInterface.OnClickListener { dialog, _ ->
+                dialog.dismiss()
+            })
+
+            show()
+        }
+
+        hasSeenChangeNameDialog = true
+    }
+
+    private fun setResourceName(name: String) {
+        header.name = name
+        contentRef.set(header)
+        updateActionBarHeader()
     }
 }
 

@@ -10,12 +10,10 @@ import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.list_item_content_card.view.*
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.CardEditorActivity
-import org.jnanaprabodhini.happyteacherapp.extension.onFinish
-import org.jnanaprabodhini.happyteacherapp.extension.setDrawableLeft
-import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
-import org.jnanaprabodhini.happyteacherapp.extension.setVisible
+import org.jnanaprabodhini.happyteacherapp.extension.*
 import org.jnanaprabodhini.happyteacherapp.model.ContentCard
 import org.jnanaprabodhini.happyteacherapp.view.DownloadBarView
+import org.jnanaprabodhini.happyteacherapp.view.FeedbackPreviewView
 import org.jnanaprabodhini.happyteacherapp.view.HorizontalPagerRecyclerView
 import org.jnanaprabodhini.happyteacherapp.view.YoutubeWebView
 
@@ -40,6 +38,8 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
     private val editButton: TextView = itemView.editButton
     private val deleteButton: TextView = itemView.deleteButton
 
+    private val feedbackPreview: FeedbackPreviewView = itemView.feedbackPreviewView
+
     fun setupEditButtons(activity: Activity, cardRef: DocumentReference, cardModel: ContentCard, parentContentId: String) {
 
         editButton.setDrawableLeft(R.drawable.ic_pencil_white_24dp)
@@ -52,19 +52,15 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
         }
 
         deleteButton.setOnClickListener {
-            // FirebaseUI query refreshes to fast to animate item removals
-            //  so for now we run our own animation -- delete item after.
-            val exitAnimation = AnimationUtils.loadAnimation(activity, R.anim.slide_out_right_quick)
-
-            exitAnimation.onFinish {
-                cardRef.delete()
-            }
-
-            itemView.startAnimation(exitAnimation)
+            cardRef.slideOutViewAndDelete(activity, itemView)
         }
     }
 
-    fun hideEditButtons() {
-        editButtonGroup.setVisibilityGone()
+    fun setFeedbackEditableForCard(cardRef: DocumentReference, card: ContentCard) {
+        feedbackPreview.setEditableForCard(cardRef, card)
+    }
+
+    fun setFeedbackDisplayForCard(cardRef: DocumentReference, card: ContentCard) {
+        feedbackPreview.setReadOnlyForCard(cardRef, card)
     }
 }
