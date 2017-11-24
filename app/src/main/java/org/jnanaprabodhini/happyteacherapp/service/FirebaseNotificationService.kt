@@ -7,6 +7,7 @@ import android.app.TaskStackBuilder
 import android.content.Intent
 import android.support.annotation.ColorRes
 import android.support.annotation.DrawableRes
+import android.support.v4.app.FragmentPagerAdapter
 import com.google.firebase.messaging.RemoteMessage
 import com.google.firebase.messaging.FirebaseMessagingService
 import org.jnanaprabodhini.happyteacherapp.R
@@ -14,6 +15,7 @@ import android.support.v4.app.NotificationCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.util.Log
 import org.jnanaprabodhini.happyteacherapp.activity.*
+import org.jnanaprabodhini.happyteacherapp.adapter.contribute.ContributeFragmentAdapter
 import org.jnanaprabodhini.happyteacherapp.util.FirestoreKeys
 import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
 import org.jnanaprabodhini.happyteacherapp.util.ResourceType
@@ -29,7 +31,7 @@ class FirebaseNotificationService : FirebaseMessagingService() {
         val refPath = remoteMessage?.data?.get(FirestoreKeys.REFERENCE_PATH)
         val resourceName = remoteMessage?.data?.get(FirestoreKeys.RESOURCE_NAME)
         val type = remoteMessage?.data?.get(FirestoreKeys.RESOURCE_TYPE)
-        
+
         // Ensure all values exist.
         if (refPath == null || resourceName == null || type == null || status == null) {
             return
@@ -44,6 +46,7 @@ class FirebaseNotificationService : FirebaseMessagingService() {
     private fun sendPublishedNotification(resourceName: String, type: String, refPath: String) {
         val messageTitle = getString(R.string.submission_published)
 
+        // Published notifications lead to the resource viewer for this resource.
         when (type) {
             ResourceType.CLASSROOM_RESOURCE -> {
                 val messageBody = getString(R.string.your_classroom_resource_x_was_published, resourceName)
@@ -62,16 +65,21 @@ class FirebaseNotificationService : FirebaseMessagingService() {
     private fun sendChangesRequestedNotification(resourceName: String, type: String, refPath: String) {
         val messageTitle = getString(R.string.changes_requested_sentence_case)
 
+        // Changes requested notifications will lead to the Submitted page of the contribute activity
+        val intent = Intent(this, ContributeActivity::class.java)
+        intent.putExtra(ContributeActivity.FRAGMENT_PAGE, ContributeFragmentAdapter.SUBMITTED_PAGE)
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+
         when (type) {
             ResourceType.CLASSROOM_RESOURCE -> {
                 val messageBody = getString(R.string.your_classroom_resource_x_has_changes_requested, resourceName)
-                sendResourceNotification(messageTitle, messageBody, refPath,
-                        R.color.dreamsicleOrange, R.drawable.ic_assignment_return_white_24dp, ResourceContentEditorActivity::class.java)
+                sendNotification(messageTitle, messageBody, pendingIntent, refPath,
+                        R.color.dreamsicleOrange, R.drawable.ic_assignment_return_white_24dp)
             }
             ResourceType.LESSON -> {
                 val messageBody = getString(R.string.your_lesson_plan_x_has_changes_requested, resourceName)
-                sendResourceNotification(messageTitle, messageBody, refPath,
-                        R.color.dreamsicleOrange, R.drawable.ic_assignment_return_white_24dp, ResourceContentEditorActivity::class.java)
+                sendNotification(messageTitle, messageBody, pendingIntent, refPath,
+                        R.color.dreamsicleOrange, R.drawable.ic_assignment_return_white_24dp)
             }
         }
 
@@ -93,6 +101,14 @@ class FirebaseNotificationService : FirebaseMessagingService() {
 
         val pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
 
+        sendNotification(messageTitle, messageBody, pendingIntent, refPath, color, icon)
+    }
+
+    private fun sendNotification(messageTitle: String, messageBody: String,
+                                 pendingIntent: PendingIntent,
+                                 notificationTag: String,
+                                 @ColorRes color: Int,
+                                 @DrawableRes icon: Int) {
         val notificationColor = ResourcesCompat.getColor(resources, color, null)
 
         val expandableNotificationStyle = NotificationCompat.BigTextStyle()
@@ -114,11 +130,10 @@ class FirebaseNotificationService : FirebaseMessagingService() {
 
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
-        // Only show one notification per resource. The (tag, id) pair must be unique,
-        //  so we set the tag to be the unique refPath and the id to be the arbitrary number 0
-        //  to create a unique ID pair:
+        // The (tag, id) pair must be unique. We will ignore the ID number (set it to
+        //  zero arbitrarily) and only create one notification per tag.
         val notificationIdNumber = 0
-        notificationManager.notify(refPath, notificationIdNumber, notificationBuilder.build())
+        notificationManager.notify(notificationTag, notificationIdNumber, notificationBuilder.build())
     }
 
 }
