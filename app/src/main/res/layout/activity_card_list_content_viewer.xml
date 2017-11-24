@@ -142,7 +142,7 @@
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/secondaryFab"
         android:visibility="gone"
-        app:backgroundTint="@color/grassGreen"
+        app:backgroundTint="@color/deepGrassGreen"
         app:fabSize="mini"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
