@@ -6,7 +6,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
-import kotlinx.android.synthetic.main.view_recycler_horizontal_pager.*
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.ResourceContentRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.LessonPlanRecyclerAdapter
@@ -59,8 +58,18 @@ class LessonViewerActivity : ResourceContentViewerActivity(){
     }
 
     override fun onError(e: FirebaseFirestoreException?) {
-        recyclerView.setVisibilityGone()
+        cardRecyclerView.setVisibilityGone()
         statusTextView.setVisible()
         statusTextView.setText(R.string.there_was_an_error_loading_this_lesson)
+    }
+
+    override fun onDataEmpty() {
+        cardRecyclerView.setVisibilityGone()
+        statusTextView.setText(R.string.this_lesson_is_empty)
+    }
+
+    override fun onDataNonEmpty() {
+        cardRecyclerView.setVisible()
+        statusTextView.setVisibilityGone()
     }
 }

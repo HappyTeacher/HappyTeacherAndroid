@@ -20,6 +20,7 @@ import org.jnanaprabodhini.happyteacherapp.adapter.helper.MovableViewContainer
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.RecyclerVerticalDragHelperCallback
 import org.jnanaprabodhini.happyteacherapp.dialog.InputTextDialogBuilder
 import org.jnanaprabodhini.happyteacherapp.extension.setTooltip
+import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.extension.showToast
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
@@ -250,6 +251,22 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
         header.name = name
         contentRef.set(header)
         updateActionBarHeader()
+    }
+
+    override fun onDataEmpty() {
+        cardRecyclerView.setVisibilityGone()
+        statusTextView.setVisible()
+
+        when (header.resourceType) {
+            ResourceType.LESSON -> statusTextView.setText(R.string.there_are_no_cards_in_this_lesson_yet)
+            ResourceType.CLASSROOM_RESOURCE -> statusTextView.setText(R.string.there_are_no_cards_in_this_classroom_resource_yet)
+            else -> statusTextView.setVisibilityGone()
+        }
+    }
+
+    override fun onDataNonEmpty() {
+        cardRecyclerView.setVisible()
+        statusTextView.setVisibilityGone()
     }
 }
 

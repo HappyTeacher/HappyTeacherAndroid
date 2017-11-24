@@ -135,10 +135,12 @@ abstract class ResourceContentActivity : HappyTeacherActivity(), FirebaseDataObs
 
     override fun onRequestNewData() {
         progressBar.setVisible()
+        cardRecyclerView.setVisibilityGone()
     }
 
     override fun onDataLoaded() {
         progressBar.setVisibilityGone()
+        cardRecyclerView.setVisible()
     }
 
 }

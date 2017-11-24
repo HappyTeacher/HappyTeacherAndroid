@@ -238,6 +238,10 @@
 
     <string name="your_lesson_plan_x_has_changes_requested">Your lesson plan, %s, has changes requested.</string>
     <string name="your_classroom_resource_x_has_changes_requested">Your classroom resource, %s, has changes requested.</string>
+    <string name="this_lesson_is_empty">This lesson is empty.</string>
+    <string name="this_classroom_resource_is_empty">This classroom resource is empty.</string>
+    <string name="there_are_no_cards_in_this_lesson_yet">There are no cards in this lesson plan yet. Start your contribution by adding a card.</string>
+    <string name="there_are_no_cards_in_this_classroom_resource_yet">There are no cards in this classroom resource yet. Start your contribution by adding a card.</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>
