@@ -15,7 +15,9 @@ import com.crashlytics.android.Crashlytics
 import com.firebase.ui.auth.IdpResponse
 import org.jnanaprabodhini.happyteacherapp.BuildConfig
 import org.jnanaprabodhini.happyteacherapp.activity.*
+import org.jnanaprabodhini.happyteacherapp.extension.signOutAndCleanup
 import org.jnanaprabodhini.happyteacherapp.model.User
+import org.jnanaprabodhini.happyteacherapp.service.FirebaseRegistrationTokenService
 import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
 import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 import org.jnanaprabodhini.happyteacherapp.util.UserRoles
@@ -123,7 +125,7 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
     }
 
     private fun signOut() {
-        auth.signOut()
+        auth.signOutAndCleanup(this)
     }
 
     fun changeLocaleAndRefresh(locale: String) {
@@ -167,6 +169,7 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
     }
 
     private fun persistUserInfo() {
+        FirebaseRegistrationTokenService.updateUserToken(this)
         getUserReference()?.get()?.addOnSuccessListener { snapshot ->
             if (snapshot.exists()) {
                 val userModel = snapshot.toObject(User::class.java)

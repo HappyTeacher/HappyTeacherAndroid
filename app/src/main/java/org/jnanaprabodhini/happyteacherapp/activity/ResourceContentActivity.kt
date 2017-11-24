@@ -26,12 +26,17 @@ abstract class ResourceContentActivity : HappyTeacherActivity(), FirebaseDataObs
 
         const val CONTENT_REF_PATH: String = "CONTENT_REF_PATH"
         fun Intent.getContentRefPath(): String = getStringExtra(CONTENT_REF_PATH)
+        fun Intent.hasContentRefPath(): Boolean = hasExtra(CONTENT_REF_PATH)
 
         const val HEADER: String = "HEADER"
         fun Intent.getHeader(): ResourceHeader = getParcelableExtra(HEADER)
+        fun Intent.hasHeader(): Boolean = hasExtra(HEADER)
     }
 
-    protected val header by lazy { intent.getHeader() }
+    private val hasHeader by lazy {intent.hasHeader()}
+    private val hasContentRefPath by lazy { intent.hasContentRefPath() }
+
+    protected var header: ResourceHeader = ResourceHeader()
     protected val contentRef by lazy { firestoreRoot.document(intent.getContentRefPath()) }
     protected val cardsRef by lazy { contentRef.collection(getString(R.string.cards)) }
 
@@ -50,11 +55,26 @@ abstract class ResourceContentActivity : HappyTeacherActivity(), FirebaseDataObs
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card_list_content_viewer)
 
-        setHeaderView()
-        initializeUiForContentFromDatabase()
+        if (hasHeader) {
+            header = intent.getHeader()
+
+            setHeaderView()
+            initializeUiForContentFromDatabase()
+        } else {
+            loadHeader()
+        }
     }
 
-    private fun initializeUiForContentFromDatabase() {
+    private fun loadHeader() {
+        progressBar.setVisible()
+        contentRef.get().addOnSuccessListener { documentSnapshot ->
+            header = documentSnapshot.toObject(ResourceHeader::class.java)
+            setHeaderView()
+            initializeUiForContentFromDatabase()
+        }
+    }
+
+    open fun initializeUiForContentFromDatabase() {
         progressBar.setVisible()
         initializeUiForContent()
     }

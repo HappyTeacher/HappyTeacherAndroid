@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.support.annotation.IntegerRes
 import com.google.firebase.auth.FirebaseAuth
 import org.jnanaprabodhini.happyteacherapp.R
-
 import kotlinx.android.synthetic.main.activity_contribute.*
 import kotlinx.android.synthetic.main.content_contribute.*
 import org.jnanaprabodhini.happyteacherapp.activity.base.BottomNavigationActivity
@@ -27,6 +26,11 @@ class ContributeActivity : BottomNavigationActivity(), FirebaseAuth.AuthStateLis
             val intent = Intent(from, ContributeActivity::class.java)
             from.startActivity(intent)
         }
+
+        const val FRAGMENT_PAGE = "FRAGMENT_PAGE"
+        fun Intent.getFragmentPage() = getIntExtra(FRAGMENT_PAGE, 0)
+        fun Intent.hasFragmentPage() = hasExtra(FRAGMENT_PAGE)
+        fun Intent.removeFragmentPage() = removeExtra(FRAGMENT_PAGE)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,6 +97,11 @@ class ContributeActivity : BottomNavigationActivity(), FirebaseAuth.AuthStateLis
         if (fragmentPager.adapter !is ContributeFragmentAdapter) {
             // Only set up the adapter if it's not already set
             fragmentPager.adapter = ContributeFragmentAdapter(supportFragmentManager, this)
+        }
+
+        if (intent.hasFragmentPage()) {
+            fragmentPager.currentItem = intent.getFragmentPage()
+            intent.removeExtra(FRAGMENT_PAGE)
         }
 
         tabBar.setupWithViewPager(fragmentPager)
