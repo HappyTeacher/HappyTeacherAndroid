@@ -21,7 +21,7 @@ import org.jnanaprabodhini.happyteacherapp.extension.showToast
 import org.jnanaprabodhini.happyteacherapp.preference.MandatoryContributorPreference
 import org.jnanaprabodhini.happyteacherapp.util.PreferencesManager
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
-
+import org.jnanaprabodhini.happyteacherapp.extension.signOutAndCleanup
 
 
 class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -211,7 +211,7 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
     }
 
     private fun signOut() {
-        auth.signOut()
+        auth.signOutAndCleanup(this)
         settingsFragment.removeUserPreferences()
     }
 

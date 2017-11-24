@@ -95,9 +95,8 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
         }
     }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun initializeUiForContentFromDatabase() {
+        super.initializeUiForContentFromDatabase()
         supportActionBar?.setSubtitle(when(header.resourceType) {
             ResourceType.LESSON -> R.string.lesson_editor
             ResourceType.CLASSROOM_RESOURCE -> R.string.classroom_resource_editor

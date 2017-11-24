@@ -37,4 +37,9 @@ object FirestoreKeys {
     const val COMMENT_TEXT = "commentText"
     const val REVIEWER_COMMENT = "reviewerComment"
     const val LOCKED = "locked"
+    const val REGISTRATION_TOKEN = "registrationToken"
+    const val RESOURCE_TYPE = "resourceType"
+    const val REFERENCE_PATH = "referencePath"
+    const val NAME = "name"
+    const val RESOURCE_NAME = "resourceName"
 }
