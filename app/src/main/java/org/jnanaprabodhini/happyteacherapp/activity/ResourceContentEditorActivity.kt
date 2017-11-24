@@ -4,12 +4,12 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.os.Bundle
+import android.support.constraint.ConstraintLayout
+import android.support.design.widget.CoordinatorLayout
 import android.support.v7.widget.helper.ItemTouchHelper
-import android.text.InputType
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.EditText
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
@@ -104,7 +104,7 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
             else -> R.string.editor
         })
 
-        setupFabs()
+        setupFabsForNonEmptyResource()
     }
 
     override fun initializeRecyclerView() {
@@ -114,7 +114,11 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
         itemTouchHelper.attachToRecyclerView(cardRecyclerView)
     }
 
-    private fun setupFabs() {
+    private fun setupFabsForNonEmptyResource() {
+        val layoutParams = primaryFab.layoutParams as CoordinatorLayout.LayoutParams
+        layoutParams.gravity = Gravity.END or Gravity.BOTTOM
+        primaryFab.layoutParams = layoutParams
+
         primaryFab.setVisible()
         secondaryFab.setVisible()
 
@@ -127,6 +131,21 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
 
         secondaryFab.setOnClickListener{
             checkForNameAndSubmit()
+        }
+    }
+
+    private fun setupFabsForEmptyResource() {
+        val layoutParams = primaryFab.layoutParams as CoordinatorLayout.LayoutParams
+        layoutParams.gravity = Gravity.CENTER
+        primaryFab.layoutParams = layoutParams
+
+        primaryFab.setVisible()
+        secondaryFab.setVisibilityGone()
+
+        primaryFab.setTooltip(getString(R.string.add_card))
+
+        primaryFab.setOnClickListener {
+            addNewCard()
         }
     }
 
@@ -255,18 +274,20 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
 
     override fun onDataEmpty() {
         cardRecyclerView.setVisibilityGone()
-        statusTextView.setVisible()
-
-        when (header.resourceType) {
-            ResourceType.LESSON -> statusTextView.setText(R.string.there_are_no_cards_in_this_lesson_yet)
-            ResourceType.CLASSROOM_RESOURCE -> statusTextView.setText(R.string.there_are_no_cards_in_this_classroom_resource_yet)
-            else -> statusTextView.setVisibilityGone()
-        }
+        statusTextView.setVisibilityGone()
+        setupFabsForEmptyResource()
+        fabBottomDivider.setVisible()
+        getStartedTextView.setVisible()
+        statusTextView.setText(R.string.add_a_card_to_get_started)
     }
 
     override fun onDataNonEmpty() {
-        cardRecyclerView.setVisible()
+        getStartedTextView.setVisibilityGone()
+        fabBottomDivider.setVisibilityGone()
+        setupFabsForNonEmptyResource()
         statusTextView.setVisibilityGone()
+
+        cardRecyclerView.setVisible()
     }
 }
 

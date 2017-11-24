@@ -6,7 +6,8 @@
     tools:context="org.jnanaprabodhini.happyteacherapp.activity.TopicsListActivity"
     android:id="@+id/parentView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true">
 
     <org.jnanaprabodhini.happyteacherapp.view.ClickableScrollingRecyclerView
         android:id="@+id/cardRecyclerView"
@@ -133,7 +134,7 @@
         app:srcCompat="@drawable/ic_add_white_24dp" />
 
     <View
-        android:id="@+id/fabDivider"
+        android:id="@+id/fabMiddleDivider"
         android:layout_width="1dp"
         android:layout_height="16dp"
         app:layout_anchor="@id/primaryFab"
@@ -149,7 +150,26 @@
         android:layout_gravity="center|top"
         android:layout_margin="16dp"
         app:srcCompat="@drawable/ic_arrow_forward_white_24dp"
-        app:layout_anchor="@id/fabDivider"
+        app:layout_anchor="@id/fabMiddleDivider"
         app:layout_anchorGravity="top|right|end" />
+
+    <View
+        android:id="@+id/fabBottomDivider"
+        android:layout_width="1dp"
+        android:layout_height="64dp"
+        android:visibility="gone"
+        app:layout_anchor="@id/primaryFab"
+        app:layout_anchorGravity="bottom|center" />
+
+    <TextView
+        android:id="@+id/getStartedTextView"
+        style="@style/StatusText"
+        android:text="@string/add_a_card_to_get_started"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:layout_anchor="@id/fabBottomDivider"
+        app:layout_anchorGravity="bottom|center"
+        android:visibility="gone"/>
 
 </android.support.design.widget.CoordinatorLayout>
