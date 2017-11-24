@@ -62,11 +62,9 @@ class ContributionHeaderViewHolder(itemView: View): BaseResourceHeaderViewHolder
     }
 
     fun showPublishedStatus(context: Context) {
-        setTextColor(R.color.deepGrassGreen)
-
         statusTextView.text = context.getString(R.string.published_status)
         statusTextView.setDrawableLeft(R.drawable.ic_assignment_checkmark_green_24dp)
-        statusTextView.setTextColorRes(R.color.grassGreen)
+        statusTextView.setTextColorRes(R.color.deepGrassGreen)
 
         statusTextView.setVisible()
     }
