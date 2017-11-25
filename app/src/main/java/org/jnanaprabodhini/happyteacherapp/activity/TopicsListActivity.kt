@@ -67,21 +67,9 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         bottomNavigation.selectedItemId = bottomNavigationMenuItemId
         bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
-        savedInstanceState?.let { setSpinnerSelectionIndicesFromSavedInstanceState(it) }
+        subjectSpinnerManager.restoreSpinnerState(savedInstanceState)
 
         initializeUiFromIntent()
-    }
-
-    /**
-     *  If there are stored index positions for the spinners, set their properties accordingly.
-     *   These properties will be used to select the stored selection when the spinners are populated.
-     */
-    private fun setSpinnerSelectionIndicesFromSavedInstanceState(savedInstanceState: Bundle) {
-        val parentSubjectStoredSelection = savedInstanceState.getInt(SubjectSpinnerManager.PARENT_SUBJECT_SPINNER_SELECTION, 0)
-        val childSubjectStoredSelection = savedInstanceState.getInt(SubjectSpinnerManager.CHILD_SUBJECT_SPINNER_SELECTION, 0)
-
-        subjectSpinnerManager.parentSpinnerSelectionIndex = parentSubjectStoredSelection
-        subjectSpinnerManager.childSpinnerSelectionIndex = childSubjectStoredSelection
     }
 
     private fun initializeUiFromIntent() {
@@ -217,12 +205,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
     }
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
-        val parentSubjectSpinnerSelectionIndex = parentSubjectSpinner.selectedItemPosition
-        val childSubjectSpinnerSelectionIndex = childSubjectSpinner.selectedItemPosition
-
-        savedInstanceState.putInt(SubjectSpinnerManager.PARENT_SUBJECT_SPINNER_SELECTION, parentSubjectSpinnerSelectionIndex)
-        savedInstanceState.putInt(SubjectSpinnerManager.CHILD_SUBJECT_SPINNER_SELECTION, childSubjectSpinnerSelectionIndex)
-
+        subjectSpinnerManager.saveSpinnerState(savedInstanceState)
         super.onSaveInstanceState(savedInstanceState)
     }
 }

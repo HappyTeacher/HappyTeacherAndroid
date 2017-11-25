@@ -65,6 +65,8 @@ class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver
             }
         }
 
+        subjectSpinnerManager.restoreSpinnerState(savedInstanceState)
+
         initializeSpinners()
     }
 
@@ -73,6 +75,11 @@ class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver
                 this, this)
         subjectSpinnerManager.initializeWithTopicsListManager(parentSubjectSpinner,
                 childSubjectSpinner, progressBar, topicListManager)
+    }
+
+    override fun onSaveInstanceState(savedInstanceState: Bundle) {
+        subjectSpinnerManager.saveSpinnerState(savedInstanceState)
+        super.onSaveInstanceState(savedInstanceState)
     }
 
     override fun onRequestNewData() {

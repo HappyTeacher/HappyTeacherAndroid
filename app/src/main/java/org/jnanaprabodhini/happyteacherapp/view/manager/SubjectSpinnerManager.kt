@@ -1,11 +1,13 @@
 package org.jnanaprabodhini.happyteacherapp.view.manager
 
+import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
 import com.google.firebase.firestore.Query
+import kotlinx.android.synthetic.main.stacked_subject_spinners.*
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacherapp.adapter.firestore.FirestoreObservableListAdapter
@@ -98,7 +100,6 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
                     spinner?.setSelection(selectionIndex)
                 }
             }
-            // todo: add on empty, error, etc.
         }
     }
 
@@ -124,5 +125,23 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
                 (view as TextView).text = model.name
             }
         }
+    }
+
+    fun restoreSpinnerState(savedInstanceState: Bundle?) {
+        savedInstanceState?.let {
+            val parentSubjectStoredSelection = savedInstanceState.getInt(PARENT_SUBJECT_SPINNER_SELECTION, 0)
+            val childSubjectStoredSelection = savedInstanceState.getInt(CHILD_SUBJECT_SPINNER_SELECTION, 0)
+
+            parentSpinnerSelectionIndex = parentSubjectStoredSelection
+            childSpinnerSelectionIndex = childSubjectStoredSelection
+        }
+    }
+
+    fun saveSpinnerState(savedInstanceState: Bundle) {
+        val parentSubjectSpinnerSelectionIndex = parentSpinner?.selectedItemPosition ?: 0
+        val childSubjectSpinnerSelectionIndex = childSpinner?.selectedItemPosition ?: 0
+
+        savedInstanceState.putInt(PARENT_SUBJECT_SPINNER_SELECTION, parentSubjectSpinnerSelectionIndex)
+        savedInstanceState.putInt(CHILD_SUBJECT_SPINNER_SELECTION, childSubjectSpinnerSelectionIndex)
     }
 }
