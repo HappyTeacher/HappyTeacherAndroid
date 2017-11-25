@@ -12,4 +12,5 @@
     <string name="prefs_key_user_settings" translatable="false">USER_SETTINGS</string>
     <string name="prefs_key_user_sign_out" translatable="false">USER_SIGN_OUT</string>
     <string name="prefs_key_user_role" translatable="false">USER_ROLE</string>
+    <string name="prefs_key_app_information" translatable="false">APP_INFORMATION</string>
 </resources>

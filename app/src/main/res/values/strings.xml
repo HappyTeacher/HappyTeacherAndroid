@@ -242,6 +242,8 @@
     <string name="this_classroom_resource_is_empty">This classroom resource is empty.</string>
     <string name="add_a_card_to_get_started">Add a card to get started.</string>
     <string name="submitted_for_review_sentence_case">Submitted for review</string>
+    <string name="app_information">App Information</string>
+    <string name="version_number">Version number</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>

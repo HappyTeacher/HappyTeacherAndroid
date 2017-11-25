@@ -29,4 +29,12 @@
             android:summary="@string/tap_to_select_which_education_board_you_prefer"
             android:title="@string/preferred_education_board" />
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/app_information"
+        android:key="@string/prefs_key_app_information">
+        <org.jnanaprabodhini.happyteacherapp.preference.AppVersionPreference
+            android:title="@string/version_number" />
+    </PreferenceCategory>
+
 </PreferenceScreen>
