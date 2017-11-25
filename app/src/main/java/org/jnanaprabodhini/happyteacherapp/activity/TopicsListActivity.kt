@@ -92,12 +92,12 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         topicsProgressBar.setVisible()
 
         val topicListManager = PublishedLessonTopicListManager(topicsRecyclerView, this, this)
-        subjectSpinnerManager.initializeWithTopicsListManager(parentSubjectSpinner,
-                childSubjectSpinner, topicsProgressBar, topicListManager)
+        subjectSpinnerManager.initializeWithTopicsListManager(topicListManager, parentSubjectSpinner,
+                childSubjectSpinner, topicsProgressBar, statusTextView)
     }
 
     override fun onBottomNavigationItemReselected() {
-        if (parentSubjectSpinner.isGone()) {
+        if (syllabusLessonTopicsHeaderView.isVisible()) {
             // Reset to subject spinner view:
             initializeTopicListForSubject()
         } else {

@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.stacked_subject_spinners.*
 import org.jnanaprabodhini.happyteacherapp.R
@@ -35,12 +36,18 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
     private var parentSpinner: Spinner? = null
     private var childSpinner: Spinner? = null
     private var progressBar: ProgressBar? = null
+    private var statusTextView: TextView? = null
+
     private var onSpinnerSelectionsComplete: (String) -> Unit = {}
 
-    fun initializeWithTopicsListManager(parentSpinner: Spinner, childSpinner: Spinner, progressBar: ProgressBar, topicsListManager: TopicListManager) {
+    fun initializeWithTopicsListManager(topicsListManager: TopicListManager,
+                                        parentSpinner: Spinner, childSpinner: Spinner,
+                                        progressBar: ProgressBar, statusTextView: TextView) {
         this.parentSpinner = parentSpinner
         this.childSpinner = childSpinner
         this.progressBar = progressBar
+        this.statusTextView = statusTextView
+
         this.onSpinnerSelectionsComplete = { subjectKey -> topicsListManager.updateListOfTopicsForSubject(subjectKey) }
 
         setupSpinners()
@@ -92,13 +99,36 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
 
     private fun getDataObserverForSpinner(spinner: Spinner?, selectionIndex: Int): FirebaseDataObserver {
         return object: FirebaseDataObserver {
+            override fun onRequestNewData() {
+                progressBar?.setVisibilityGone()
+                statusTextView?.setVisibilityGone()
+                hideSpinners()
+            }
+
             override fun onDataNonEmpty() {
                 progressBar?.setVisibilityGone()
+                statusTextView?.setVisibilityGone()
                 spinner?.setVisible()
 
                 if (spinner?.count ?: 0 > selectionIndex) {
                     spinner?.setSelection(selectionIndex)
                 }
+            }
+
+            override fun onDataEmpty() {
+                progressBar?.setVisibilityGone()
+                hideSpinners()
+
+                statusTextView?.setVisible()
+                statusTextView?.setText(R.string.there_are_no_subjects_yet)
+            }
+
+            override fun onError(e: FirebaseFirestoreException?) {
+                progressBar?.setVisibilityGone()
+                hideSpinners()
+
+                statusTextView?.setVisible()
+                statusTextView?.setText(R.string.there_was_an_error_loading_subjects)
             }
         }
     }
@@ -125,6 +155,11 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
                 (view as TextView).text = model.name
             }
         }
+    }
+
+    private fun hideSpinners() {
+        childSpinner?.setVisibilityGone()
+        parentSpinner?.setVisibilityGone()
     }
 
     fun restoreSpinnerState(savedInstanceState: Bundle?) {

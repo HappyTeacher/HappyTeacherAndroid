@@ -244,6 +244,8 @@
     <string name="submitted_for_review_sentence_case">Submitted for review</string>
     <string name="app_information">App Information</string>
     <string name="version_number">Version number</string>
+    <string name="there_are_no_subjects_yet">There are no subjects yet.</string>
+    <string name="there_was_an_error_loading_subjects">There was an error loading subjects.</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>

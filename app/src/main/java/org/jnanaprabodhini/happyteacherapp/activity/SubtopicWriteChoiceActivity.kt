@@ -73,8 +73,8 @@ class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver
     private fun initializeSpinners() {
         val topicListManager = SubtopicWriteChoiceTopicListManager(topicsRecyclerView, resourceType,
                 this, this)
-        subjectSpinnerManager.initializeWithTopicsListManager(parentSubjectSpinner,
-                childSubjectSpinner, progressBar, topicListManager)
+        subjectSpinnerManager.initializeWithTopicsListManager(topicListManager, parentSubjectSpinner,
+                childSubjectSpinner, progressBar, statusTextView)
     }
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {

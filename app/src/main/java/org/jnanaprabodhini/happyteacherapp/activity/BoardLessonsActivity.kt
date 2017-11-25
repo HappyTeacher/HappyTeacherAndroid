@@ -108,8 +108,13 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
         val subjectQuery = firestoreLocalized.collection(getString(R.string.subjects)).whereEqualTo("boards.${prefs.getBoardKey()}", true)
 
         val subjectDataObserver = object: FirebaseDataObserver {
+            override fun onRequestNewData() {
+                hideSpinners()
+                boardLessonsProgressBar.setVisible()
+            }
+
             override fun onDataNonEmpty() {
-                setSpinnersVisible()
+                showSpinners()
                 boardLessonsProgressBar.setVisibilityGone()
 
                 if (subjectSpinner.count > subjectSpinnerSelectionIndex) {
@@ -120,6 +125,8 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
             override fun onDataEmpty() {
                 syllabusLessonsRecyclerView.setVisibilityGone()
                 boardLessonsProgressBar.setVisibilityGone()
+                hideSpinners()
+
                 statusTextView.setVisible()
                 statusTextView.setText(R.string.there_are_no_lessons_available_for_this_board)
             }
@@ -127,6 +134,8 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
             override fun onError(e: FirebaseFirestoreException?) {
                 syllabusLessonsRecyclerView.setVisibilityGone()
                 boardLessonsProgressBar.setVisibilityGone()
+                hideSpinners()
+
                 statusTextView.setVisible()
                 statusTextView.setText(R.string.there_was_an_error_loading_lessons_for_this_board)
             }
@@ -238,9 +247,14 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
         statusTextView.setText(R.string.there_was_an_error_loading_these_lesson_plans)
     }
 
-    private fun setSpinnersVisible() {
+    private fun showSpinners() {
         subjectSpinner.setVisible()
         levelSpinner.setVisible()
+    }
+
+    private fun hideSpinners() {
+        subjectSpinner.setVisibilityGone()
+        levelSpinner.setVisibilityGone()
     }
 
     private fun clearAdapters() {

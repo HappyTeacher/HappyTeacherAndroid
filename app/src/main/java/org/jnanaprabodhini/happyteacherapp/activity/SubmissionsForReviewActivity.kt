@@ -38,7 +38,7 @@ class SubmissionsForReviewActivity : HappyTeacherActivity(), FirebaseDataObserve
 
     private fun initializeUi() {
         val topicListManager = SubmissionsTopicListManager(topicsRecyclerView, this, this)
-        subjectSpinnerManager.initializeWithTopicsListManager(parentSubjectSpinner, childSubjectSpinner, topicsProgressBar, topicListManager)
+        subjectSpinnerManager.initializeWithTopicsListManager(topicListManager, parentSubjectSpinner, childSubjectSpinner, topicsProgressBar, statusTextView)
     }
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
