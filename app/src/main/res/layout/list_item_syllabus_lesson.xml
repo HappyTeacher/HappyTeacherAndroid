@@ -34,10 +34,7 @@
     <TextView
         android:id="@+id/titleTextView"
         style="@style/SyllabusLessonItemText.Title"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
         app:layout_constraintVertical_chainStyle="packed"
-        android:layout_marginRight="16dp"
         app:layout_constraintStart_toEndOf="@+id/lessonNumberCircle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
