@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.support.constraint.ConstraintLayout
 import android.support.design.widget.CoordinatorLayout
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.Gravity
@@ -54,6 +53,7 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
     }
 
     private var hasSeenChangeNameDialog = false
+    private var isContentLoaded = false
 
     // Dialog text (depending on resource type):
     private val confirmationDialogTitle by lazy {
@@ -198,25 +198,6 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
         CardEditorActivity.launch(this, newCardRef, newCard, contentRef.id)
     }
 
-    override fun finish() {
-        if (cardRecyclerAdapter.itemCount == 0) {
-            // Ask if user wants to delete empty lesson
-            AlertDialog.Builder(this)
-                    .setTitle(deleteEmptyResourceQuestion)
-                    .setMessage(emptyResourceAlertMessage)
-                    .setPositiveButton(R.string.yes, { _, _ ->
-                        contentRef.delete()
-                        super.finish()
-                    })
-                    .setNegativeButton(R.string.no, { _, _ -> super.finish()})
-                    .show()
-        } else if (header.name.isEmpty() && !hasSeenChangeNameDialog) {
-            showChangeNameDialog()
-        } else {
-            super.finish()
-        }
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_resource_editor, menu)
         val changeNameMenuItem = menu?.findItem(R.id.menu_change_name)
@@ -270,6 +251,30 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
         header.name = name
         contentRef.set(header)
         updateActionBarHeader()
+    }
+
+    override fun finish() {
+        if (isContentLoaded && cardRecyclerAdapter.itemCount == 0) {
+            // Ask if user wants to delete empty resource (provided the resource has loaded)
+            AlertDialog.Builder(this)
+                    .setTitle(deleteEmptyResourceQuestion)
+                    .setMessage(emptyResourceAlertMessage)
+                    .setPositiveButton(R.string.yes, { _, _ ->
+                        contentRef.delete()
+                        super.finish()
+                    })
+                    .setNegativeButton(R.string.no, { _, _ -> super.finish()})
+                    .show()
+        } else if (header.name.isEmpty() && !hasSeenChangeNameDialog) {
+            showChangeNameDialog()
+        } else {
+            super.finish()
+        }
+    }
+
+    override fun onDataLoaded() {
+        super.onDataLoaded()
+        isContentLoaded = true
     }
 
     override fun onDataEmpty() {
