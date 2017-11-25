@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.support.design.widget.CoordinatorLayout
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.util.Log
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -53,6 +54,7 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
     }
 
     private var isContentLoaded = false
+    private var changeNameMenuItem: MenuItem? = null
 
     // Dialog text (depending on resource type):
     private val confirmationDialogTitle by lazy {
@@ -199,10 +201,16 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_resource_editor, menu)
-        val changeNameMenuItem = menu?.findItem(R.id.menu_change_name)
+        changeNameMenuItem = menu?.findItem(R.id.menu_change_name)
 
         if (header.resourceType == ResourceType.CLASSROOM_RESOURCE) {
             changeNameMenuItem?.isVisible = true
+        }
+
+        if (header.name.isNotEmpty()) {
+            changeNameMenuItem?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER or MenuItem.SHOW_AS_ACTION_WITH_TEXT)
+        } else {
+            changeNameMenuItem?.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS or MenuItem.SHOW_AS_ACTION_WITH_TEXT)
         }
 
         return true
@@ -270,6 +278,7 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
         header.name = name
         contentRef.set(header)
         updateActionBarHeader()
+        invalidateOptionsMenu()
     }
 
     override fun finish() {
