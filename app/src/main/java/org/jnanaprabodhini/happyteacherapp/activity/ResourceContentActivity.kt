@@ -10,7 +10,6 @@ import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.ResourceContentRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
-import org.jnanaprabodhini.happyteacherapp.extension.setBackgroundColorRes
 import org.jnanaprabodhini.happyteacherapp.extension.setDrawableResource
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
@@ -66,7 +65,7 @@ abstract class ResourceContentActivity : HappyTeacherActivity(), FirebaseDataObs
     }
 
     private fun loadHeader() {
-        progressBar.setVisible()
+        subtopicChoiceProgressBar.setVisible()
         contentRef.get().addOnSuccessListener { documentSnapshot ->
             header = documentSnapshot.toObject(ResourceHeader::class.java)
             setHeaderView()
@@ -75,12 +74,12 @@ abstract class ResourceContentActivity : HappyTeacherActivity(), FirebaseDataObs
     }
 
     open fun initializeUiForContentFromDatabase() {
-        progressBar.setVisible()
+        subtopicChoiceProgressBar.setVisible()
         initializeUiForContent()
     }
 
     private fun initializeUiForContent() {
-        progressBar.setVisibilityGone()
+        subtopicChoiceProgressBar.setVisibilityGone()
         initializeRecyclerView()
     }
 
@@ -127,12 +126,12 @@ abstract class ResourceContentActivity : HappyTeacherActivity(), FirebaseDataObs
     }
 
     override fun onRequestNewData() {
-        progressBar.setVisible()
+        subtopicChoiceProgressBar.setVisible()
         cardRecyclerView.setVisibilityGone()
     }
 
     override fun onDataLoaded() {
-        progressBar.setVisibilityGone()
+        subtopicChoiceProgressBar.setVisibilityGone()
         cardRecyclerView.setVisible()
     }
 

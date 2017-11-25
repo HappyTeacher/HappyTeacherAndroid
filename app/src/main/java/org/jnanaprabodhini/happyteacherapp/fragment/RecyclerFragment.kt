@@ -57,27 +57,27 @@ abstract class RecyclerFragment : Fragment(), FirebaseDataObserver {
     override fun onRequestNewData() {
         recyclerView?.setVisibilityGone()
         statusTextView?.setVisibilityGone()
-        progressBar?.setVisible()
+        subtopicChoiceProgressBar?.setVisible()
     }
 
     override fun onDataLoaded() {
-        progressBar?.setVisibilityGone()
+        subtopicChoiceProgressBar?.setVisibilityGone()
     }
 
     override fun onDataEmpty() {
-        progressBar?.setVisibilityGone()
+        subtopicChoiceProgressBar?.setVisibilityGone()
         statusTextView?.setVisible()
         statusTextView?.text = emptyRecyclerText
     }
 
     override fun onDataNonEmpty() {
-        progressBar?.setVisibilityGone()
+        subtopicChoiceProgressBar?.setVisibilityGone()
         statusTextView?.setVisibilityGone()
         recyclerView?.setVisible()
     }
 
     override fun onError(e: FirebaseFirestoreException?) {
-        progressBar?.setVisibilityGone()
+        subtopicChoiceProgressBar?.setVisibilityGone()
         recyclerView?.setVisibilityGone()
         statusTextView?.setVisible()
         statusTextView?.text = errorText

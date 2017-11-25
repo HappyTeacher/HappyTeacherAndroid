@@ -29,7 +29,7 @@ abstract class SettingsChoiceDialog(context: Context, @StringRes val dialogHeade
         dialogSubheader.setText(dialogSubheaderTextId)
 
         optionsListView.setVisibilityGone()
-        progressBar.setVisible()
+        subtopicChoiceProgressBar.setVisible()
 
         configureOptionsListView(optionsListView)
 
@@ -43,7 +43,7 @@ abstract class SettingsChoiceDialog(context: Context, @StringRes val dialogHeade
     }
 
     private fun onDataPresent() {
-        progressBar.setVisibilityGone()
+        subtopicChoiceProgressBar.setVisibilityGone()
         optionsListView.setVisible()
     }
 

@@ -4,6 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.IntegerRes
 import android.support.v7.widget.LinearLayoutManager
+import android.widget.ProgressBar
+import android.widget.Spinner
+import android.widget.TextView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.android.synthetic.main.activity_topics_list.*
@@ -17,10 +20,11 @@ import org.jnanaprabodhini.happyteacherapp.extension.*
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import org.jnanaprabodhini.happyteacherapp.model.Topic
 import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
+import org.jnanaprabodhini.happyteacherapp.view.SubjectSpinnerRecyclerView
 import org.jnanaprabodhini.happyteacherapp.view.manager.PublishedLessonTopicListManager
 import org.jnanaprabodhini.happyteacherapp.view.manager.SubjectSpinnerManager
 
-class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
+class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver, SubjectSpinnerRecyclerView {
 
     companion object IntentExtraHelper {
         fun launch(from: BottomNavigationActivity, syllabusLessonId: String, subjectName: String, lessonTitle: String, level: Int) {
@@ -54,7 +58,12 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         fun Intent.hasAllExtras(): Boolean = hasSyllabusLessonId() && hasSubject() && hasLevel() && hasLessonTitle()
     }
 
-    private val subjectSpinnerManager = SubjectSpinnerManager(this)
+    override val parentSpinner: Spinner by lazy { parentSubjectSpinner }
+    override val childSpinner: Spinner by lazy { childSubjectSpinner }
+    override val statusText: TextView by lazy { statusTextView }
+    override val progressBar: ProgressBar by lazy { topicsProgressBar }
+
+    private val subjectSpinnerManager = SubjectSpinnerManager(view = this, activity = this)
 
     @IntegerRes override val bottomNavigationMenuItemId: Int = R.id.navigation_topics
 
@@ -92,8 +101,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver {
         topicsProgressBar.setVisible()
 
         val topicListManager = PublishedLessonTopicListManager(topicsRecyclerView, this, this)
-        subjectSpinnerManager.initializeWithTopicsListManager(topicListManager, parentSubjectSpinner,
-                childSubjectSpinner, topicsProgressBar, statusTextView)
+        subjectSpinnerManager.initializeWithTopicsListManager(topicListManager)
     }
 
     override fun onBottomNavigationItemReselected() {

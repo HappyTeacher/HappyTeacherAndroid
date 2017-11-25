@@ -206,13 +206,13 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
     }
 
     override fun onRequestNewData() {
-        progressBar.setVisible()
+        subtopicChoiceProgressBar.setVisible()
         commentsRecyclerView.setVisibilityGone()
         statusTextView.setVisibilityGone()
     }
 
     override fun onDataLoaded() {
-        progressBar.setVisibilityGone()
+        subtopicChoiceProgressBar.setVisibilityGone()
         statusTextView.setVisibilityGone()
         newCommentFab.setVisible()
     }
@@ -230,7 +230,7 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
 
     override fun onError(e: FirebaseFirestoreException?) {
         commentsRecyclerView.setVisibilityGone()
-        progressBar.setVisibilityGone()
+        subtopicChoiceProgressBar.setVisibilityGone()
         newCommentFab.setVisibilityGone()
 
         statusTextView.setVisible()

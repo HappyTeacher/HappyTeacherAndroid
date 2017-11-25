@@ -4,6 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.widget.ProgressBar
+import android.widget.Spinner
+import android.widget.TextView
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.android.synthetic.main.activity_subtopic_choice.*
 import kotlinx.android.synthetic.main.stacked_subject_spinners.*
@@ -13,10 +16,17 @@ import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.util.ResourceType
+import org.jnanaprabodhini.happyteacherapp.view.SubjectSpinnerRecyclerView
 import org.jnanaprabodhini.happyteacherapp.view.manager.SubjectSpinnerManager
 import org.jnanaprabodhini.happyteacherapp.view.manager.SubtopicWriteChoiceTopicListManager
 
-class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver {
+class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver,
+        SubjectSpinnerRecyclerView {
+
+    override val parentSpinner: Spinner by lazy { parentSubjectSpinner }
+    override val childSpinner: Spinner by lazy { childSubjectSpinner }
+    override val statusText: TextView by lazy { statusTextView }
+    override val progressBar: ProgressBar by lazy { subtopicChoiceProgressBar }
 
     companion object IntentExtraHelper {
         fun launch(from: Activity, resourceType: String) {
@@ -32,8 +42,7 @@ class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver
         fun Intent.getResourceType(): String = getStringExtra(RESOURCE_TYPE)
     }
 
-    // TODO: persist spinner state across config changes
-    private val subjectSpinnerManager = SubjectSpinnerManager(this)
+    private val subjectSpinnerManager = SubjectSpinnerManager(view = this, activity = this)
 
     private val resourceType by lazy {
         intent.getResourceType()
@@ -73,8 +82,7 @@ class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver
     private fun initializeSpinners() {
         val topicListManager = SubtopicWriteChoiceTopicListManager(topicsRecyclerView, resourceType,
                 this, this)
-        subjectSpinnerManager.initializeWithTopicsListManager(topicListManager, parentSubjectSpinner,
-                childSubjectSpinner, progressBar, statusTextView)
+        subjectSpinnerManager.initializeWithTopicsListManager(topicListManager)
     }
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {

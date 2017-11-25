@@ -3,12 +3,10 @@ package org.jnanaprabodhini.happyteacherapp.view.manager
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.view.View
-import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
-import kotlinx.android.synthetic.main.stacked_subject_spinners.*
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacherapp.adapter.firestore.FirestoreObservableListAdapter
@@ -17,37 +15,26 @@ import org.jnanaprabodhini.happyteacherapp.extension.onItemSelected
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.model.Subject
+import org.jnanaprabodhini.happyteacherapp.view.SubjectSpinnerRecyclerView
 
 /**
  * A class that manages the view logic of a pair of spinners (containing child/parents subjects).
  *
  *  This is used for displaying a list of Topics controlled by two subject spinners.
  */
-class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
+class SubjectSpinnerManager(val view: SubjectSpinnerRecyclerView, val activity: HappyTeacherActivity) {
 
     companion object SavedInstanceStateConstants {
         const val PARENT_SUBJECT_SPINNER_SELECTION = "PARENT_SUBJECT_SPINNER_SELECTION"
         const val CHILD_SUBJECT_SPINNER_SELECTION = "CHILD_SUBJECT_SPINNER_SELECTION"
     }
 
-    var parentSpinnerSelectionIndex = 0
-    var childSpinnerSelectionIndex = 0
+    private var parentSpinnerSelectionIndex = 0
+    private var childSpinnerSelectionIndex = 0
 
-    private var parentSpinner: Spinner? = null
-    private var childSpinner: Spinner? = null
-    private var progressBar: ProgressBar? = null
-    private var statusTextView: TextView? = null
+    private var onSpinnerSelectionsComplete: (subjectKey: String) -> Unit = {}
 
-    private var onSpinnerSelectionsComplete: (String) -> Unit = {}
-
-    fun initializeWithTopicsListManager(topicsListManager: TopicListManager,
-                                        parentSpinner: Spinner, childSpinner: Spinner,
-                                        progressBar: ProgressBar, statusTextView: TextView) {
-        this.parentSpinner = parentSpinner
-        this.childSpinner = childSpinner
-        this.progressBar = progressBar
-        this.statusTextView = statusTextView
-
+    fun initializeWithTopicsListManager(topicsListManager: TopicListManager) {
         this.onSpinnerSelectionsComplete = { subjectKey -> topicsListManager.updateListOfTopicsForSubject(subjectKey) }
 
         setupSpinners()
@@ -60,9 +47,9 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
     private fun setupParentSpinner() {
         val parentAdapter = getParentSubjectAdapter()
         parentAdapter.startListening()
-        parentSpinner?.adapter = parentAdapter
+        view.parentSpinner.adapter = parentAdapter
 
-        parentSpinner?.onItemSelected { position ->
+        view.parentSpinner.onItemSelected { position ->
 
             if (position != parentSpinnerSelectionIndex) {
                 // If a new item is selected (different from saved instance state value),
@@ -79,7 +66,7 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
                 setupChildSpinner(selectedSubjectKey)
             } else {
                 onSpinnerSelectionsComplete(selectedSubjectKey)
-                childSpinner?.setVisibilityGone()
+                view.childSpinner.setVisibilityGone()
             }
         }
     }
@@ -87,9 +74,9 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
     private fun setupChildSpinner(parentSubjectKey: String) {
         val childAdapter = getChildSubjectAdapter(parentSubjectKey)
         childAdapter.startListening()
-        childSpinner?.adapter = childAdapter
+        view.childSpinner.adapter = childAdapter
 
-        childSpinner?.onItemSelected { position ->
+        view.childSpinner.onItemSelected { position ->
             childSpinnerSelectionIndex = position
 
             val selectedSubjectKey = childAdapter.getItemKey(position)
@@ -97,38 +84,38 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
         }
     }
 
-    private fun getDataObserverForSpinner(spinner: Spinner?, selectionIndex: Int): FirebaseDataObserver {
+    private fun getDataObserverForSpinner(spinner: Spinner, selectionIndex: Int): FirebaseDataObserver {
         return object: FirebaseDataObserver {
             override fun onRequestNewData() {
-                progressBar?.setVisibilityGone()
-                statusTextView?.setVisibilityGone()
-                hideSpinners()
+                view.progressBar.setVisibilityGone()
+                view.statusText.setVisibilityGone()
+                spinner.setVisibilityGone()
             }
 
             override fun onDataNonEmpty() {
-                progressBar?.setVisibilityGone()
-                statusTextView?.setVisibilityGone()
-                spinner?.setVisible()
+                view.progressBar.setVisibilityGone()
+                view.statusText.setVisibilityGone()
+                spinner.setVisible()
 
-                if (spinner?.count ?: 0 > selectionIndex) {
-                    spinner?.setSelection(selectionIndex)
+                if (spinner.count > selectionIndex) {
+                    spinner.setSelection(selectionIndex)
                 }
             }
 
             override fun onDataEmpty() {
-                progressBar?.setVisibilityGone()
+                view.progressBar.setVisibilityGone()
                 hideSpinners()
 
-                statusTextView?.setVisible()
-                statusTextView?.setText(R.string.there_are_no_subjects_yet)
+                view.statusText.setVisible()
+                view.statusText.setText(R.string.there_are_no_subjects_yet)
             }
 
             override fun onError(e: FirebaseFirestoreException?) {
-                progressBar?.setVisibilityGone()
+                view.progressBar.setVisibilityGone()
                 hideSpinners()
 
-                statusTextView?.setVisible()
-                statusTextView?.setText(R.string.there_was_an_error_loading_subjects)
+                view.statusText.setVisible()
+                view.statusText.setText(R.string.there_was_an_error_loading_subjects)
             }
         }
     }
@@ -136,7 +123,7 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
     private fun getParentSubjectAdapter(): FirestoreObservableListAdapter<Subject> {
         val subjectQuery = activity.firestoreLocalized.collection(activity.getString(R.string.subjects))
                 .whereEqualTo(activity.getString(R.string.parent_subject), null)
-        val dataObserver = getDataObserverForSpinner(parentSpinner, parentSpinnerSelectionIndex)
+        val dataObserver = getDataObserverForSpinner(view.parentSpinner, parentSpinnerSelectionIndex)
 
         return getSpinnerAdapterForQuery(subjectQuery, dataObserver, R.layout.spinner_item)
     }
@@ -144,7 +131,7 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
     private fun getChildSubjectAdapter(parentSubject: String): FirestoreObservableListAdapter<Subject> {
         val subjectQuery = activity.firestoreLocalized.collection(activity.getString(R.string.subjects))
                 .whereEqualTo(activity.getString(R.string.parent_subject), parentSubject)
-        val dataObserver = getDataObserverForSpinner(childSpinner, childSpinnerSelectionIndex)
+        val dataObserver = getDataObserverForSpinner(view.childSpinner, childSpinnerSelectionIndex)
 
         return getSpinnerAdapterForQuery(subjectQuery, dataObserver, R.layout.spinner_item_child)
     }
@@ -158,8 +145,8 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
     }
 
     private fun hideSpinners() {
-        childSpinner?.setVisibilityGone()
-        parentSpinner?.setVisibilityGone()
+        view.childSpinner.setVisibilityGone()
+        view.parentSpinner.setVisibilityGone()
     }
 
     fun restoreSpinnerState(savedInstanceState: Bundle?) {
@@ -173,8 +160,8 @@ class SubjectSpinnerManager(val activity: HappyTeacherActivity) {
     }
 
     fun saveSpinnerState(savedInstanceState: Bundle) {
-        val parentSubjectSpinnerSelectionIndex = parentSpinner?.selectedItemPosition ?: 0
-        val childSubjectSpinnerSelectionIndex = childSpinner?.selectedItemPosition ?: 0
+        val parentSubjectSpinnerSelectionIndex = view.parentSpinner.selectedItemPosition
+        val childSubjectSpinnerSelectionIndex = view.childSpinner.selectedItemPosition
 
         savedInstanceState.putInt(PARENT_SUBJECT_SPINNER_SELECTION, parentSubjectSpinnerSelectionIndex)
         savedInstanceState.putInt(CHILD_SUBJECT_SPINNER_SELECTION, childSubjectSpinnerSelectionIndex)

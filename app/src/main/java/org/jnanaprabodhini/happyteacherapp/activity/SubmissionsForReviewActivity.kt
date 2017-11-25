@@ -3,6 +3,9 @@ package org.jnanaprabodhini.happyteacherapp.activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.widget.ProgressBar
+import android.widget.Spinner
+import android.widget.TextView
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.android.synthetic.main.activity_submissions_for_review.*
 import kotlinx.android.synthetic.main.stacked_subject_spinners.*
@@ -11,11 +14,12 @@ import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
+import org.jnanaprabodhini.happyteacherapp.view.SubjectSpinnerRecyclerView
 import org.jnanaprabodhini.happyteacherapp.view.manager.SubjectSpinnerManager
 import org.jnanaprabodhini.happyteacherapp.view.manager.SubmissionsTopicListManager
 
-class SubmissionsForReviewActivity : HappyTeacherActivity(), FirebaseDataObserver {
-    // TODO: keep spinner position across config changes
+class SubmissionsForReviewActivity : HappyTeacherActivity(),
+        FirebaseDataObserver, SubjectSpinnerRecyclerView {
 
     companion object IntentExtraHelper {
         fun launch(from: HappyTeacherActivity) {
@@ -24,7 +28,12 @@ class SubmissionsForReviewActivity : HappyTeacherActivity(), FirebaseDataObserve
         }
     }
 
-    private val subjectSpinnerManager = SubjectSpinnerManager(this)
+    private val subjectSpinnerManager = SubjectSpinnerManager(view = this, activity = this)
+
+    override val parentSpinner: Spinner by lazy { parentSubjectSpinner }
+    override val childSpinner: Spinner by lazy { childSubjectSpinner }
+    override val statusText: TextView by lazy { statusTextView }
+    override val progressBar: ProgressBar by lazy { topicsProgressBar }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +47,7 @@ class SubmissionsForReviewActivity : HappyTeacherActivity(), FirebaseDataObserve
 
     private fun initializeUi() {
         val topicListManager = SubmissionsTopicListManager(topicsRecyclerView, this, this)
-        subjectSpinnerManager.initializeWithTopicsListManager(topicListManager, parentSubjectSpinner, childSubjectSpinner, topicsProgressBar, statusTextView)
+        subjectSpinnerManager.initializeWithTopicsListManager(topicListManager)
     }
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
@@ -49,7 +58,7 @@ class SubmissionsForReviewActivity : HappyTeacherActivity(), FirebaseDataObserve
     override fun onRequestNewData() {
         topicsRecyclerView.setVisibilityGone()
         topicsProgressBar.setVisible()
-        statusTextView.setVisibilityGone()
+        statusText.setVisibilityGone()
     }
 
     override fun onDataLoaded() {
@@ -58,13 +67,13 @@ class SubmissionsForReviewActivity : HappyTeacherActivity(), FirebaseDataObserve
 
     override fun onDataEmpty() {
         topicsRecyclerView.setVisibilityGone()
-        statusTextView.setVisible()
-        statusTextView.setText(R.string.there_are_no_topics_for_this_subject_yet)
+        statusText.setVisible()
+        statusText.setText(R.string.there_are_no_topics_for_this_subject_yet)
     }
 
     override fun onDataNonEmpty() {
         topicsRecyclerView.setVisible()
-        statusTextView.setVisibilityGone()
+        statusText.setVisibilityGone()
 
         // Animate layout changes
         topicsRecyclerView.scheduleLayoutAnimation()
@@ -74,7 +83,7 @@ class SubmissionsForReviewActivity : HappyTeacherActivity(), FirebaseDataObserve
     override fun onError(e: FirebaseFirestoreException?) {
         topicsRecyclerView.setVisibilityGone()
         topicsProgressBar.setVisibilityGone()
-        statusTextView.setVisible()
-        statusTextView.setText(R.string.there_was_an_error_loading_topics_for_this_subject)
+        statusText.setVisible()
+        statusText.setText(R.string.there_was_an_error_loading_topics_for_this_subject)
     }
 }
