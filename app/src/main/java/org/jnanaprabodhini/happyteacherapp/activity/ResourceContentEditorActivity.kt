@@ -52,7 +52,6 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
         EditableResourceRecyclerAdapter(options, attachmentDestinationDirectory, header.subtopic, this, this)
     }
 
-    private var hasSeenChangeNameDialog = false
     private var isContentLoaded = false
 
     // Dialog text (depending on resource type):
@@ -243,8 +242,28 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
 
             show()
         }
+    }
 
-        hasSeenChangeNameDialog = true
+    private fun showSetNameDialogBeforeFinishing() {
+        val setNameDialog = InputTextDialogBuilder(this)
+
+        setNameDialog.apply {
+            setInputHint(getString(R.string.resource_name))
+            setTitle(R.string.name_your_resource)
+
+            setPositiveButton(R.string.save, {dialog, name ->
+                setResourceName(name)
+                dialog.dismiss()
+                super.finish()
+            })
+
+            setNegativeButton(R.string.cancel, DialogInterface.OnClickListener { dialog, _ ->
+                dialog.dismiss()
+                super.finish()
+            })
+
+            show()
+        }
     }
 
     private fun setResourceName(name: String) {
@@ -265,8 +284,8 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
                     })
                     .setNegativeButton(R.string.no, { _, _ -> super.finish()})
                     .show()
-        } else if (header.name.isEmpty() && !hasSeenChangeNameDialog) {
-            showChangeNameDialog()
+        } else if (header.name.isEmpty()) {
+            showSetNameDialogBeforeFinishing()
         } else {
             super.finish()
         }
