@@ -13,6 +13,7 @@ import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.extension.setDrawableResource
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
+import org.jnanaprabodhini.happyteacherapp.extension.toItalicizedSpan
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
 import org.jnanaprabodhini.happyteacherapp.util.ResourceType
@@ -87,7 +88,7 @@ abstract class ResourceContentActivity : HappyTeacherActivity(), FirebaseDataObs
         if (header.name.isNotEmpty()) {
             supportActionBar?.title = header.name
         } else {
-            supportActionBar?.title = getString(R.string.no_name_parenthesized)
+            supportActionBar?.title = getString(R.string.no_name_parenthesized).toItalicizedSpan()
         }
     }
 
