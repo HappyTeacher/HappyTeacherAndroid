@@ -87,7 +87,7 @@ abstract class ResourceContentActivity : HappyTeacherActivity(), FirebaseDataObs
         if (header.name.isNotEmpty()) {
             supportActionBar?.title = header.name
         } else {
-            supportActionBar?.title = getString(R.string.no_name)
+            supportActionBar?.title = getString(R.string.no_name_parenthesized)
         }
     }
 

@@ -13,6 +13,7 @@ import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.adapter.viewholder.ContributionHeaderViewHolder
 import org.jnanaprabodhini.happyteacherapp.extension.setDrawableLeft
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
+import org.jnanaprabodhini.happyteacherapp.extension.toItalicizedSpan
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
 
@@ -38,7 +39,13 @@ abstract class ContributionAdapter(adapterOptions: FirestoreRecyclerOptions<Reso
 
     override fun onBindViewHolder(holder: ContributionHeaderViewHolder?, position: Int, model: ResourceHeader?) {
         holder?.apply {
-            titleTextView.text = model?.name
+
+            titleTextView.text = if (model?.name.isNullOrEmpty()) {
+                activity.getString(R.string.no_name_parenthesized).toItalicizedSpan()
+            } else {
+                model?.name
+            }
+
             subjectTextView.text = model?.subjectName
             holder.setColorBarForResourceType(model?.resourceType)
 

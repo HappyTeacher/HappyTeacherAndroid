@@ -1,5 +1,9 @@
 package org.jnanaprabodhini.happyteacherapp.extension
 
+import android.graphics.Typeface
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.StyleSpan
 import java.net.URLDecoder
 
 fun CharSequence.getYoutubeUrlId(): String? {
@@ -21,3 +25,9 @@ fun CharSequence.getYoutubeUrlId(): String? {
 fun String.asIdInYoutubeUrl() = "https://www.youtube.com/watch?v=$this"
 
 fun String.decode(): String = URLDecoder.decode(this, "UTF-8")
+
+fun String.toItalicizedSpan(): SpannableStringBuilder {
+    val spanBuilder = SpannableStringBuilder(this)
+    spanBuilder.setSpan(StyleSpan(Typeface.ITALIC), 0, this.lastIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    return spanBuilder
+}
