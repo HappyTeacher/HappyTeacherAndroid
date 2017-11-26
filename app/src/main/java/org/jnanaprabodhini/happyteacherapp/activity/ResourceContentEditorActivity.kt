@@ -6,7 +6,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.support.design.widget.CoordinatorLayout
 import android.support.v7.widget.helper.ItemTouchHelper
-import android.util.Log
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -205,12 +204,17 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
 
         if (header.resourceType == ResourceType.CLASSROOM_RESOURCE) {
             changeNameMenuItem?.isVisible = true
-        }
 
-        if (header.name.isNotEmpty()) {
-            changeNameMenuItem?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER or MenuItem.SHOW_AS_ACTION_WITH_TEXT)
+            if (header.name.isEmpty()) {
+                changeNameMenuItem?.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS or MenuItem.SHOW_AS_ACTION_WITH_TEXT)
+                changeNameMenuItem?.setTitle(R.string.add_name)
+            } else {
+                changeNameMenuItem?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER or MenuItem.SHOW_AS_ACTION_WITH_TEXT)
+                changeNameMenuItem?.setTitle(R.string.rename)
+            }
+
         } else {
-            changeNameMenuItem?.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS or MenuItem.SHOW_AS_ACTION_WITH_TEXT)
+            changeNameMenuItem?.isVisible = false
         }
 
         return true
