@@ -93,7 +93,7 @@
                 android:id="@+id/headerEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/card_title"
+                android:hint="@string/section_name"
                 android:inputType="textCapSentences"/>
 
         </android.support.design.widget.TextInputLayout>
@@ -112,7 +112,7 @@
                 android:id="@+id/bodyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/card_text"
+                android:hint="@string/section_text"
                 android:inputType="textCapSentences|textLongMessage|textMultiLine"/>
 
         </android.support.design.widget.TextInputLayout>

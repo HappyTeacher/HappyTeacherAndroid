@@ -152,7 +152,7 @@
     <TextView
         android:id="@+id/getStartedTextView"
         style="@style/StatusText"
-        android:text="@string/add_a_card_to_get_started"
+        android:text="@string/add_a_section_to_get_started"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

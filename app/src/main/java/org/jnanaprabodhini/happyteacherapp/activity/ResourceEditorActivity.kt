@@ -82,9 +82,9 @@ class ResourceEditorActivity : ResourceActivity() {
 
     private val emptyResourceAlertMessage by lazy {
         when (header.resourceType) {
-            ResourceType.LESSON -> R.string.there_are_no_cards_in_this_lesson_would_you_like_to_delete_it
-            ResourceType.CLASSROOM_RESOURCE -> R.string.there_are_no_cards_in_this_classroom_resource_would_you_like_to_delete_it
-            else -> R.string.there_are_no_cards_in_this_resource_would_you_like_to_delete_it
+            ResourceType.LESSON -> R.string.there_are_no_sections_in_this_lesson_would_you_like_to_delete_it
+            ResourceType.CLASSROOM_RESOURCE -> R.string.there_are_no_sections_in_this_classroom_resource_would_you_like_to_delete_it
+            else -> R.string.there_are_no_sections_in_this_resource_would_you_like_to_delete_it
         }
     }
 
@@ -116,7 +116,7 @@ class ResourceEditorActivity : ResourceActivity() {
 
     private fun showAddCardFabWithAction() {
         primaryFab.setVisible()
-        primaryFab.setTooltip(getString(R.string.add_card))
+        primaryFab.setTooltip(getString(R.string.add_section))
 
         primaryFab.setOnClickListener {
             addNewCard()
@@ -319,7 +319,7 @@ class ResourceEditorActivity : ResourceActivity() {
 
         fabBottomDivider.setVisible()
         getStartedTextView.setVisible()
-        statusTextView.setText(R.string.add_a_card_to_get_started)
+        statusTextView.setText(R.string.add_a_section_to_get_started)
     }
 
     override fun onDataNonEmpty() {

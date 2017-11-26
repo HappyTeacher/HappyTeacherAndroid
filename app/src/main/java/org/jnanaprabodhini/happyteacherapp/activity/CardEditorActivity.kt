@@ -18,7 +18,6 @@ import org.jnanaprabodhini.happyteacherapp.extension.*
 import org.jnanaprabodhini.happyteacherapp.model.ContentCard
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.helper.ItemTouchHelper
-import android.widget.EditText
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
@@ -148,7 +147,7 @@ class CardEditorActivity : HappyTeacherActivity() {
     private val unsavedChangesWarningDialog by lazy {
         AlertDialog.Builder(this).apply {
             setTitle(R.string.unsaved_changes)
-            setMessage(R.string.you_have_changed_this_card_would_you_like_to_save_your_changes)
+            setMessage(R.string.you_have_changed_this_section_would_you_like_to_save_your_changes)
             setPositiveButton(R.string.save, {_,_ ->
                 cancelUploads()
                 saveAndFinish()
@@ -184,13 +183,13 @@ class CardEditorActivity : HappyTeacherActivity() {
      */
     private val emptyCardWarningDialog by lazy {
         AlertDialog.Builder(this).apply {
-            setTitle(R.string.empty_card)
-            setMessage(R.string.this_card_is_empty_would_you_like_to_delete_it)
-            setPositiveButton(R.string.delete_card, {_,_ ->
+            setTitle(R.string.empty_section)
+            setMessage(R.string.this_section_is_empty_would_you_like_to_delete_it)
+            setPositiveButton(R.string.delete_section, { _, _ ->
                 cardRef.delete()
                 discardChangesAndFinish()
             })
-            setNegativeButton(R.string.save_empty_card, {_, _ ->
+            setNegativeButton(R.string.save_empty_section, { _, _ ->
                 saveAndFinish()
             })
         }
@@ -216,7 +215,7 @@ class CardEditorActivity : HappyTeacherActivity() {
         uploadedImageUrls.add(url)
         addImageFromUrl(url)
 
-        showToast(R.string.image_added_to_card)
+        showToast(R.string.image_added_to_section)
 
         val fileRef = storageRef.getReferenceFromUrl(url)
         activeImageUploadRefUrls.remove(fileRef.toString())
@@ -285,14 +284,14 @@ class CardEditorActivity : HappyTeacherActivity() {
                 youtubeUrlInputLayout.isVisible() -> {
                     addImageButton.jiggle()
                     parentConstraintLayout.showSnackbarWithAction(
-                            message = getString(R.string.a_card_cannot_have_images_and_a_video),
+                            message = getString(R.string.a_section_cannot_have_images_and_a_video),
                             actionName = getString(R.string.remove_video),
                             action = { removeVideo() }
                     )
                 }
                 cardTotalImageCount >= Constants.MAX_IMAGES_PER_CARD -> {
                     addImageButton.jiggle()
-                    parentConstraintLayout.showSnackbar(getString(R.string.you_can_only_have_n_images_per_card, Constants.MAX_IMAGES_PER_CARD))
+                    parentConstraintLayout.showSnackbar(getString(R.string.you_can_only_have_n_images_per_section, Constants.MAX_IMAGES_PER_CARD))
                 }
                 else -> showAddImageDialog()
             }
@@ -302,12 +301,12 @@ class CardEditorActivity : HappyTeacherActivity() {
             when {
                 editedCard.imageUrls.isNotEmpty() -> {
                     addVideoButton.jiggle()
-                    parentConstraintLayout.showSnackbar(R.string.a_card_cannot_have_images_and_a_video_remove_your_images_before_adding_a_video)
+                    parentConstraintLayout.showSnackbar(R.string.a_section_cannot_have_images_and_a_video)
                 }
                 activeImageUploadRefUrls.isNotEmpty() -> {
                     addVideoButton.jiggle()
                     parentConstraintLayout.showSnackbarWithAction(
-                            message = getString(R.string.a_card_cannot_have_images_and_a_video),
+                            message = getString(R.string.a_section_cannot_have_images_and_a_video),
                             actionName = getString(R.string.cancel_uploads),
                             action = { cancelImageUploads() })
                 }
@@ -319,7 +318,7 @@ class CardEditorActivity : HappyTeacherActivity() {
         addFileButton.setOnClickListener {
             if (fileAttachmentView.isVisible()) {
                 addFileButton.jiggle()
-                showToast(R.string.you_can_only_have_one_file_attachment_per_card)
+                showToast(R.string.you_can_only_have_one_file_attachment_per_section)
             } else {
                 getFileFromDevice()
             }

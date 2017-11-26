@@ -59,7 +59,7 @@
             android:parentActivityName=".activity.ContributeActivity" />
         <activity
             android:name=".activity.CardEditorActivity"
-            android:label="@string/card_editor"
+            android:label="@string/section_editor"
             android:parentActivityName=".activity.ResourceEditorActivity" />
         <activity
             android:name=".activity.SubmissionsForReviewActivity"
