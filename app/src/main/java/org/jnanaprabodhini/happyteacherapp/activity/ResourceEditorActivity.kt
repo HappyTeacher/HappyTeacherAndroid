@@ -13,7 +13,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import org.jnanaprabodhini.happyteacherapp.R
-import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.ResourceContentRecyclerAdapter
+import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.ResourceRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.EditableResourceRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.MovableViewContainer
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.RecyclerVerticalDragHelperCallback
@@ -31,11 +31,11 @@ import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 /**
  * Created by grahamearley on 11/3/17.
  */
-class ResourceContentEditorActivity : ResourceContentActivity() {
+class ResourceEditorActivity : ResourceActivity() {
 
     companion object {
         fun launch(from: Activity, resourceRef: DocumentReference, resourceHeader: ResourceHeader) {
-            val lessonEditorIntent = Intent(from, ResourceContentEditorActivity::class.java)
+            val lessonEditorIntent = Intent(from, ResourceEditorActivity::class.java)
 
             lessonEditorIntent.apply {
                 putExtra(CONTENT_REF_PATH, resourceRef.path)
@@ -45,7 +45,7 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
         }
     }
 
-    override val cardRecyclerAdapter: ResourceContentRecyclerAdapter by lazy {
+    override val cardRecyclerAdapter: ResourceRecyclerAdapter by lazy {
         val options = FirestoreRecyclerOptions.Builder<ContentCard>()
                 .setQuery(cardsRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
 

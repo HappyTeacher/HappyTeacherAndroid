@@ -7,7 +7,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import org.jnanaprabodhini.happyteacherapp.R
-import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.ResourceContentRecyclerAdapter
+import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.ResourceRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.LessonPlanRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.extension.setDrawableRight
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
@@ -15,7 +15,7 @@ import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import org.jnanaprabodhini.happyteacherapp.model.ContentCard
 
-class LessonViewerActivity : ResourceContentViewerActivity(){
+class LessonViewerActivity : ResourceViewerActivity(){
 
     companion object {
         fun launch(from: Activity, lessonRef: DocumentReference, resourceHeader: ResourceHeader, showSubmissionCount: Boolean) {
@@ -35,7 +35,7 @@ class LessonViewerActivity : ResourceContentViewerActivity(){
 
     private val shouldShowSubmissionCount by lazy { intent.shouldShowSubmissionCount() }
 
-    override val cardRecyclerAdapter: ResourceContentRecyclerAdapter by lazy {
+    override val cardRecyclerAdapter: ResourceRecyclerAdapter by lazy {
         val options = FirestoreRecyclerOptions.Builder<ContentCard>()
                 .setQuery(cardsRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
 

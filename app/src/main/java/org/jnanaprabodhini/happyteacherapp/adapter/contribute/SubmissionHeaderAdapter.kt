@@ -8,7 +8,7 @@ import com.google.firebase.firestore.DocumentReference
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.ClassroomResourceViewerActivity
 import org.jnanaprabodhini.happyteacherapp.activity.LessonViewerActivity
-import org.jnanaprabodhini.happyteacherapp.activity.ResourceContentEditorActivity
+import org.jnanaprabodhini.happyteacherapp.activity.ResourceEditorActivity
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.adapter.viewholder.ContributionHeaderViewHolder
 import org.jnanaprabodhini.happyteacherapp.extension.showToast
@@ -73,7 +73,7 @@ class SubmissionHeaderAdapter(adapterOptions: FirestoreRecyclerOptions<ResourceH
         return View.OnClickListener {
             val modelOrEmpty = model ?: ResourceHeader()
             when (model?.status) {
-                ResourceStatus.CHANGES_REQUESTED -> ResourceContentEditorActivity.launch(activity, contributionDocumentRef, modelOrEmpty)
+                ResourceStatus.CHANGES_REQUESTED -> ResourceEditorActivity.launch(activity, contributionDocumentRef, modelOrEmpty)
                 else -> when (model?.resourceType) {
                     ResourceType.LESSON -> LessonViewerActivity.launch(activity, contributionDocumentRef,
                             modelOrEmpty, showSubmissionCount = false)

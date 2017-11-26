@@ -31,7 +31,7 @@
             android:name=".activity.ClassroomResourceViewerActivity"
             android:parentActivityName=".activity.TopicsListActivity" />
         <activity
-            android:name=".activity.ResourceContentReviewActivity"
+            android:name=".activity.ResourceReviewActivity"
             android:parentActivityName=".activity.TopicsListActivity" />
         <activity
             android:name=".activity.FullScreenGalleryViewerActivity"
@@ -41,7 +41,7 @@
             android:label="@string/other_lesson_plans"
             android:parentActivityName=".activity.TopicsListActivity" />
         <activity
-            android:name=".activity.ResourceContentEditorActivity"
+            android:name=".activity.ResourceEditorActivity"
             android:parentActivityName=".activity.ContributeActivity" />
 
         <meta-data
@@ -60,7 +60,7 @@
         <activity
             android:name=".activity.CardEditorActivity"
             android:label="@string/card_editor"
-            android:parentActivityName=".activity.ResourceContentEditorActivity" />
+            android:parentActivityName=".activity.ResourceEditorActivity" />
         <activity
             android:name=".activity.SubmissionsForReviewActivity"
             android:label="@string/review_submissions"

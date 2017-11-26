@@ -12,7 +12,7 @@ import org.jnanaprabodhini.happyteacherapp.model.ContentCard
 import java.io.File
 
 class ClassroomResourceRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, attachmentDestinationDirectory: File, subtopicId: String, activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
-        ResourceContentRecyclerAdapter(options, attachmentDestinationDirectory, subtopicId, activity, dataObserver) {
+        ResourceRecyclerAdapter(options, attachmentDestinationDirectory, subtopicId, activity, dataObserver) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, model: ContentCard?) {
         if (holder is ContentCardViewHolder) {

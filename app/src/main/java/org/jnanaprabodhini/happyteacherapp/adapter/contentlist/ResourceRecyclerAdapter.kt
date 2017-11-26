@@ -24,7 +24,7 @@ import java.io.File
 /**
  * Created by grahamearley on 9/25/17.
  */
-abstract class ResourceContentRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, private val attachmentDestinationDirectory: File, val subtopicId: String, val activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
+abstract class ResourceRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, private val attachmentDestinationDirectory: File, val subtopicId: String, val activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
         FirestoreObservableRecyclerAdapter<ContentCard, RecyclerView.ViewHolder>(options, dataObserver) {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder? {

@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import org.jnanaprabodhini.happyteacherapp.R
-import org.jnanaprabodhini.happyteacherapp.activity.ResourceContentEditorActivity
+import org.jnanaprabodhini.happyteacherapp.activity.ResourceEditorActivity
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacherapp.adapter.firestore.FirestoreObservableRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
@@ -41,7 +41,7 @@ class SubtopicWriteChoiceRecyclerAdapter(options: FirestoreRecyclerOptions<Subto
                     .document()
 
             draftRef.set(lessonHeader)
-            ResourceContentEditorActivity.launch(activity, draftRef, lessonHeader)
+            ResourceEditorActivity.launch(activity, draftRef, lessonHeader)
         }
     }
 

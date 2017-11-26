@@ -13,7 +13,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
 import org.jnanaprabodhini.happyteacherapp.activity.ClassroomResourceViewerActivity
 import org.jnanaprabodhini.happyteacherapp.activity.LessonViewerActivity
-import org.jnanaprabodhini.happyteacherapp.activity.ResourceContentReviewActivity
+import org.jnanaprabodhini.happyteacherapp.activity.ResourceReviewActivity
 import org.jnanaprabodhini.happyteacherapp.util.PreferencesManager
 import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
 import org.jnanaprabodhini.happyteacherapp.util.ResourceType
@@ -50,7 +50,7 @@ class ResourceHeaderRecyclerAdapter(options: FirestoreRecyclerOptions<ResourceHe
     private fun launchContentViewerActivity(contentDocumentRef: DocumentReference, resourceHeaderModel: ResourceHeader?) {
         if (resourceHeaderModel?.status == ResourceStatus.AWAITING_REVIEW
                 && (prefs.userIsMod() || prefs.userIsAdmin())) {
-            ResourceContentReviewActivity.launch(activity, contentDocumentRef, resourceHeaderModel)
+            ResourceReviewActivity.launch(activity, contentDocumentRef, resourceHeaderModel)
         } else when (resourceHeaderModel?.resourceType) {
             ResourceType.LESSON -> LessonViewerActivity.launch(activity, contentDocumentRef, resourceHeaderModel, showSubmissionCount)
             ResourceType.CLASSROOM_RESOURCE -> ClassroomResourceViewerActivity.launch(activity, contentDocumentRef, resourceHeaderModel)

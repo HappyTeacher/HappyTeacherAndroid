@@ -8,7 +8,7 @@ import android.support.v7.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
-import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.ResourceContentRecyclerAdapter
+import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.ResourceRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.extension.setDrawableResource
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
@@ -19,7 +19,7 @@ import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
 import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 import java.io.File
 
-abstract class ResourceContentActivity : HappyTeacherActivity(), FirebaseDataObserver {
+abstract class ResourceActivity : HappyTeacherActivity(), FirebaseDataObserver {
 
     companion object {
         const val WRITE_STORAGE_PERMISSION_CODE = 1
@@ -40,7 +40,7 @@ abstract class ResourceContentActivity : HappyTeacherActivity(), FirebaseDataObs
     protected val contentRef by lazy { firestoreRoot.document(intent.getContentRefPath()) }
     protected val cardsRef by lazy { contentRef.collection(getString(R.string.cards)) }
 
-    abstract val cardRecyclerAdapter: ResourceContentRecyclerAdapter
+    abstract val cardRecyclerAdapter: ResourceRecyclerAdapter
 
     protected val attachmentDestinationDirectory by lazy {
         // This directory will be used to store any attachments downloaded from this resource.

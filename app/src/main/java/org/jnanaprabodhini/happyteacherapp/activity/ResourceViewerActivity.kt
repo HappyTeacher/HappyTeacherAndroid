@@ -13,7 +13,7 @@ import org.jnanaprabodhini.happyteacherapp.util.ResourceType
  * A parent activity for resource content viewers (as opposed to editors).
  *  Sets up a menu with Admin/Mod tools.
  */
-abstract class ResourceContentViewerActivity: ResourceContentActivity() {
+abstract class ResourceViewerActivity : ResourceActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_cards_viewer, menu)
@@ -56,7 +56,7 @@ abstract class ResourceContentViewerActivity: ResourceContentActivity() {
     }
 
     private fun openInEditor() {
-        ResourceContentEditorActivity.launch(this, contentRef, header)
+        ResourceEditorActivity.launch(this, contentRef, header)
     }
 
     private fun unpublish() {

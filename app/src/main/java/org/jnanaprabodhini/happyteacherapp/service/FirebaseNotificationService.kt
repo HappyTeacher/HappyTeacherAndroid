@@ -7,13 +7,11 @@ import android.app.TaskStackBuilder
 import android.content.Intent
 import android.support.annotation.ColorRes
 import android.support.annotation.DrawableRes
-import android.support.v4.app.FragmentPagerAdapter
 import com.google.firebase.messaging.RemoteMessage
 import com.google.firebase.messaging.FirebaseMessagingService
 import org.jnanaprabodhini.happyteacherapp.R
 import android.support.v4.app.NotificationCompat
 import android.support.v4.content.res.ResourcesCompat
-import android.util.Log
 import org.jnanaprabodhini.happyteacherapp.activity.*
 import org.jnanaprabodhini.happyteacherapp.adapter.contribute.ContributeFragmentAdapter
 import org.jnanaprabodhini.happyteacherapp.util.FirestoreKeys
@@ -89,10 +87,10 @@ class FirebaseNotificationService : FirebaseMessagingService() {
                                          refPath: String,
                                          @ColorRes color: Int,
                                          @DrawableRes icon: Int,
-                                         destinationViewerActivity: Class<out ResourceContentActivity>) {
+                                         destinationViewerActivity: Class<out ResourceActivity>) {
 
         val intent = Intent(this, destinationViewerActivity)
-        intent.putExtra(ResourceContentActivity.CONTENT_REF_PATH, refPath)
+        intent.putExtra(ResourceActivity.CONTENT_REF_PATH, refPath)
 
         // Preserve navigation stack:
         val stackBuilder = TaskStackBuilder.create(this)

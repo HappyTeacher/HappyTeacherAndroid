@@ -7,14 +7,14 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.android.synthetic.main.activity_card_list_content_viewer.*
 import org.jnanaprabodhini.happyteacherapp.R
-import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.ResourceContentRecyclerAdapter
+import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.ResourceRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.ClassroomResourceRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import org.jnanaprabodhini.happyteacherapp.model.ContentCard
 
-class ClassroomResourceViewerActivity : ResourceContentViewerActivity() {
+class ClassroomResourceViewerActivity : ResourceViewerActivity() {
 
     companion object {
         fun launch(from: Activity, classroomResourceRef: DocumentReference, resourceHeader: ResourceHeader) {
@@ -28,7 +28,7 @@ class ClassroomResourceViewerActivity : ResourceContentViewerActivity() {
         }
     }
 
-    override val cardRecyclerAdapter: ResourceContentRecyclerAdapter by lazy {
+    override val cardRecyclerAdapter: ResourceRecyclerAdapter by lazy {
         val options = FirestoreRecyclerOptions.Builder<ContentCard>()
                 .setQuery(cardsRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
 
