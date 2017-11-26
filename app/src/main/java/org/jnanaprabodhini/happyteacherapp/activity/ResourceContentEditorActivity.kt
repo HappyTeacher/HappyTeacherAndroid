@@ -104,7 +104,7 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
             else -> R.string.editor
         })
 
-        setupFabsForNonEmptyResource()
+        showAddCardFabWithAction()
     }
 
     override fun initializeRecyclerView() {
@@ -114,24 +114,31 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
         itemTouchHelper.attachToRecyclerView(cardRecyclerView)
     }
 
+    private fun showAddCardFabWithAction() {
+        primaryFab.setVisible()
+        primaryFab.setTooltip(getString(R.string.add_card))
+
+        primaryFab.setOnClickListener {
+            addNewCard()
+        }
+    }
+
+    private fun showSubmitFabWithAction() {
+        secondaryFab.setVisible()
+        secondaryFab.setTooltip(getString(R.string.submit))
+
+        secondaryFab.setOnClickListener{
+            checkForNameAndSubmit()
+        }
+    }
+
     private fun setupFabsForNonEmptyResource() {
         val layoutParams = primaryFab.layoutParams as CoordinatorLayout.LayoutParams
         layoutParams.gravity = Gravity.END or Gravity.BOTTOM
         primaryFab.layoutParams = layoutParams
 
-        primaryFab.setVisible()
-        secondaryFab.setVisible()
-
-        primaryFab.setTooltip(getString(R.string.add_card))
-        secondaryFab.setTooltip(getString(R.string.submit))
-
-        primaryFab.setOnClickListener {
-            addNewCard()
-        }
-
-        secondaryFab.setOnClickListener{
-            checkForNameAndSubmit()
-        }
+        showAddCardFabWithAction()
+        showSubmitFabWithAction()
     }
 
     private fun setupFabsForEmptyResource() {
@@ -139,14 +146,9 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
         layoutParams.gravity = Gravity.CENTER
         primaryFab.layoutParams = layoutParams
 
-        primaryFab.setVisible()
         secondaryFab.setVisibilityGone()
 
-        primaryFab.setTooltip(getString(R.string.add_card))
-
-        primaryFab.setOnClickListener {
-            addNewCard()
-        }
+        showAddCardFabWithAction()
     }
 
     private fun checkForNameAndSubmit() {
@@ -312,7 +314,9 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
     override fun onDataEmpty() {
         cardRecyclerView.setVisibilityGone()
         statusTextView.setVisibilityGone()
+
         setupFabsForEmptyResource()
+
         fabBottomDivider.setVisible()
         getStartedTextView.setVisible()
         statusTextView.setText(R.string.add_a_card_to_get_started)
@@ -321,7 +325,9 @@ class ResourceContentEditorActivity : ResourceContentActivity() {
     override fun onDataNonEmpty() {
         getStartedTextView.setVisibilityGone()
         fabBottomDivider.setVisibilityGone()
+
         setupFabsForNonEmptyResource()
+
         statusTextView.setVisibilityGone()
 
         cardRecyclerView.setVisible()
