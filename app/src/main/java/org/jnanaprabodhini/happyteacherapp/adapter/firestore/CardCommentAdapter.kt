@@ -22,7 +22,7 @@ class CardCommentAdapter(options: FirestoreRecyclerOptions<CardComment>,
                          dataObserver: FirebaseDataObserver,
                          activity: Activity,
                          private val onCommentEdit: (comment: CardComment, ref: DocumentReference) -> Unit,
-                         private val onCommentDelete: (comment: CardComment, ref: DocumentReference) -> Unit):
+                         private val onCommentDelete: (ref: DocumentReference) -> Unit):
         FirestoreObservableRecyclerAdapter<CardComment, CardCommentViewHolder>(options, dataObserver) {
 
     private val dateFormat by lazy {
@@ -71,7 +71,7 @@ class CardCommentAdapter(options: FirestoreRecyclerOptions<CardComment>,
                 }
 
                 holder.deleteButton.setOnClickListener {
-                    onCommentDelete(model, commentRef)
+                    onCommentDelete(commentRef)
                 }
             } else {
                 hideEditButtons()

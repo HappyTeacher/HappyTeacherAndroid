@@ -67,8 +67,8 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
 
         CardCommentAdapter(options,
                 dataObserver = this, activity = this,
-                onCommentEdit = {comment, ref -> showUpdateCommentDialog(comment, ref)},
-                onCommentDelete = {_, ref -> showDeleteCommentDialog(ref)})
+                onCommentEdit = this::showUpdateCommentDialog,
+                onCommentDelete = this::showDeleteCommentDialog)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

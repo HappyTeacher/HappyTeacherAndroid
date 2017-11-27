@@ -89,8 +89,8 @@ class CardEditorActivity : HappyTeacherActivity() {
     private val parentContentId by lazy { intent.getParentContentId() }
     private val imageAdapter by lazy { EditableCardImageAdapter(editedCard, this) }
     private val activeImageUploadRefUrls = ObservableArrayList<String>(
-            onPreAdd = { refUrl -> onImageUploadRefAdded(refUrl) },
-            onPreClear = { refUrls -> onPreClearUploads(refUrls) }
+            onPreAdd = this::onImageUploadRefAdded,
+            onPreClear = this::onPreClearUploads
     )
     private var attachmentFileName: String? = null
         set(value) {

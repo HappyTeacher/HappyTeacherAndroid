@@ -35,7 +35,7 @@ class SubjectSpinnerManager(val view: SubjectSpinnerRecyclerView, val activity: 
     private var onSpinnerSelectionsComplete: (subjectKey: String) -> Unit = {}
 
     fun initializeWithTopicsListManager(topicsListManager: TopicListManager) {
-        this.onSpinnerSelectionsComplete = { subjectKey -> topicsListManager.updateListOfTopicsForSubject(subjectKey) }
+        this.onSpinnerSelectionsComplete = topicsListManager::updateListOfTopicsForSubject
 
         setupSpinners()
     }
