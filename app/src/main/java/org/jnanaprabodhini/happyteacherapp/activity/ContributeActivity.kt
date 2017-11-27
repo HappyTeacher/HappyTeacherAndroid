@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.annotation.IntegerRes
+import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewCompat
 import com.google.firebase.auth.FirebaseAuth
 import org.jnanaprabodhini.happyteacherapp.R
@@ -14,6 +15,7 @@ import kotlinx.android.synthetic.main.content_contribute.*
 import org.jnanaprabodhini.happyteacherapp.activity.base.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacherapp.adapter.contribute.ContributeFragmentAdapter
 import org.jnanaprabodhini.happyteacherapp.extension.hasCompleteContributorProfile
+import org.jnanaprabodhini.happyteacherapp.extension.setElevation
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.util.ResourceType
@@ -166,7 +168,7 @@ class ContributeActivity : BottomNavigationActivity(), FirebaseAuth.AuthStateLis
     private fun hideStatusText() = statusTextView.setVisibilityGone()
 
     override fun onBottomNavigationItemReselected() {
-        // todo
+        fragmentPager.setCurrentItem(ContributeFragmentAdapter.DRAFTS_PAGE, true)
     }
 
 }
