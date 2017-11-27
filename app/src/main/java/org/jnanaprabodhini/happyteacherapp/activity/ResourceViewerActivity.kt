@@ -34,7 +34,7 @@ abstract class ResourceViewerActivity : ResourceActivity() {
         if (header.resourceType == ResourceType.LESSON
                 && !header.isFeatured
                 && header.status == ResourceStatus.PUBLISHED
-                && prefs.userIsAdmin() || prefs.userIsMod()) {
+                && (prefs.userIsAdmin() || prefs.userIsMod())) {
             promoteToFeaturedLessonMenuItem?.isVisible = true
         }
 

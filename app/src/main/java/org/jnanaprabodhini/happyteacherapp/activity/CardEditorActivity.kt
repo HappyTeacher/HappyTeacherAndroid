@@ -279,6 +279,7 @@ class CardEditorActivity : HappyTeacherActivity() {
     private fun initializeAttachmentToolbar() {
         attachmentToolbarLayout.setVisible()
 
+        addImageButton.setDrawableTop(R.drawable.ic_image_primary_32dp)
         addImageButton.setOnClickListener {
             when {
                 youtubeUrlInputLayout.isVisible() -> {
@@ -297,6 +298,7 @@ class CardEditorActivity : HappyTeacherActivity() {
             }
         }
 
+        addVideoButton.setDrawableTop(R.drawable.ic_videocam_accent_32dp)
         addVideoButton.setOnClickListener {
             when {
                 editedCard.imageUrls.isNotEmpty() -> {
@@ -315,6 +317,7 @@ class CardEditorActivity : HappyTeacherActivity() {
             }
         }
 
+        addFileButton.setDrawableTop(R.drawable.ic_attach_file_accent_32dp)
         addFileButton.setOnClickListener {
             if (fileAttachmentView.isVisible()) {
                 addFileButton.jiggle()

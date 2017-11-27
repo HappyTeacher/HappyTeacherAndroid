@@ -152,8 +152,8 @@ fun TextView.setHtmlAndMarkdownText(formattedString: String) {
 fun ImageView.loadImageToFit(imageUrl: String) {
     Picasso.with(context)
             .load(imageUrl)
-            .placeholder(R.drawable.ic_image_primary_32dp)
-            .error(R.drawable.ic_error_gray_32dp)
+            .placeholder(AppCompatResources.getDrawable(context, R.drawable.ic_image_primary_32dp))
+            .error(AppCompatResources.getDrawable(context, R.drawable.ic_error_gray_32dp))
             .fit()
             .centerCrop()
             .into(this)
@@ -170,14 +170,14 @@ fun ImageView.loadImageToFitWithNoPlaceholders(imageUrl: String) {
 fun ImageView.loadFullImageWithNoPlaceholder(imageUrl: String) {
     Picasso.with(context)
             .load(imageUrl)
-            .error(R.drawable.ic_error_gray_32dp)
+            .error(AppCompatResources.getDrawable(context, R.drawable.ic_error_gray_32dp))
             .fit()
             .centerInside()
             .into(this)
 }
 
 fun ImageView.setDrawableResource(@DrawableRes drawableRes: Int) {
-    this.setImageDrawable(ResourcesCompat.getDrawable(resources, drawableRes, null))
+    this.setImageDrawable(AppCompatResources.getDrawable(context, drawableRes))
 }
 
 fun RecyclerView.canScrollLeftHorizontally(): Boolean = canScrollHorizontally(-1)

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.annotation.IntegerRes
+import android.support.v4.view.ViewCompat
 import com.google.firebase.auth.FirebaseAuth
 import org.jnanaprabodhini.happyteacherapp.R
 import kotlinx.android.synthetic.main.activity_contribute.*
@@ -101,7 +102,7 @@ class ContributeActivity : BottomNavigationActivity(), FirebaseAuth.AuthStateLis
 
         if (intent.hasFragmentPage()) {
             fragmentPager.currentItem = intent.getFragmentPage()
-            intent.removeExtra(FRAGMENT_PAGE)
+            intent.removeFragmentPage()
         }
 
         tabBar.setupWithViewPager(fragmentPager)

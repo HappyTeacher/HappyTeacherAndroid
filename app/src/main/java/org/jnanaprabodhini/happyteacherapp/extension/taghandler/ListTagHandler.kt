@@ -62,17 +62,9 @@ abstract class ListTagHandler(private val indentationLevel: Int = 0): Html.TagHa
     private fun hasListHandler() = activeListHandler != null
 
     fun getIndentationSpan(): LeadingMarginSpan.Standard {
-        val firstIndentAmount = 10
-        val firstHangingIndentAmount = 50
-        val restIndentAmount = 20
+        val indentAmount = 20
 
-        return if (indentationLevel == 1) {
-            // Hanging indent on first indentation level
-            //  will carry over to preceding indentation levels
-            LeadingMarginSpan.Standard(firstIndentAmount, firstHangingIndentAmount)
-        } else {
-            LeadingMarginSpan.Standard(restIndentAmount)
-        }
+        return LeadingMarginSpan.Standard(indentAmount)
     }
 
     /**

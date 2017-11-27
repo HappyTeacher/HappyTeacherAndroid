@@ -9,10 +9,7 @@ import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.view_download_bar.view.*
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.AttachmentDownloadManager
-import org.jnanaprabodhini.happyteacherapp.extension.setOneTimeOnClickListener
-import org.jnanaprabodhini.happyteacherapp.extension.setOneTimeOnLongClickListener
-import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
-import org.jnanaprabodhini.happyteacherapp.extension.setVisible
+import org.jnanaprabodhini.happyteacherapp.extension.*
 
 /**
  * Created by grahamearley on 9/29/17.
@@ -99,7 +96,7 @@ class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout
     private fun setIconDrawable(@DrawableRes drawable: Int) {
         resetView()
         icon.setVisible()
-        icon.setImageDrawable(ResourcesCompat.getDrawable(context.resources, drawable, null))
+        icon.setDrawableResource(drawable)
     }
 
     fun resetView() {
