@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.DataSetObserver
 import android.os.Bundle
 import android.support.annotation.StringRes
+import android.view.Window
 import android.widget.ListView
 import kotlinx.android.synthetic.main.dialog_settings_choice.*
 import org.jnanaprabodhini.happyteacherapp.R
@@ -16,13 +17,14 @@ import org.jnanaprabodhini.happyteacherapp.util.PreferencesManager
  * A dialog that presents a list of options to the user
  *  for changing settings.
  */
-abstract class SettingsChoiceDialog(context: Context, @StringRes val dialogHeaderTextId: Int, @StringRes val dialogSubheaderTextId: Int): Dialog(context) {
+abstract class SettingsChoiceDialog(context: Context, @StringRes private val dialogHeaderTextId: Int, @StringRes val dialogSubheaderTextId: Int): Dialog(context) {
 
     val prefs: PreferencesManager by lazy {
         PreferencesManager.getInstance(context)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.dialog_settings_choice)
 
         dialogHeader.setText(dialogHeaderTextId)
