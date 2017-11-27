@@ -6,8 +6,8 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.fragment.DraftsFragment
-import org.jnanaprabodhini.happyteacherapp.fragment.PublishedContentFragment
-import org.jnanaprabodhini.happyteacherapp.fragment.SubmittedContentFragment
+import org.jnanaprabodhini.happyteacherapp.fragment.PublishedFragment
+import org.jnanaprabodhini.happyteacherapp.fragment.SubmissionsFragment
 
 /**
  * Created by grahamearley on 11/1/17.
@@ -21,8 +21,8 @@ class ContributeFragmentAdapter(fragmentManager: FragmentManager, val context: C
 
     override fun getItem(position: Int): Fragment = when (position) {
         0 -> DraftsFragment()
-        1 -> SubmittedContentFragment()
-        2 -> PublishedContentFragment()
+        1 -> SubmissionsFragment()
+        2 -> PublishedFragment()
         else -> Fragment()
     }
 
