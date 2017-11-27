@@ -1,5 +1,6 @@
 package org.jnanaprabodhini.happyteacherapp.activity
 
+import android.net.Uri
 import android.support.v7.app.AlertDialog
 import android.view.Menu
 import android.view.MenuItem
@@ -8,6 +9,10 @@ import org.jnanaprabodhini.happyteacherapp.extension.showToast
 import org.jnanaprabodhini.happyteacherapp.util.FirestoreKeys
 import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
 import org.jnanaprabodhini.happyteacherapp.util.ResourceType
+import com.google.firebase.dynamiclinks.DynamicLink
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import org.jnanaprabodhini.happyteacherapp.util.LocaleManager
+
 
 /**
  * A parent activity for resource content viewers (as opposed to editors).
@@ -51,6 +56,7 @@ abstract class ResourceViewerActivity : ResourceActivity() {
             R.id.menu_admin_edit_card_list_content -> openInEditor()
             R.id.menu_admin_unpublish -> unpublish()
             R.id.menu_mod_promote_to_featured -> showPromoteToFeaturedLessonDialog()
+            R.id.menu_resource_share -> shareResourceLink()
         }
         return true
     }
@@ -79,6 +85,21 @@ abstract class ResourceViewerActivity : ResourceActivity() {
                 })
                 .setNegativeButton(R.string.cancel, { dialog, _ -> dialog.dismiss() })
                 .show()
+    }
+
+    private fun shareResourceLink() {
+        val deepLinkUrl = "http://www.erc-pune.org/happyteacher/" +
+                "${LocaleManager.getCurrentLocale(this)}/${header.subjectName}/" +
+                "${header.topicName}/${header.name}/${contentRef.id}"
+
+        // TODO: set social media params! e.g. a title.
+        val dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse(deepLinkUrl))
+                .setDynamicLinkDomain(FirestoreKeys.DYNAMIC_LINK_DOMAIN)
+                // Open links with this app on Android
+                .setAndroidParameters(DynamicLink.AndroidParameters.Builder().build())
+                .buildDynamicLink()
+
     }
 
 }
