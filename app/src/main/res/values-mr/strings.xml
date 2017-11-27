@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">"आनंदी शिक्षक "</string>
-    <string name="there_are_no_topics_for_this_subject_yet">Ding dong!</string>
+    <string name="there_are_no_topics_for_this_subject_yet">ह्या विषयात सध्या उपविषय नाहीत.</string>
+    <string name="title_board">"बोर्ड "</string>
+    <string name="title_topics">विषय</string>
+    <string name="title_contribute">योगदान द्या</string>
+    <string name="choose_your_syllabus">"बोर्डची निवड करा "</string>
+    <string name="there_are_no_lessons_for_this_topic_yet">ह्या विषयामध्ये सध्या धडे नाहीत .</string>
+    <string name="contribute">योगदान द्या</string>
+    <string name="this_lesson_has_no_relevant_topics">ह्या धड्यामध्ये सध्या  विषय नाहीत.</string>
+    <string name="there_are_currently_no_lesson_plans_for_this_subject_and_level">ह्या धड्यामध्ये सध्या विषय आणि स्तर नाहीत.</string>
+    <string name="there_was_an_error_loading_this_lesson">हा धडा उतरविण्यामध्ये तांत्रिक अडचण आहे.</string>
+    <string name="downloading">"डाऊनलोड होत आहे. "</string>
+    <string name="canceling">रद्द होत आहे.</string>
+    <string name="download_failed">डाऊनलोड होऊ शकत नाही.</string>
+    <string name="no_lessons_at_level_yet">%d इयत्तेच्या स्तरावरील धडे  सध्या नाहीत.</string>
+    <string name="standard_n">इयत्ता %d</string>
 </resources>

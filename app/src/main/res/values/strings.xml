@@ -8,7 +8,7 @@
 
     <string name="standard_n">Standard %d</string>
     <string name="choose_your_syllabus">Choose your board.</string>
-    <string name="you_can_change_this_setting_later">You can change this setting later.</string>
+    <string name="you_can_change_this_later">You can change this later.</string>
     <string name="there_are_no_lessons_for_this_topic_yet">There are no lessons for this topic yet.</string>
     <string name="contribute">Contribute</string>
     <string name="this_lesson_has_no_relevant_topics">This lesson has no relevant topics.</string>
@@ -21,14 +21,14 @@
     <string name="canceling">Canceling…</string>
     <string name="open_x">Open %s</string>
     <string name="download_failed">Download failed</string>
-    <string name="file_with_size_in_mb">%1$s (%2$.2f MB)</string>
+    <string name="file_with_size_in_mb" translatable="false">%1$s (%2$.2f MB)</string>
     <string name="loading_attachment">Loading attachment…</string>
     <string name="download_canceled">Download canceled</string>
     <string name="do_you_want_to_delete_this_file_from_your_device">Do you want to delete this file from your device?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="the_file_is_no_longer_available_try_downloading_it_again">The file is no longer available. Try downloading it again.</string>
-    <string name="plus_number">+%d</string>
+    <string name="plus_number" translatable="false">+%d</string>
     <string name="see_all_n_lesson_plans_for_lesson">See all %1$d lesson plans for %2$s</string>
     <string name="error_loading_other_lessons">There was an error loading these lesson plans</string>
     <string name="other_lesson_plans">Other lesson plans</string>
@@ -100,7 +100,7 @@
     <string name="there_are_no_sections_in_this_classroom_resource_would_you_like_to_delete_it">There are no sections in this classroom resource. Would you like to delete it?</string>
     <string name="there_are_no_sections_in_this_resource_would_you_like_to_delete_it">There are no sections in this resource. Would you like to delete it?</string>
     <string name="you_have_no_drafts_yet">You don\'t have any drafts yet.</string>
-    <string name="there_was_an_error_loading_your_drafts">There was an error loading your drafts</string>
+    <string name="there_was_an_error_loading_your_drafts">There was an error loading your drafts.</string>
     <string name="you_have_no_submitted_contributions">You don\'t have any submitted contributions yet.</string>
     <string name="there_was_an_error_loading_your_submissions">There was an error loading your submissions</string>
     <string name="you_have_no_published_contributions">You don\'t have any published contributions yet.</string>

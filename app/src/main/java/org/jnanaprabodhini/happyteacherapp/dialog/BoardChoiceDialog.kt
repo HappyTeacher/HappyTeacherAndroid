@@ -14,7 +14,7 @@ import org.jnanaprabodhini.happyteacherapp.model.Board
  * A dialog for asking the user what Board/Syllabus they
  *  want to set as default.
  */
-class BoardChoiceDialog(context: Context): SettingsChoiceDialog(context, R.string.choose_your_syllabus, R.string.you_can_change_this_setting_later) {
+class BoardChoiceDialog(context: Context): SettingsChoiceDialog(context, R.string.choose_your_syllabus, R.string.you_can_change_this_later) {
 
     override fun show() {
         super.show()
