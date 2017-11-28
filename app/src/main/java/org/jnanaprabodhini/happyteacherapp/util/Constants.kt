@@ -43,4 +43,5 @@ object FirestoreKeys {
     const val NAME = "name"
     const val RESOURCE_NAME = "resourceName"
     const val DYNAMIC_LINK_DOMAIN = "x6rk2.app.goo.gl/"
+    const val HAS_PENDING_SUBMISSIONS = "hasPendingSubmissions"
 }

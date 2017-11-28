@@ -68,7 +68,7 @@ class SubmissionsForReviewActivity : HappyTeacherActivity(),
     override fun onDataEmpty() {
         topicsRecyclerView.setVisibilityGone()
         statusText.setVisible()
-        statusText.setText(R.string.there_are_no_topics_for_this_subject_yet)
+        statusText.setText(R.string.there_are_no_submissions_for_this_subject_yet)
     }
 
     override fun onDataNonEmpty() {
@@ -84,6 +84,6 @@ class SubmissionsForReviewActivity : HappyTeacherActivity(),
         topicsRecyclerView.setVisibilityGone()
         topicsProgressBar.setVisibilityGone()
         statusText.setVisible()
-        statusText.setText(R.string.there_was_an_error_loading_topics_for_this_subject)
+        statusText.setText(R.string.there_was_an_error_loading_submissions_for_this_subject)
     }
 }

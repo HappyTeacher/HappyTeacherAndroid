@@ -252,6 +252,9 @@
     <string name="do_you_want_to_delete_this_resource">Do you want to delete this resource?</string>
     <string name="resource_deleted">Resource deleted</string>
     <string name="deletion_failed">Deletion failed</string>
+    <string name="there_are_no_submissions_for_this_subject_yet">There are no submissions for this subject yet.</string>
+    <string name="there_was_an_error_loading_submissions_for_this_subject">There was an error loading submissions for this subject.</string>
+    <string name="there_are_currently_no_submissions_for_this_topic">There are currently no submissions for this topic.</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>
