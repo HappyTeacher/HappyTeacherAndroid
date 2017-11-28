@@ -10,9 +10,9 @@ android {
     defaultConfig {
         applicationId "org.jnanaprabodhini.happyteacherapp"
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 26
-        versionName "2.0.0-alpha1"
+        versionName "2.0.0-alpha2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         resConfigs "auto"

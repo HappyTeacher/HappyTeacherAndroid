@@ -1,5 +1,6 @@
 package org.jnanaprabodhini.happyteacherapp.activity
 
+import android.app.Activity
 import android.net.Uri
 import android.support.v7.app.AlertDialog
 import android.view.Menu
@@ -11,7 +12,12 @@ import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
 import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
-import org.jnanaprabodhini.happyteacherapp.util.LocaleManager
+import com.google.firebase.firestore.DocumentReference
+import org.jnanaprabodhini.happyteacherapp.dialog.InputTextDialogBuilder
+import org.jnanaprabodhini.happyteacherapp.extension.decode
+import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
+import android.content.Intent
+import android.util.Log
 
 
 /**
@@ -19,6 +25,18 @@ import org.jnanaprabodhini.happyteacherapp.util.LocaleManager
  *  Sets up a menu with Admin/Mod tools.
  */
 abstract class ResourceViewerActivity : ResourceActivity() {
+
+    companion object {
+        fun launchViewerForResource(from: Activity, resourceRef: DocumentReference) {
+            resourceRef.get().addOnSuccessListener { documentSnapshot ->
+                val header = documentSnapshot.toObject(ResourceHeader::class.java)
+                when (header.resourceType) {
+                    ResourceType.LESSON -> LessonViewerActivity.launch(from, resourceRef, header, true)
+                    ResourceType.CLASSROOM_RESOURCE -> ClassroomResourceViewerActivity.launch(from, resourceRef, header)
+                }
+            }
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_cards_viewer, menu)
@@ -88,18 +106,27 @@ abstract class ResourceViewerActivity : ResourceActivity() {
     }
 
     private fun shareResourceLink() {
-        val deepLinkUrl = "http://www.erc-pune.org/happyteacher/" +
-                "${LocaleManager.getCurrentLocale(this)}/${header.subjectName}/" +
-                "${header.topicName}/${header.name}/${contentRef.id}"
+        val deepLinkUrl = "http://happyteacher.jnanaprabodhini.org/${contentRef.path}"
+        val appName = getString(R.string.app_name)
+        val shareTitle = "${header.name} ($appName)"
 
-        // TODO: set social media params! e.g. a title.
         val dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
                 .setLink(Uri.parse(deepLinkUrl))
                 .setDynamicLinkDomain(FirestoreKeys.DYNAMIC_LINK_DOMAIN)
-                // Open links with this app on Android
-                .setAndroidParameters(DynamicLink.AndroidParameters.Builder().build())
-                .buildDynamicLink()
+                .setAndroidParameters(DynamicLink.AndroidParameters
+                        .Builder()
+                        .setMinimumVersion(27) // 27 is the version where deeplinking was introduced
+                        .build())
+                .buildDynamicLink().uri.toString().decode()
 
+        val shareUrlIntent = Intent(Intent.ACTION_SEND)
+        shareUrlIntent.apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_SUBJECT, shareTitle)
+            putExtra(Intent.EXTRA_TEXT, "$shareTitle $dynamicLink")
+        }
+
+        startActivity(shareUrlIntent)
     }
 
 }

@@ -42,5 +42,5 @@ object FirestoreKeys {
     const val REFERENCE_PATH = "referencePath"
     const val NAME = "name"
     const val RESOURCE_NAME = "resourceName"
-    const val DYNAMIC_LINK_DOMAIN = "https://x6rk2.app.goo.gl/"
+    const val DYNAMIC_LINK_DOMAIN = "x6rk2.app.goo.gl/"
 }

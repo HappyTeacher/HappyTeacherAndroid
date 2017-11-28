@@ -23,6 +23,15 @@ import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
 import org.jnanaprabodhini.happyteacherapp.view.SubjectSpinnerRecyclerView
 import org.jnanaprabodhini.happyteacherapp.view.manager.PublishedLessonTopicListManager
 import org.jnanaprabodhini.happyteacherapp.view.manager.SubjectSpinnerManager
+import android.support.annotation.NonNull
+import android.util.Log
+import com.crashlytics.android.Crashlytics
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+
+
 
 class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver, SubjectSpinnerRecyclerView {
 
@@ -75,6 +84,8 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver, Sub
         topicsRecyclerView.layoutManager = LinearLayoutManager(this)
         bottomNavigation.selectedItemId = bottomNavigationMenuItemId
         bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+
+        openDeepLinkIfAvailable()
 
         subjectSpinnerManager.restoreSpinnerState(savedInstanceState)
 
@@ -138,6 +149,28 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver, Sub
         adapter.startListening()
 
         topicsRecyclerView.adapter = adapter
+    }
+
+    private fun openDeepLinkIfAvailable() {
+        FirebaseDynamicLinks.getInstance()
+            .getDynamicLink(intent)
+            .addOnSuccessListener(this) { pendingDynamicLinkData ->
+                // pendingDynamicLinkData will be null if there is no link in the intent
+                pendingDynamicLinkData?.let {
+                    showToast(R.string.opening_resource_from_link)
+                    val deepLink = pendingDynamicLinkData.link
+                    val resourceRefPath = deepLink.encodedPath.removePrefix("/")
+
+                    try {
+                        val resourceRef = firestoreRoot.document(resourceRefPath)
+                        ResourceViewerActivity.launchViewerForResource(this, resourceRef)
+                    } catch (e: IllegalArgumentException) {
+                        Crashlytics.setString("malformed_deeplink", deepLink.toString())
+                        Crashlytics.logException(e)
+                        showToast(R.string.error_loading_link)
+                    }
+                }
+            }
     }
 
     /**

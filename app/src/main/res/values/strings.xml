@@ -247,6 +247,8 @@
     <string name="there_was_an_error_loading_subjects">There was an error loading subjects.</string>
     <string name="add_name">Add name</string>
     <string name="share">Share</string>
+    <string name="opening_resource_from_link">Opening resource from link…</string>
+    <string name="error_loading_link">Error loading link</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>
