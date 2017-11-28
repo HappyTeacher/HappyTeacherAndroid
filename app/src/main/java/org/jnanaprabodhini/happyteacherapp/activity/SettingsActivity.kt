@@ -131,7 +131,7 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
 
     /**
      * Location is changed from onActivityResult when the Google Places API
-     *  returns a value. We must explicitly set the Preference's text after
+     *  returns a value. We must explicitly set the Preference view's text after
      *  a place is chosen.
      */
     private fun onLocationChange(newLocation: String?) {
