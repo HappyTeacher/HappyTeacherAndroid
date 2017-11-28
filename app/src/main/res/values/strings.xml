@@ -249,6 +249,9 @@
     <string name="share">Share</string>
     <string name="opening_resource_from_link">Opening resource from link…</string>
     <string name="error_loading_link">Error loading link</string>
+    <string name="do_you_want_to_delete_this_resource">Do you want to delete this resource?</string>
+    <string name="resource_deleted">Resource deleted</string>
+    <string name="deletion_failed">Deletion failed</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>

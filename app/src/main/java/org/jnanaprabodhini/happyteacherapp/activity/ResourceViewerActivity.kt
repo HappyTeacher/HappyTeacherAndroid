@@ -13,11 +13,9 @@ import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.firestore.DocumentReference
-import org.jnanaprabodhini.happyteacherapp.dialog.InputTextDialogBuilder
 import org.jnanaprabodhini.happyteacherapp.extension.decode
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import android.content.Intent
-import android.util.Log
 
 
 /**
@@ -40,18 +38,19 @@ abstract class ResourceViewerActivity : ResourceActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_cards_viewer, menu)
-        val editLessonMenuItem = menu?.findItem(R.id.menu_admin_edit_card_list_content)
+        val editResourceMenuItem = menu?.findItem(R.id.menu_admin_edit_resource)
         val promoteToFeaturedLessonMenuItem = menu?.findItem(R.id.menu_mod_promote_to_featured)
         val unpublishMenuItem = menu?.findItem(R.id.menu_admin_unpublish)
+        val deleteResourceMenuItem = menu?.findItem(R.id.menu_admin_delete_resource)
 
-        editLessonMenuItem?.isVisible = false
+        editResourceMenuItem?.isVisible = false
         promoteToFeaturedLessonMenuItem?.isVisible = false
         unpublishMenuItem?.isVisible = false
+        deleteResourceMenuItem?.isVisible = false
 
-        // Only show admin/mod buttons to admins/mods!
-        //  (Our Firestore security rules also only allow writes from admins)
         if (prefs.userIsAdmin()) {
-            editLessonMenuItem?.isVisible = true
+            editResourceMenuItem?.isVisible = true
+            deleteResourceMenuItem?.isVisible = true
         }
 
         if (header.resourceType == ResourceType.LESSON
@@ -71,10 +70,11 @@ abstract class ResourceViewerActivity : ResourceActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         super.onOptionsItemSelected(item)
         when (item.itemId) {
-            R.id.menu_admin_edit_card_list_content -> openInEditor()
+            R.id.menu_admin_edit_resource -> openInEditor()
             R.id.menu_admin_unpublish -> unpublish()
             R.id.menu_mod_promote_to_featured -> showPromoteToFeaturedLessonDialog()
             R.id.menu_resource_share -> shareResourceLink()
+            R.id.menu_admin_delete_resource -> showDeleteDialog()
         }
         return true
     }
@@ -98,6 +98,22 @@ abstract class ResourceViewerActivity : ResourceActivity() {
                 .setPositiveButton(R.string.yes, { dialog, _ ->
                     contentRef.update(FirestoreKeys.IS_FEATURED, true).addOnSuccessListener {
                         showToast(R.string.lesson_set_to_featured)
+                    }
+                    dialog.dismiss()
+                })
+                .setNegativeButton(R.string.cancel, { dialog, _ -> dialog.dismiss() })
+                .show()
+    }
+
+    private fun showDeleteDialog() {
+        AlertDialog.Builder(this)
+                .setTitle(R.string.do_you_want_to_delete_this_resource)
+                .setPositiveButton(R.string.yes, { dialog, _ ->
+                    contentRef.delete().addOnSuccessListener {
+                        showToast(R.string.resource_deleted)
+                        finish()
+                    }.addOnFailureListener {
+                        showToast(R.string.deletion_failed)
                     }
                     dialog.dismiss()
                 })

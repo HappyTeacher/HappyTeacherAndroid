@@ -10,7 +10,7 @@
         android:title="@string/share" />
 
     <item
-        android:id="@+id/menu_admin_edit_card_list_content"
+        android:id="@+id/menu_admin_edit_resource"
         android:visible="false"
         app:showAsAction="never"
         android:title="@string/edit" />
@@ -20,6 +20,12 @@
         android:visible="false"
         app:showAsAction="never"
         android:title="@string/unpublish" />
+
+    <item
+        android:id="@+id/menu_admin_delete_resource"
+        android:visible="false"
+        app:showAsAction="never"
+        android:title="@string/delete" />
 
     <item
         android:id="@+id/menu_mod_promote_to_featured"
