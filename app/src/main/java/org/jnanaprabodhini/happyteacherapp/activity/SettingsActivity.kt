@@ -21,6 +21,7 @@ import org.jnanaprabodhini.happyteacherapp.extension.showToast
 import org.jnanaprabodhini.happyteacherapp.preference.MandatoryContributorPreference
 import org.jnanaprabodhini.happyteacherapp.util.PreferencesManager
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.google.firebase.analytics.FirebaseAnalytics
 import org.jnanaprabodhini.happyteacherapp.extension.signOutAndCleanup
 
 
@@ -29,6 +30,10 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
     companion object { const val PLACE_AUTOCOMPLETE_REQUEST_CODE = 1 }
 
     private lateinit var settingsFragment: SettingsFragment
+
+    private val analytics by lazy {
+        FirebaseAnalytics.getInstance(this)
+    }
 
     class SettingsFragment: PreferenceFragmentCompat() {
 
@@ -127,6 +132,7 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
 
     private fun onInstitutionChange(newInstitution: String?) {
         getUserReference()?.update(getString(R.string.institution_key), newInstitution)
+        analytics.setUserProperty(getString(R.string.institution_key), newInstitution)
     }
 
     /**
@@ -141,6 +147,7 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
         locationPref.callChangeListener(newLocation)
 
         getUserReference()?.update(getString(R.string.location_key), newLocation)
+        analytics.setUserProperty(getString(R.string.location_key), newLocation)
     }
 
     private fun launchPlacesAutocompleteOverlay() {

@@ -13,6 +13,7 @@ import com.firebase.ui.auth.ErrorCodes
 import android.app.Activity
 import com.crashlytics.android.Crashlytics
 import com.firebase.ui.auth.IdpResponse
+import com.google.firebase.analytics.FirebaseAnalytics
 import org.jnanaprabodhini.happyteacherapp.BuildConfig
 import org.jnanaprabodhini.happyteacherapp.activity.*
 import org.jnanaprabodhini.happyteacherapp.extension.signOutAndCleanup
@@ -169,6 +170,8 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
     }
 
     private fun persistUserInfo() {
+        auth.currentUser?.uid?.let { FirebaseAnalytics.getInstance(this).setUserId(it) }
+
         FirebaseRegistrationTokenService.updateUserToken(this)
         getUserReference()?.get()?.addOnSuccessListener { snapshot ->
             if (snapshot.exists()) {
@@ -182,7 +185,7 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
                 // If Cloud Functions haven't created the user fast enough,
                 //  it's possible for the user Document to not exist yet.
                 //  In this case, fail silently. The user will have to re-enter
-                //  their info. :(
+                //  their profile info. :(
                 Crashlytics.log("User object does not exist in Firestore upon registration.")
 
                 prefs.clearUserProfileData()
