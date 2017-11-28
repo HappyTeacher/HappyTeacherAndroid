@@ -10,9 +10,9 @@ android {
     defaultConfig {
         applicationId "org.jnanaprabodhini.happyteacherapp"
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 26
-        versionName "2.0.0-alpha1"
+        versionName "2.0.0-alpha2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         resConfigs "auto"
@@ -70,6 +70,7 @@ dependencies {
         transitive = true
     }
     compile 'com.google.firebase:firebase-messaging:11.6.0'
+    compile 'com.google.firebase:firebase-invites:11.6.0'
 
     compile 'uk.co.chrisjenx:calligraphy:2.3.0'
     compile 'com.commonsware.cwac:anddown:0.4.0'
