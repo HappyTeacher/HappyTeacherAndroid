@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.DataSetObserver
 import android.os.Bundle
 import android.support.annotation.StringRes
+import android.view.ViewGroup
 import android.view.Window
 import android.widget.Adapter
 import android.widget.ListAdapter
@@ -31,6 +32,11 @@ abstract class SettingsChoiceDialog(context: Context, @StringRes private val dia
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.dialog_settings_choice)
+
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        this.setCancelable(true)
+        this.setCanceledOnTouchOutside(true)
 
         dialogHeader.setText(dialogHeaderTextId)
         dialogSubheader.setText(dialogSubheaderTextId)

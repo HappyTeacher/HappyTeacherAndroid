@@ -1,15 +1,17 @@
 package org.jnanaprabodhini.happyteacherapp.dialog
 
 import android.content.Context
+import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.ListView
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.dialog_option_switch.view.*
+import kotlinx.android.synthetic.main.dialog_settings_choice.*
 import org.jnanaprabodhini.happyteacherapp.R
-import org.jnanaprabodhini.happyteacherapp.adapter.firestore.FirestoreObservableListAdapter
 import org.jnanaprabodhini.happyteacherapp.model.Subject
 import org.jnanaprabodhini.happyteacherapp.model.User
 import org.jnanaprabodhini.happyteacherapp.util.FirestoreKeys
@@ -47,54 +49,70 @@ class ModeratorSubjectSubscriptionsDialog(context: Context):
         }
     }
 
-    private var subjectsWatched = mutableSetOf<String>()
+    private val subjectNames = mutableListOf<String>()
+    private var subjectsWatched = setOf<String>()
 
     override fun configureOptionsListView(optionsListView: ListView) {
-        userRef?.get()?.addOnSuccessListener { snapshot ->
+        val childlessSubjectsQuery = firestoreLocalized.collection(FirestoreKeys.SUBJECTS)
+                .whereEqualTo(FirestoreKeys.HAS_CHILDREN, false)
+
+        val getUserTask = userRef?.get()
+        val getSubjectsTask = childlessSubjectsQuery.get()
+
+        getUserTask?.addOnSuccessListener { snapshot ->
             val user = snapshot.toObject(User::class.java)
+            subjectsWatched = user.watchingSubjects.filter { it.value }.keys
+            setupSubjectsNotificationList()
+        }
 
-            // Filter out subjects whose value is `false`
-            subjectsWatched = user.watchingSubjects.filter { it.value }.keys.toMutableSet()
+        getSubjectsTask.addOnSuccessListener { querySnapshot ->
+            val subjects = querySnapshot.map { it.toObject(Subject::class.java).name }
+            subjectNames.addAll(subjects)
+        }
 
+        Tasks.whenAll(getSubjectsTask, getUserTask).addOnSuccessListener {
             setupSubjectsNotificationList()
         }
     }
 
     private fun setupSubjectsNotificationList() {
-        val childlessSubjectsQuery = firestoreLocalized.collection(FirestoreKeys.SUBJECTS)
-                .whereEqualTo(FirestoreKeys.HAS_CHILDREN, false)
+        optionsListView.choiceMode = ListView.CHOICE_MODE_MULTIPLE
+        val adapter = ArrayAdapter(context, R.layout.dialog_option_multichoice, subjectNames)
+        setAdapter(adapter)
 
-        val subjectSubscriptionAdapter = object: FirestoreObservableListAdapter<Subject>(childlessSubjectsQuery,
-                Subject::class.java, R.layout.dialog_option_switch, this, context) {
-            override fun populateView(view: View, model: Subject, position: Int) {
-                val textView = view.textView
-                val switch = view.switchView
+        val checkedItems = mutableListOf<Int>()
 
-                switch.isChecked = model.name in subjectsWatched
-                textView.text = model.name
+        for (i in 0..subjectNames.lastIndex) {
+            val subjectName = adapter.getItem(i)
+            val isSubscribed = subjectName in subjectsWatched
 
-                switch.setOnCheckedChangeListener { _, isChecked ->
-                    if (isChecked) {
-                        subscribeToSubject(model.name)
-                    } else {
-                        unsubscribeFromSubject(model.name)
-                    }
-                }
-            }
+            if (isSubscribed) checkedItems.add(i)
         }
 
-        subjectSubscriptionAdapter.startListening()
-        setAdapter(subjectSubscriptionAdapter)
+        optionsListView.addOnLayoutChangeListener(object: View.OnLayoutChangeListener {
+            override fun onLayoutChange(p0: View?, p1: Int, p2: Int, p3: Int, p4: Int, p5: Int, p6: Int, p7: Int, p8: Int) {
+                checkedItems.forEach { optionsListView.setItemChecked(it, true) }
+                optionsListView.removeOnLayoutChangeListener(this)
+            }
+        })
     }
 
-    private fun unsubscribeFromSubject(subjectName: String) {
-        userRef?.update("${FirestoreKeys.WATCHING_SUBJECTS}.$subjectName", false)
-        subjectsWatched.remove(subjectName)
+    override fun dismiss() {
+        updateSubscriptions()
+        super.dismiss()
     }
 
-    private fun subscribeToSubject(subjectName: String) {
-        userRef?.update("${FirestoreKeys.WATCHING_SUBJECTS}.$subjectName", true)
-        subjectsWatched.add(subjectName)
+    override fun cancel() {
+        updateSubscriptions()
+        super.cancel()
+    }
+
+    private fun updateSubscriptions() {
+        for (i in 0..subjectNames.lastIndex) {
+            val subjectName = optionsListView.adapter.getItem(i) as String
+            val isSubscribed = optionsListView.isItemChecked(i)
+            userRef?.update("${FirestoreKeys.WATCHING_SUBJECTS}.$subjectName", isSubscribed)
+        }
     }
 
 }
