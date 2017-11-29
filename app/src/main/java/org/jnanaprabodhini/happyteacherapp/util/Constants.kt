@@ -21,9 +21,14 @@ object ResourceType {
     const val CLASSROOM_RESOURCE = "classroom resource"
 }
 
-object UserRoles {
+object UserRole {
     const val ADMIN = "admin"
     const val MODERATOR = "moderator"
+}
+
+object NotificationType {
+    const val NEW_SUBMISSION_FOR_MODERATOR = "newSubmissionForModerator"
+    const val STATUS_CHANGE_FOR_AUTHOR = "statusChangeForAuthor"
 }
 
 // TODO: move keys to this object from string resources
@@ -44,4 +49,8 @@ object FirestoreKeys {
     const val RESOURCE_NAME = "resourceName"
     const val DYNAMIC_LINK_DOMAIN = "x6rk2.app.goo.gl/"
     const val HAS_PENDING_SUBMISSIONS = "hasPendingSubmissions"
+    const val NOTIFICATION_TYPE = "notificationType"
+    const val SUBJECT_NAME = "subjectName"
+    const val SUBJECT_ID = "subjectId"
+    const val PARENT_SUBJECT_ID = "parentSubjectId"
 }

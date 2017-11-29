@@ -3,6 +3,7 @@ package org.jnanaprabodhini.happyteacherapp.activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
@@ -11,9 +12,12 @@ import kotlinx.android.synthetic.main.activity_submissions_for_review.*
 import kotlinx.android.synthetic.main.stacked_subject_spinners.*
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
+import org.jnanaprabodhini.happyteacherapp.adapter.firestore.FirestoreObservableListAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
+import org.jnanaprabodhini.happyteacherapp.extension.itemsOfType
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
+import org.jnanaprabodhini.happyteacherapp.model.Subject
 import org.jnanaprabodhini.happyteacherapp.view.SubjectSpinnerRecyclerView
 import org.jnanaprabodhini.happyteacherapp.view.manager.SubjectSpinnerManager
 import org.jnanaprabodhini.happyteacherapp.view.manager.SubmissionsTopicListManager
@@ -26,6 +30,14 @@ class SubmissionsForReviewActivity : HappyTeacherActivity(),
             val intent = Intent(from, SubmissionsForReviewActivity::class.java)
             from.startActivity(intent)
         }
+
+        const val PARENT_SUBJECT_ID = "PARENT_SUBJECT_ID"
+        fun Intent.getParentSubjectId() = getStringExtra(PARENT_SUBJECT_ID)
+        fun Intent.hasParentSubjectId() = hasExtra(PARENT_SUBJECT_ID)
+
+        const val CHILD_SUBJECT_ID = "CHILD_SUBJECT_ID"
+        fun Intent.getChildSubjectId() = getStringExtra(PARENT_SUBJECT_ID)
+        fun Intent.hasChildSubjectId() = hasExtra(PARENT_SUBJECT_ID)
     }
 
     private val subjectSpinnerManager = SubjectSpinnerManager(view = this, activity = this)
@@ -39,6 +51,15 @@ class SubmissionsForReviewActivity : HappyTeacherActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_submissions_for_review)
         topicsRecyclerView.layoutManager = LinearLayoutManager(this)
+
+        if (intent.hasParentSubjectId() && intent.hasChildSubjectId()) {
+            val parentSubjectId =  intent.getParentSubjectId()
+            subjectSpinnerManager.setParentSubjectIdToSelect(parentSubjectId)
+            if (intent.hasChildSubjectId()) {
+                val childSubjectId =  intent.getChildSubjectId()
+                subjectSpinnerManager.setChildSubjectIdToSelect(childSubjectId)
+            }
+        }
 
         subjectSpinnerManager.restoreSpinnerState(savedInstanceState)
 

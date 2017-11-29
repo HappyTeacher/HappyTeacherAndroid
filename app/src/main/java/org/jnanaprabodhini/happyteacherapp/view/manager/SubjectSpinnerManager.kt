@@ -33,11 +33,21 @@ class SubjectSpinnerManager(val view: SubjectSpinnerRecyclerView, val activity: 
     private var childSpinnerSelectionIndex = 0
 
     private var onSpinnerSelectionsComplete: (subjectKey: String) -> Unit = {}
+    private var parentSubjectIdToSelect: String? = null
+    private var childSubjectIdToSelect: String? = null
 
     fun initializeWithTopicsListManager(topicsListManager: TopicListManager) {
         this.onSpinnerSelectionsComplete = topicsListManager::updateListOfTopicsForSubject
 
         setupSpinners()
+    }
+
+    fun setParentSubjectIdToSelect(subjectId: String) {
+        this.parentSubjectIdToSelect = subjectId
+    }
+
+    fun setChildSubjectIdToSelect(subjectId: String) {
+        this.childSubjectIdToSelect = subjectId
     }
 
     private fun setupSpinners() {
@@ -84,7 +94,7 @@ class SubjectSpinnerManager(val view: SubjectSpinnerRecyclerView, val activity: 
         }
     }
 
-    private fun getDataObserverForSpinner(spinner: Spinner, selectionIndex: Int): FirebaseDataObserver {
+    private fun getDataObserverForSpinner(spinner: Spinner, selectionIndex: Int, subjectIdToSelect: String?): FirebaseDataObserver {
         return object: FirebaseDataObserver {
             override fun onRequestNewData() {
                 view.progressBar.setVisibilityGone()
@@ -97,7 +107,15 @@ class SubjectSpinnerManager(val view: SubjectSpinnerRecyclerView, val activity: 
                 view.statusText.setVisibilityGone()
                 spinner.setVisible()
 
-                if (spinner.count > selectionIndex) {
+                subjectIdToSelect?.let { id ->
+                    val adapter = spinner.adapter as FirestoreObservableListAdapter<*>
+                    val indexOfChildSubject = (0 until spinner.count).map { adapter.getItemKey(it) }
+                            .indexOf(id)
+
+                    if (indexOfChildSubject in 0 until spinner.count) {
+                        spinner.setSelection(indexOfChildSubject)
+                    }
+                } ?: if (spinner.count > selectionIndex) {
                     spinner.setSelection(selectionIndex)
                 }
             }
@@ -123,7 +141,7 @@ class SubjectSpinnerManager(val view: SubjectSpinnerRecyclerView, val activity: 
     private fun getParentSubjectAdapter(): FirestoreObservableListAdapter<Subject> {
         val subjectQuery = activity.firestoreLocalized.collection(activity.getString(R.string.subjects))
                 .whereEqualTo(activity.getString(R.string.parent_subject), null)
-        val dataObserver = getDataObserverForSpinner(view.parentSpinner, parentSpinnerSelectionIndex)
+        val dataObserver = getDataObserverForSpinner(view.parentSpinner, parentSpinnerSelectionIndex, parentSubjectIdToSelect)
 
         return getSpinnerAdapterForQuery(subjectQuery, dataObserver, R.layout.spinner_item)
     }
@@ -131,7 +149,7 @@ class SubjectSpinnerManager(val view: SubjectSpinnerRecyclerView, val activity: 
     private fun getChildSubjectAdapter(parentSubject: String): FirestoreObservableListAdapter<Subject> {
         val subjectQuery = activity.firestoreLocalized.collection(activity.getString(R.string.subjects))
                 .whereEqualTo(activity.getString(R.string.parent_subject), parentSubject)
-        val dataObserver = getDataObserverForSpinner(view.childSpinner, childSpinnerSelectionIndex)
+        val dataObserver = getDataObserverForSpinner(view.childSpinner, childSpinnerSelectionIndex, childSubjectIdToSelect)
 
         return getSpinnerAdapterForQuery(subjectQuery, dataObserver, R.layout.spinner_item_child)
     }

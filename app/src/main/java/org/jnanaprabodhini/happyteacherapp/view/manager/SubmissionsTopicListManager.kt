@@ -19,7 +19,7 @@ class SubmissionsTopicListManager(topicListRecycler: RecyclerView, activity: Hap
         TopicListManager(topicListRecycler, activity, dataObserver) {
 
     override fun queryForTopicsWithSubject(subjectKey: String): Query {
-        return super.queryForTopicsWithSubject(subjectKey).orderBy(FirestoreKeys.HAS_PENDING_SUBMISSIONS)
+        return super.queryForTopicsWithSubject(subjectKey).orderBy(FirestoreKeys.HAS_PENDING_SUBMISSIONS, Query.Direction.DESCENDING)
     }
 
     override fun updateListOfTopicsForSubject(subjectKey: String) {

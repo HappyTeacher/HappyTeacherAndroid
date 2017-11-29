@@ -15,6 +15,7 @@ import android.support.v4.content.res.ResourcesCompat
 import org.jnanaprabodhini.happyteacherapp.activity.*
 import org.jnanaprabodhini.happyteacherapp.adapter.contribute.ContributeFragmentAdapter
 import org.jnanaprabodhini.happyteacherapp.util.FirestoreKeys
+import org.jnanaprabodhini.happyteacherapp.util.NotificationType
 import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
 import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 
@@ -25,19 +26,53 @@ import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 class FirebaseNotificationService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
+        val notificationType = remoteMessage?.data?.get(FirestoreKeys.NOTIFICATION_TYPE)
+
+        when (notificationType) {
+            NotificationType.NEW_SUBMISSION_FOR_MODERATOR -> onSubmissionForModeratorReceived(remoteMessage)
+            NotificationType.STATUS_CHANGE_FOR_AUTHOR -> onStatusChangeReceived(remoteMessage)
+        }
+
+    }
+
+    private fun onSubmissionForModeratorReceived(remoteMessage: RemoteMessage?) {
+        val subjectName = remoteMessage?.data?.get(FirestoreKeys.SUBJECT_NAME) ?: return
+        val subjectId = remoteMessage.data?.get(FirestoreKeys.SUBJECT_ID) ?: return
+        val parentSubjectId = remoteMessage.data?.get(FirestoreKeys.PARENT_SUBJECT_ID)
+
+        val intent = Intent(this, SubmissionsForReviewActivity::class.java)
+
+        if (parentSubjectId != null) {
+            intent.putExtra(SubmissionsForReviewActivity.PARENT_SUBJECT_ID, parentSubjectId)
+            intent.putExtra(SubmissionsForReviewActivity.CHILD_SUBJECT_ID, subjectId)
+        } else {
+            intent.putExtra(SubmissionsForReviewActivity.PARENT_SUBJECT_ID, subjectId)
+        }
+
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        sendNotification(getString(R.string.subject_new_submission, subjectName),
+                getString(R.string.there_is_a_new_happy_teacher_submission_for_you_to_review),
+                pendingIntent,
+                subjectName,
+                R.color.deepBlue,
+                R.drawable.ic_book_white_24dp)
+    }
+
+    private fun onStatusChangeReceived(remoteMessage: RemoteMessage?) {
         val status = remoteMessage?.data?.get(FirestoreKeys.STATUS)
         val refPath = remoteMessage?.data?.get(FirestoreKeys.REFERENCE_PATH)
         val resourceName = remoteMessage?.data?.get(FirestoreKeys.RESOURCE_NAME)
-        val type = remoteMessage?.data?.get(FirestoreKeys.RESOURCE_TYPE)
+        val resourceType = remoteMessage?.data?.get(FirestoreKeys.RESOURCE_TYPE)
 
         // Ensure all values exist.
-        if (refPath == null || resourceName == null || type == null || status == null) {
+        if (refPath == null || resourceName == null || resourceType == null || status == null) {
             return
         }
 
         when (status) {
-            ResourceStatus.PUBLISHED -> sendPublishedNotification(resourceName, type, refPath)
-            ResourceStatus.CHANGES_REQUESTED -> sendChangesRequestedNotification(resourceName, type, refPath)
+            ResourceStatus.PUBLISHED -> sendPublishedNotification(resourceName, resourceType, refPath)
+            ResourceStatus.CHANGES_REQUESTED -> sendChangesRequestedNotification(resourceName, resourceType, refPath)
         }
     }
 
