@@ -31,12 +31,12 @@ class SubmissionsForReviewActivity : HappyTeacherActivity(),
         }
 
         const val PARENT_SUBJECT_ID = "PARENT_SUBJECT_ID"
-        fun Intent.getParentSubjectId() = getStringExtra(PARENT_SUBJECT_ID)
+        fun Intent.getParentSubjectId(): String = getStringExtra(PARENT_SUBJECT_ID)
         fun Intent.hasParentSubjectId() = hasExtra(PARENT_SUBJECT_ID)
 
         const val CHILD_SUBJECT_ID = "CHILD_SUBJECT_ID"
-        fun Intent.getChildSubjectId() = getStringExtra(PARENT_SUBJECT_ID)
-        fun Intent.hasChildSubjectId() = hasExtra(PARENT_SUBJECT_ID)
+        fun Intent.getChildSubjectId(): String = getStringExtra(CHILD_SUBJECT_ID)
+        fun Intent.hasChildSubjectId() = hasExtra(CHILD_SUBJECT_ID)
     }
 
     private val subjectSpinnerManager = SubjectSpinnerManager(view = this, activity = this)
@@ -51,11 +51,11 @@ class SubmissionsForReviewActivity : HappyTeacherActivity(),
         setContentView(R.layout.activity_submissions_for_review)
         topicsRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        if (intent.hasParentSubjectId() && intent.hasChildSubjectId()) {
-            val parentSubjectId =  intent.getParentSubjectId()
+        if (intent.hasParentSubjectId()) {
+            val parentSubjectId = intent.getParentSubjectId()
             subjectSpinnerManager.setParentSubjectIdToSelect(parentSubjectId)
             if (intent.hasChildSubjectId()) {
-                val childSubjectId =  intent.getChildSubjectId()
+                val childSubjectId = intent.getChildSubjectId()
                 subjectSpinnerManager.setChildSubjectIdToSelect(childSubjectId)
             }
         }
