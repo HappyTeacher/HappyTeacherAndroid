@@ -122,7 +122,7 @@ class SubjectSpinnerManager(val view: SubjectSpinnerRecyclerView, val activity: 
 
             override fun onDataEmpty() {
                 view.progressBar.setVisibilityGone()
-                hideSpinners()
+                spinner.setVisibilityGone()
 
                 view.statusText.setVisible()
                 view.statusText.setText(R.string.there_are_no_subjects_yet)
@@ -130,7 +130,7 @@ class SubjectSpinnerManager(val view: SubjectSpinnerRecyclerView, val activity: 
 
             override fun onError(e: FirebaseFirestoreException?) {
                 view.progressBar.setVisibilityGone()
-                hideSpinners()
+                spinner.setVisibilityGone()
 
                 view.statusText.setVisible()
                 view.statusText.setText(R.string.there_was_an_error_loading_subjects)
@@ -160,11 +160,6 @@ class SubjectSpinnerManager(val view: SubjectSpinnerRecyclerView, val activity: 
                 (view as TextView).text = model.name
             }
         }
-    }
-
-    private fun hideSpinners() {
-        view.childSpinner.setVisibilityGone()
-        view.parentSpinner.setVisibilityGone()
     }
 
     fun restoreSpinnerState(savedInstanceState: Bundle?) {
