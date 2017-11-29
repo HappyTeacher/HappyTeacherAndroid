@@ -25,6 +25,9 @@ abstract class SettingsChoiceDialog(context: Context, @StringRes private val dia
                                     @StringRes private val dialogSubheaderTextId: Int):
         Dialog(context), FirebaseDataObserver {
 
+    open val windowHeight = ViewGroup.LayoutParams.WRAP_CONTENT
+    open val windowWidth = ViewGroup.LayoutParams.MATCH_PARENT
+
     val prefs: PreferencesManager by lazy {
         PreferencesManager.getInstance(context)
     }
@@ -33,7 +36,7 @@ abstract class SettingsChoiceDialog(context: Context, @StringRes private val dia
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.dialog_settings_choice)
 
-        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        window.setLayout(windowWidth, windowHeight)
 
         this.setCancelable(true)
         this.setCanceledOnTouchOutside(true)
@@ -62,7 +65,6 @@ abstract class SettingsChoiceDialog(context: Context, @StringRes private val dia
         optionsListView.setVisible()
         dialogHeader.setVisible()
         dialogSubheader.setVisible()
-        closeButton.setVisible()
     }
 
     abstract fun configureOptionsListView(optionsListView: ListView)
