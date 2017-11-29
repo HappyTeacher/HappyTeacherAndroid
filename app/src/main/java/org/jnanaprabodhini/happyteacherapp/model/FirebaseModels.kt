@@ -151,4 +151,5 @@ data class User(val displayName: String = "",
                 val phoneNumber: String = "",
                 val location: String = "",
                 val institution: String = "",
-                val role: String = "")
+                val role: String = "",
+                val watchingSubjects: Map<String, Boolean> = emptyMap())

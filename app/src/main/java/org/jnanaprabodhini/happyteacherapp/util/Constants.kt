@@ -53,4 +53,7 @@ object FirestoreKeys {
     const val SUBJECT_NAME = "subjectName"
     const val SUBJECT_ID = "subjectId"
     const val PARENT_SUBJECT_ID = "parentSubjectId"
+    const val SUBJECTS = "subjects"
+    const val HAS_CHILDREN = "hasChildren"
+    const val WATCHING_SUBJECTS = "watchingSubjects"
 }

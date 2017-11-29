@@ -13,16 +13,16 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.places.AutocompleteFilter
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacherapp.extension.showToast
+import org.jnanaprabodhini.happyteacherapp.extension.signOutAndCleanup
 import org.jnanaprabodhini.happyteacherapp.preference.MandatoryContributorPreference
 import org.jnanaprabodhini.happyteacherapp.util.PreferencesManager
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
-import com.google.firebase.analytics.FirebaseAnalytics
-import org.jnanaprabodhini.happyteacherapp.extension.signOutAndCleanup
 
 
 class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -37,6 +37,10 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
 
     class SettingsFragment: PreferenceFragmentCompat() {
 
+        init {
+            this.retainInstance = false
+        }
+
         val prefs: PreferencesManager by lazy {
             PreferencesManager.getInstance(activity)
         }
@@ -48,6 +52,9 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
             val parentActivity = activity as SettingsActivity
 
             locationPref.setOnPreferenceClickListener { parentActivity.launchPlacesAutocompleteOverlay(); true }
+
+            val moderatorPreferences = findPreference(getString(R.string.prefs_key_reviewer_settings))
+            moderatorPreferences?.isVisible = prefs.userIsAdmin() || prefs.userIsMod()
 
             // Remove user info prefs if user is not signed in.
             val auth = FirebaseAuth.getInstance()

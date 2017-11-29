@@ -19,9 +19,6 @@ import org.jnanaprabodhini.happyteacherapp.activity.*
 import org.jnanaprabodhini.happyteacherapp.extension.signOutAndCleanup
 import org.jnanaprabodhini.happyteacherapp.model.User
 import org.jnanaprabodhini.happyteacherapp.service.FirebaseRegistrationTokenService
-import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
-import org.jnanaprabodhini.happyteacherapp.util.ResourceType
-import org.jnanaprabodhini.happyteacherapp.util.UserRoles
 
 
 /**

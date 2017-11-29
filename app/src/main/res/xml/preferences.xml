@@ -23,6 +23,14 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="@string/reviewer_settings"
+        android:key="@string/prefs_key_reviewer_settings">
+        <org.jnanaprabodhini.happyteacherapp.preference.ModeratorSubjectSubscriptionPreference
+            android:summary="@string/get_notifications_for_submissions_to_review"
+            android:title="@string/reviewer_notifications" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/general_settings"
         android:key="@string/prefs_key_general_settings">
         <org.jnanaprabodhini.happyteacherapp.preference.BoardChoiceDialogPreference

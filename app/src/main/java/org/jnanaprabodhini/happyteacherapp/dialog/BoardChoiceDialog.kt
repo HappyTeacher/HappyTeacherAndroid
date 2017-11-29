@@ -28,10 +28,9 @@ class BoardChoiceDialog(context: Context): SettingsChoiceDialog(context, R.strin
         val firestoreLocalized = firestoreRoot.collection(context.getString(R.string.localized)).document(prefs.getCurrentLanguageCode())
         val boardQuery = firestoreLocalized.collection(context.getString(R.string.boards))
 
-        val emptyDataObserver = object: FirebaseDataObserver {}
-
         var checkedIndex = 0
-        val boardChoiceAdapter = object: FirestoreObservableListAdapter<Board>(boardQuery, Board::class.java, R.layout.dialog_option_singlechoice, emptyDataObserver, context) {
+        val boardChoiceAdapter = object: FirestoreObservableListAdapter<Board>(boardQuery,
+                Board::class.java, R.layout.dialog_option_singlechoice, this, context) {
             override fun populateView(view: View, model: Board, position: Int) {
                 (view as CheckedTextView).text = model.name
                 val key = getItemKey(position)
@@ -57,7 +56,7 @@ class BoardChoiceDialog(context: Context): SettingsChoiceDialog(context, R.strin
         }
 
         boardChoiceAdapter.startListening()
-        optionsListView.adapter = boardChoiceAdapter
+        setAdapter(boardChoiceAdapter)
     }
 
 }

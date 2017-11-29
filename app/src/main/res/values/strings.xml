@@ -76,6 +76,7 @@
     <string name="you_must_be_signed_in_to_contribute">You must be signed in to contribute.</string>
     <string name="update_profile">Update profile</string>
     <string name="you_need_to_complete_your_contributor_profile_before_you_can_contribute">You need to complete your Contributor Profile before you can contribute.</string>
+    <string name="reviewer_notifications">Reviewer Notifications</string>
 
     <plurals name="topics_count">
         <item quantity="one">%d topic</item>
@@ -258,6 +259,11 @@
     <string name="notifications_for_submissions">Submission Review Notifications</string>
     <string name="subject_new_submission">%s: New Submission</string>
     <string name="there_is_a_new_happy_teacher_submission_for_you_to_review">There is a new Happy Teacher submission for you to review.</string>
+    <string name="reviewer_notification_preferences">Reviewer Notification Preferences</string>
+    <string name="moderator_select_which_subjects_you_want_to_be_notified_about">Select subjects for which you want to receive notification about new submissions.</string>
+    <string name="get_notifications_for_submissions_to_review">Get notifications about sumissions to review.</string>
+    <string name="reviewer_settings">Reviewer Settings</string>
+    <string name="exit">Exit</string>
 
     <plurals name="unsaved_changes_and_pending_uploads">
         <item quantity="one">Unsaved changes and pending upload</item>

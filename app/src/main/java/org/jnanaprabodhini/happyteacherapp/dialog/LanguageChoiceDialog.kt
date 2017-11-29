@@ -18,7 +18,7 @@ class LanguageChoiceDialog(val activity: BottomNavigationActivity): SettingsChoi
         val supportedLanguages = LocaleManager.getSupportedLanguagesWithTitles(activity)
         val supportedLanguagesAdapter = ArrayAdapter(context, R.layout.dialog_option_singlechoice, supportedLanguages)
 
-        optionsListView.adapter = supportedLanguagesAdapter
+        setAdapter(supportedLanguagesAdapter)
 
         // Set current language selected:
         val currentLanguageIndex = supportedLanguages.indexOfFirst { it.code == prefs.getCurrentLanguageCode() }
