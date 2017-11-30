@@ -85,7 +85,7 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
             val institution = prefs.getUserInstitution()
             val location = prefs.getUserLocation()
 
-            if (namePref.summary != name || institutionNamePref.summary != institution || locationPref.summary != location) {
+            if (namePref?.summary != name || institutionNamePref?.summary != institution || locationPref?.summary != location) {
                 refreshPreferenceList()
             }
         }
@@ -93,6 +93,12 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
         private fun refreshPreferenceList() {
             preferenceScreen = null
             addPreferencesFromResource(R.xml.preferences)
+
+            // Remove user info prefs if user is not signed in.
+            val auth = FirebaseAuth.getInstance()
+            if (auth.currentUser == null) {
+                removeUserPreferences()
+            }
         }
     }
 
