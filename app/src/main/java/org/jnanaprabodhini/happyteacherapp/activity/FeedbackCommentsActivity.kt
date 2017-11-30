@@ -77,6 +77,7 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
 
         initializeRecycler()
         setupFab()
+        setUpdatePreviewCommentListener()
     }
 
     private fun initializeRecycler() {
@@ -158,8 +159,6 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
         )
         val newCommentRef = feedbackCollectionRef.document()
         newCommentRef.set(comment)
-
-        if (isReviewer) setLatestReviewCommentAsPreview()
     }
 
     private fun updateComment(newCommentText: String, commentRef: DocumentReference) {
@@ -167,28 +166,25 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
         commentRef.update(mapOf(FirestoreKeys.COMMENT_TEXT to newCommentText,
                 FirestoreKeys.DATE_UPDATED to dateUpdated))
         adapter.notifyDataSetChanged()
-
-        if (isReviewer) setLatestReviewCommentAsPreview()
     }
 
     private fun deleteComment(commentRef: DocumentReference) {
         commentRef.delete()
         adapter.notifyDataSetChanged()
-
-        if (isReviewer) setLatestReviewCommentAsPreview()
     }
 
-    private fun setLatestReviewCommentAsPreview() {
+    private fun setUpdatePreviewCommentListener() {
+        // Listen for changes to the most recent non-locked reviewer comment
+        //  and update the card's preview comment to show this (or to be empty)
         feedbackCollectionRef.whereEqualTo(FirestoreKeys.REVIEWER_COMMENT, true)
                 .whereEqualTo(FirestoreKeys.LOCKED, false)
                 .orderBy(FirestoreKeys.DATE_UPDATED, Query.Direction.DESCENDING)
-                .get()
-                .addOnSuccessListener { querySnapshot ->
+                .addSnapshotListener(this, { querySnapshot, firebaseFirestoreException ->
                     querySnapshot?.documents?.firstOrNull()?.let { doc ->
                         val comment = doc.toObject(CardComment::class.java)
                         updateFeaturedCommentForCard(comment.commentText, doc.reference)
                     } ?: removeFeaturedCommentForCard()
-                }
+                })
     }
 
     /**
