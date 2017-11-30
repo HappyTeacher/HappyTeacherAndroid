@@ -49,6 +49,10 @@ class FirebaseNotificationService : FirebaseMessagingService() {
             intent.putExtra(SubmissionsForReviewActivity.PARENT_SUBJECT_ID, subjectId)
         }
 
+        // Set action unique to subject to prevent intent extras
+        //  from getting overridden by newer notifications:
+        intent.action = subjectId
+
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         sendNotification(getString(R.string.subject_new_submission, subjectName),
