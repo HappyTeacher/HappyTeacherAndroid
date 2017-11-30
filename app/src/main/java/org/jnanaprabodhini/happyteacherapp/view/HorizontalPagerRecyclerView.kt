@@ -165,7 +165,7 @@ class HorizontalPagerRecyclerView(context: Context, attrs: AttributeSet): FrameL
     private fun scrollToEnd() {
         val itemCount = recyclerView.adapter?.itemCount ?: 0
         snapToEndScroller.targetPosition = if (itemCount == 0) itemCount else itemCount - 1
-        layoutManager.startSmoothScroll(snapToStartScroller)
+        layoutManager.startSmoothScroll(snapToEndScroller)
     }
 
     private fun scrollToStart() {
