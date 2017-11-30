@@ -2,6 +2,7 @@ package org.jnanaprabodhini.happyteacherapp.extension
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import com.google.android.gms.tasks.OnFailureListener
@@ -85,7 +86,41 @@ fun FirebaseAuth.signOutAndCleanup(context: Context) {
     this.signOut()
 }
 
-fun DocumentReference.addOneTimeSnapshotListener(activity: Activity, listener: (DocumentSnapshot?, FirebaseFirestoreException?) -> Unit) {
+/**
+ * Add a snapshot listener that will execute only once, and only for existing documents.
+ *  Takes an Activity for managing lifecycle.
+ */
+fun DocumentReference.addOneTimeExistingSnapshotListener(activity: Activity, listener: (DocumentSnapshot, FirebaseFirestoreException?) -> Unit) {
+    val listeners = mutableSetOf<ListenerRegistration>()
+    val registration = this.addSnapshotListener(activity, { documentSnapshot, firebaseFirestoreException ->
+        if (documentSnapshot?.exists() == true) {
+            listener(documentSnapshot, firebaseFirestoreException)
+        }
+        listeners.forEach(ListenerRegistration::remove)
+    })
+    listeners.add(registration)
+}
+
+/**
+ * Add a snapshot listener that will execute only once, and only for existing documents
+ */
+fun DocumentReference.addOneTimeExistingSnapshotListener(listener: (DocumentSnapshot, FirebaseFirestoreException?) -> Unit) {
+    Log.d("GRAHAM", "adding one time existing snapshot listener")
+    val listeners = mutableSetOf<ListenerRegistration>()
+    val registration = this.addSnapshotListener{ documentSnapshot, firebaseFirestoreException ->
+        if (documentSnapshot?.exists() == true) {
+            listener(documentSnapshot, firebaseFirestoreException)
+        } else {
+        }
+        listeners.forEach(ListenerRegistration::remove)
+    }
+    listeners.add(registration)
+}
+
+/**
+ * Add a snapshot listener that will execute only once
+ */
+fun DocumentReference.addOneTimeSnapshotListener(activity: Activity, listener: (DocumentSnapshot, FirebaseFirestoreException?) -> Unit) {
     val listeners = mutableSetOf<ListenerRegistration>()
     val registration = this.addSnapshotListener(activity, { documentSnapshot, firebaseFirestoreException ->
         listener(documentSnapshot, firebaseFirestoreException)
