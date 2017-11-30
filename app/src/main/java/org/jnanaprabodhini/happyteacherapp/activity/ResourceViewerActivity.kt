@@ -16,6 +16,7 @@ import com.google.firebase.firestore.DocumentReference
 import org.jnanaprabodhini.happyteacherapp.extension.decode
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import android.content.Intent
+import org.jnanaprabodhini.happyteacherapp.extension.addOneTimeExistingSnapshotListener
 
 
 /**
@@ -26,7 +27,7 @@ abstract class ResourceViewerActivity : ResourceActivity() {
 
     companion object {
         fun launchViewerForResource(from: Activity, resourceRef: DocumentReference) {
-            resourceRef.get().addOnSuccessListener { documentSnapshot ->
+            resourceRef.addOneTimeExistingSnapshotListener { documentSnapshot, firebaseFirestoreException ->
                 val header = documentSnapshot.toObject(ResourceHeader::class.java)
                 when (header.resourceType) {
                     ResourceType.LESSON -> LessonViewerActivity.launch(from, resourceRef, header, true)

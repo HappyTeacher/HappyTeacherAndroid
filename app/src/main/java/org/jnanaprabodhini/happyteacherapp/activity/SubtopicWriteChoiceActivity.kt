@@ -4,21 +4,17 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.android.synthetic.main.activity_subtopic_choice.*
 import kotlinx.android.synthetic.main.stacked_subject_spinners.*
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacherapp.adapter.contribute.TopicSubtopicsWriteChoiceAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
-import org.jnanaprabodhini.happyteacherapp.extension.addOneTimeSnapshotListener
+import org.jnanaprabodhini.happyteacherapp.extension.addOneTimeExistingSnapshotListener
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.model.Subject
@@ -119,7 +115,7 @@ class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver
     private fun initializeSpinnersWithTopicSelection(topicId: String) {
         progressBar.setVisible()
         val topicDocumentRef = firestoreLocalized.collection(FirestoreKeys.TOPICS).document(topicId)
-        topicDocumentRef.addOneTimeSnapshotListener(this, { documentSnapshot, e ->
+        topicDocumentRef.addOneTimeExistingSnapshotListener(this, { documentSnapshot, e ->
             if (documentSnapshot?.exists() == true) {
                 val topic = documentSnapshot.toObject(Topic::class.java)
                 val subjectId = topic.subject
@@ -136,7 +132,7 @@ class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver
      */
     private fun initializeSpinnersWithSubject(subjectId: String) {
         val subjectDocumentRef = firestoreLocalized.collection(FirestoreKeys.SUBJECTS).document(subjectId)
-        subjectDocumentRef.addOneTimeSnapshotListener(this, { documentSnapshot, e ->
+        subjectDocumentRef.addOneTimeExistingSnapshotListener(this, { documentSnapshot, e ->
             if (documentSnapshot?.exists() == true) {
                 val subject = documentSnapshot.toObject(Subject::class.java)
                 val parentSubjectId = subject.parentSubject

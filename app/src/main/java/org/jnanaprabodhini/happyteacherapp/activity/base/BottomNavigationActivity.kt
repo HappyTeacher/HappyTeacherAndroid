@@ -16,6 +16,8 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.analytics.FirebaseAnalytics
 import org.jnanaprabodhini.happyteacherapp.BuildConfig
 import org.jnanaprabodhini.happyteacherapp.activity.*
+import org.jnanaprabodhini.happyteacherapp.extension.addOneTimeExistingSnapshotListener
+import org.jnanaprabodhini.happyteacherapp.extension.addOneTimeSnapshotListener
 import org.jnanaprabodhini.happyteacherapp.extension.signOutAndCleanup
 import org.jnanaprabodhini.happyteacherapp.model.User
 import org.jnanaprabodhini.happyteacherapp.service.FirebaseRegistrationTokenService
@@ -167,10 +169,11 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
     }
 
     private fun persistUserInfo() {
-        auth.currentUser?.uid?.let { FirebaseAnalytics.getInstance(this).setUserId(it) }
+        val analytics = FirebaseAnalytics.getInstance(this)
+        auth.currentUser?.uid?.let { analytics.setUserId(it) }
 
         FirebaseRegistrationTokenService.updateUserToken(this)
-        getUserReference()?.get()?.addOnSuccessListener { snapshot ->
+        getUserReference()?.addOneTimeSnapshotListener(this, { snapshot, firebaseFirestoreException ->
             if (snapshot.exists()) {
                 val userModel = snapshot.toObject(User::class.java)
 
@@ -178,6 +181,9 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
                 prefs.setUserInstitution(userModel.institution)
                 prefs.setUserName(userModel.displayName)
                 prefs.setUserRole(userModel.role)
+
+                analytics.setUserProperty("role", userModel.role)
+                analytics.setUserProperty("institution", userModel.institution)
             } else {
                 // If Cloud Functions haven't created the user fast enough,
                 //  it's possible for the user Document to not exist yet.
@@ -190,7 +196,7 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
                 // Recover name if possible
                 prefs.setUserName(auth.currentUser?.displayName.orEmpty())
             }
-        }
+        })
     }
 
     /**

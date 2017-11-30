@@ -10,10 +10,7 @@ import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacherapp.adapter.contentlist.ResourceRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
-import org.jnanaprabodhini.happyteacherapp.extension.setDrawableResource
-import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
-import org.jnanaprabodhini.happyteacherapp.extension.setVisible
-import org.jnanaprabodhini.happyteacherapp.extension.toItalicizedSpan
+import org.jnanaprabodhini.happyteacherapp.extension.*
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
 import org.jnanaprabodhini.happyteacherapp.util.ResourceType
@@ -67,11 +64,11 @@ abstract class ResourceActivity : HappyTeacherActivity(), FirebaseDataObserver {
 
     private fun loadHeader() {
         subtopicChoiceProgressBar.setVisible()
-        contentRef.get().addOnSuccessListener { documentSnapshot ->
+        contentRef.addOneTimeExistingSnapshotListener(this, { documentSnapshot, _ ->
             header = documentSnapshot.toObject(ResourceHeader::class.java)
             setHeaderView()
             initializeUiForContentFromDatabase()
-        }
+        })
     }
 
     open fun initializeUiForContentFromDatabase() {

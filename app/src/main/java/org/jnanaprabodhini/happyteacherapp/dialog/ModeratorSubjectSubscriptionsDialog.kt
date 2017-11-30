@@ -2,22 +2,16 @@ package org.jnanaprabodhini.happyteacherapp.dialog
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import com.google.android.gms.tasks.Tasks
+import android.widget.ListView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.dialog_option_switch.view.*
-import kotlinx.android.synthetic.main.dialog_settings_choice.*
 import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.adapter.firestore.FirestoreObservableListAdapter
-import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
-import org.jnanaprabodhini.happyteacherapp.extension.setVisible
-import org.jnanaprabodhini.happyteacherapp.model.Board
 import org.jnanaprabodhini.happyteacherapp.model.Subject
 import org.jnanaprabodhini.happyteacherapp.model.User
 import org.jnanaprabodhini.happyteacherapp.util.FirestoreKeys
