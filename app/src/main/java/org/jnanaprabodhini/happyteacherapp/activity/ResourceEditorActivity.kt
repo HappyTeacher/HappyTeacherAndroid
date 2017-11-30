@@ -49,7 +49,7 @@ class ResourceEditorActivity : ResourceActivity() {
         val options = FirestoreRecyclerOptions.Builder<ContentCard>()
                 .setQuery(cardsRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
 
-        EditableResourceRecyclerAdapter(options, attachmentDestinationDirectory, header.subtopic, this, this)
+        EditableResourceRecyclerAdapter(options, attachmentDestinationDirectory, this, this)
     }
 
     private var isContentLoaded = false

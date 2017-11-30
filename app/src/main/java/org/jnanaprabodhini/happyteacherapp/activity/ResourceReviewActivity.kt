@@ -38,7 +38,7 @@ class ResourceReviewActivity : ResourceViewerActivity() {
         val options = FirestoreRecyclerOptions.Builder<ContentCard>()
                 .setQuery(cardsRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
 
-        CommentableResourceRecyclerAdapter(options, attachmentDestinationDirectory, header.subtopic, this, this)
+        CommentableResourceRecyclerAdapter(options, attachmentDestinationDirectory, this, this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

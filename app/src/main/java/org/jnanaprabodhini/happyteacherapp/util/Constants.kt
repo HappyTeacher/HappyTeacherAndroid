@@ -56,4 +56,5 @@ object FirestoreKeys {
     const val SUBJECTS = "subjects"
     const val HAS_CHILDREN = "hasChildren"
     const val WATCHING_SUBJECTS = "watchingSubjects"
+    const val TOPICS = "topics"
 }

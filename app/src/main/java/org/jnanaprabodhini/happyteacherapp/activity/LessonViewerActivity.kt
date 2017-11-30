@@ -39,7 +39,7 @@ class LessonViewerActivity : ResourceViewerActivity(){
         val options = FirestoreRecyclerOptions.Builder<ContentCard>()
                 .setQuery(cardsRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
 
-        LessonPlanRecyclerAdapter(options, attachmentDestinationDirectory, header.topicName, header.subtopic, this, this)
+        LessonPlanRecyclerAdapter(options, attachmentDestinationDirectory, header, this, this)
     }
 
     override fun setHeaderView() {

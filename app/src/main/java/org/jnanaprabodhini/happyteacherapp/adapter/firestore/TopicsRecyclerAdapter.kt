@@ -12,7 +12,6 @@ import org.jnanaprabodhini.happyteacherapp.model.Topic
  * An abstract base adapter for adapters that display lists of Topics (with alternating colors)
  *  with nested lists of child objects related to the Topic.
  *
- * @param C the type of the data model of the Topic's child object to be displayed.
  * @param VH the type of the ViewHolder for the views in the RecyclerView.
  */
 abstract class TopicsRecyclerAdapter<VH: RecyclerView.ViewHolder>(topicsAdapterOptions: FirestoreRecyclerOptions<Topic>,
@@ -30,5 +29,14 @@ abstract class TopicsRecyclerAdapter<VH: RecyclerView.ViewHolder>(topicsAdapterO
         }
     }
 
-    abstract fun getSubtopicDataObserverForViewHolder(viewHolder: VH?, level: Int? = null): FirebaseDataObserver
+    fun indexOfTopicOrNull(topicId: String): Int? {
+        for (i in 0..snapshots.lastIndex) {
+            val snapshot = snapshots.getSnapshot(i)
+            val snapshotId = snapshot.id
+            if (snapshotId == topicId) {
+               return i
+            }
+        }
+        return null
+    }
 }

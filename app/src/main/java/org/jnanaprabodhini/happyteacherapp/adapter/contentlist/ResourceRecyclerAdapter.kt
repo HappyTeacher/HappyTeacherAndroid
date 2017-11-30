@@ -19,12 +19,13 @@ import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.model.AttachmentMetadata
 import org.jnanaprabodhini.happyteacherapp.model.ContentCard
+import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import java.io.File
 
 /**
  * Created by grahamearley on 9/25/17.
  */
-abstract class ResourceRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, private val attachmentDestinationDirectory: File, val subtopicId: String, val activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
+abstract class ResourceRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, private val attachmentDestinationDirectory: File, val activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
         FirestoreObservableRecyclerAdapter<ContentCard, RecyclerView.ViewHolder>(options, dataObserver) {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder? {

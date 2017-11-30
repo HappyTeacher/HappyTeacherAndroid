@@ -26,13 +26,13 @@ class ResourceHeaderRecyclerViewHolder(itemView: View): RecyclerView.ViewHolder(
         contributeButton.setVisibilityGone()
     }
 
-    fun showEmptyViewWithContributeButton(resourceType: String, activity: Activity) {
+    fun showEmptyViewWithContributeButton(resourceType: String, topicId: String, activity: Activity) {
         statusTextView.setVisible()
         contributeButton.setVisible()
 
         contributeButton.setOnClickListener {
             if (FirebaseAuth.getInstance().currentUser?.hasCompleteContributorProfile(activity) == true) {
-                SubtopicWriteChoiceActivity.launch(activity, resourceType)
+                SubtopicWriteChoiceActivity.launch(activity, resourceType, topicId)
             } else {
                 ContributeActivity.launch(activity)
             }

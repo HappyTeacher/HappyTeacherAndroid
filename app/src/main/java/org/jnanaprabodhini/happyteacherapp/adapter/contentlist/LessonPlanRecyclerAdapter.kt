@@ -20,8 +20,12 @@ import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
 import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 import java.io.File
 
-class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, attachmentDestinationDirectory: File, val topicName: String, subtopicId: String, activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
-        ResourceRecyclerAdapter(options, attachmentDestinationDirectory, subtopicId, activity, dataObserver) {
+class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>,
+                                attachmentDestinationDirectory: File,
+                                private val resourceHeader: ResourceHeader,
+                                activity: HappyTeacherActivity,
+                                dataObserver: FirebaseDataObserver):
+        ResourceRecyclerAdapter(options, attachmentDestinationDirectory, activity, dataObserver) {
 
     companion object { val LESSON_CARD_VIEW_TYPE = 0; val CLASSROOM_RESOURCES_FOOTER_VIEW_TYPE = 1 }
 
@@ -84,7 +88,7 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
         val classroomResourceQuery = activity.firestoreLocalized.collection(activity.getString(R.string.resources))
                 .whereEqualTo(activity.getString(R.string.resource_type), activity.getString(R.string.classroom_resource_key))
                 .whereEqualTo(activity.getString(R.string.status), ResourceStatus.PUBLISHED)
-                .whereEqualTo(activity.getString(R.string.subtopic), subtopicId)
+                .whereEqualTo(activity.getString(R.string.subtopic), resourceHeader.subtopic)
                 .orderBy(activity.getString(R.string.name_key))
 
         val adapterOptions = FirestoreRecyclerOptions.Builder<ResourceHeader>()
@@ -117,7 +121,7 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, 
         override fun onDataEmpty() {
             holder.horizontalRecyclerView.setVisibilityGone()
 
-            holder.showEmptyViewWithContributeButton(ResourceType.CLASSROOM_RESOURCE, activity)
+            holder.showEmptyViewWithContributeButton(ResourceType.CLASSROOM_RESOURCE, resourceHeader.topic, activity)
             holder.statusTextView.setText(R.string.there_are_no_classroom_resources_for_this_lesson_yet)
         }
 

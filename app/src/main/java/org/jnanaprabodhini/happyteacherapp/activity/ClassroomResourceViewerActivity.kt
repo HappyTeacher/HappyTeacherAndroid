@@ -32,7 +32,7 @@ class ClassroomResourceViewerActivity : ResourceViewerActivity() {
         val options = FirestoreRecyclerOptions.Builder<ContentCard>()
                 .setQuery(cardsRef.orderBy(getString(R.string.order_number)), ContentCard::class.java).build()
 
-        ClassroomResourceRecyclerAdapter(options, attachmentDestinationDirectory, header.subtopic, this, this)
+        ClassroomResourceRecyclerAdapter(options, attachmentDestinationDirectory,this, this)
     }
 
     override fun onError(e: FirebaseFirestoreException?) {

@@ -27,7 +27,8 @@ abstract class TopicContentRecyclerAdapter(topicsAdapterOptions: FirestoreRecycl
                                            topicsDataObserver: FirebaseDataObserver,
                                            val showSubmissionCount: Boolean,
                                            activity: HappyTeacherActivity,
-                                           @StringRes val emptyTextStringRes: Int = R.string.there_are_no_lessons_for_this_topic_yet):
+                                           @StringRes val emptyTextStringRes: Int = R.string.there_are_no_lessons_for_this_topic_yet,
+                                           private val standardLevel: Int? = null):
         TopicsRecyclerAdapter<ResourceHeaderRecyclerViewHolder>(topicsAdapterOptions, topicsDataObserver, activity) {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ResourceHeaderRecyclerViewHolder {
@@ -44,16 +45,19 @@ abstract class TopicContentRecyclerAdapter(topicsAdapterOptions: FirestoreRecycl
         initializeLessonRecyclerView(holder?.horizontalRecyclerView, topicId, holder)
     }
 
-    private fun initializeLessonRecyclerView(recyclerView: HorizontalPagerRecyclerView?, topicId: String, holder: ResourceHeaderRecyclerViewHolder?) {
+    private fun initializeLessonRecyclerView(recyclerView: HorizontalPagerRecyclerView?, topicId: String,
+                                             holder: ResourceHeaderRecyclerViewHolder?) {
         val adapterOptions = getSubtopicAdapterOptions(topicId)
 
-        val adapter = ResourceHeaderRecyclerAdapter(adapterOptions, showSubmissionCount, activity, getSubtopicDataObserverForViewHolder(holder))
+        val adapter = ResourceHeaderRecyclerAdapter(adapterOptions, showSubmissionCount, activity,
+                getSubtopicDataObserverForViewHolder(holder, topicId))
 
         adapter.startListening()
         recyclerView?.setAdapter(adapter)
     }
 
-    override fun getSubtopicDataObserverForViewHolder(viewHolder: ResourceHeaderRecyclerViewHolder?, level: Int?) = object: FirebaseDataObserver {
+    private fun getSubtopicDataObserverForViewHolder(viewHolder: ResourceHeaderRecyclerViewHolder?,
+                                                     topicId: String) = object: FirebaseDataObserver {
         override fun onRequestNewData() {
             viewHolder?.horizontalRecyclerView?.setVisibilityGone()
             viewHolder?.hideEmptyViews()
@@ -66,10 +70,10 @@ abstract class TopicContentRecyclerAdapter(topicsAdapterOptions: FirestoreRecycl
 
         override fun onDataEmpty() {
             viewHolder?.horizontalRecyclerView?.setVisibilityGone()
-            viewHolder?.showEmptyViewWithContributeButton(ResourceType.LESSON, activity)
+            viewHolder?.showEmptyViewWithContributeButton(ResourceType.LESSON, topicId, activity)
             viewHolder?.statusTextView?.setText(emptyTextStringRes)
 
-            level?.let { viewHolder?.statusTextView?.text = activity.getString(R.string.no_lessons_at_level_yet, level) }
+            standardLevel?.let { viewHolder?.statusTextView?.text = activity.getString(R.string.no_lessons_at_level_yet, it) }
         }
 
         override fun onDataNonEmpty() {

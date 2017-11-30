@@ -9,10 +9,11 @@ import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.adapter.viewholder.ContentCardViewHolder
 import org.jnanaprabodhini.happyteacherapp.model.ContentCard
+import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import java.io.File
 
-class ClassroomResourceRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, attachmentDestinationDirectory: File, subtopicId: String, activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
-        ResourceRecyclerAdapter(options, attachmentDestinationDirectory, subtopicId, activity, dataObserver) {
+class ClassroomResourceRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>, attachmentDestinationDirectory: File, activity: HappyTeacherActivity, dataObserver: FirebaseDataObserver):
+        ResourceRecyclerAdapter(options, attachmentDestinationDirectory, activity, dataObserver) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, model: ContentCard?) {
         if (holder is ContentCardViewHolder) {

@@ -48,7 +48,7 @@ class TopicSubtopicsWriteChoiceAdapter(topicsAdapterOptions: FirestoreRecyclerOp
         horizontalRecyclerView?.setAdapter(adapter)
     }
 
-    override fun getSubtopicDataObserverForViewHolder(viewHolder: TopicSubtopicChoiceRecyclerViewHolder?, level: Int?) = object: FirebaseDataObserver {
+    private fun getSubtopicDataObserverForViewHolder(viewHolder: TopicSubtopicChoiceRecyclerViewHolder?) = object: FirebaseDataObserver {
         override fun onRequestNewData() {
             viewHolder?.horizontalRecyclerView?.setVisibilityGone()
             viewHolder?.progressBar?.setVisible()

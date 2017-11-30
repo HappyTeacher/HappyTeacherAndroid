@@ -7,7 +7,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
+import com.crashlytics.android.Crashlytics
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.android.synthetic.main.activity_topics_list.*
 import kotlinx.android.synthetic.main.header_syllabus_lesson_topic.*
@@ -16,21 +18,16 @@ import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.base.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacherapp.adapter.firestore.TopicContentRecyclerAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
-import org.jnanaprabodhini.happyteacherapp.extension.*
+import org.jnanaprabodhini.happyteacherapp.extension.isVisible
+import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
+import org.jnanaprabodhini.happyteacherapp.extension.setVisible
+import org.jnanaprabodhini.happyteacherapp.extension.showToast
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import org.jnanaprabodhini.happyteacherapp.model.Topic
 import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
 import org.jnanaprabodhini.happyteacherapp.view.SubjectSpinnerRecyclerView
 import org.jnanaprabodhini.happyteacherapp.view.manager.PublishedLessonTopicListManager
 import org.jnanaprabodhini.happyteacherapp.view.manager.SubjectSpinnerManager
-import android.support.annotation.NonNull
-import android.util.Log
-import com.crashlytics.android.Crashlytics
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.firebase.dynamiclinks.PendingDynamicLinkData
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
-
 
 
 class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver, SubjectSpinnerRecyclerView {
@@ -101,7 +98,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver, Sub
             val title = intent.getLessonTitle()
 
             showSyllabusLessonTopicHeader(title, subject, level)
-            updateListOfTopicsForSyllabusLesson(syllabusLessonId)
+            updateListOfTopicsForSyllabusLesson(syllabusLessonId, level)
         } else {
             initializeTopicListForSubject()
         }
@@ -125,7 +122,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver, Sub
         }
     }
 
-    private fun updateListOfTopicsForSyllabusLesson(syllabusLessonId: String) {
+    private fun updateListOfTopicsForSyllabusLesson(syllabusLessonId: String, standardLevel: Int) {
         val topicsQuery = firestoreLocalized.collection(getString(R.string.topics))
                 .whereEqualTo("syllabus_lessons.$syllabusLessonId", true)
 
@@ -133,7 +130,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver, Sub
                 .setQuery(topicsQuery, Topic::class.java).build()
 
         val adapter = object: TopicContentRecyclerAdapter(topicsAdapterOptions, showSubmissionCount = true,
-                topicsDataObserver = this, activity = this) {
+                topicsDataObserver = this, activity = this, standardLevel = standardLevel) {
             override fun getSubtopicAdapterOptions(topicId: String): FirestoreRecyclerOptions<ResourceHeader> {
                 val subtopicQuery = firestoreLocalized.collection(getString(R.string.resources))
                         .whereEqualTo(getString(R.string.resource_type), getString(R.string.lesson))
