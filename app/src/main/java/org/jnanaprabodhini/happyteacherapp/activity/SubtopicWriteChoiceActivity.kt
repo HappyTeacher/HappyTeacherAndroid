@@ -4,10 +4,14 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.android.synthetic.main.activity_subtopic_choice.*
 import kotlinx.android.synthetic.main.stacked_subject_spinners.*
 import org.jnanaprabodhini.happyteacherapp.R
@@ -61,6 +65,7 @@ class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver
         fun Intent.clearTopicId() = removeExtra(TOPIC_ID)
     }
 
+    private val listenerRegistrations = mutableSetOf<ListenerRegistration>()
     private val subjectSpinnerManager = SubjectSpinnerManager(view = this, activity = this)
 
     private val resourceType by lazy {
@@ -113,15 +118,17 @@ class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver
      */
     private fun initializeSpinnersWithTopicSelection(topicId: String) {
         progressBar.setVisible()
-        firestoreLocalized.collection(FirestoreKeys.TOPICS).document(topicId).get()
-                .addOnSuccessListener { topicSnapshot ->
-                    val topic = topicSnapshot.toObject(Topic::class.java)
-                    val subjectId = topic.subject
-                    initializeSpinnersWithSubject(subjectId)
-                }
-                .addOnFailureListener {
-                    initializeSpinners()
-                }
+        val topicDocumentRef = firestoreLocalized.collection(FirestoreKeys.TOPICS).document(topicId)
+        val topicListenerRegistration = topicDocumentRef.addSnapshotListener(this, { documentSnapshot, e ->
+            if (documentSnapshot?.exists() == true) {
+                val topic = documentSnapshot.toObject(Topic::class.java)
+                val subjectId = topic.subject
+                initializeSpinnersWithSubject(subjectId)
+            } else {
+                initializeSpinners()
+            }
+        })
+        listenerRegistrations.add(topicListenerRegistration)
     }
 
     /**
@@ -129,26 +136,27 @@ class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver
      *  set these subjects to be selected.
      */
     private fun initializeSpinnersWithSubject(subjectId: String) {
-        firestoreLocalized.collection(FirestoreKeys.SUBJECTS).document(subjectId).get()
-                .addOnSuccessListener { subjectSnapshot ->
-                    if (!subjectSnapshot.exists()) {
-                        initializeSpinners()
-                    }
+        val subjectDocumentRef = firestoreLocalized.collection(FirestoreKeys.SUBJECTS).document(subjectId)
+        val subjectListenerRegistration = subjectDocumentRef.addSnapshotListener(this, { documentSnapshot, e ->
+            if (documentSnapshot?.exists() == true) {
+                val subject = documentSnapshot.toObject(Subject::class.java)
+                val parentSubjectId = subject.parentSubject
 
-                    val subject = subjectSnapshot.toObject(Subject::class.java)
-                    val parentSubjectId = subject.parentSubject
+                if (parentSubjectId != null && parentSubjectId.isNotEmpty()) {
+                    subjectSpinnerManager.setParentSubjectIdToSelect(parentSubjectId)
+                    subjectSpinnerManager.setChildSubjectIdToSelect(subjectId)
+                } else {
+                    subjectSpinnerManager.setParentSubjectIdToSelect(subjectId)
+                }
 
-                    if (parentSubjectId != null && parentSubjectId.isNotEmpty()) {
-                        subjectSpinnerManager.setParentSubjectIdToSelect(parentSubjectId)
-                        subjectSpinnerManager.setChildSubjectIdToSelect(subjectId)
-                    } else {
-                        subjectSpinnerManager.setParentSubjectIdToSelect(subjectId)
-                    }
-                    initializeSpinners()
-                }
-                .addOnFailureListener {
-                    initializeSpinners()
-                }
+                // Unsubscribe these listeners:
+                listenerRegistrations.forEach(ListenerRegistration::remove)
+                initializeSpinners()
+            } else {
+                initializeSpinners()
+            }
+        })
+        listenerRegistrations.add(subjectListenerRegistration)
     }
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
