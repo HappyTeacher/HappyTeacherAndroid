@@ -18,6 +18,7 @@ import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacherapp.adapter.contribute.TopicSubtopicsWriteChoiceAdapter
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
+import org.jnanaprabodhini.happyteacherapp.extension.addOneTimeSnapshotListener
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.model.Subject
@@ -65,7 +66,6 @@ class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver
         fun Intent.clearTopicId() = removeExtra(TOPIC_ID)
     }
 
-    private val listenerRegistrations = mutableSetOf<ListenerRegistration>()
     private val subjectSpinnerManager = SubjectSpinnerManager(view = this, activity = this)
 
     private val resourceType by lazy {
@@ -119,7 +119,7 @@ class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver
     private fun initializeSpinnersWithTopicSelection(topicId: String) {
         progressBar.setVisible()
         val topicDocumentRef = firestoreLocalized.collection(FirestoreKeys.TOPICS).document(topicId)
-        val topicListenerRegistration = topicDocumentRef.addSnapshotListener(this, { documentSnapshot, e ->
+        topicDocumentRef.addOneTimeSnapshotListener(this, { documentSnapshot, e ->
             if (documentSnapshot?.exists() == true) {
                 val topic = documentSnapshot.toObject(Topic::class.java)
                 val subjectId = topic.subject
@@ -128,7 +128,6 @@ class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver
                 initializeSpinners()
             }
         })
-        listenerRegistrations.add(topicListenerRegistration)
     }
 
     /**
@@ -137,7 +136,7 @@ class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver
      */
     private fun initializeSpinnersWithSubject(subjectId: String) {
         val subjectDocumentRef = firestoreLocalized.collection(FirestoreKeys.SUBJECTS).document(subjectId)
-        val subjectListenerRegistration = subjectDocumentRef.addSnapshotListener(this, { documentSnapshot, e ->
+        subjectDocumentRef.addOneTimeSnapshotListener(this, { documentSnapshot, e ->
             if (documentSnapshot?.exists() == true) {
                 val subject = documentSnapshot.toObject(Subject::class.java)
                 val parentSubjectId = subject.parentSubject
@@ -149,14 +148,11 @@ class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver
                     subjectSpinnerManager.setParentSubjectIdToSelect(subjectId)
                 }
 
-                // Unsubscribe these listeners:
-                listenerRegistrations.forEach(ListenerRegistration::remove)
                 initializeSpinners()
             } else {
                 initializeSpinners()
             }
         })
-        listenerRegistrations.add(subjectListenerRegistration)
     }
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {

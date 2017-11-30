@@ -9,6 +9,9 @@ import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.OnProgressListener
@@ -80,4 +83,13 @@ fun FirebaseAuth.signOutAndCleanup(context: Context) {
     }
 
     this.signOut()
+}
+
+fun DocumentReference.addOneTimeSnapshotListener(activity: Activity, listener: (DocumentSnapshot?, FirebaseFirestoreException?) -> Unit) {
+    val listeners = mutableSetOf<ListenerRegistration>()
+    val registration = this.addSnapshotListener(activity, { documentSnapshot, firebaseFirestoreException ->
+        listener(documentSnapshot, firebaseFirestoreException)
+        listeners.forEach(ListenerRegistration::remove)
+    })
+    listeners.add(registration)
 }
