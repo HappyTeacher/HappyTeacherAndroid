@@ -180,8 +180,10 @@ class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver
         if (intent.hasTopicId() && adapter is TopicSubtopicsWriteChoiceAdapter) {
             // Attempt to select the topic passed in as an extra:
             val topicId = intent.getTopicId()
-            val topicIndex = adapter.indexOfTopicOrNull(topicId)
-            topicIndex?.let { topicsRecyclerView.scrollToPosition(topicIndex) }
+            adapter.indexOfTopicOrNull(topicId)?.let { topicIndex ->
+                subtopicChoiceAppBarLayout.setExpanded(false)
+                topicsRecyclerView.scrollToPosition(topicIndex)
+            }
             intent.clearTopicId()
         }
     }
