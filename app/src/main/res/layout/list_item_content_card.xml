@@ -23,7 +23,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="spread_inside" />
 
-        <!--TODO: ViewStub this-->
         <org.jnanaprabodhini.happyteacherapp.view.FeedbackPreviewView
             android:id="@+id/feedbackPreviewView"
             android:visibility="gone"

@@ -2,6 +2,7 @@ package org.jnanaprabodhini.happyteacherapp.activity
 
 import android.os.Bundle
 import android.support.annotation.IntegerRes
+import android.support.design.widget.BottomNavigationView
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -27,6 +28,7 @@ import org.jnanaprabodhini.happyteacherapp.model.SyllabusLesson
 class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
 
     @IntegerRes override val bottomNavigationMenuItemId: Int = R.id.navigation_board
+    override val bottomNavigationView: BottomNavigationView by lazy { bottomNavigation }
 
     object SavedInstanceStateConstants {
         const val LEVEL_SPINNER_SELECTION = "LEVEL_SPINNER_SELECTION"
@@ -41,10 +43,6 @@ class BoardLessonsActivity : BottomNavigationActivity(), FirebaseDataObserver {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_board_lessons)
-
-        bottomNavigation.selectedItemId = bottomNavigationMenuItemId
-        bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
-
         savedInstanceState?.let { setSpinnerSelectionIndicesFromSavedInstanceState(it) }
 
         setupRecyclerView()

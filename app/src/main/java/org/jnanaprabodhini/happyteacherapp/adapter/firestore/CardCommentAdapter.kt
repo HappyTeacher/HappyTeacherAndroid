@@ -39,8 +39,6 @@ class CardCommentAdapter(options: FirestoreRecyclerOptions<CardComment>,
     }
 
     override fun onBindViewHolder(holder: CardCommentViewHolder?, position: Int, model: CardComment?) {
-        // TODO: Allow editing!
-
         holder?.apply {
             val commentRef = snapshots.getSnapshot(position).reference
 

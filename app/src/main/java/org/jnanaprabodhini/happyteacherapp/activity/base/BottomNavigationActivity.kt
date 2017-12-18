@@ -11,6 +11,7 @@ import org.jnanaprabodhini.happyteacherapp.extension.showToast
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import android.app.Activity
+import android.util.Log
 import com.crashlytics.android.Crashlytics
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -34,8 +35,9 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
     }
 
     abstract val bottomNavigationMenuItemId: Int
+    abstract val bottomNavigationView: BottomNavigationView
 
-    protected val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+    private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
         when (item.itemId) {
             bottomNavigationMenuItemId -> {
@@ -59,6 +61,14 @@ abstract class BottomNavigationActivity: HappyTeacherActivity() {
             }
         }
         false
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(null)
+        bottomNavigationView.selectedItemId = bottomNavigationMenuItemId
+        bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
     }
 
     fun startBottomNavigationActivityWithFade(intent: Intent) {

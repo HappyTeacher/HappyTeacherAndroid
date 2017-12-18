@@ -5,6 +5,6 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/app_icon" /> <!--TODO: vector?-->
+            android:src="@drawable/app_icon" />
     </item>
 </layer-list>

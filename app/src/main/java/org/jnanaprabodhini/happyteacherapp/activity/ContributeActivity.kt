@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.annotation.IntegerRes
+import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewCompat
 import com.google.firebase.auth.FirebaseAuth
@@ -23,6 +24,7 @@ import org.jnanaprabodhini.happyteacherapp.util.ResourceType
 class ContributeActivity : BottomNavigationActivity(), FirebaseAuth.AuthStateListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     @IntegerRes override val bottomNavigationMenuItemId: Int = R.id.navigation_contribute
+    override val bottomNavigationView: BottomNavigationView by lazy { bottomNavigation }
 
     companion object IntentExtraHelper {
         fun launch(from: Activity) {
@@ -44,9 +46,6 @@ class ContributeActivity : BottomNavigationActivity(), FirebaseAuth.AuthStateLis
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contribute)
-
-        bottomNavigation.selectedItemId = bottomNavigationMenuItemId
-        bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
     }
 
     override fun onResume() {

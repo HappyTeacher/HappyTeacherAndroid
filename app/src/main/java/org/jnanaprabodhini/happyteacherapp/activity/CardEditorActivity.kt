@@ -384,7 +384,6 @@ class CardEditorActivity : HappyTeacherActivity() {
     private fun uploadImageFromStream(fileName: String, stream: InputStream) {
         showToast(R.string.uploading_image)
 
-        // TODO: Image size limit enforcing
         val fileRef = cardImageStorageRef.child(fileName)
         fileRef.putStream(stream)
         activeImageUploadRefUrls.add(fileRef.toString())
@@ -393,7 +392,6 @@ class CardEditorActivity : HappyTeacherActivity() {
     private fun uploadFileFromStream(fileName: String, stream: InputStream) {
         fileAttachmentView.setVisible()
 
-        // TODO: size limit enforcing
         val fileRef = cardFileStorageRef.child(fileName)
         fileRef.putStream(stream)
         this.attachmentFileName = fileName

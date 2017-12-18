@@ -3,6 +3,7 @@ package org.jnanaprabodhini.happyteacherapp.activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.IntegerRes
+import android.support.design.widget.BottomNavigationView
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.ProgressBar
 import android.widget.Spinner
@@ -69,6 +70,8 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver, Sub
     override val statusText: TextView by lazy { statusTextView }
     override val progressBar: ProgressBar by lazy { topicsProgressBar }
 
+    override val bottomNavigationView: BottomNavigationView by lazy { bottomNavigation }
+
     private val subjectSpinnerManager = SubjectSpinnerManager(view = this, activity = this)
 
     @IntegerRes override val bottomNavigationMenuItemId: Int = R.id.navigation_topics
@@ -77,10 +80,7 @@ class TopicsListActivity : BottomNavigationActivity(), FirebaseDataObserver, Sub
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_topics_list)
-
         topicsRecyclerView.layoutManager = LinearLayoutManager(this)
-        bottomNavigation.selectedItemId = bottomNavigationMenuItemId
-        bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
         openDeepLinkIfAvailable()
 
