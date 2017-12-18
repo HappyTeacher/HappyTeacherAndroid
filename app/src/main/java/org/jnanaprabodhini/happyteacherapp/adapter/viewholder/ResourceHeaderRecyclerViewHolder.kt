@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.list_item_content_header_recycler.view.*
 import org.jnanaprabodhini.happyteacherapp.activity.ContributeActivity
 import org.jnanaprabodhini.happyteacherapp.activity.SubtopicWriteChoiceActivity
+import org.jnanaprabodhini.happyteacherapp.activity.base.BottomNavigationActivity
 import org.jnanaprabodhini.happyteacherapp.extension.hasCompleteContributorProfile
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
@@ -30,11 +31,13 @@ class ResourceHeaderRecyclerViewHolder(itemView: View): RecyclerView.ViewHolder(
         statusTextView.setVisible()
         contributeButton.setVisible()
 
+        val user = FirebaseAuth.getInstance().currentUser
+
         contributeButton.setOnClickListener {
-            if (FirebaseAuth.getInstance().currentUser?.hasCompleteContributorProfile(activity) == true) {
-                SubtopicWriteChoiceActivity.launch(activity, resourceType, topicId)
-            } else {
-                ContributeActivity.launch(activity)
+            when {
+                user?.hasCompleteContributorProfile(activity) == true -> SubtopicWriteChoiceActivity.launch(activity, resourceType, topicId)
+                activity is BottomNavigationActivity -> ContributeActivity.launchWithFade(activity)
+                else -> ContributeActivity.launch(activity)
             }
         }
     }

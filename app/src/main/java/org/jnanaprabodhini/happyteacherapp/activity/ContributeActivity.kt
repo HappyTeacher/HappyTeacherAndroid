@@ -30,6 +30,11 @@ class ContributeActivity : BottomNavigationActivity(), FirebaseAuth.AuthStateLis
             from.startActivity(intent)
         }
 
+        fun launchWithFade(from: BottomNavigationActivity) {
+            val intent = Intent(from, ContributeActivity::class.java)
+            from.startBottomNavigationActivityWithFade(intent)
+        }
+
         const val FRAGMENT_PAGE = "FRAGMENT_PAGE"
         fun Intent.getFragmentPage() = getIntExtra(FRAGMENT_PAGE, 0)
         fun Intent.hasFragmentPage() = hasExtra(FRAGMENT_PAGE)
