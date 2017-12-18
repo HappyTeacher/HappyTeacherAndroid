@@ -10,5 +10,5 @@ class TopicSubtopicChoiceRecyclerViewHolder(itemView: View): RecyclerView.ViewHo
     val titleTextView: TextView = itemView.titleTextView
     val horizontalRecyclerView: HorizontalPagerRecyclerView = itemView.horizontalRecyclerView
     val statusTextView: TextView = itemView.statusTextView
-    val progressBar: View = itemView.subtopicChoiceProgressBar
+    val progressBar: View = itemView.progressBar
 }

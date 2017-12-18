@@ -41,7 +41,7 @@ class SubtopicWriteChoiceRecyclerAdapter(options: FirestoreRecyclerOptions<Subto
                     .document()
 
             draftRef.set(lessonHeader)
-            ResourceEditorActivity.launch(activity, draftRef, lessonHeader)
+            ResourceEditorActivity.launch(activity, draftRef, lessonHeader, isNewResource = true)
         }
     }
 

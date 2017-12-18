@@ -43,6 +43,24 @@ class ResourceEditorActivity : ResourceActivity() {
             }
             from.startActivity(lessonEditorIntent)
         }
+
+        fun launch(from: Activity, resourceRef: DocumentReference, resourceHeader: ResourceHeader, isNewResource: Boolean) {
+            val lessonEditorIntent = Intent(from, ResourceEditorActivity::class.java)
+
+            lessonEditorIntent.apply {
+                putExtra(CONTENT_REF_PATH, resourceRef.path)
+                putExtra(HEADER, resourceHeader)
+                putExtra(IS_NEW_RESOURCE, isNewResource)
+            }
+            from.startActivity(lessonEditorIntent)
+        }
+
+        private const val IS_NEW_RESOURCE: String = "IS_NEW_RESOURCE"
+        fun Intent.isNewResource(): Boolean = getBooleanExtra(IS_NEW_RESOURCE, false)
+    }
+
+    private val isNewResource by lazy {
+        intent.isNewResource()
     }
 
     override val cardRecyclerAdapter: ResourceRecyclerAdapter by lazy {
@@ -109,9 +127,17 @@ class ResourceEditorActivity : ResourceActivity() {
 
     override fun initializeRecyclerView() {
         super.initializeRecyclerView()
+
         val dragCallback = RecyclerVerticalDragHelperCallback(cardRecyclerAdapter as MovableViewContainer)
         val itemTouchHelper = ItemTouchHelper(dragCallback)
         itemTouchHelper.attachToRecyclerView(cardRecyclerView)
+
+        if (isNewResource) {
+            // If the resource is new, skip the loading of an empty list of content
+            //  and just show the UI for an empty list:
+            progressBar.setVisibilityGone()
+            onDataEmpty()
+        }
     }
 
     private fun showAddCardFabWithAction() {
@@ -319,7 +345,6 @@ class ResourceEditorActivity : ResourceActivity() {
 
         fabBottomDivider.setVisible()
         getStartedTextView.setVisible()
-        statusTextView.setText(R.string.add_a_section_to_get_started)
     }
 
     override fun onDataNonEmpty() {

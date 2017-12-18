@@ -2,12 +2,10 @@ package org.jnanaprabodhini.happyteacherapp.dialog
 
 import android.app.Dialog
 import android.content.Context
-import android.database.DataSetObserver
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.Adapter
 import android.widget.ListAdapter
 import android.widget.ListView
 import kotlinx.android.synthetic.main.dialog_settings_choice.*
@@ -45,7 +43,7 @@ abstract class SettingsChoiceDialog(context: Context, @StringRes private val dia
         dialogSubheader.setText(dialogSubheaderTextId)
 
         optionsListView.setVisibilityGone()
-        subtopicChoiceProgressBar.setVisible()
+        progressBar.setVisible()
 
         closeButton.setOnClickListener {
             this.dismiss()
@@ -60,7 +58,7 @@ abstract class SettingsChoiceDialog(context: Context, @StringRes private val dia
     }
 
     override fun onDataNonEmpty() {
-        subtopicChoiceProgressBar.setVisibilityGone()
+        progressBar.setVisibilityGone()
 
         optionsListView.setVisible()
         dialogHeader.setVisible()

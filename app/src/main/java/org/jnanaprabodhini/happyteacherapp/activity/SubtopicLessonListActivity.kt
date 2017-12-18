@@ -68,19 +68,19 @@ class SubtopicLessonListActivity : HappyTeacherActivity(), FirebaseDataObserver 
         submissionRecyclerView.setVisibilityGone()
         statusTextView.setVisibilityGone()
 
-        subtopicChoiceProgressBar.setVisible()
+        progressBar.setVisible()
     }
 
     override fun onDataLoaded() {
         submissionRecyclerView.setVisible()
 
         statusTextView.setVisibilityGone()
-        subtopicChoiceProgressBar.setVisibilityGone()
+        progressBar.setVisibilityGone()
     }
 
     override fun onDataEmpty() {
         submissionRecyclerView.setVisibilityGone()
-        subtopicChoiceProgressBar.setVisibilityGone()
+        progressBar.setVisibilityGone()
 
         statusTextView.setVisible()
         statusTextView.setText(R.string.there_are_no_other_lessons)
@@ -88,7 +88,7 @@ class SubtopicLessonListActivity : HappyTeacherActivity(), FirebaseDataObserver 
 
     override fun onError(e: FirebaseFirestoreException?) {
         submissionRecyclerView.setVisibilityGone()
-        subtopicChoiceProgressBar.setVisibilityGone()
+        progressBar.setVisibilityGone()
 
         statusTextView.setVisible()
         statusTextView.setText(R.string.there_was_an_error_loading_the_other_lessons)

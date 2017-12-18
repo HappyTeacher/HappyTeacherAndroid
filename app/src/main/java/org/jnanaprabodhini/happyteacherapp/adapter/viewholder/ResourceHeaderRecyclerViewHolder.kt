@@ -19,7 +19,7 @@ class ResourceHeaderRecyclerViewHolder(itemView: View): RecyclerView.ViewHolder(
     val horizontalRecyclerView: HorizontalPagerRecyclerView = itemView.horizontalRecyclerView
     val statusTextView: TextView = itemView.statusTextView
     val contributeButton: Button = itemView.contributeButton
-    val progressBar: View = itemView.subtopicChoiceProgressBar
+    val progressBar: View = itemView.progressBar
 
     fun hideEmptyViews() {
         statusTextView.setVisibilityGone()

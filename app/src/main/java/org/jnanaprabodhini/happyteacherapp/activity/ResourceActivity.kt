@@ -63,7 +63,7 @@ abstract class ResourceActivity : HappyTeacherActivity(), FirebaseDataObserver {
     }
 
     private fun loadHeader() {
-        subtopicChoiceProgressBar.setVisible()
+        progressBar.setVisible()
         contentRef.addOneTimeExistingSnapshotListener(this, { documentSnapshot, _ ->
             header = documentSnapshot.toObject(ResourceHeader::class.java)
             setHeaderView()
@@ -72,12 +72,12 @@ abstract class ResourceActivity : HappyTeacherActivity(), FirebaseDataObserver {
     }
 
     open fun initializeUiForContentFromDatabase() {
-        subtopicChoiceProgressBar.setVisible()
+        progressBar.setVisible()
         initializeUiForContent()
     }
 
     private fun initializeUiForContent() {
-        subtopicChoiceProgressBar.setVisibilityGone()
+        progressBar.setVisibilityGone()
         initializeRecyclerView()
     }
 
@@ -124,12 +124,12 @@ abstract class ResourceActivity : HappyTeacherActivity(), FirebaseDataObserver {
     }
 
     override fun onRequestNewData() {
-        subtopicChoiceProgressBar.setVisible()
+        progressBar.setVisible()
         cardRecyclerView.setVisibilityGone()
     }
 
     override fun onDataLoaded() {
-        subtopicChoiceProgressBar.setVisibilityGone()
+        progressBar.setVisibilityGone()
         cardRecyclerView.setVisible()
     }
 
