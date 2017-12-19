@@ -53,21 +53,7 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
         }
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            addPreferencesFromResource(R.xml.preferences)
-
-            val locationPref = findPreference(getString(R.string.prefs_key_user_location))
-            val parentActivity = activity as SettingsActivity
-
-            locationPref.setOnPreferenceClickListener { parentActivity.launchPlacesAutocompleteOverlay(); true }
-
-            val moderatorPreferences = findPreference(getString(R.string.prefs_key_reviewer_settings))
-            moderatorPreferences?.isVisible = prefs.userIsAdmin() || prefs.userIsMod()
-
-            // Remove user info prefs if user is not signed in.
-            val auth = FirebaseAuth.getInstance()
-            if (auth.currentUser == null) {
-                removeUserPreferences()
-            }
+            refreshPreferenceList()
         }
 
         fun removeUserPreferences() {
@@ -100,6 +86,17 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
         private fun refreshPreferenceList() {
             preferenceScreen = null
             addPreferencesFromResource(R.xml.preferences)
+
+            val locationPref = findPreference(getString(R.string.prefs_key_user_location))
+            val parentActivity = activity as SettingsActivity
+
+            locationPref.setOnPreferenceClickListener {
+                parentActivity.launchPlacesAutocompleteOverlay();
+                true
+            }
+
+            val moderatorPreferences = findPreference(getString(R.string.prefs_key_reviewer_settings))
+            moderatorPreferences?.isVisible = prefs.userIsAdmin() || prefs.userIsMod()
 
             // Remove user info prefs if user is not signed in.
             val auth = FirebaseAuth.getInstance()
