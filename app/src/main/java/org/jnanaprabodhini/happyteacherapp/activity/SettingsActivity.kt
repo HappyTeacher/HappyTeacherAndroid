@@ -27,7 +27,14 @@ import org.jnanaprabodhini.happyteacherapp.util.PreferencesManager
 
 class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
-    companion object { const val PLACE_AUTOCOMPLETE_REQUEST_CODE = 1 }
+    companion object {
+        fun launch(from: Activity) {
+            val intent = Intent(from, CardEditorActivity::class.java)
+            from.startActivity(intent)
+        }
+
+        const val PLACE_AUTOCOMPLETE_REQUEST_CODE = 1
+    }
 
     private lateinit var settingsFragment: SettingsFragment
 
@@ -182,7 +189,7 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             when (resultCode) {
                 Activity.RESULT_OK -> {

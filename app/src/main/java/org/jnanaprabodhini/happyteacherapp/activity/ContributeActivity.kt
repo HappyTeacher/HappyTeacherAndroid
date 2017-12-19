@@ -1,22 +1,19 @@
 package org.jnanaprabodhini.happyteacherapp.activity
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.annotation.IntegerRes
 import android.support.design.widget.BottomNavigationView
-import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.ViewCompat
 import com.google.firebase.auth.FirebaseAuth
-import org.jnanaprabodhini.happyteacherapp.R
 import kotlinx.android.synthetic.main.activity_contribute.*
 import kotlinx.android.synthetic.main.content_contribute.*
+import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.base.BottomNavigationActivity
+import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacherapp.adapter.contribute.ContributeFragmentAdapter
 import org.jnanaprabodhini.happyteacherapp.extension.hasCompleteContributorProfile
-import org.jnanaprabodhini.happyteacherapp.extension.setElevation
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.util.ResourceType
@@ -27,14 +24,17 @@ class ContributeActivity : BottomNavigationActivity(), FirebaseAuth.AuthStateLis
     override val bottomNavigationView: BottomNavigationView by lazy { bottomNavigation }
 
     companion object IntentExtraHelper {
-        fun launch(from: Activity) {
+        fun launch(from: HappyTeacherActivity) {
             val intent = Intent(from, ContributeActivity::class.java)
-            from.startActivity(intent)
-        }
 
-        fun launchWithFade(from: BottomNavigationActivity) {
-            val intent = Intent(from, ContributeActivity::class.java)
-            from.startBottomNavigationActivityWithFade(intent)
+            if (from is BottomNavigationActivity) {
+                from.startBottomNavigationActivityWithFade(intent)
+            } else {
+                // Animate a slide-out to indicate that we're returning
+                //  to the top-level of the app's navigation hierarchy
+                //  and thus pressing "back" will close the app:
+                from.startActivityWithSlideOutTransition(intent)
+            }
         }
 
         const val FRAGMENT_PAGE = "FRAGMENT_PAGE"

@@ -7,12 +7,16 @@ import android.widget.Button
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.list_item_content_header_recycler.view.*
+import org.jnanaprabodhini.happyteacherapp.R
 import org.jnanaprabodhini.happyteacherapp.activity.ContributeActivity
+import org.jnanaprabodhini.happyteacherapp.activity.SettingsActivity
 import org.jnanaprabodhini.happyteacherapp.activity.SubtopicWriteChoiceActivity
 import org.jnanaprabodhini.happyteacherapp.activity.base.BottomNavigationActivity
+import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacherapp.extension.hasCompleteContributorProfile
 import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
+import org.jnanaprabodhini.happyteacherapp.extension.showToast
 import org.jnanaprabodhini.happyteacherapp.view.HorizontalPagerRecyclerView
 
 class ResourceHeaderRecyclerViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -27,17 +31,17 @@ class ResourceHeaderRecyclerViewHolder(itemView: View): RecyclerView.ViewHolder(
         contributeButton.setVisibilityGone()
     }
 
-    fun showEmptyViewWithContributeButton(resourceType: String, topicId: String, activity: Activity) {
+    fun showEmptyViewWithContributeButton(resourceType: String, topicId: String, activity: HappyTeacherActivity) {
         statusTextView.setVisible()
         contributeButton.setVisible()
 
-        val user = FirebaseAuth.getInstance().currentUser
-
         contributeButton.setOnClickListener {
-            when {
-                user?.hasCompleteContributorProfile(activity) == true -> SubtopicWriteChoiceActivity.launch(activity, resourceType, topicId)
-                activity is BottomNavigationActivity -> ContributeActivity.launchWithFade(activity)
-                else -> ContributeActivity.launch(activity)
+            val user = FirebaseAuth.getInstance().currentUser
+
+            if (user?.hasCompleteContributorProfile(activity) == true) {
+                SubtopicWriteChoiceActivity.launch(activity, resourceType, topicId)
+            } else {
+                ContributeActivity.launch(activity)
             }
         }
     }
