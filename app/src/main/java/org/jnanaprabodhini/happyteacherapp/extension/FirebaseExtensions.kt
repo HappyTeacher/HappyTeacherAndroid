@@ -83,6 +83,9 @@ fun FirebaseAuth.signOutAndCleanup(context: Context) {
         FirebaseRegistrationTokenService.removeUserToken(context, userId)
     }
 
+    val prefs = PreferencesManager.getInstance(context)
+    prefs.clearUserRole()
+
     this.signOut()
 }
 

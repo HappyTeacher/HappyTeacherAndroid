@@ -4,7 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.support.v7.preference.PreferenceCategory
 import android.support.v7.preference.PreferenceFragmentCompat
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.crashlytics.android.Crashlytics
@@ -25,7 +27,9 @@ import org.jnanaprabodhini.happyteacherapp.preference.MandatoryContributorPrefer
 import org.jnanaprabodhini.happyteacherapp.util.PreferencesManager
 
 
-class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsActivity : HappyTeacherActivity(),
+        SharedPreferences.OnSharedPreferenceChangeListener,
+        FirebaseAuth.AuthStateListener {
 
     companion object {
         fun launch(from: Activity) {
@@ -54,11 +58,6 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             refreshPreferenceList()
-        }
-
-        fun removeUserPreferences() {
-            val userPreferences = findPreference(getString(R.string.prefs_key_user_settings))
-            preferenceScreen.removePreference(userPreferences)
         }
 
         /**
@@ -91,17 +90,33 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
             val parentActivity = activity as SettingsActivity
 
             locationPref.setOnPreferenceClickListener {
-                parentActivity.launchPlacesAutocompleteOverlay();
+                parentActivity.launchPlacesAutocompleteOverlay()
                 true
             }
 
-            val moderatorPreferences = findPreference(getString(R.string.prefs_key_reviewer_settings))
-            moderatorPreferences?.isVisible = prefs.userIsAdmin() || prefs.userIsMod()
+            refreshReviewerPreferenceDisplay()
 
-            // Remove user info prefs if user is not signed in.
             val auth = FirebaseAuth.getInstance()
             if (auth.currentUser == null) {
                 removeUserPreferences()
+            }
+        }
+
+        fun removeUserPreferences() {
+            val userPreferences = findPreference(getString(R.string.prefs_key_user_settings))
+            userPreferences?.let {
+                preferenceScreen?.removePreference(userPreferences)
+            }
+        }
+
+        fun refreshReviewerPreferenceDisplay() {
+            val reviewerSettingsCategory = findPreference(getString(R.string.prefs_key_reviewer_settings))
+            val auth = FirebaseAuth.getInstance()
+
+            reviewerSettingsCategory?.let {
+                if (auth.currentUser == null || !(prefs.userIsAdmin() || prefs.userIsMod())) {
+                    preferenceScreen?.removePreference(reviewerSettingsCategory)
+                }
             }
         }
     }
@@ -119,12 +134,14 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
         super.onResume()
         settingsFragment.preferenceScreen.sharedPreferences
                 .registerOnSharedPreferenceChangeListener(this)
+        auth.addAuthStateListener(this)
     }
 
     override fun onPause() {
         super.onPause()
         settingsFragment.preferenceScreen.sharedPreferences
                 .unregisterOnSharedPreferenceChangeListener(this)
+        auth.removeAuthStateListener(this)
 
         if (auth.currentUser == null) {
             prefs.clearUserProfileData()
@@ -138,6 +155,10 @@ class SettingsActivity : HappyTeacherActivity(), SharedPreferences.OnSharedPrefe
             getString(R.string.prefs_key_user_location) -> onLocationChange(preferences?.getString(key, ""))
         }
         settingsFragment.ensureUserInfoDisplayIsCurrent()
+    }
+
+    override fun onAuthStateChanged(auth: FirebaseAuth) {
+        settingsFragment.refreshReviewerPreferenceDisplay()
     }
 
     private fun onNameChange(newName: String?) {

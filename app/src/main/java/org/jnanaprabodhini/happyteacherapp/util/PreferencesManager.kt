@@ -91,6 +91,8 @@ class PreferencesManager private constructor(val context: Context) {
 
     fun getUserRole(): String = preferences.getString(context.getString(R.string.prefs_key_user_role), "")
 
+    fun clearUserRole() = setUserRole("")
+
     fun userIsMod() = getUserRole() == UserRole.MODERATOR
 
     fun userIsAdmin() = getUserRole() == UserRole.ADMIN
