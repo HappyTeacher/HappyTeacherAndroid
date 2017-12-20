@@ -126,7 +126,7 @@ class HorizontalPagerView(context: Context, attrs: AttributeSet): FrameLayout(co
 
             when (firstVisiblePosition) {
                 // If only one view is visible (and perhaps not completely visible),
-                //  or if first visible pos is completely visible, then scroll to next:
+                //  or if first visible pos is completely visible, then scroll to previous:
                 lastVisiblePosition,
                 firstCompletelyVisiblePosition -> attemptScrollToPosition(firstVisiblePosition - 1)
 
