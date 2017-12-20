@@ -108,7 +108,6 @@ fun DocumentReference.addOneTimeExistingSnapshotListener(activity: Activity, lis
  * Add a snapshot listener that will execute only once, and only for existing documents
  */
 fun DocumentReference.addOneTimeExistingSnapshotListener(listener: (DocumentSnapshot, FirebaseFirestoreException?) -> Unit) {
-    Log.d("GRAHAM", "adding one time existing snapshot listener")
     val listeners = mutableSetOf<ListenerRegistration>()
     val registration = this.addSnapshotListener{ documentSnapshot, firebaseFirestoreException ->
         if (documentSnapshot?.exists() == true) {

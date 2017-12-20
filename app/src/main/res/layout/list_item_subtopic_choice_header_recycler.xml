@@ -17,8 +17,8 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"/>
 
-    <org.jnanaprabodhini.happyteacherapp.view.HorizontalPagerRecyclerView
-        android:id="@+id/horizontalRecyclerView"
+    <org.jnanaprabodhini.happyteacherapp.view.HorizontalPagerView
+        android:id="@+id/horizontalPagerView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="0dp"

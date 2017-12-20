@@ -19,7 +19,6 @@ import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.model.AttachmentMetadata
 import org.jnanaprabodhini.happyteacherapp.model.ContentCard
-import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import java.io.File
 
 /**
@@ -57,7 +56,7 @@ abstract class ResourceRecyclerAdapter(options: FirestoreRecyclerOptions<Content
         holder?.headerImageView?.setVisibilityGone()
         holder?.loadButton?.setVisibilityGone()
         holder?.headerProgressBar?.setVisibilityGone()
-        holder?.imageGalleryRecyclerView?.setVisibilityGone()
+        holder?.imageGalleryPagerView?.setVisibilityGone()
         holder?.attachmentDownloadButton?.setVisibilityGone()
     }
 
@@ -106,7 +105,7 @@ abstract class ResourceRecyclerAdapter(options: FirestoreRecyclerOptions<Content
     }
 
     private fun setupImageGalleryRecycler(imageUrls: List<String>, holder: ContentCardViewHolder) {
-        val recycler = holder.imageGalleryRecyclerView
+        val recycler = holder.imageGalleryPagerView
         recycler.setAdapter(ImageGalleryRecyclerAdapter(imageUrls, activity))
 
         recycler.setVisible()

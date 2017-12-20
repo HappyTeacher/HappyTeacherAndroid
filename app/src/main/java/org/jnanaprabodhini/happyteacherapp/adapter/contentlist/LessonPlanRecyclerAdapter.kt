@@ -99,14 +99,14 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>,
                 activity = activity, firebaseDataObserver = getClassroomResourcesDataObserver(holder))
         adapter.startListening()
 
-        holder.horizontalRecyclerView.setAdapter(adapter)
+        holder.horizontalPagerView.setAdapter(adapter)
     }
 
     private fun getClassroomResourcesDataObserver(holder: ResourceHeaderRecyclerViewHolder): FirebaseDataObserver = object: FirebaseDataObserver {
         override fun onRequestNewData() {
             holder.progressBar.setVisible()
             holder.hideEmptyViews()
-            holder.horizontalRecyclerView.setVisibilityGone()
+            holder.horizontalPagerView.setVisibilityGone()
         }
 
         override fun onDataLoaded() {
@@ -115,18 +115,18 @@ class LessonPlanRecyclerAdapter(options: FirestoreRecyclerOptions<ContentCard>,
 
         override fun onDataNonEmpty() {
             holder.hideEmptyViews()
-            holder.horizontalRecyclerView.setVisible()
+            holder.horizontalPagerView.setVisible()
         }
 
         override fun onDataEmpty() {
-            holder.horizontalRecyclerView.setVisibilityGone()
+            holder.horizontalPagerView.setVisibilityGone()
 
             holder.showEmptyViewWithContributeButton(ResourceType.CLASSROOM_RESOURCE, resourceHeader.topic, activity)
             holder.statusTextView.setText(R.string.there_are_no_classroom_resources_for_this_lesson_yet)
         }
 
         override fun onError(e: FirebaseFirestoreException?) {
-            holder.horizontalRecyclerView.setVisibilityGone()
+            holder.horizontalPagerView.setVisibilityGone()
             holder.contributeButton.setInvisible()
             holder.progressBar.setVisibilityGone()
 

@@ -67,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <org.jnanaprabodhini.happyteacherapp.view.HorizontalPagerRecyclerView
+            <org.jnanaprabodhini.happyteacherapp.view.HorizontalPagerView
                 android:id="@+id/imageGalleryRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

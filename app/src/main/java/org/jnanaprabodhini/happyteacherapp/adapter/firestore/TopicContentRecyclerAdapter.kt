@@ -4,11 +4,8 @@ import android.support.annotation.StringRes
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestoreException
 import org.jnanaprabodhini.happyteacherapp.R
-import org.jnanaprabodhini.happyteacherapp.activity.ClassroomResourceViewerActivity
-import org.jnanaprabodhini.happyteacherapp.activity.LessonViewerActivity
 import org.jnanaprabodhini.happyteacherapp.activity.base.HappyTeacherActivity
 import org.jnanaprabodhini.happyteacherapp.adapter.helper.FirebaseDataObserver
 import org.jnanaprabodhini.happyteacherapp.adapter.viewholder.ResourceHeaderRecyclerViewHolder
@@ -18,7 +15,7 @@ import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
 import org.jnanaprabodhini.happyteacherapp.model.Topic
 import org.jnanaprabodhini.happyteacherapp.util.ResourceType
-import org.jnanaprabodhini.happyteacherapp.view.HorizontalPagerRecyclerView
+import org.jnanaprabodhini.happyteacherapp.view.HorizontalPagerView
 
 /**
  * An adapter for displaying Topics and the lessons for those topics.
@@ -42,10 +39,10 @@ abstract class TopicContentRecyclerAdapter(topicsAdapterOptions: FirestoreRecycl
         setBackgroundColor(holder?.itemView, position)
 
         val topicId = snapshots.getSnapshot(position).reference.id
-        initializeLessonRecyclerView(holder?.horizontalRecyclerView, topicId, holder)
+        initializeLessonRecyclerView(holder?.horizontalPagerView, topicId, holder)
     }
 
-    private fun initializeLessonRecyclerView(recyclerView: HorizontalPagerRecyclerView?, topicId: String,
+    private fun initializeLessonRecyclerView(horizontalPagerView: HorizontalPagerView?, topicId: String,
                                              holder: ResourceHeaderRecyclerViewHolder?) {
         val adapterOptions = getSubtopicAdapterOptions(topicId)
 
@@ -53,13 +50,13 @@ abstract class TopicContentRecyclerAdapter(topicsAdapterOptions: FirestoreRecycl
                 getSubtopicDataObserverForViewHolder(holder, topicId))
 
         adapter.startListening()
-        recyclerView?.setAdapter(adapter)
+        horizontalPagerView?.setAdapter(adapter)
     }
 
     private fun getSubtopicDataObserverForViewHolder(viewHolder: ResourceHeaderRecyclerViewHolder?,
                                                      topicId: String) = object: FirebaseDataObserver {
         override fun onRequestNewData() {
-            viewHolder?.horizontalRecyclerView?.setVisibilityGone()
+            viewHolder?.horizontalPagerView?.setVisibilityGone()
             viewHolder?.hideEmptyViews()
             viewHolder?.progressBar?.setVisible()
         }
@@ -69,7 +66,7 @@ abstract class TopicContentRecyclerAdapter(topicsAdapterOptions: FirestoreRecycl
         }
 
         override fun onDataEmpty() {
-            viewHolder?.horizontalRecyclerView?.setVisibilityGone()
+            viewHolder?.horizontalPagerView?.setVisibilityGone()
             viewHolder?.showEmptyViewWithContributeButton(ResourceType.LESSON, topicId, activity)
             viewHolder?.statusTextView?.setText(emptyTextStringRes)
 
@@ -77,12 +74,12 @@ abstract class TopicContentRecyclerAdapter(topicsAdapterOptions: FirestoreRecycl
         }
 
         override fun onDataNonEmpty() {
-            viewHolder?.horizontalRecyclerView?.setVisible()
+            viewHolder?.horizontalPagerView?.setVisible()
             viewHolder?.hideEmptyViews()
         }
 
         override fun onError(e: FirebaseFirestoreException?) {
-            viewHolder?.horizontalRecyclerView?.setVisibilityGone()
+            viewHolder?.horizontalPagerView?.setVisibilityGone()
             viewHolder?.contributeButton?.setInvisible()
             viewHolder?.statusTextView?.setVisible()
             viewHolder?.progressBar?.setVisibilityGone()

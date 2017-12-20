@@ -16,7 +16,7 @@ import org.jnanaprabodhini.happyteacherapp.extension.*
  * A horizontal RecyclerView wrapper that has forward and backward pager buttons
  *  for scrolling content.
  */
-class HorizontalPagerRecyclerView(context: Context, attrs: AttributeSet): FrameLayout(context, attrs) {
+class HorizontalPagerView(context: Context, attrs: AttributeSet): FrameLayout(context, attrs) {
 
     private val onScrollListener = object: RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {

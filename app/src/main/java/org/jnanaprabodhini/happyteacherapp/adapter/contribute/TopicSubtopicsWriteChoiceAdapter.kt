@@ -14,7 +14,7 @@ import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.model.Subtopic
 import org.jnanaprabodhini.happyteacherapp.model.Topic
-import org.jnanaprabodhini.happyteacherapp.view.HorizontalPagerRecyclerView
+import org.jnanaprabodhini.happyteacherapp.view.HorizontalPagerView
 
 /**
  * Created by grahamearley on 11/2/17.
@@ -34,10 +34,10 @@ class TopicSubtopicsWriteChoiceAdapter(topicsAdapterOptions: FirestoreRecyclerOp
         setBackgroundColor(holder?.itemView, position)
 
         val topicId = snapshots.getSnapshot(position).reference.id
-        initializeSubtopicRecycler(holder?.horizontalRecyclerView, topicId, holder)
+        initializeSubtopicRecycler(holder?.horizontalPagerView, topicId, holder)
     }
 
-    private fun initializeSubtopicRecycler(horizontalRecyclerView: HorizontalPagerRecyclerView?, topicId: String, holder: TopicSubtopicChoiceRecyclerViewHolder?) {
+    private fun initializeSubtopicRecycler(horizontalPagerView: HorizontalPagerView?, topicId: String, holder: TopicSubtopicChoiceRecyclerViewHolder?) {
         val query: Query = activity.firestoreLocalized.collection(activity.getString(R.string.subtopics))
                 .whereEqualTo(activity.getString(R.string.topic), topicId)
 
@@ -45,12 +45,12 @@ class TopicSubtopicsWriteChoiceAdapter(topicsAdapterOptions: FirestoreRecyclerOp
         val adapter = SubtopicWriteChoiceRecyclerAdapter(adapterOptions, resourceType, getSubtopicDataObserverForViewHolder(holder), activity)
 
         adapter.startListening()
-        horizontalRecyclerView?.setAdapter(adapter)
+        horizontalPagerView?.setAdapter(adapter)
     }
 
     private fun getSubtopicDataObserverForViewHolder(viewHolder: TopicSubtopicChoiceRecyclerViewHolder?) = object: FirebaseDataObserver {
         override fun onRequestNewData() {
-            viewHolder?.horizontalRecyclerView?.setVisibilityGone()
+            viewHolder?.horizontalPagerView?.setVisibilityGone()
             viewHolder?.progressBar?.setVisible()
             viewHolder?.statusTextView?.setVisibilityGone()
         }
@@ -65,12 +65,12 @@ class TopicSubtopicsWriteChoiceAdapter(topicsAdapterOptions: FirestoreRecyclerOp
         }
 
         override fun onDataNonEmpty() {
-            viewHolder?.horizontalRecyclerView?.setVisible()
+            viewHolder?.horizontalPagerView?.setVisible()
             viewHolder?.statusTextView?.setVisibilityGone()
         }
 
         override fun onError(e: FirebaseFirestoreException?) {
-            viewHolder?.horizontalRecyclerView?.setVisibilityGone()
+            viewHolder?.horizontalPagerView?.setVisibilityGone()
             viewHolder?.statusTextView?.setVisible()
             viewHolder?.progressBar?.setVisibilityGone()
             viewHolder?.statusTextView?.setText(R.string.there_was_an_error_loading_lessons_for_this_topic)

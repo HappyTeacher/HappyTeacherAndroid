@@ -4,7 +4,6 @@ import android.app.Activity
 import android.support.constraint.Group
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.view.animation.AnimationUtils
 import android.widget.*
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.android.synthetic.main.list_item_content_card.view.*
@@ -14,7 +13,7 @@ import org.jnanaprabodhini.happyteacherapp.extension.*
 import org.jnanaprabodhini.happyteacherapp.model.ContentCard
 import org.jnanaprabodhini.happyteacherapp.view.DownloadBarView
 import org.jnanaprabodhini.happyteacherapp.view.FeedbackPreviewView
-import org.jnanaprabodhini.happyteacherapp.view.HorizontalPagerRecyclerView
+import org.jnanaprabodhini.happyteacherapp.view.HorizontalPagerView
 import org.jnanaprabodhini.happyteacherapp.view.YoutubeWebView
 
 /**
@@ -30,7 +29,7 @@ open class ContentCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
     val headerProgressBar: ProgressBar = itemView.headerProgressBar
     val loadButton: TextView = itemView.loadButton
 
-    val imageGalleryRecyclerView: HorizontalPagerRecyclerView = itemView.imageGalleryRecyclerView
+    val imageGalleryPagerView: HorizontalPagerView = itemView.imageGalleryRecyclerView
 
     val attachmentDownloadButton: DownloadBarView = itemView.attachmentDownloadBar
 
