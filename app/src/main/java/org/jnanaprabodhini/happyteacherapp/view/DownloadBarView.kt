@@ -89,6 +89,10 @@ class DownloadBarView(context: Context, attributeSet: AttributeSet): FrameLayout
         rootFrame.setOnClickListener(l)
     }
 
+    fun setIconOnClickListener(onClick: () -> Unit) {
+        icon.setOnClickListener{ onClick() }
+    }
+
     private fun resetBackgroundColor() {
         rootFrame.background = ResourcesCompat.getDrawable(context.resources, R.drawable.ripple_blue, null)
     }

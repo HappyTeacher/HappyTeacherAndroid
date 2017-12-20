@@ -427,15 +427,10 @@ class CardEditorActivity : HappyTeacherActivity() {
     }
 
     private fun onAttachmentUploadComplete(metadata: AttachmentMetadata) {
-        fileAttachmentView.setFolderIconWithText(attachmentFileName.orEmpty())
+        fileAttachmentView.setCancelIconWithText(attachmentFileName.orEmpty())
         fileAttachmentView.setProgressComplete()
 
-        // TODO: delete by pressing X icon on download bar.
-        fileAttachmentView.setOnClickListener {
-            showToast("Long press to remove attachment")
-        }
-
-        fileAttachmentView.setOneTimeOnLongClickListener {
+        fileAttachmentView.setIconOnClickListener {
             deleteAttachment()
             hideFileAttachmentView()
         }
