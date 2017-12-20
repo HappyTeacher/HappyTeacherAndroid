@@ -115,6 +115,8 @@ class CardEditorActivity : HappyTeacherActivity() {
             return false
         }
 
+    private var isAttachmentDeletionPending = false
+
     private lateinit var originalCard: ContentCard
     private lateinit var editedCard: ContentCard
 
@@ -431,7 +433,8 @@ class CardEditorActivity : HappyTeacherActivity() {
         fileAttachmentView.setProgressComplete()
 
         fileAttachmentView.setIconOnClickListener {
-            deleteAttachment()
+            isAttachmentDeletionPending = true
+            clearAttachment()
             hideFileAttachmentView()
         }
 
@@ -515,6 +518,12 @@ class CardEditorActivity : HappyTeacherActivity() {
 
     private fun save() {
         updateEditedCardFromFields()
+
+        if (isAttachmentDeletionPending) {
+            deleteAttachmentFromServer()
+            isAttachmentDeletionPending = false
+        }
+
         cardRef.set(editedCard)
     }
 
@@ -591,13 +600,16 @@ class CardEditorActivity : HappyTeacherActivity() {
         cancelAttachmentUpload()
     }
 
-    private fun deleteAttachment() {
-        attachmentFileName?.let { name ->
-            cardFileStorageRef.child(name).delete()
-        }
+    private fun clearAttachment() {
         attachmentFileName = null
         editedCard.attachmentPath = ""
         editedCard.attachmentMetadata = AttachmentMetadata()
+    }
+
+    private fun deleteAttachmentFromServer() {
+        attachmentFileName?.let { name ->
+            cardFileStorageRef.child(name).delete()
+        }
     }
 
     private fun onPreClearUploads(refUrls: List<String>) {

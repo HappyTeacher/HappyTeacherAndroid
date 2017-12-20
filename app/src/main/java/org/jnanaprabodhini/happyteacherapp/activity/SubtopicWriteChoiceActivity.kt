@@ -79,7 +79,7 @@ class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver
             else -> getString(R.string.create_a_resource)
         }
 
-        when(resourceType) {
+        when (resourceType) {
             ResourceType.LESSON -> {
                 supportActionBar?.title = getString(R.string.create_a_lesson_plan)
                 instructionTextView.setText(R.string.choose_what_your_lesson_will_be_about)
@@ -116,7 +116,7 @@ class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver
         progressBar.setVisible()
         val topicDocumentRef = firestoreLocalized.collection(FirestoreKeys.TOPICS).document(topicId)
         topicDocumentRef.addOneTimeExistingSnapshotListener(this, { documentSnapshot, e ->
-            if (documentSnapshot?.exists() == true) {
+            if (documentSnapshot.exists()) {
                 val topic = documentSnapshot.toObject(Topic::class.java)
                 val subjectId = topic.subject
                 initializeSpinnersWithSubject(subjectId)
@@ -133,7 +133,7 @@ class SubtopicWriteChoiceActivity : HappyTeacherActivity(), FirebaseDataObserver
     private fun initializeSpinnersWithSubject(subjectId: String) {
         val subjectDocumentRef = firestoreLocalized.collection(FirestoreKeys.SUBJECTS).document(subjectId)
         subjectDocumentRef.addOneTimeExistingSnapshotListener(this, { documentSnapshot, e ->
-            if (documentSnapshot?.exists() == true) {
+            if (documentSnapshot.exists()) {
                 val subject = documentSnapshot.toObject(Subject::class.java)
                 val parentSubjectId = subject.parentSubject
 
