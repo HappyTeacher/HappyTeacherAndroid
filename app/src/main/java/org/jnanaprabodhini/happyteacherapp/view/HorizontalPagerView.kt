@@ -125,11 +125,10 @@ class HorizontalPagerView(context: Context, attrs: AttributeSet): FrameLayout(co
             val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
 
             when (firstVisiblePosition) {
-                // Only one view is visible (and perhaps not completely visible). Scroll to next:
-                lastVisiblePosition -> attemptScrollToPosition(firstVisiblePosition - 1)
-
-                // First visible pos is completely visible. Scroll to next:
-                firstCompletelyVisiblePosition -> attemptScrollToPosition(firstCompletelyVisiblePosition - 1)
+                // If only one view is visible (and perhaps not completely visible),
+                //  or if first visible pos is completely visible, then scroll to next:
+                lastVisiblePosition,
+                firstCompletelyVisiblePosition -> attemptScrollToPosition(firstVisiblePosition - 1)
 
                 // First visible pos isn't completely visible. Scroll to it:
                 else -> attemptScrollToPosition(firstVisiblePosition)
@@ -142,8 +141,8 @@ class HorizontalPagerView(context: Context, attrs: AttributeSet): FrameLayout(co
             val firstVisiblePosition = layoutManager.findFirstVisibleItemPosition()
 
             when (lastVisiblePosition) {
-                firstVisiblePosition -> attemptScrollToPosition(lastVisiblePosition + 1)
-                lastCompletelyVisiblePosition -> attemptScrollToPosition(lastCompletelyVisiblePosition + 1)
+                firstVisiblePosition,
+                lastCompletelyVisiblePosition -> attemptScrollToPosition(lastVisiblePosition + 1)
                 else -> attemptScrollToPosition(lastVisiblePosition)
             }
         }
