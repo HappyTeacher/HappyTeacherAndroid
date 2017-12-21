@@ -5,6 +5,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Exclude
+import com.google.firebase.firestore.PropertyName
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 
@@ -48,7 +49,8 @@ data class ResourceHeader(var name: String = "",
                           val subtopicSubmissionCount: Int = 0,
                           val status: String = "",
                           val resourceType: String = "",
-                          val isFeatured: Boolean = false): Parcelable {
+                          // Use annotation to prevent the serialized value from just being called "featured".
+                          @get:PropertyName("isFeatured") val isFeatured: Boolean = false): Parcelable {
 
     // The Kotlin @Parcelize annotation crashes when parcelizing a class
     //  with booleans in Android 4.4 or below. So we do our own parcelizing here.
