@@ -24,6 +24,7 @@ import org.jnanaprabodhini.happyteacherapp.extension.setVisibilityGone
 import org.jnanaprabodhini.happyteacherapp.extension.setVisible
 import org.jnanaprabodhini.happyteacherapp.extension.showToast
 import org.jnanaprabodhini.happyteacherapp.model.ResourceHeader
+import org.jnanaprabodhini.happyteacherapp.model.Subtopic
 import org.jnanaprabodhini.happyteacherapp.model.Topic
 import org.jnanaprabodhini.happyteacherapp.util.ResourceStatus
 import org.jnanaprabodhini.happyteacherapp.view.SubjectSpinnerRecyclerView
