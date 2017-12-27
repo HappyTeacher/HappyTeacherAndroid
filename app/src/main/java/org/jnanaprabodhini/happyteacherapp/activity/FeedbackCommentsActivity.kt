@@ -77,7 +77,8 @@ class FeedbackCommentsActivity : HappyTeacherActivity(), FirebaseDataObserver {
 
         initializeRecycler()
         setupFab()
-        setUpdatePreviewCommentListener()
+
+        if (isReviewer) setUpdatePreviewCommentListener()
     }
 
     private fun initializeRecycler() {
