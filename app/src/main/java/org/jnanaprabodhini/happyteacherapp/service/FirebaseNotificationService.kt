@@ -135,7 +135,7 @@ class FirebaseNotificationService : FirebaseMessagingService() {
     }
 
     /**
-     * Send a notification that opens a resource that has been published..
+     * Send a notification that opens a resource that has been published.
      */
     private fun sendResourcePublishedNotification(messageTitle: String, messageBody: String,
                                                   refPath: String,
