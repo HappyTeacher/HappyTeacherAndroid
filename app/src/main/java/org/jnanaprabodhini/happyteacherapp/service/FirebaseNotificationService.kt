@@ -1,10 +1,10 @@
 package org.jnanaprabodhini.happyteacherapp.service
 
-import android.app.NotificationManager
+import android.app.*
 import android.media.RingtoneManager
-import android.app.PendingIntent
-import android.app.TaskStackBuilder
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.support.annotation.ColorRes
 import android.support.annotation.DrawableRes
 import com.google.firebase.messaging.RemoteMessage
@@ -12,6 +12,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import org.jnanaprabodhini.happyteacherapp.R
 import android.support.v4.app.NotificationCompat
 import android.support.v4.content.res.ResourcesCompat
+import android.util.Log
 import org.jnanaprabodhini.happyteacherapp.activity.*
 import org.jnanaprabodhini.happyteacherapp.adapter.contribute.ContributeFragmentAdapter
 import org.jnanaprabodhini.happyteacherapp.util.FirestoreKeys
@@ -25,7 +26,15 @@ import org.jnanaprabodhini.happyteacherapp.util.ResourceType
  */
 class FirebaseNotificationService : FirebaseMessagingService() {
 
+    companion object {
+        const val RESOURCE_STATUS_UPDATE_CHANNEL = "RESOURCE_STATUS_UPDATE_CHANNEL"
+        const val MODERATOR_NEW_SUBMISSION_CHANNEL = "MODERATOR_NEW_SUBMISSION_CHANNEL"
+    }
+
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
+        // Ensure channels exist:
+        createChannels()
+
         val notificationType = remoteMessage?.data?.get(FirestoreKeys.NOTIFICATION_TYPE)
 
         when (notificationType) {
@@ -59,6 +68,7 @@ class FirebaseNotificationService : FirebaseMessagingService() {
                 getString(R.string.there_is_a_new_happy_teacher_submission_for_you_to_review),
                 pendingIntent,
                 subjectName,
+                MODERATOR_NEW_SUBMISSION_CHANNEL,
                 R.color.deepBlue,
                 R.drawable.ic_book_white_24dp)
     }
@@ -87,12 +97,12 @@ class FirebaseNotificationService : FirebaseMessagingService() {
         when (type) {
             ResourceType.CLASSROOM_RESOURCE -> {
                 val messageBody = getString(R.string.your_classroom_resource_x_was_published, resourceName)
-                sendResourceNotification(messageTitle, messageBody, refPath,
+                sendResourcePublishedNotification(messageTitle, messageBody, refPath,
                         R.color.grassGreen, R.drawable.ic_check_white_24dp, ClassroomResourceViewerActivity::class.java)
             }
             ResourceType.LESSON -> {
                 val messageBody = getString(R.string.your_lesson_plan_x_was_published, resourceName)
-                sendResourceNotification(messageTitle, messageBody, refPath,
+                sendResourcePublishedNotification(messageTitle, messageBody, refPath,
                         R.color.grassGreen, R.drawable.ic_check_white_24dp, LessonViewerActivity::class.java)
             }
         }
@@ -111,22 +121,27 @@ class FirebaseNotificationService : FirebaseMessagingService() {
             ResourceType.CLASSROOM_RESOURCE -> {
                 val messageBody = getString(R.string.your_classroom_resource_x_has_changes_requested, resourceName)
                 sendNotification(messageTitle, messageBody, pendingIntent, refPath,
+                        RESOURCE_STATUS_UPDATE_CHANNEL,
                         R.color.dreamsicleOrange, R.drawable.ic_assignment_return_white_24dp)
             }
             ResourceType.LESSON -> {
                 val messageBody = getString(R.string.your_lesson_plan_x_has_changes_requested, resourceName)
                 sendNotification(messageTitle, messageBody, pendingIntent, refPath,
+                        RESOURCE_STATUS_UPDATE_CHANNEL,
                         R.color.dreamsicleOrange, R.drawable.ic_assignment_return_white_24dp)
             }
         }
 
     }
 
-    private fun sendResourceNotification(messageTitle: String, messageBody: String,
-                                         refPath: String,
-                                         @ColorRes color: Int,
-                                         @DrawableRes icon: Int,
-                                         destinationViewerActivity: Class<out ResourceActivity>) {
+    /**
+     * Send a notification that opens a resource that has been published..
+     */
+    private fun sendResourcePublishedNotification(messageTitle: String, messageBody: String,
+                                                  refPath: String,
+                                                  @ColorRes color: Int,
+                                                  @DrawableRes icon: Int,
+                                                  destinationViewerActivity: Class<out ResourceActivity>) {
 
         val intent = Intent(this, destinationViewerActivity)
         intent.putExtra(ResourceActivity.CONTENT_REF_PATH, refPath)
@@ -138,21 +153,24 @@ class FirebaseNotificationService : FirebaseMessagingService() {
 
         val pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        sendNotification(messageTitle, messageBody, pendingIntent, refPath, color, icon)
+        sendNotification(messageTitle, messageBody, pendingIntent, refPath,
+                RESOURCE_STATUS_UPDATE_CHANNEL, color, icon)
     }
 
     private fun sendNotification(messageTitle: String, messageBody: String,
                                  pendingIntent: PendingIntent,
                                  notificationTag: String,
+                                 channelId: String,
                                  @ColorRes color: Int,
                                  @DrawableRes icon: Int) {
         val notificationColor = ResourcesCompat.getColor(resources, color, null)
+
+        Log.d("GRAHAM", "Send notification called.")
 
         val expandableNotificationStyle = NotificationCompat.BigTextStyle()
         expandableNotificationStyle.setBigContentTitle(messageTitle)
         expandableNotificationStyle.bigText(messageBody)
 
-        val channelId = getString(R.string.resource_update_notification_channel_id)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
                 .setSmallIcon(icon)
@@ -171,6 +189,30 @@ class FirebaseNotificationService : FirebaseMessagingService() {
         //  zero arbitrarily) and only create one notification per tag.
         val notificationIdNumber = 0
         notificationManager.notify(notificationTag, notificationIdNumber, notificationBuilder.build())
+    }
+
+    private fun createChannels() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+            val statusUpdateChannel = NotificationChannel(RESOURCE_STATUS_UPDATE_CHANNEL,
+                    getString(R.string.status_update_channel_name),
+                    NotificationManager.IMPORTANCE_DEFAULT)
+            statusUpdateChannel.apply {
+                lightColor = Color.GREEN
+                lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+            }
+            notificationManager.createNotificationChannel(statusUpdateChannel)
+
+            val modNewSubmissionChannel = NotificationChannel(MODERATOR_NEW_SUBMISSION_CHANNEL,
+                    getString(R.string.moderator_new_submission_channel_name),
+                    NotificationManager.IMPORTANCE_DEFAULT)
+            modNewSubmissionChannel.apply {
+                lightColor = Color.BLUE
+                lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+            }
+            notificationManager.createNotificationChannel(modNewSubmissionChannel)
+        }
     }
 
 }
